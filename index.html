@@ -33,6 +33,137 @@
             letter-spacing: 0.3px;
         }
 
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 450px;
+            border-left: 4px solid var(--primary-red);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-logo img {
+            height: 60px;
+            margin-bottom: 20px;
+        }
+
+        .login-title {
+            font-size: 2.5em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            font-size: 1.1em;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .login-form {
+            margin-top: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 16px;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 1em;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #ef4444;
+        }
+
+        .login-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .login-error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #f87171;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 0.95em;
+            font-weight: 600;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* Hide main app initially */
+        .app-container {
+            display: none;
+        }
+
+        .app-container.show {
+            display: block;
+        }
+
         .container {
             max-width: 1600px;
             margin: 0 auto;
@@ -85,7 +216,30 @@
             text-transform: uppercase;
         }
 
-        .nav-link {
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .user-info {
+            padding: 12px 20px;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .user-name {
+            color: var(--primary-red);
+            font-weight: 700;
+        }
+
+        .nav-link, .logout-btn {
             padding: 12px 24px;
             background: transparent;
             border: 1px solid var(--border);
@@ -102,7 +256,7 @@
             display: inline-block;
         }
 
-        .nav-link:hover {
+        .nav-link:hover, .logout-btn:hover {
             background: var(--hover-bg);
             border-color: var(--primary-red);
             color: white;
@@ -155,6 +309,92 @@
             letter-spacing: 1.5px;
         }
 
+        /* Frequently Ordered Widget */
+        .frequent-parts {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .frequent-parts-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .frequent-parts-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .frequent-parts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .frequent-part-item {
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .frequent-part-item:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+            transform: translateY(-2px);
+        }
+
+        .frequent-part-num {
+            font-size: 1.3em;
+            font-weight: 800;
+            color: var(--primary-red);
+            margin-bottom: 4px;
+        }
+
+        .frequent-part-desc {
+            font-size: 0.9em;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            line-height: 1.3;
+        }
+
+        .frequent-part-count {
+            font-size: 0.8em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Bulk Import Button */
+        .bulk-import-btn {
+            padding: 12px 24px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.95em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .bulk-import-btn:hover {
+            background: #ef4444;
+        }
+
         /* Search Section */
         .search-section {
             background: var(--card-bg);
@@ -164,9 +404,15 @@
             margin-bottom: 30px;
         }
 
+        .search-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
         .search-box {
             position: relative;
-            margin-bottom: 20px;
+            flex: 1;
         }
 
         .search-box input {
@@ -508,14 +754,70 @@
             font-family: inherit;
         }
 
+        /* Order History Section */
+        .order-history-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .order-history-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .order-history-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .order-history-item {
+            background: var(--dark-bg);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .order-history-item:hover {
+            border-color: var(--primary-red);
+            background: var(--hover-bg);
+        }
+
+        .order-history-item-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .order-history-number {
+            font-weight: 700;
+            color: var(--primary-red);
+            font-size: 0.95em;
+        }
+
+        .order-history-date {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .order-history-parts {
+            font-size: 0.85em;
+            color: var(--text-secondary);
+        }
+
         .order-form {
             margin-top: 30px;
             padding-top: 30px;
             border-top: 1px solid var(--border);
-        }
-
-        .form-group {
-            margin-bottom: 16px;
         }
 
         .form-group label {
@@ -591,13 +893,6 @@
             font-size: 4em;
             margin-bottom: 16px;
             opacity: 0.3;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 60px;
-            font-size: 1.2em;
-            color: #666;
         }
 
         .toast {
@@ -723,7 +1018,7 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
 
-        /* Edit Order Modal */
+        /* Modal Styles */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -817,146 +1112,48 @@
             margin-bottom: 15px;
         }
 
-        .modal-info-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .modal-info-item {
-            background: var(--dark-bg);
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-        }
-
-        .modal-info-label {
-            font-size: 0.85em;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .modal-info-value {
-            font-size: 1.1em;
-            color: white;
-            font-weight: 600;
-        }
-
-        .parts-list {
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .parts-list-item {
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .parts-list-item:last-child {
-            border-bottom: none;
-        }
-
-        .part-item-name {
-            color: white;
-            font-weight: 600;
-        }
-
-        .part-item-qty {
-            color: var(--primary-red);
-            font-weight: 700;
-        }
-
-        .status-selector {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
-        }
-
-        .status-option {
-            padding: 16px;
-            background: var(--dark-bg);
-            border: 2px solid var(--border);
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.9em;
-        }
-
-        .status-option:hover {
-            border-color: white;
-        }
-
-        .status-option.selected {
-            background: var(--primary-red);
-            border-color: var(--primary-red);
-            color: white;
-        }
-
-        .status-option.pending {
-            border-color: #facc15;
-            color: #facc15;
-        }
-
-        .status-option.pending.selected {
-            background: #facc15;
-            border-color: #facc15;
-            color: #000;
-        }
-
-        .status-option.completed {
-            border-color: #4ade80;
-            color: #4ade80;
-        }
-
-        .status-option.completed.selected {
-            background: #4ade80;
-            border-color: #4ade80;
-            color: #000;
-        }
-
-        .status-option.cancelled {
-            border-color: #f87171;
-            color: #f87171;
-        }
-
-        .status-option.cancelled.selected {
-            background: #f87171;
-            border-color: #f87171;
-            color: #000;
-        }
-
-        .notes-textarea {
+        /* Bulk Import Modal */
+        .bulk-import-textarea {
             width: 100%;
-            min-height: 120px;
-            padding: 15px;
+            min-height: 300px;
+            padding: 20px;
             background: var(--dark-bg);
             border: 1px solid var(--border);
             border-radius: 8px;
             color: white;
-            font-family: inherit;
+            font-family: 'Courier New', monospace;
             font-size: 1em;
             resize: vertical;
-            transition: all 0.2s ease;
+            line-height: 1.8;
         }
 
-        .notes-textarea:focus {
+        .bulk-import-textarea:focus {
             outline: none;
             border-color: var(--primary-red);
+        }
+
+        .bulk-import-instructions {
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 3px solid var(--primary-red);
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .bulk-import-results {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: none;
+        }
+
+        .bulk-import-results.show {
+            display: block;
         }
 
         .modal-actions {
@@ -998,6 +1195,83 @@
             background: var(--hover-bg);
         }
 
+        /* Notification Bell */
+        .notification-bell {
+            position: relative;
+            padding: 12px 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .notification-bell:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+            color: white;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 6px;
+            right: 12px;
+            background: var(--primary-red);
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6em;
+            font-weight: 800;
+        }
+
+        /* Browser Notification Toast */
+        .browser-notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary-red);
+            padding: 20px 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            animation: slideInFromTop 0.3s ease;
+            max-width: 400px;
+        }
+
+        @keyframes slideInFromTop {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .browser-notification-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .browser-notification-body {
+            font-size: 0.95em;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
         @media (max-width: 1200px) {
             .results-grid {
                 grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -1031,14 +1305,6 @@
             .stats-bar {
                 grid-template-columns: 1fr;
             }
-
-            .modal-info-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .status-selector {
-                grid-template-columns: 1fr;
-            }
         }
 
         ::-webkit-scrollbar {
@@ -1069,228 +1335,239 @@
     </style>
 </head>
 <body>
-    <div class="cart-toggle" id="cartToggle" onclick="toggleCart()">
-        🛒
-        <div class="cart-badge" id="cartBadge">0</div>
-    </div>
-
-    <div class="container">
-        <!-- PARTS ORDERING PAGE -->
-        <div class="page-section active" id="partsPage">
-            <div class="header">
-                <div class="header-content">
-                    <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
-                    <div class="header-text">
-                        <h1 id="greeting">GOOD MORNING</h1>
-                        <p class="header-subtitle">PARTS ORDERING SYSTEM</p>
-                    </div>
-                </div>
-                <button class="nav-link" onclick="showPage('orders')">View Orders</button>
+    <!-- LOGIN PAGE -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <div class="login-logo">
+                <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo">
+                <div class="login-title">LOGIN</div>
+                <div class="login-subtitle">Parts Ordering System</div>
             </div>
 
-            <div class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-value" id="totalPartsCount">0</div>
-                    <div class="stat-label">Total Parts</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="filteredCount">0</div>
-                    <div class="stat-label">Results</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="cartItemsCount">0</div>
-                    <div class="stat-label">In Cart</div>
-                </div>
-            </div>
+            <div class="login-error" id="loginError">Invalid username or password</div>
 
-            <div class="search-section">
-                <div class="search-box">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..."
-                        autocomplete="off"
-                    >
-                    <span class="search-icon">🔍</span>
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="loginUsername" required autocomplete="username">
                 </div>
-
-                <div class="results-header" id="resultsHeader" style="display: none;">
-                    <div class="results-count" id="resultsCount">Loading parts...</div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required autocomplete="current-password">
                 </div>
-            </div>
-
-            <div id="resultsContainer" class="results-grid">
-                <div class="search-prompt">
-                    <div class="search-prompt-icon">🔍</div>
-                    <div class="search-prompt-title">Start Searching</div>
-                    <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ORDERS DASHBOARD PAGE -->
-        <div class="page-section" id="ordersPage">
-            <div class="header">
-                <div class="header-content">
-                    <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
-                    <div class="header-text">
-                        <h1>ORDERS DASHBOARD</h1>
-                        <p class="header-subtitle">PARTS ORDER MANAGEMENT</p>
-                    </div>
-                </div>
-                <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
-            </div>
-
-            <div class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-value" id="totalOrders">0</div>
-                    <div class="stat-label">Total Orders</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="pendingOrders">0</div>
-                    <div class="stat-label">Pending</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="completedOrders">0</div>
-                    <div class="stat-label">Completed</div>
-                </div>
-            </div>
-
-            <div class="orders-table-container">
-                <table class="orders-table">
-                    <thead>
-                        <tr>
-                            <th>Order #</th>
-                            <th>Date</th>
-                            <th>Engineer</th>
-                            <th>Works Order</th>
-                            <th>Parts</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ordersTableBody">
-                        <tr>
-                            <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
-                                Loading orders...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <button type="submit" class="login-btn" id="loginBtn">Login</button>
+            </form>
         </div>
     </div>
 
-    <div class="cart-section" id="cartSection">
-        <div class="cart-close" onclick="toggleCart()">✕</div>
-        
-        <div class="cart-header">
-            <h2>Order Cart</h2>
-            <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
+    <!-- MAIN APP (Hidden until logged in) -->
+    <div class="app-container" id="appContainer">
+        <div class="cart-toggle" id="cartToggle" onclick="toggleCart()">
+            🛒
+            <div class="cart-badge" id="cartBadge">0</div>
         </div>
 
-        <div id="cartItems" class="cart-items"></div>
-
-        <div class="order-form" id="orderForm" style="display: none;">
-            <div class="form-group">
-                <label>Engineer Name *</label>
-                <input type="text" id="engineerName" required>
-            </div>
-            <div class="form-group">
-                <label>Works Order *</label>
-                <input type="text" id="worksOrder" required>
-            </div>
-            <div class="form-group">
-                <label>Machine Serial</label>
-                <input type="text" id="machineSerial">
-            </div>
-            <div class="form-group">
-                <label>Model</label>
-                <select id="orderModel">
-                    <option value="">Select model</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Comments</label>
-                <textarea id="comments" placeholder="Additional notes..."></textarea>
-            </div>
-            <button class="submit-order" id="submitBtn">Submit Order</button>
-        </div>
-
-        <div class="empty-state" id="emptyCart">
-            <div class="empty-state-icon">🛒</div>
-            <p>Your cart is empty</p>
-            <p style="font-size: 0.9em; margin-top: 8px;">Add parts to get started</p>
-        </div>
-    </div>
-
-    <!-- Edit Order Modal -->
-    <div class="modal-overlay" id="editOrderModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Edit Order</h2>
-                <button class="modal-close" onclick="closeEditModal()">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="modal-section">
-                    <div class="modal-section-title">Order Information</div>
-                    <div class="modal-info-grid">
-                        <div class="modal-info-item">
-                            <div class="modal-info-label">Order Number</div>
-                            <div class="modal-info-value" id="modalOrderNumber">-</div>
+        <div class="container">
+            <!-- PARTS ORDERING PAGE -->
+            <div class="page-section active" id="partsPage">
+                <div class="header">
+                    <div class="header-content">
+                        <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                        <div class="header-text">
+                            <h1 id="greeting">GOOD MORNING</h1>
+                            <p class="header-subtitle">PARTS ORDERING SYSTEM</p>
                         </div>
-                        <div class="modal-info-item">
-                            <div class="modal-info-label">Date</div>
-                            <div class="modal-info-value" id="modalOrderDate">-</div>
+                    </div>
+                    <div class="header-actions">
+                        <div class="user-info">
+                            <span class="user-name" id="userName">User</span>
                         </div>
-                        <div class="modal-info-item">
-                            <div class="modal-info-label">Engineer</div>
-                            <div class="modal-info-value" id="modalEngineer">-</div>
-                        </div>
-                        <div class="modal-info-item">
-                            <div class="modal-info-label">Works Order</div>
-                            <div class="modal-info-value" id="modalWorksOrder">-</div>
-                        </div>
-                        <div class="modal-info-item">
-                            <div class="modal-info-label">Machine Serial</div>
-                            <div class="modal-info-value" id="modalMachineSerial">-</div>
-                        </div>
-                        <div class="modal-info-item">
-                            <div class="modal-info-label">Model</div>
-                            <div class="modal-info-value" id="modalModel">-</div>
-                        </div>
+                        <button class="nav-link" onclick="showPage('orders')">View Orders</button>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
                     </div>
                 </div>
 
-                <div class="modal-section">
-                    <div class="modal-section-title">Parts Ordered</div>
-                    <div class="parts-list" id="modalPartsList">
-                        <div style="text-align: center; color: #666;">No parts</div>
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalPartsCount">0</div>
+                        <div class="stat-label">Total Parts</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="filteredCount">0</div>
+                        <div class="stat-label">Results</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="cartItemsCount">0</div>
+                        <div class="stat-label">In Cart</div>
                     </div>
                 </div>
 
-                <div class="modal-section">
-                    <div class="modal-section-title">Update Status</div>
-                    <div class="status-selector">
-                        <div class="status-option pending" onclick="selectStatus('Pending')">
-                            ⏳ Pending
+                <!-- Frequently Ordered Parts -->
+                <div class="frequent-parts" id="frequentPartsWidget" style="display: none;">
+                    <div class="frequent-parts-header">
+                        <div class="frequent-parts-title">⚡ Frequently Ordered</div>
+                    </div>
+                    <div class="frequent-parts-grid" id="frequentPartsGrid"></div>
+                </div>
+
+                <div class="search-section">
+                    <div class="search-actions">
+                        <div class="search-box">
+                            <input 
+                                type="text" 
+                                id="searchInput" 
+                                placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..."
+                                autocomplete="off"
+                            >
+                            <span class="search-icon">🔍</span>
                         </div>
-                        <div class="status-option completed" onclick="selectStatus('Completed')">
-                            ✓ Completed
-                        </div>
-                        <div class="status-option cancelled" onclick="selectStatus('Cancelled')">
-                            ✕ Cancelled
-                        </div>
+                        <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
+                    </div>
+
+                    <div class="results-header" id="resultsHeader" style="display: none;">
+                        <div class="results-count" id="resultsCount">Loading parts...</div>
                     </div>
                 </div>
 
-                <div class="modal-section">
-                    <div class="modal-section-title">Notes</div>
-                    <textarea class="notes-textarea" id="modalNotes" placeholder="Add notes about this order..."></textarea>
+                <div id="resultsContainer" class="results-grid">
+                    <div class="search-prompt">
+                        <div class="search-prompt-icon">🔍</div>
+                        <div class="search-prompt-title">Start Searching</div>
+                        <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ORDERS DASHBOARD PAGE -->
+            <div class="page-section" id="ordersPage">
+                <div class="header">
+                    <div class="header-content">
+                        <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                        <div class="header-text">
+                            <h1>ORDERS DASHBOARD</h1>
+                            <p class="header-subtitle">PARTS ORDER MANAGEMENT</p>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="notification-bell" title="Notifications">
+                            🔔
+                            <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
+                        </button>
+                        <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
+                        <button class="logout-btn" onclick="logout()">Logout</button>
+                    </div>
                 </div>
 
-                <div class="modal-actions">
-                    <button class="modal-btn modal-btn-secondary" onclick="closeEditModal()">Cancel</button>
-                    <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges()">Save Changes</button>
+                <div class="stats-bar">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalOrders">0</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="pendingOrders">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="completedOrders">0</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order #</th>
+                                <th>Date</th>
+                                <th>Service Controller</th>
+                                <th>Works Order</th>
+                                <th>Parts</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
+                                    Loading orders...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- CART PANEL -->
+        <div class="cart-section" id="cartSection">
+            <div class="cart-close" onclick="toggleCart()">✕</div>
+            
+            <div class="cart-header">
+                <h2>Order Cart</h2>
+                <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
+            </div>
+
+            <div id="cartItems" class="cart-items"></div>
+
+            <!-- Order History Section -->
+            <div class="order-history-section" id="orderHistorySection" style="display: none;">
+                <div class="order-history-title">📋 Previous Orders for This Truck</div>
+                <div class="order-history-list" id="orderHistoryList"></div>
+            </div>
+
+            <div class="order-form" id="orderForm" style="display: none;">
+                <div class="form-group">
+                    <label>Service Controller *</label>
+                    <input type="text" id="serviceController" required>
+                </div>
+                <div class="form-group">
+                    <label>Works Order *</label>
+                    <input type="text" id="worksOrder" required>
+                </div>
+                <div class="form-group">
+                    <label>Machine Serial</label>
+                    <input type="text" id="machineSerial" oninput="loadOrderHistory()">
+                </div>
+                <div class="form-group">
+                    <label>Model</label>
+                    <select id="orderModel">
+                        <option value="">Select model</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Comments</label>
+                    <textarea id="comments" placeholder="Additional notes..."></textarea>
+                </div>
+                <button class="submit-order" id="submitBtn">Submit Order</button>
+            </div>
+
+            <div class="empty-state" id="emptyCart">
+                <div class="empty-state-icon">🛒</div>
+                <p>Your cart is empty</p>
+                <p style="font-size: 0.9em; margin-top: 8px;">Add parts to get started</p>
+            </div>
+        </div>
+
+        <!-- BULK IMPORT MODAL -->
+        <div class="modal-overlay" id="bulkImportModal">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>Bulk Import Parts</h2>
+                    <button class="modal-close" onclick="closeBulkImport()">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="bulk-import-instructions">
+                        <strong>Instructions:</strong> Paste part numbers below, one per line. The system will search and add matching parts to your cart.
+                    </div>
+                    <textarea class="bulk-import-textarea" id="bulkImportTextarea" placeholder="30071
+30073A
+30074
+3008262
+..."></textarea>
+                    <div class="bulk-import-results" id="bulkImportResults"></div>
+                    <div class="modal-actions">
+                        <button class="modal-btn modal-btn-secondary" onclick="closeBulkImport()">Cancel</button>
+                        <button class="modal-btn modal-btn-primary" onclick="processBulkImport()">Add to Cart</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1298,23 +1575,110 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzTdpdDuzrVg-WeUmbHy7YkvqoLGwJMk9H04TdjklZhWyRVM9OGZQb7mcjia1xy9Rex/exec';
+        
         let allParts = [];
         let filteredParts = [];
         let cart = [];
-        let systems = [];
         let models = [];
         let orders = [];
-        let hasSearched = false;
-        let currentOrderIndex = null;
-        let selectedStatus = null;
+        let currentUser = null;
+        let lastOrderCount = 0;
+        let notificationCheckInterval = null;
+        let frequentParts = [];
 
-        document.addEventListener('DOMContentLoaded', init);
+        // Check if user is already logged in
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedSession = localStorage.getItem('flexiSession');
+            if (savedSession) {
+                try {
+                    const session = JSON.parse(savedSession);
+                    if (session.username && session.timestamp) {
+                        // Check if session is less than 24 hours old
+                        const hoursSinceLogin = (Date.now() - session.timestamp) / (1000 * 60 * 60);
+                        if (hoursSinceLogin < 24) {
+                            currentUser = session;
+                            showApp();
+                            return;
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error parsing session:', e);
+                }
+            }
+            // No valid session, show login
+            document.getElementById('loginPage').style.display = 'flex';
+        });
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const loginBtn = document.getElementById('loginBtn');
+            const loginError = document.getElementById('loginError');
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Logging in...';
+            loginError.classList.remove('show');
+
+            try {
+                const response = await fetch(`${API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    currentUser = {
+                        username: data.user.username,
+                        name: data.user.name,
+                        role: data.user.role,
+                        timestamp: Date.now()
+                    };
+                    localStorage.setItem('flexiSession', JSON.stringify(currentUser));
+                    showApp();
+                } else {
+                    loginError.classList.add('show');
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = 'Login';
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                loginError.textContent = 'Connection error. Please try again.';
+                loginError.classList.add('show');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Login';
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('flexiSession');
+            localStorage.removeItem('flexiPartsCart');
+            if (notificationCheckInterval) {
+                clearInterval(notificationCheckInterval);
+            }
+            location.reload();
+        }
+
+        async function showApp() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('appContainer').classList.add('show');
+            document.getElementById('userName').textContent = currentUser.name || currentUser.username;
+            
+            await init();
+            
+            // Start notification polling
+            startNotificationPolling();
+            
+            // Request notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
 
         async function init() {
             setGreeting();
-            await loadMetadata();
             await loadParts();
             await loadOrders();
+            await loadFrequentParts();
+            populateModels();
             setupEventListeners();
             loadCartFromStorage();
             updateCart();
@@ -1348,24 +1712,9 @@
             document.getElementById('cartSection').classList.toggle('open');
         }
 
-        async function loadMetadata() {
-            try {
-                const response = await fetch(`${API_URL}?action=getSystemsAndModels`);
-                const data = await response.json();
-                if (data.success) {
-                    systems = data.systems;
-                    models = data.models;
-                    populateFilters();
-                }
-            } catch (error) {
-                console.error('Error loading metadata:', error);
-            }
-        }
-
-        function populateFilters() {
+        function populateModels() {
             const modelSelect = document.getElementById('orderModel');
 
-            // Flexi truck models
             const flexiModels = [
                 'Flexi G3',
                 'Flexi G4',
@@ -1387,19 +1736,6 @@
                 option.textContent = model;
                 modelSelect.appendChild(option);
             });
-
-            // Still populate from API if models are returned
-            if (models && models.length > 0) {
-                models.forEach(model => {
-                    // Only add if not already in the list
-                    if (!flexiModels.includes(model)) {
-                        const option = document.createElement('option');
-                        option.value = model;
-                        option.textContent = model;
-                        modelSelect.appendChild(option);
-                    }
-                });
-            }
         }
 
         async function loadParts() {
@@ -1410,7 +1746,6 @@
                     allParts = data.parts;
                     document.getElementById('totalPartsCount').textContent = allParts.length;
                     console.log(`✅ Loaded ${allParts.length} parts from API`);
-                    console.log('Sample part:', allParts[0]);
                 } else {
                     console.warn('No parts in API response, loading demo data');
                     loadDemoParts();
@@ -1423,24 +1758,13 @@
 
         function loadDemoParts() {
             allParts = [
-                { partNum: '2015.00.002', supplier: 'SUP-001', desc: 'Fork Pin Kit round head', qty: '', system: 'MAST', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '3004082B', supplier: 'SUP-002', desc: 'VNA back of mast pipe', qty: '', system: 'MAST', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30071', supplier: 'SUP-003', desc: 'Spacer (drive axle)', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30073A', supplier: 'SUP-004', desc: 'Wheel Helical', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30074', supplier: 'SUP-005', desc: 'Intermediate gear', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30075A', supplier: 'SUP-006', desc: 'Wheel Helical', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30077F', supplier: 'SUP-007', desc: 'Gear (Tailift axle)', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30078B', supplier: 'SUP-008', desc: 'Drive shaft short', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '30080', supplier: 'SUP-009', desc: 'Diff Spider (Tailift axle)', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '3008262', supplier: 'SUP-010', desc: 'Busbar', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: '3008267', supplier: 'SUP-011', desc: 'Spacer', qty: '', system: 'CHASSIS', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: 'E3805026', supplier: 'SUP-012', desc: 'Fan', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: 'M0601022', supplier: 'SUP-013', desc: 'Connector', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: 'M0601023', supplier: 'SUP-014', desc: 'Male Connector', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
-                { partNum: 'M1422002', supplier: 'SUP-015', desc: 'Cap head screw', qty: '', system: 'CHASSIS', models: '', stockLevel: '', location: '', notes: '' }
+                { partNum: '2015.00.002', supplier: 'SUP-001', desc: 'Fork Pin Kit round head', system: 'MAST' },
+                { partNum: '3004082B', supplier: 'SUP-002', desc: 'VNA back of mast pipe', system: 'MAST' },
+                { partNum: '30071', supplier: 'SUP-003', desc: 'Spacer (drive axle)', system: 'TRANSMISSION' },
+                { partNum: '30073A', supplier: 'SUP-004', desc: 'Wheel Helical', system: 'TRANSMISSION' },
+                { partNum: '30074', supplier: 'SUP-005', desc: 'Intermediate gear', system: 'TRANSMISSION' }
             ];
             document.getElementById('totalPartsCount').textContent = allParts.length;
-            console.log('Using demo parts data - connect Google Sheets for full catalog');
         }
 
         async function loadOrders() {
@@ -1449,90 +1773,48 @@
                 const data = await response.json();
                 if (data.success && data.orders) {
                     orders = data.orders;
+                    lastOrderCount = orders.length;
                     updateOrderStats();
                 }
             } catch (error) {
                 console.error('Error loading orders:', error);
-                // Mock data for demo
-                orders = [
-                    {
-                        orderNumber: 'FLX-2024-001-001',
-                        date: '2024-02-05 09:30',
-                        engineer: 'John Smith',
-                        worksOrder: 'WO-12345',
-                        machineSerial: 'FLX-2024-001',
-                        model: 'FLEXI 20S/1200',
-                        parts: [
-                            { partNum: '30071', desc: 'Spacer (drive axle)', qty: 2 },
-                            { partNum: '30073A', desc: 'Wheel Helical', qty: 1 },
-                            { partNum: '30074', desc: 'Intermediate gear', qty: 3 }
-                        ],
-                        partsCount: 3,
-                        status: 'Pending',
-                        notes: 'Urgent repair needed'
-                    },
-                    {
-                        orderNumber: 'FLX-2023-089-001',
-                        date: '2024-02-04 14:15',
-                        engineer: 'Sarah Jones',
-                        worksOrder: 'WO-12344',
-                        machineSerial: 'FLX-2023-089',
-                        model: 'FLEXI 17N/1000',
-                        parts: [
-                            { partNum: '2015.00.002', desc: 'Fork Pin Kit round head', qty: 1 },
-                            { partNum: '30078B', desc: 'Drive shaft short', qty: 2 }
-                        ],
-                        partsCount: 2,
-                        status: 'Completed',
-                        notes: 'All parts fitted successfully'
-                    },
-                    {
-                        orderNumber: 'FLX-2024-012-001',
-                        date: '2024-02-03 11:45',
-                        engineer: 'Mike Wilson',
-                        worksOrder: 'WO-12343',
-                        machineSerial: 'FLX-2024-012',
-                        model: 'FLEXI 25W+/1350',
-                        parts: [
-                            { partNum: '3004082B', desc: 'VNA back of mast pipe', qty: 1 },
-                            { partNum: '30075A', desc: 'Wheel Helical', qty: 4 },
-                            { partNum: '30077F', desc: 'Gear (Tailift axle)', qty: 2 }
-                        ],
-                        partsCount: 3,
-                        status: 'Pending',
-                        notes: ''
-                    },
-                    {
-                        orderNumber: 'FLX-2023-156-001',
-                        date: '2024-02-02 16:20',
-                        engineer: 'Emma Davis',
-                        worksOrder: 'WO-12342',
-                        machineSerial: 'FLX-2023-156',
-                        model: 'FLEXI 22S+/1250',
-                        parts: [
-                            { partNum: '30080', desc: 'Diff Spider (Tailift axle)', qty: 1 }
-                        ],
-                        partsCount: 1,
-                        status: 'Cancelled',
-                        notes: 'Customer cancelled order - part no longer needed'
-                    },
-                    {
-                        orderNumber: 'FLX-2024-001-002',
-                        date: '2024-02-01 10:15',
-                        engineer: 'John Smith',
-                        worksOrder: 'WO-12341',
-                        machineSerial: 'FLX-2024-001',
-                        model: 'FLEXI 20S/1200',
-                        parts: [
-                            { partNum: '30073A', desc: 'Wheel Helical', qty: 2 }
-                        ],
-                        partsCount: 1,
-                        status: 'Completed',
-                        notes: 'Second order for same truck - follow-up repair'
-                    }
-                ];
+                orders = [];
                 updateOrderStats();
             }
+        }
+
+        async function loadFrequentParts() {
+            try {
+                const response = await fetch(`${API_URL}?action=getFrequentParts&limit=10`);
+                const data = await response.json();
+                if (data.success && data.parts && data.parts.length > 0) {
+                    frequentParts = data.parts;
+                    renderFrequentParts();
+                }
+            } catch (error) {
+                console.error('Error loading frequent parts:', error);
+            }
+        }
+
+        function renderFrequentParts() {
+            if (frequentParts.length === 0) return;
+
+            const widget = document.getElementById('frequentPartsWidget');
+            const grid = document.getElementById('frequentPartsGrid');
+            
+            widget.style.display = 'block';
+            
+            grid.innerHTML = frequentParts.map(item => `
+                <div class="frequent-part-item" onclick='quickAddPart(${JSON.stringify(item.part).replace(/'/g, "&#39;")})'>
+                    <div class="frequent-part-num">${item.part.partNum || item.part.partNumber}</div>
+                    <div class="frequent-part-desc">${item.part.desc || item.part.description || 'No description'}</div>
+                    <div class="frequent-part-count">Ordered ${item.count} times</div>
+                </div>
+            `).join('');
+        }
+
+        function quickAddPart(part) {
+            addToCart(part);
         }
 
         function updateOrderStats() {
@@ -1558,129 +1840,28 @@
             }
 
             tbody.innerHTML = orders.map((order, index) => `
-                <tr onclick="openEditModal(${index})">
-                    <td><span class="order-number">${order.orderNumber || order.orderNum || 'ORD-' + (index + 1)}</span></td>
+                <tr>
+                    <td><span class="order-number">${order.orderNumber || 'ORD-' + (index + 1)}</span></td>
                     <td>${order.date || order.orderDate || 'N/A'}</td>
-                    <td>${order.engineer || order.engineerName || 'N/A'}</td>
+                    <td>${order.serviceController || order.engineer || 'N/A'}</td>
                     <td>${order.worksOrder || 'N/A'}</td>
-                    <td>${order.partsCount || order.totalParts || (order.parts ? order.parts.length : 0)} parts</td>
+                    <td>${order.partsCount || (order.parts ? order.parts.length : 0)} parts</td>
                     <td><span class="order-status status-${(order.status || 'pending').toLowerCase()}">${order.status || 'Pending'}</span></td>
                 </tr>
             `).join('');
         }
 
-        function openEditModal(index) {
-            currentOrderIndex = index;
-            const order = orders[index];
-            
-            document.getElementById('modalOrderNumber').textContent = order.orderNumber || order.orderNum || 'ORD-' + (index + 1);
-            document.getElementById('modalOrderDate').textContent = order.date || order.orderDate || 'N/A';
-            document.getElementById('modalEngineer').textContent = order.engineer || order.engineerName || 'N/A';
-            document.getElementById('modalWorksOrder').textContent = order.worksOrder || 'N/A';
-            document.getElementById('modalMachineSerial').textContent = order.machineSerial || 'N/A';
-            document.getElementById('modalModel').textContent = order.model || 'N/A';
-            
-            const partsList = document.getElementById('modalPartsList');
-            if (order.parts && order.parts.length > 0) {
-                partsList.innerHTML = order.parts.map(part => `
-                    <div class="parts-list-item">
-                        <span class="part-item-name">${part.partNum || part.partNumber} - ${part.desc || part.description || 'No description'}</span>
-                        <span class="part-item-qty">×${part.qty || part.quantity || 1}</span>
-                    </div>
-                `).join('');
-            } else {
-                partsList.innerHTML = '<div style="text-align: center; color: #666; padding: 10px;">No parts information</div>';
-            }
-            
-            selectedStatus = order.status || 'Pending';
-            selectStatus(selectedStatus);
-            
-            document.getElementById('modalNotes').value = order.notes || order.comments || '';
-            
-            document.getElementById('editOrderModal').classList.add('active');
-        }
-
-        function closeEditModal() {
-            document.getElementById('editOrderModal').classList.remove('active');
-            currentOrderIndex = null;
-            selectedStatus = null;
-        }
-
-        function selectStatus(status) {
-            selectedStatus = status;
-            
-            document.querySelectorAll('.status-option').forEach(option => {
-                option.classList.remove('selected');
-            });
-            
-            const options = {
-                'Pending': 0,
-                'Completed': 1,
-                'Cancelled': 2
-            };
-            
-            document.querySelectorAll('.status-option')[options[status]].classList.add('selected');
-        }
-
-        async function saveOrderChanges() {
-            if (currentOrderIndex === null) return;
-            
-            const order = orders[currentOrderIndex];
-            const notes = document.getElementById('modalNotes').value;
-            
-            order.status = selectedStatus;
-            order.notes = notes;
-            
-            try {
-                const updateData = {
-                    action: 'updateOrder',
-                    orderNumber: order.orderNumber || order.orderNum,
-                    status: selectedStatus,
-                    notes: notes
-                };
-                
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(updateData)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    showToast('Order updated successfully!');
-                } else {
-                    showToast('Order updated locally (API update pending)');
-                }
-            } catch (error) {
-                console.error('Error updating order:', error);
-                showToast('Order updated locally (offline mode)');
-            }
-            
-            updateOrderStats();
-            renderOrders();
-            closeEditModal();
-        }
-
-        document.addEventListener('click', function(e) {
-            const modal = document.getElementById('editOrderModal');
-            if (e.target === modal) {
-                closeEditModal();
-            }
-        });
-
         function setupEventListeners() {
             document.getElementById('searchInput').addEventListener('input', filterParts);
             document.getElementById('submitBtn').addEventListener('click', submitOrder);
+            document.getElementById('machineSerial').addEventListener('input', loadOrderHistory);
         }
 
         function filterParts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsHeader = document.getElementById('resultsHeader');
             
-            console.log('🔍 Search triggered with term:', searchTerm);
-            
             if (!searchTerm) {
-                hasSearched = false;
                 resultsHeader.style.display = 'none';
                 document.getElementById('resultsContainer').innerHTML = `
                     <div class="search-prompt">
@@ -1693,57 +1874,35 @@
                 return;
             }
 
-            // Show searching indicator
-            hasSearched = true;
             resultsHeader.style.display = 'block';
             document.getElementById('resultsCount').textContent = 'Searching...';
-            
-            console.log(`⏳ Searching ${allParts.length} parts for: "${searchTerm}"`);
 
-            // Search immediately - no debounce
             try {
-                const startTime = performance.now();
-                
-                // Remove spaces and special chars for flexible matching
                 const cleanSearchTerm = searchTerm.replace(/[\s\-\.]/g, '');
                 
                 filteredParts = allParts.filter(part => {
-                    // Safety checks - convert to string first, then toLowerCase
-                    const partNum = String(part.partNum || part.partNumber || part.part_num || '').toLowerCase();
+                    const partNum = String(part.partNum || part.partNumber || '').toLowerCase();
                     const desc = String(part.desc || part.description || '').toLowerCase();
                     const supplier = String(part.supplier || '').toLowerCase();
                     const system = String(part.system || '').toLowerCase();
                     
-                    // Create cleaned version for flexible matching
                     const partNumClean = partNum.replace(/[\s\-\.]/g, '');
                     
-                    // Match either exact substring or cleaned version
-                    const matches = partNumClean.includes(cleanSearchTerm) ||
+                    return partNumClean.includes(cleanSearchTerm) ||
                            partNum.includes(searchTerm) ||
                            desc.includes(searchTerm) ||
                            supplier.includes(searchTerm) ||
                            system.includes(searchTerm);
-                    
-                    return matches;
                 });
-                
-                const endTime = performance.now();
-                console.log(`✅ Search completed in ${(endTime - startTime).toFixed(2)}ms`);
-                console.log(`📊 Found ${filteredParts.length} matching parts`);
-                
-                if (filteredParts.length > 0) {
-                    console.log('First 3 matches:', filteredParts.slice(0, 3).map(p => p.partNum || p.partNumber));
-                }
 
                 renderParts();
             } catch (error) {
-                console.error('❌ Search error:', error);
-                document.getElementById('resultsCount').textContent = 'Search error - check console';
+                console.error('Search error:', error);
+                document.getElementById('resultsCount').textContent = 'Search error';
             }
         }
 
         function renderParts() {
-            console.log('🎨 Rendering parts...');
             const container = document.getElementById('resultsContainer');
             const resultCount = filteredParts.length;
             
@@ -1751,25 +1910,20 @@
             document.getElementById('filteredCount').textContent = resultCount;
 
             if (resultCount === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p><p style="font-size: 0.9em; margin-top: 8px;">Try a different search term</p></div>';
-                console.log('❌ No results to display');
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';
                 return;
             }
 
-            // Limit initial display to 100 parts for performance
             const displayLimit = 100;
             const partsToShow = filteredParts.slice(0, displayLimit);
             const hasMore = resultCount > displayLimit;
-            
-            console.log(`📦 Displaying ${partsToShow.length} of ${resultCount} parts`);
 
-            const startRender = performance.now();
             container.innerHTML = partsToShow.map(part => {
-                const partNumber = part.partNum || part.partNumber || part.part_num || 'N/A';
+                const partNumber = part.partNum || part.partNumber || 'N/A';
                 return `
                 <div class="part-card">
                     <div class="part-number">${partNumber}</div>
-                    <div class="part-desc">${part.desc || part.description || 'No description available'}</div>
+                    <div class="part-desc">${part.desc || part.description || 'No description'}</div>
                     <div class="part-details">
                         ${part.supplier ? `<div class="part-detail">
                             <span class="part-detail-label">Supplier</span>
@@ -1779,21 +1933,13 @@
                             <span class="part-detail-label">System</span>
                             <span class="part-detail-value">${part.system}</span>
                         </div>` : ''}
-                        ${part.stockLevel ? `<div class="part-detail">
-                            <span class="part-detail-label">Stock</span>
-                            <span class="part-detail-value">${part.stockLevel}</span>
-                        </div>` : ''}
                     </div>
                     <button class="add-to-cart" onclick='addToCart(${JSON.stringify(part).replace(/'/g, "&#39;")})'>
                         Add to Cart
                     </button>
                 </div>
             `}).join('');
-            
-            const endRender = performance.now();
-            console.log(`✅ Rendered in ${(endRender - startRender).toFixed(2)}ms`);
 
-            // Add "show more" message if needed
             if (hasMore) {
                 const showMoreDiv = document.createElement('div');
                 showMoreDiv.style.gridColumn = '1 / -1';
@@ -1809,7 +1955,7 @@
         }
 
         function addToCart(part) {
-            const existing = cart.find(item => item.partNum === part.partNum);
+            const existing = cart.find(item => (item.partNum || item.partNumber) === (part.partNum || part.partNumber));
             if (existing) {
                 existing.qty++;
             } else {
@@ -1817,7 +1963,7 @@
             }
             updateCart();
             saveCartToStorage();
-            showToast(`${part.partNum} added to cart`);
+            showToast(`${part.partNum || part.partNumber} added to cart`);
         }
 
         function updateCart() {
@@ -1843,10 +1989,10 @@
             cartItems.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
                     <div class="cart-item-header">
-                        <div class="cart-item-number">${item.partNum}</div>
+                        <div class="cart-item-number">${item.partNum || item.partNumber}</div>
                         <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
                     </div>
-                    <div class="cart-item-desc">${item.desc || 'No description'}</div>
+                    <div class="cart-item-desc">${item.desc || item.description || 'No description'}</div>
                     <div class="qty-control">
                         <button class="qty-btn" onclick="updateQty(${index}, -1)">−</button>
                         <input type="number" class="qty-input" value="${item.qty}" 
@@ -1875,11 +2021,61 @@
             saveCartToStorage();
         }
 
+        function loadOrderHistory() {
+            const machineSerial = document.getElementById('machineSerial').value.trim();
+            const historySection = document.getElementById('orderHistorySection');
+            const historyList = document.getElementById('orderHistoryList');
+
+            if (!machineSerial) {
+                historySection.style.display = 'none';
+                return;
+            }
+
+            const machineOrders = orders.filter(o => 
+                (o.machineSerial || '').toLowerCase() === machineSerial.toLowerCase()
+            );
+
+            if (machineOrders.length === 0) {
+                historySection.style.display = 'none';
+                return;
+            }
+
+            historySection.style.display = 'block';
+            historyList.innerHTML = machineOrders.slice(0, 5).map(order => `
+                <div class="order-history-item" onclick='loadOrderParts(${JSON.stringify(order.parts).replace(/'/g, "&#39;")})'>
+                    <div class="order-history-item-header">
+                        <div class="order-history-number">${order.orderNumber}</div>
+                        <div class="order-history-date">${order.date || 'N/A'}</div>
+                    </div>
+                    <div class="order-history-parts">${order.partsCount || 0} parts</div>
+                </div>
+            `).join('');
+        }
+
+        function loadOrderParts(parts) {
+            if (!parts || parts.length === 0) return;
+            
+            let addedCount = 0;
+            parts.forEach(part => {
+                const existing = cart.find(item => (item.partNum || item.partNumber) === (part.partNum || part.partNumber));
+                if (existing) {
+                    existing.qty += (part.qty || 1);
+                } else {
+                    cart.push({ ...part, qty: part.qty || 1 });
+                }
+                addedCount++;
+            });
+
+            updateCart();
+            saveCartToStorage();
+            showToast(`${addedCount} parts added from previous order`);
+        }
+
         async function submitOrder() {
-            const engineerName = document.getElementById('engineerName').value.trim();
+            const serviceController = document.getElementById('serviceController').value.trim();
             const worksOrder = document.getElementById('worksOrder').value.trim();
 
-            if (!engineerName || !worksOrder) {
+            if (!serviceController || !worksOrder) {
                 showToast('Please fill required fields');
                 return;
             }
@@ -1898,12 +2094,13 @@
             const orderData = {
                 action: 'submitOrder',
                 orderNumber: orderNumber,
-                engineerName,
-                worksOrder,
+                serviceController: serviceController,
+                worksOrder: worksOrder,
                 machineSerial: machineSerial,
                 model: document.getElementById('orderModel').value,
                 comments: document.getElementById('comments').value,
-                parts: cart
+                parts: cart,
+                submittedBy: currentUser.username
             };
 
             const submitBtn = document.getElementById('submitBtn');
@@ -1921,12 +2118,10 @@
                 if (result.success) {
                     showToast('Order submitted successfully!');
                     
-                    // Add to local orders
                     orders.unshift({
                         orderNumber: orderNumber,
                         date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-                        engineer: engineerName,
-                        engineerName: engineerName,
+                        serviceController: serviceController,
                         worksOrder: worksOrder,
                         machineSerial: machineSerial,
                         model: orderData.model,
@@ -1956,11 +2151,12 @@
         }
 
         function clearForm() {
-            document.getElementById('engineerName').value = '';
+            document.getElementById('serviceController').value = '';
             document.getElementById('worksOrder').value = '';
             document.getElementById('machineSerial').value = '';
             document.getElementById('orderModel').value = '';
             document.getElementById('comments').value = '';
+            document.getElementById('orderHistorySection').style.display = 'none';
         }
 
         function saveCartToStorage() {
@@ -1981,6 +2177,143 @@
             document.body.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
+
+        // Bulk Import Functions
+        function openBulkImport() {
+            document.getElementById('bulkImportModal').classList.add('active');
+            document.getElementById('bulkImportTextarea').value = '';
+            document.getElementById('bulkImportResults').classList.remove('show');
+        }
+
+        function closeBulkImport() {
+            document.getElementById('bulkImportModal').classList.remove('active');
+        }
+
+        function processBulkImport() {
+            const textarea = document.getElementById('bulkImportTextarea');
+            const results = document.getElementById('bulkImportResults');
+            const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+
+            if (lines.length === 0) {
+                results.innerHTML = '<p style="color: #f87171;">No part numbers entered</p>';
+                results.classList.add('show');
+                return;
+            }
+
+            let found = 0;
+            let notFound = [];
+
+            lines.forEach(partNum => {
+                const cleanPartNum = partNum.replace(/[\s\-\.]/g, '').toLowerCase();
+                const part = allParts.find(p => {
+                    const pNum = String(p.partNum || p.partNumber || '').toLowerCase().replace(/[\s\-\.]/g, '');
+                    return pNum === cleanPartNum || String(p.partNum || p.partNumber || '').toLowerCase() === partNum.toLowerCase();
+                });
+
+                if (part) {
+                    addToCart(part);
+                    found++;
+                } else {
+                    notFound.push(partNum);
+                }
+            });
+
+            let resultHTML = `<p style="color: #4ade80; margin-bottom: 10px;">✓ Added ${found} parts to cart</p>`;
+            if (notFound.length > 0) {
+                resultHTML += `<p style="color: #facc15; margin-bottom: 5px;">⚠ Not found: ${notFound.length} parts</p>`;
+                resultHTML += `<p style="color: #666; font-size: 0.85em;">${notFound.join(', ')}</p>`;
+            }
+
+            results.innerHTML = resultHTML;
+            results.classList.add('show');
+
+            if (found > 0) {
+                setTimeout(() => {
+                    closeBulkImport();
+                    showToast(`Bulk import: ${found} parts added`);
+                }, 2000);
+            }
+        }
+
+        // Real-time Notification Polling
+        function startNotificationPolling() {
+            // Check for new orders every 30 seconds
+            notificationCheckInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${API_URL}?action=getOrders`);
+                    const data = await response.json();
+                    
+                    if (data.success && data.orders) {
+                        const newOrderCount = data.orders.length;
+                        
+                        if (newOrderCount > lastOrderCount) {
+                            const newOrders = data.orders.slice(0, newOrderCount - lastOrderCount);
+                            
+                            // Update orders
+                            orders = data.orders;
+                            updateOrderStats();
+                            
+                            // Show notification for each new order
+                            newOrders.forEach(order => {
+                                showBrowserNotification(order);
+                            });
+                            
+                            // Update badge
+                            const badge = document.getElementById('notificationBadge');
+                            badge.textContent = newOrderCount - lastOrderCount;
+                            badge.style.display = 'flex';
+                            
+                            setTimeout(() => {
+                                badge.style.display = 'none';
+                            }, 10000);
+                        }
+                        
+                        lastOrderCount = newOrderCount;
+                    }
+                } catch (error) {
+                    console.error('Error checking for new orders:', error);
+                }
+            }, 30000); // 30 seconds
+        }
+
+        function showBrowserNotification(order) {
+            // In-app notification
+            const notification = document.createElement('div');
+            notification.className = 'browser-notification';
+            notification.innerHTML = `
+                <div class="browser-notification-title">🔔 New Order Received</div>
+                <div class="browser-notification-body">
+                    <strong>${order.orderNumber}</strong><br>
+                    From: ${order.serviceController || order.engineer}<br>
+                    Parts: ${order.partsCount || 0}
+                </div>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => notification.remove(), 10000);
+
+            // Browser notification if permission granted
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('New Parts Order', {
+                    body: `${order.orderNumber} - ${order.partsCount || 0} parts from ${order.serviceController || order.engineer}`,
+                    icon: 'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg',
+                    tag: order.orderNumber
+                });
+            }
+
+            // Play sound
+            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUKrj7rhdGwU7ldbxzXwtBXJBkKfj7bNiHAU7k9XzzYIsBS58zfLdijYKFWO36+6YTg0MUKni7r5dGwU7mNTyz4UtBSJ6yPDij0ELE1+25+2jWBELRqHe77BiHQU6ktPy0YYtBSR8yO/dkD8JHWK06OyYUAwOS6Xi7rtcHwU8l9XzzYQuBSJ6yPDh kUEKEVy16+6kWBAKRKHe7rdaHAU6ktPy0YUsBSR7yPDejj8II1606eukVRELRqHe7bBaHQU4ktPy0YUsBSV6yPDdjT4JH1y16e2kUQ8LRqDd7bBZHAU4ktPy0YUtBSV7yPDdjD4JH1216eyjUQ8LRp/c7a9ZGwU3ktLx0IQrBSZ4yPDejj8II1y16+ylURAJRp/d77BaHAU5ktLy0YUsBSZ5yPDejj8IH1y16+ykUQ8KRqDd7rBaHAU4ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/d');
+            audio.volume = 0.3;
+            audio.play().catch(() => {}); // Ignore if autoplay blocked
+        }
+
+        // Close modal on outside click
+        document.addEventListener('click', function(e) {
+            const bulkModal = document.getElementById('bulkImportModal');
+            if (e.target === bulkModal) {
+                closeBulkImport();
+            }
+        });
     </script>
 </body>
 </html>
