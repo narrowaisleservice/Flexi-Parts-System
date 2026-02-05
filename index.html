@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flexi Orders Dashboard</title>
+    <title>Flexi Parts Order System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -95,6 +95,15 @@
             color: white;
         }
 
+        /* Page Sections */
+        .page-section {
+            display: none;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
         /* Stats */
         .stats-bar {
             display: grid;
@@ -133,6 +142,504 @@
             letter-spacing: 1.5px;
         }
 
+        /* Search Section */
+        .search-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px 50px 18px 20px;
+            font-size: 1.1em;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background: #000;
+        }
+
+        .search-box input::placeholder {
+            color: #666;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .results-header {
+            margin: 30px 0 20px;
+            padding: 16px 20px;
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 3px solid var(--primary-red);
+            border-radius: 8px;
+        }
+
+        .results-count {
+            font-size: 1.2em;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Parts Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .part-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .part-card:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+            transform: translateY(-2px);
+        }
+
+        .part-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .part-desc {
+            font-size: 1.05em;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            min-height: 40px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .part-details {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .part-detail {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+
+        .part-detail-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85em;
+        }
+
+        .part-detail-value {
+            color: white;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.05em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .add-to-cart:hover {
+            background: #ef4444;
+            transform: translateY(-1px);
+        }
+
+        .add-to-cart:active {
+            transform: translateY(0);
+        }
+
+        /* Cart Button */
+        .cart-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 64px;
+            height: 64px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .cart-toggle:hover {
+            transform: scale(1.1);
+            background: #ef4444;
+            box-shadow: 0 6px 30px rgba(220, 38, 38, 0.6);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: white;
+            color: var(--primary-red);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.45em;
+            font-weight: 800;
+        }
+
+        /* Cart Panel */
+        .cart-section {
+            position: fixed;
+            right: -480px;
+            top: 0;
+            width: 480px;
+            height: 100vh;
+            background: var(--dark-bg);
+            border-left: 1px solid var(--border);
+            padding: 30px;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: right 0.3s ease;
+        }
+
+        .cart-section.open {
+            right: 0;
+        }
+
+        .cart-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+
+        .cart-close:hover {
+            background: var(--hover-bg);
+            color: white;
+            border-color: var(--primary-red);
+        }
+
+        .cart-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-header h2 {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .cart-subtitle {
+            font-size: 1em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-number {
+            font-weight: 900;
+            color: var(--primary-red);
+            font-size: 1.4em;
+            letter-spacing: -0.5px;
+        }
+
+        .remove-item {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: #999;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .remove-item:hover {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        .cart-item-desc {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-btn {
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+        }
+
+        .qty-input {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .order-form {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background: var(--dark-bg);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-order {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-order:hover {
+            background: #ef4444;
+        }
+
+        .submit-order:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary-red);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+            z-index: 2000;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .search-prompt {
+            text-align: center;
+            padding: 80px 40px;
+            color: var(--text-secondary);
+        }
+
+        .search-prompt-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+
+        .search-prompt-title {
+            font-size: 1.8em;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .search-prompt-text {
+            font-size: 1.1em;
+            font-weight: 500;
+        }
+
+        /* Orders Table */
         .orders-table-container {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -478,30 +985,9 @@
             background: var(--hover-bg);
         }
 
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--primary-red);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 8px;
-            animation: slideIn 0.3s ease;
-            z-index: 2000;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
+        @media (max-width: 1200px) {
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             }
         }
 
@@ -518,6 +1004,15 @@
 
             .header h1 {
                 font-size: 2em;
+            }
+
+            .cart-section {
+                width: 100%;
+                right: -100%;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
             }
 
             .stats-bar {
@@ -561,50 +1056,157 @@
     </style>
 </head>
 <body>
+    <div class="cart-toggle" id="cartToggle" onclick="toggleCart()">
+        🛒
+        <div class="cart-badge" id="cartBadge">0</div>
+    </div>
+
     <div class="container">
-        <div class="header">
-            <div class="header-content">
-                <h1>ORDERS DASHBOARD</h1>
-                <p class="header-subtitle">FLEXI PARTS ORDER MANAGEMENT</p>
+        <!-- PARTS ORDERING PAGE -->
+        <div class="page-section active" id="partsPage">
+            <div class="header">
+                <div class="header-content">
+                    <h1 id="greeting">GOOD MORNING</h1>
+                    <p class="header-subtitle">FLEXI PARTS ORDERING SYSTEM</p>
+                </div>
+                <button class="nav-link" onclick="showPage('orders')">View Orders</button>
             </div>
-            <a href="flexi-parts-order.html" class="nav-link">← Back to Parts</a>
+
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPartsCount">0</div>
+                    <div class="stat-label">Total Parts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="filteredCount">0</div>
+                    <div class="stat-label">Results</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="cartItemsCount">0</div>
+                    <div class="stat-label">In Cart</div>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..."
+                        autocomplete="off"
+                    >
+                    <span class="search-icon">🔍</span>
+                </div>
+
+                <div class="results-header" id="resultsHeader" style="display: none;">
+                    <div class="results-count" id="resultsCount">Loading parts...</div>
+                </div>
+            </div>
+
+            <div id="resultsContainer" class="results-grid">
+                <div class="search-prompt">
+                    <div class="search-prompt-icon">🔍</div>
+                    <div class="search-prompt-title">Start Searching</div>
+                    <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
+                </div>
+            </div>
         </div>
 
-        <div class="stats-bar">
-            <div class="stat-card">
-                <div class="stat-value" id="totalOrders">0</div>
-                <div class="stat-label">Total Orders</div>
+        <!-- ORDERS DASHBOARD PAGE -->
+        <div class="page-section" id="ordersPage">
+            <div class="header">
+                <div class="header-content">
+                    <h1>ORDERS DASHBOARD</h1>
+                    <p class="header-subtitle">FLEXI PARTS ORDER MANAGEMENT</p>
+                </div>
+                <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="pendingOrders">0</div>
-                <div class="stat-label">Pending</div>
+
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pendingOrders">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="completedOrders">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-value" id="completedOrders">0</div>
-                <div class="stat-label">Completed</div>
+
+            <div class="orders-table-container">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Engineer</th>
+                            <th>Works Order</th>
+                            <th>Parts</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
+                                Loading orders...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div>
 
-        <div class="orders-table-container">
-            <table class="orders-table">
-                <thead>
-                    <tr>
-                        <th>Order #</th>
-                        <th>Date</th>
-                        <th>Engineer</th>
-                        <th>Works Order</th>
-                        <th>Parts</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="ordersTableBody">
-                    <tr>
-                        <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
-                            Loading orders...
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="cart-section" id="cartSection">
+        <div class="cart-close" onclick="toggleCart()">✕</div>
+        
+        <div class="cart-header">
+            <h2>Order Cart</h2>
+            <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
+        </div>
+
+        <div id="cartItems" class="cart-items"></div>
+
+        <div class="order-form" id="orderForm" style="display: none;">
+            <div class="form-group">
+                <label>Engineer Name *</label>
+                <input type="text" id="engineerName" required>
+            </div>
+            <div class="form-group">
+                <label>Works Order *</label>
+                <input type="text" id="worksOrder" required>
+            </div>
+            <div class="form-group">
+                <label>Machine Serial</label>
+                <input type="text" id="machineSerial">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <select id="orderModel">
+                    <option value="">Select model</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>System</label>
+                <select id="orderSystem">
+                    <option value="">Select system</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Comments</label>
+                <textarea id="comments" placeholder="Additional notes..."></textarea>
+            </div>
+            <button class="submit-order" id="submitBtn">Submit Order</button>
+        </div>
+
+        <div class="empty-state" id="emptyCart">
+            <div class="empty-state-icon">🛒</div>
+            <p>Your cart is empty</p>
+            <p style="font-size: 0.9em; margin-top: 8px;">Add parts to get started</p>
         </div>
     </div>
 
@@ -683,15 +1285,129 @@
 
     <script>
         const API_URL = 'https://script.google.com/macros/s/AKfycbzTdpdDuzrVg-WeUmbHy7YkvqoLGwJMk9H04TdjklZhWyRVM9OGZQb7mcjia1xy9Rex/exec';
+        let allParts = [];
+        let filteredParts = [];
+        let cart = [];
+        let systems = [];
+        let models = [];
         let orders = [];
+        let hasSearched = false;
         let currentOrderIndex = null;
         let selectedStatus = null;
 
         document.addEventListener('DOMContentLoaded', init);
 
         async function init() {
+            setGreeting();
+            await loadMetadata();
+            await loadParts();
             await loadOrders();
-            renderOrders();
+            setupEventListeners();
+            loadCartFromStorage();
+            updateCart();
+        }
+
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'GOOD EVENING';
+            
+            if (hour < 12) {
+                greeting = 'GOOD MORNING';
+            } else if (hour < 18) {
+                greeting = 'GOOD AFTERNOON';
+            }
+            
+            document.getElementById('greeting').textContent = greeting;
+        }
+
+        function showPage(page) {
+            if (page === 'parts') {
+                document.getElementById('partsPage').classList.add('active');
+                document.getElementById('ordersPage').classList.remove('active');
+            } else if (page === 'orders') {
+                document.getElementById('partsPage').classList.remove('active');
+                document.getElementById('ordersPage').classList.add('active');
+                renderOrders();
+            }
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSection').classList.toggle('open');
+        }
+
+        async function loadMetadata() {
+            try {
+                const response = await fetch(`${API_URL}?action=getSystemsAndModels`);
+                const data = await response.json();
+                if (data.success) {
+                    systems = data.systems;
+                    models = data.models;
+                    populateFilters();
+                }
+            } catch (error) {
+                console.error('Error loading metadata:', error);
+            }
+        }
+
+        function populateFilters() {
+            const modelSelect = document.getElementById('orderModel');
+            const systemSelect = document.getElementById('orderSystem');
+
+            if (models && models.length > 0) {
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+            }
+
+            if (systems && systems.length > 0) {
+                systems.forEach(system => {
+                    const option = document.createElement('option');
+                    option.value = system;
+                    option.textContent = system;
+                    systemSelect.appendChild(option);
+                });
+            }
+        }
+
+        async function loadParts() {
+            try {
+                const response = await fetch(`${API_URL}?action=getAllParts`);
+                const data = await response.json();
+                if (data.success && data.parts && data.parts.length > 0) {
+                    allParts = data.parts;
+                    document.getElementById('totalPartsCount').textContent = allParts.length;
+                } else {
+                    loadDemoParts();
+                }
+            } catch (error) {
+                console.error('Error loading parts:', error);
+                loadDemoParts();
+            }
+        }
+
+        function loadDemoParts() {
+            allParts = [
+                { partNum: '2015.00.002', supplier: 'SUP-001', desc: 'Fork Pin Kit round head', qty: '', system: 'MAST', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '3004082B', supplier: 'SUP-002', desc: 'VNA back of mast pipe', qty: '', system: 'MAST', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30071', supplier: 'SUP-003', desc: 'Spacer (drive axle)', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30073A', supplier: 'SUP-004', desc: 'Wheel Helical', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30074', supplier: 'SUP-005', desc: 'Intermediate gear', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30075A', supplier: 'SUP-006', desc: 'Wheel Helical', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30077F', supplier: 'SUP-007', desc: 'Gear (Tailift axle)', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30078B', supplier: 'SUP-008', desc: 'Drive shaft short', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '30080', supplier: 'SUP-009', desc: 'Diff Spider (Tailift axle)', qty: '', system: 'TRANSMISSION', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '3008262', supplier: 'SUP-010', desc: 'Busbar', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: '3008267', supplier: 'SUP-011', desc: 'Spacer', qty: '', system: 'CHASSIS', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: 'E3805026', supplier: 'SUP-012', desc: 'Fan', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: 'M0601022', supplier: 'SUP-013', desc: 'Connector', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: 'M0601023', supplier: 'SUP-014', desc: 'Male Connector', qty: '', system: 'CONTROL', models: '', stockLevel: '', location: '', notes: '' },
+                { partNum: 'M1422002', supplier: 'SUP-015', desc: 'Cap head screw', qty: '', system: 'CHASSIS', models: '', stockLevel: '', location: '', notes: '' }
+            ];
+            document.getElementById('totalPartsCount').textContent = allParts.length;
+            console.log('Using demo parts data - connect Google Sheets for full catalog');
         }
 
         async function loadOrders() {
@@ -704,7 +1420,7 @@
                 }
             } catch (error) {
                 console.error('Error loading orders:', error);
-                // Mock data for demo if API fails
+                // Mock data for demo
                 orders = [
                     {
                         orderNumber: 'FLX-2024-001-001',
@@ -824,7 +1540,6 @@
             currentOrderIndex = index;
             const order = orders[index];
             
-            // Populate order info
             document.getElementById('modalOrderNumber').textContent = order.orderNumber || order.orderNum || 'ORD-' + (index + 1);
             document.getElementById('modalOrderDate').textContent = order.date || order.orderDate || 'N/A';
             document.getElementById('modalEngineer').textContent = order.engineer || order.engineerName || 'N/A';
@@ -832,7 +1547,6 @@
             document.getElementById('modalMachineSerial').textContent = order.machineSerial || 'N/A';
             document.getElementById('modalModel').textContent = order.model || 'N/A';
             
-            // Populate parts list
             const partsList = document.getElementById('modalPartsList');
             if (order.parts && order.parts.length > 0) {
                 partsList.innerHTML = order.parts.map(part => `
@@ -841,20 +1555,15 @@
                         <span class="part-item-qty">×${part.qty || part.quantity || 1}</span>
                     </div>
                 `).join('');
-            } else if (order.partsList) {
-                partsList.innerHTML = `<div style="color: #999; padding: 10px;">${order.partsList}</div>`;
             } else {
                 partsList.innerHTML = '<div style="text-align: center; color: #666; padding: 10px;">No parts information</div>';
             }
             
-            // Set current status
             selectedStatus = order.status || 'Pending';
             selectStatus(selectedStatus);
             
-            // Set notes
             document.getElementById('modalNotes').value = order.notes || order.comments || '';
             
-            // Show modal
             document.getElementById('editOrderModal').classList.add('active');
         }
 
@@ -867,7 +1576,6 @@
         function selectStatus(status) {
             selectedStatus = status;
             
-            // Update UI
             document.querySelectorAll('.status-option').forEach(option => {
                 option.classList.remove('selected');
             });
@@ -887,11 +1595,9 @@
             const order = orders[currentOrderIndex];
             const notes = document.getElementById('modalNotes').value;
             
-            // Update local order object
             order.status = selectedStatus;
             order.notes = notes;
             
-            // Try to update in Google Sheets
             try {
                 const updateData = {
                     action: 'updateOrder',
@@ -917,19 +1623,259 @@
                 showToast('Order updated locally (offline mode)');
             }
             
-            // Update UI
             updateOrderStats();
             renderOrders();
             closeEditModal();
         }
 
-        // Close modal when clicking outside
         document.addEventListener('click', function(e) {
             const modal = document.getElementById('editOrderModal');
             if (e.target === modal) {
                 closeEditModal();
             }
         });
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', filterParts);
+            document.getElementById('submitBtn').addEventListener('click', submitOrder);
+        }
+
+        function filterParts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const resultsHeader = document.getElementById('resultsHeader');
+            
+            if (!searchTerm) {
+                hasSearched = false;
+                resultsHeader.style.display = 'none';
+                document.getElementById('resultsContainer').innerHTML = `
+                    <div class="search-prompt">
+                        <div class="search-prompt-icon">🔍</div>
+                        <div class="search-prompt-title">Start Searching</div>
+                        <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
+                    </div>
+                `;
+                document.getElementById('filteredCount').textContent = '0';
+                return;
+            }
+
+            hasSearched = true;
+            resultsHeader.style.display = 'block';
+
+            filteredParts = allParts.filter(part => {
+                const matchesSearch = 
+                    part.partNum.toLowerCase().includes(searchTerm) ||
+                    (part.desc && part.desc.toLowerCase().includes(searchTerm)) ||
+                    (part.supplier && part.supplier.toLowerCase().includes(searchTerm)) ||
+                    (part.system && part.system.toLowerCase().includes(searchTerm));
+
+                return matchesSearch;
+            });
+
+            renderParts();
+        }
+
+        function renderParts() {
+            const container = document.getElementById('resultsContainer');
+            document.getElementById('resultsCount').textContent = `${filteredParts.length} parts found`;
+            document.getElementById('filteredCount').textContent = filteredParts.length;
+
+            if (filteredParts.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p><p style="font-size: 0.9em; margin-top: 8px;">Try a different search term</p></div>';
+                return;
+            }
+
+            container.innerHTML = filteredParts.map(part => `
+                <div class="part-card">
+                    <div class="part-number">${part.partNum}</div>
+                    <div class="part-desc">${part.desc || 'No description available'}</div>
+                    <div class="part-details">
+                        ${part.supplier ? `<div class="part-detail">
+                            <span class="part-detail-label">Supplier</span>
+                            <span class="part-detail-value">${part.supplier}</span>
+                        </div>` : ''}
+                        ${part.system ? `<div class="part-detail">
+                            <span class="part-detail-label">System</span>
+                            <span class="part-detail-value">${part.system}</span>
+                        </div>` : ''}
+                        ${part.stockLevel ? `<div class="part-detail">
+                            <span class="part-detail-label">Stock</span>
+                            <span class="part-detail-value">${part.stockLevel}</span>
+                        </div>` : ''}
+                    </div>
+                    <button class="add-to-cart" onclick='addToCart(${JSON.stringify(part).replace(/'/g, "&#39;")})'>
+                        Add to Cart
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(part) {
+            const existing = cart.find(item => item.partNum === part.partNum);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...part, qty: 1 });
+            }
+            updateCart();
+            saveCartToStorage();
+            showToast(`${part.partNum} added to cart`);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartBadge = document.getElementById('cartBadge');
+            const emptyCart = document.getElementById('emptyCart');
+            const orderForm = document.getElementById('orderForm');
+
+            cartBadge.textContent = cart.length;
+            document.getElementById('cartItemsCount').textContent = cart.length;
+            document.getElementById('cartItemsCountText').textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+                emptyCart.style.display = 'block';
+                orderForm.style.display = 'none';
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            orderForm.style.display = 'block';
+
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-header">
+                        <div class="cart-item-number">${item.partNum}</div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                    <div class="cart-item-desc">${item.desc || 'No description'}</div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateQty(${index}, -1)">−</button>
+                        <input type="number" class="qty-input" value="${item.qty}" 
+                            onchange="updateQtyDirect(${index}, this.value)" min="1">
+                        <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+            saveCartToStorage();
+        }
+
+        function updateQty(index, change) {
+            cart[index].qty = Math.max(1, cart[index].qty + change);
+            updateCart();
+            saveCartToStorage();
+        }
+
+        function updateQtyDirect(index, value) {
+            cart[index].qty = Math.max(1, parseInt(value) || 1);
+            updateCart();
+            saveCartToStorage();
+        }
+
+        async function submitOrder() {
+            const engineerName = document.getElementById('engineerName').value.trim();
+            const worksOrder = document.getElementById('worksOrder').value.trim();
+
+            if (!engineerName || !worksOrder) {
+                showToast('Please fill required fields');
+                return;
+            }
+
+            if (cart.length === 0) {
+                showToast('Cart is empty');
+                return;
+            }
+
+            const machineSerial = document.getElementById('machineSerial').value.trim();
+            
+            const orderNumber = machineSerial ? 
+                `${machineSerial}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}` :
+                `ORD-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
+
+            const orderData = {
+                action: 'submitOrder',
+                orderNumber: orderNumber,
+                engineerName,
+                worksOrder,
+                machineSerial: machineSerial,
+                model: document.getElementById('orderModel').value,
+                system: document.getElementById('orderSystem').value,
+                comments: document.getElementById('comments').value,
+                parts: cart
+            };
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('Order submitted successfully!');
+                    
+                    // Add to local orders
+                    orders.unshift({
+                        orderNumber: orderNumber,
+                        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                        engineer: engineerName,
+                        engineerName: engineerName,
+                        worksOrder: worksOrder,
+                        machineSerial: machineSerial,
+                        model: orderData.model,
+                        parts: cart,
+                        partsCount: cart.length,
+                        status: 'Pending',
+                        notes: orderData.comments
+                    });
+                    
+                    updateOrderStats();
+                    
+                    cart = [];
+                    updateCart();
+                    saveCartToStorage();
+                    clearForm();
+                    toggleCart();
+                } else {
+                    showToast('Error submitting order');
+                }
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                showToast('Error submitting order');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Order';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('engineerName').value = '';
+            document.getElementById('worksOrder').value = '';
+            document.getElementById('machineSerial').value = '';
+            document.getElementById('orderModel').value = '';
+            document.getElementById('orderSystem').value = '';
+            document.getElementById('comments').value = '';
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('flexiPartsCart', JSON.stringify(cart));
+        }
+
+        function loadCartFromStorage() {
+            const saved = localStorage.getItem('flexiPartsCart');
+            if (saved) {
+                cart = JSON.parse(saved);
+            }
+        }
 
         function showToast(message) {
             const toast = document.createElement('div');
