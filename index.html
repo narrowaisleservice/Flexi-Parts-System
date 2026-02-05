@@ -1379,7 +1379,10 @@
                 if (data.success && data.parts && data.parts.length > 0) {
                     allParts = data.parts;
                     document.getElementById('totalPartsCount').textContent = allParts.length;
+                    console.log(`✅ Loaded ${allParts.length} parts from API`);
+                    console.log('Sample part:', allParts[0]);
                 } else {
+                    console.warn('No parts in API response, loading demo data');
                     loadDemoParts();
                 }
             } catch (error) {
@@ -1640,14 +1643,11 @@
             document.getElementById('submitBtn').addEventListener('click', submitOrder);
         }
 
-        let searchTimeout;
-        
         function filterParts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsHeader = document.getElementById('resultsHeader');
             
-            // Clear previous timeout
-            clearTimeout(searchTimeout);
+            console.log('🔍 Search triggered with term:', searchTerm);
             
             if (!searchTerm) {
                 hasSearched = false;
@@ -1667,32 +1667,53 @@
             hasSearched = true;
             resultsHeader.style.display = 'block';
             document.getElementById('resultsCount').textContent = 'Searching...';
+            
+            console.log(`⏳ Searching ${allParts.length} parts for: "${searchTerm}"`);
 
-            // Debounce the search - wait 300ms after user stops typing
-            searchTimeout = setTimeout(() => {
+            // Search immediately - no debounce
+            try {
+                const startTime = performance.now();
+                
                 // Remove spaces and special chars for flexible matching
                 const cleanSearchTerm = searchTerm.replace(/[\s\-\.]/g, '');
                 
                 filteredParts = allParts.filter(part => {
-                    // Create searchable strings
-                    const partNumClean = (part.partNum || '').toLowerCase().replace(/[\s\-\.]/g, '');
-                    const desc = (part.desc || '').toLowerCase();
-                    const supplier = (part.supplier || '').toLowerCase();
-                    const system = (part.system || '').toLowerCase();
+                    // Safety checks for undefined/null values
+                    const partNum = (part.partNum || part.partNumber || part.part_num || '').toString().toLowerCase();
+                    const desc = (part.desc || part.description || '').toString().toLowerCase();
+                    const supplier = (part.supplier || '').toString().toLowerCase();
+                    const system = (part.system || '').toString().toLowerCase();
+                    
+                    // Create cleaned version for flexible matching
+                    const partNumClean = partNum.replace(/[\s\-\.]/g, '');
                     
                     // Match either exact substring or cleaned version
-                    return partNumClean.includes(cleanSearchTerm) ||
-                           (part.partNum || '').toLowerCase().includes(searchTerm) ||
+                    const matches = partNumClean.includes(cleanSearchTerm) ||
+                           partNum.includes(searchTerm) ||
                            desc.includes(searchTerm) ||
                            supplier.includes(searchTerm) ||
                            system.includes(searchTerm);
+                    
+                    return matches;
                 });
+                
+                const endTime = performance.now();
+                console.log(`✅ Search completed in ${(endTime - startTime).toFixed(2)}ms`);
+                console.log(`📊 Found ${filteredParts.length} matching parts`);
+                
+                if (filteredParts.length > 0) {
+                    console.log('First 3 matches:', filteredParts.slice(0, 3).map(p => p.partNum || p.partNumber));
+                }
 
                 renderParts();
-            }, 300);
+            } catch (error) {
+                console.error('❌ Search error:', error);
+                document.getElementById('resultsCount').textContent = 'Search error - check console';
+            }
         }
 
         function renderParts() {
+            console.log('🎨 Rendering parts...');
             const container = document.getElementById('resultsContainer');
             const resultCount = filteredParts.length;
             
@@ -1701,6 +1722,7 @@
 
             if (resultCount === 0) {
                 container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p><p style="font-size: 0.9em; margin-top: 8px;">Try a different search term</p></div>';
+                console.log('❌ No results to display');
                 return;
             }
 
@@ -1708,11 +1730,16 @@
             const displayLimit = 100;
             const partsToShow = filteredParts.slice(0, displayLimit);
             const hasMore = resultCount > displayLimit;
+            
+            console.log(`📦 Displaying ${partsToShow.length} of ${resultCount} parts`);
 
-            container.innerHTML = partsToShow.map(part => `
+            const startRender = performance.now();
+            container.innerHTML = partsToShow.map(part => {
+                const partNumber = part.partNum || part.partNumber || part.part_num || 'N/A';
+                return `
                 <div class="part-card">
-                    <div class="part-number">${part.partNum}</div>
-                    <div class="part-desc">${part.desc || 'No description available'}</div>
+                    <div class="part-number">${partNumber}</div>
+                    <div class="part-desc">${part.desc || part.description || 'No description available'}</div>
                     <div class="part-details">
                         ${part.supplier ? `<div class="part-detail">
                             <span class="part-detail-label">Supplier</span>
@@ -1731,7 +1758,10 @@
                         Add to Cart
                     </button>
                 </div>
-            `).join('');
+            `}).join('');
+            
+            const endRender = performance.now();
+            console.log(`✅ Rendered in ${(endRender - startRender).toFixed(2)}ms`);
 
             // Add "show more" message if needed
             if (hasMore) {
