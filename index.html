@@ -1082,7 +1082,7 @@
                     <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
                     <div class="header-text">
                         <h1 id="greeting">GOOD MORNING</h1>
-                        <p class="header-subtitle">FLEXI PARTS ORDERING SYSTEM</p>
+                        <p class="header-subtitle">PARTS ORDERING SYSTEM</p>
                     </div>
                 </div>
                 <button class="nav-link" onclick="showPage('orders')">View Orders</button>
@@ -1135,7 +1135,7 @@
                     <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
                     <div class="header-text">
                         <h1>ORDERS DASHBOARD</h1>
-                        <p class="header-subtitle">FLEXI PARTS ORDER MANAGEMENT</p>
+                        <p class="header-subtitle">PARTS ORDER MANAGEMENT</p>
                     </div>
                 </div>
                 <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
@@ -1207,12 +1207,6 @@
                 <label>Model</label>
                 <select id="orderModel">
                     <option value="">Select model</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>System</label>
-                <select id="orderSystem">
-                    <option value="">Select system</option>
                 </select>
             </div>
             <div class="form-group">
@@ -1370,23 +1364,40 @@
 
         function populateFilters() {
             const modelSelect = document.getElementById('orderModel');
-            const systemSelect = document.getElementById('orderSystem');
 
+            // Flexi truck models
+            const flexiModels = [
+                'Flexi G3',
+                'Flexi G4',
+                '15VN/VNA',
+                '17N/1000',
+                '17N+/1100',
+                '20S/1200',
+                '22S+/1250',
+                '25W+/1350',
+                'MAX 22S+/1250',
+                'MAX 25W/1350',
+                'MAX 25EW/1400',
+                'Other'
+            ];
+
+            flexiModels.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+
+            // Still populate from API if models are returned
             if (models && models.length > 0) {
                 models.forEach(model => {
-                    const option = document.createElement('option');
-                    option.value = model;
-                    option.textContent = model;
-                    modelSelect.appendChild(option);
-                });
-            }
-
-            if (systems && systems.length > 0) {
-                systems.forEach(system => {
-                    const option = document.createElement('option');
-                    option.value = system;
-                    option.textContent = system;
-                    systemSelect.appendChild(option);
+                    // Only add if not already in the list
+                    if (!flexiModels.includes(model)) {
+                        const option = document.createElement('option');
+                        option.value = model;
+                        option.textContent = model;
+                        modelSelect.appendChild(option);
+                    }
                 });
             }
         }
@@ -1891,7 +1902,6 @@
                 worksOrder,
                 machineSerial: machineSerial,
                 model: document.getElementById('orderModel').value,
-                system: document.getElementById('orderSystem').value,
                 comments: document.getElementById('comments').value,
                 parts: cart
             };
@@ -1950,7 +1960,6 @@
             document.getElementById('worksOrder').value = '';
             document.getElementById('machineSerial').value = '';
             document.getElementById('orderModel').value = '';
-            document.getElementById('orderSystem').value = '';
             document.getElementById('comments').value = '';
         }
 
