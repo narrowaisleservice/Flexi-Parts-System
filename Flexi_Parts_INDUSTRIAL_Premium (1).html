@@ -1,0 +1,1900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flexi Parts Order System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-red: #DC2626;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --border: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --hover-bg: #252525;
+        }
+
+        body {
+            font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif;
+            background: #000000;
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            letter-spacing: 0.3px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 50px 40px;
+            margin-bottom: 30px;
+            border-left: 4px solid var(--primary-red);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            flex: 1;
+        }
+
+        .header h1 {
+            font-size: 4em;
+            font-weight: 400;
+            letter-spacing: -2px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .header-subtitle {
+            font-size: 1.3em;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-tab:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+            color: white;
+        }
+
+        .nav-tab.active {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            color: white;
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+        }
+
+        .stat-value {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin-bottom: 4px;
+            letter-spacing: -2px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Search Section */
+        .search-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 18px 50px 18px 20px;
+            font-size: 1.1em;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background: #000;
+        }
+
+        .search-box input::placeholder {
+            color: #666;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group select {
+            width: 100%;
+            padding: 18px 20px;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: white;
+            font-size: 1.05em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .filter-group select:hover {
+            border-color: #3a3a3a;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background: #000;
+        }
+
+        .filter-group select option {
+            background: #1a1a1a;
+        }
+
+        .results-header {
+            margin: 30px 0 20px;
+            padding: 16px 20px;
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 3px solid var(--primary-red);
+            border-radius: 8px;
+        }
+
+        .results-count {
+            font-size: 1.2em;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Parts Grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .part-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .part-card:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+            transform: translateY(-2px);
+        }
+
+        .part-number {
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--primary-red);
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+            line-height: 1;
+        }
+
+        .part-desc {
+            font-size: 1.05em;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            min-height: 40px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        .part-details {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .part-detail {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+        }
+
+        .part-detail-label {
+            color: #666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.85em;
+        }
+
+        .part-detail-value {
+            color: white;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 16px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.05em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .add-to-cart:hover {
+            background: #ef4444;
+            transform: translateY(-1px);
+        }
+
+        .add-to-cart:active {
+            transform: translateY(0);
+        }
+
+        /* Cart Button */
+        .cart-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 64px;
+            height: 64px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8em;
+            cursor: pointer;
+            z-index: 1001;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        .cart-toggle:hover {
+            transform: scale(1.1);
+            background: #ef4444;
+            box-shadow: 0 6px 30px rgba(220, 38, 38, 0.6);
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: white;
+            color: var(--primary-red);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.45em;
+            font-weight: 800;
+        }
+
+        /* Cart Panel */
+        .cart-section {
+            position: fixed;
+            right: -480px;
+            top: 0;
+            width: 480px;
+            height: 100vh;
+            background: var(--dark-bg);
+            border-left: 1px solid var(--border);
+            padding: 30px;
+            overflow-y: auto;
+            z-index: 1000;
+            transition: right 0.3s ease;
+        }
+
+        .cart-section.open {
+            right: 0;
+        }
+
+        .cart-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 36px;
+            height: 36px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+
+        .cart-close:hover {
+            background: var(--hover-bg);
+            color: white;
+            border-color: var(--primary-red);
+        }
+
+        .cart-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-header h2 {
+            font-size: 2.5em;
+            font-weight: 900;
+            margin-bottom: 4px;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .cart-subtitle {
+            font-size: 1em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .cart-items {
+            margin-bottom: 30px;
+        }
+
+        .cart-item {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .cart-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .cart-item-number {
+            font-weight: 900;
+            color: var(--primary-red);
+            font-size: 1.4em;
+            letter-spacing: -0.5px;
+        }
+
+        .remove-item {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: #999;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .remove-item:hover {
+            background: rgba(220, 38, 38, 0.1);
+            border-color: var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        .cart-item-desc {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-bottom: 12px;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-btn {
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary-red);
+        }
+
+        .qty-input {
+            width: 60px;
+            padding: 8px;
+            text-align: center;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: white;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .order-form {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.95em;
+            transition: all 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+            background: var(--dark-bg);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .submit-order {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 1.1em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .submit-order:hover {
+            background: #ef4444;
+        }
+
+        .submit-order:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 110px;
+            right: 30px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--primary-red);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            animation: slideIn 0.3s ease;
+            z-index: 2000;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Dashboard Section */
+        .dashboard-section {
+            display: none;
+        }
+
+        .dashboard-section.active {
+            display: block;
+        }
+
+        .orders-table-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            overflow-x: auto;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th {
+            text-align: left;
+            padding: 16px;
+            border-bottom: 2px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .orders-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            color: white;
+            font-size: 0.95em;
+        }
+
+        .orders-table tr:hover {
+            background: var(--hover-bg);
+            cursor: pointer;
+        }
+
+        .order-number {
+            color: var(--primary-red);
+            font-weight: 700;
+            font-size: 1.1em;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 0.85em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-pending {
+            background: rgba(234, 179, 8, 0.2);
+            color: #facc15;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .status-completed {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.2);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Edit Order Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 2em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: 1px solid var(--border);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #999;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--hover-bg);
+            color: white;
+            border-color: var(--primary-red);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-section {
+            margin-bottom: 30px;
+        }
+
+        .modal-section-title {
+            font-size: 1.1em;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .modal-info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-info-item {
+            background: var(--dark-bg);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .modal-info-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .modal-info-value {
+            font-size: 1.1em;
+            color: white;
+            font-weight: 600;
+        }
+
+        .parts-list {
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .parts-list-item {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .parts-list-item:last-child {
+            border-bottom: none;
+        }
+
+        .part-item-name {
+            color: white;
+            font-weight: 600;
+        }
+
+        .part-item-qty {
+            color: var(--primary-red);
+            font-weight: 700;
+        }
+
+        .status-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .status-option {
+            padding: 16px;
+            background: var(--dark-bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-size: 0.9em;
+        }
+
+        .status-option:hover {
+            border-color: white;
+        }
+
+        .status-option.selected {
+            background: var(--primary-red);
+            border-color: var(--primary-red);
+            color: white;
+        }
+
+        .status-option.pending {
+            border-color: #facc15;
+            color: #facc15;
+        }
+
+        .status-option.pending.selected {
+            background: #facc15;
+            border-color: #facc15;
+            color: #000;
+        }
+
+        .status-option.completed {
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+
+        .status-option.completed.selected {
+            background: #4ade80;
+            border-color: #4ade80;
+            color: #000;
+        }
+
+        .status-option.cancelled {
+            border-color: #f87171;
+            color: #f87171;
+        }
+
+        .status-option.cancelled.selected {
+            background: #f87171;
+            border-color: #f87171;
+            color: #000;
+        }
+
+        .notes-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 15px;
+            background: var(--dark-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            font-family: inherit;
+            font-size: 1em;
+            resize: vertical;
+            transition: all 0.2s ease;
+        }
+
+        .notes-textarea:focus {
+            outline: none;
+            border-color: var(--primary-red);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-btn-primary {
+            background: var(--primary-red);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            background: #ef4444;
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .modal-btn-secondary:hover {
+            background: var(--hover-bg);
+        }
+
+        .parts-section {
+            display: block;
+        }
+
+        .parts-section.active {
+            display: block;
+        }
+
+        @media (max-width: 1200px) {
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .nav-tabs {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .cart-section {
+                width: 100%;
+                right: -100%;
+            }
+
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-bar {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-table-container {
+                overflow-x: auto;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3a3a3a;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-toggle" id="cartToggle" onclick="toggleCart()">
+        🛒
+        <div class="cart-badge" id="cartBadge">0</div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1 id="greeting">GOOD MORNING</h1>
+                <p class="header-subtitle">FLEXI PARTS ORDERING SYSTEM</p>
+            </div>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('parts')">Parts</button>
+                <button class="nav-tab" onclick="showSection('dashboard')">Orders</button>
+            </div>
+        </div>
+
+        <div class="parts-section active" id="partsSection">
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPartsCount">0</div>
+                    <div class="stat-label">Total Parts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="filteredCount">0</div>
+                    <div class="stat-label">Results</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="cartItemsCount">0</div>
+                    <div class="stat-label">In Cart</div>
+                </div>
+            </div>
+
+            <div class="search-section">
+                <div class="search-box">
+                    <input 
+                        type="text" 
+                        id="searchInput" 
+                        placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..."
+                        autocomplete="off"
+                    >
+                    <span class="search-icon">🔍</span>
+                </div>
+
+                <div class="filters">
+                    <div class="filter-group">
+                        <select id="systemFilter">
+                            <option value="">All Systems</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <select id="modelFilter">
+                            <option value="">All Models</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="results-header">
+                    <div class="results-count" id="resultsCount">Loading parts...</div>
+                </div>
+            </div>
+
+            <div id="resultsContainer" class="results-grid"></div>
+        </div>
+
+        <div class="dashboard-section" id="dashboardSection">
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalOrders">0</div>
+                    <div class="stat-label">Total Orders</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pendingOrders">0</div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="completedOrders">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <div class="orders-table-container">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Engineer</th>
+                            <th>Works Order</th>
+                            <th>Parts</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
+                                Loading orders...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="cart-section" id="cartSection">
+        <div class="cart-close" onclick="toggleCart()">✕</div>
+        
+        <div class="cart-header">
+            <h2>Order Cart</h2>
+            <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
+        </div>
+
+        <div id="cartItems" class="cart-items"></div>
+
+        <div class="order-form" id="orderForm" style="display: none;">
+            <div class="form-group">
+                <label>Engineer Name *</label>
+                <input type="text" id="engineerName" required>
+            </div>
+            <div class="form-group">
+                <label>Works Order *</label>
+                <input type="text" id="worksOrder" required>
+            </div>
+            <div class="form-group">
+                <label>Machine Serial</label>
+                <input type="text" id="machineSerial">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <select id="orderModel">
+                    <option value="">Select model</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>System</label>
+                <select id="orderSystem">
+                    <option value="">Select system</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Comments</label>
+                <textarea id="comments" placeholder="Additional notes..."></textarea>
+            </div>
+            <button class="submit-order" id="submitBtn">Submit Order</button>
+        </div>
+
+        <div class="empty-state" id="emptyCart">
+            <div class="empty-state-icon">🛒</div>
+            <p>Your cart is empty</p>
+            <p style="font-size: 0.9em; margin-top: 8px;">Add parts to get started</p>
+        </div>
+    </div>
+
+    <!-- Edit Order Modal -->
+    <div class="modal-overlay" id="editOrderModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Edit Order</h2>
+                <button class="modal-close" onclick="closeEditModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <div class="modal-section-title">Order Information</div>
+                    <div class="modal-info-grid">
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Order Number</div>
+                            <div class="modal-info-value" id="modalOrderNumber">-</div>
+                        </div>
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Date</div>
+                            <div class="modal-info-value" id="modalOrderDate">-</div>
+                        </div>
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Engineer</div>
+                            <div class="modal-info-value" id="modalEngineer">-</div>
+                        </div>
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Works Order</div>
+                            <div class="modal-info-value" id="modalWorksOrder">-</div>
+                        </div>
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Machine Serial</div>
+                            <div class="modal-info-value" id="modalMachineSerial">-</div>
+                        </div>
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Model</div>
+                            <div class="modal-info-value" id="modalModel">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Parts Ordered</div>
+                    <div class="parts-list" id="modalPartsList">
+                        <div style="text-align: center; color: #666;">No parts</div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Update Status</div>
+                    <div class="status-selector">
+                        <div class="status-option pending" onclick="selectStatus('Pending')">
+                            ⏳ Pending
+                        </div>
+                        <div class="status-option completed" onclick="selectStatus('Completed')">
+                            ✓ Completed
+                        </div>
+                        <div class="status-option cancelled" onclick="selectStatus('Cancelled')">
+                            ✕ Cancelled
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-section">
+                    <div class="modal-section-title">Notes</div>
+                    <textarea class="notes-textarea" id="modalNotes" placeholder="Add notes about this order..."></textarea>
+                </div>
+
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeEditModal()">Cancel</button>
+                    <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzTdpdDuzrVg-WeUmbHy7YkvqoLGwJMk9H04TdjklZhWyRVM9OGZQb7mcjia1xy9Rex/exec;
+        let allParts = [];
+        let filteredParts = [];
+        let cart = [];
+        let systems = [];
+        let models = [];
+        let orders = [];
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
+            setGreeting();
+            await loadMetadata();
+            await loadParts();
+            await loadOrders();
+            setupEventListeners();
+            loadCartFromStorage();
+            updateCart();
+        }
+
+        function setGreeting() {
+            const hour = new Date().getHours();
+            let greeting = 'GOOD EVENING';
+            
+            if (hour < 12) {
+                greeting = 'GOOD MORNING';
+            } else if (hour < 18) {
+                greeting = 'GOOD AFTERNOON';
+            }
+            
+            document.getElementById('greeting').textContent = greeting;
+        }
+
+        function showSection(section) {
+            // Update nav tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Show/hide sections
+            if (section === 'parts') {
+                document.getElementById('partsSection').classList.add('active');
+                document.getElementById('dashboardSection').classList.remove('active');
+            } else {
+                document.getElementById('partsSection').classList.remove('active');
+                document.getElementById('dashboardSection').classList.add('active');
+                renderOrders();
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const response = await fetch(`${API_URL}?action=getOrders`);
+                const data = await response.json();
+                if (data.success && data.orders) {
+                    orders = data.orders;
+                    updateOrderStats();
+                }
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                // Mock data for demo if API fails
+                orders = [
+                    {
+                        orderNumber: 'FLX-2024-001-001',
+                        date: '2024-02-05 09:30',
+                        engineer: 'John Smith',
+                        worksOrder: 'WO-12345',
+                        machineSerial: 'FLX-2024-001',
+                        model: 'FLEXI 20S/1200',
+                        parts: [
+                            { partNum: '30071', desc: 'Spacer (drive axle)', qty: 2 },
+                            { partNum: '30073A', desc: 'Wheel Helical', qty: 1 },
+                            { partNum: '30074', desc: 'Intermediate gear', qty: 3 }
+                        ],
+                        partsCount: 3,
+                        status: 'Pending',
+                        notes: 'Urgent repair needed'
+                    },
+                    {
+                        orderNumber: 'FLX-2023-089-001',
+                        date: '2024-02-04 14:15',
+                        engineer: 'Sarah Jones',
+                        worksOrder: 'WO-12344',
+                        machineSerial: 'FLX-2023-089',
+                        model: 'FLEXI 17N/1000',
+                        parts: [
+                            { partNum: '2015.00.002', desc: 'Fork Pin Kit round head', qty: 1 },
+                            { partNum: '30078B', desc: 'Drive shaft short', qty: 2 }
+                        ],
+                        partsCount: 2,
+                        status: 'Completed',
+                        notes: 'All parts fitted successfully'
+                    },
+                    {
+                        orderNumber: 'FLX-2024-012-001',
+                        date: '2024-02-03 11:45',
+                        engineer: 'Mike Wilson',
+                        worksOrder: 'WO-12343',
+                        machineSerial: 'FLX-2024-012',
+                        model: 'FLEXI 25W+/1350',
+                        parts: [
+                            { partNum: '3004082B', desc: 'VNA back of mast pipe', qty: 1 },
+                            { partNum: '30075A', desc: 'Wheel Helical', qty: 4 },
+                            { partNum: '30077F', desc: 'Gear (Tailift axle)', qty: 2 }
+                        ],
+                        partsCount: 3,
+                        status: 'Pending',
+                        notes: ''
+                    },
+                    {
+                        orderNumber: 'FLX-2023-156-001',
+                        date: '2024-02-02 16:20',
+                        engineer: 'Emma Davis',
+                        worksOrder: 'WO-12342',
+                        machineSerial: 'FLX-2023-156',
+                        model: 'FLEXI 22S+/1250',
+                        parts: [
+                            { partNum: '30080', desc: 'Diff Spider (Tailift axle)', qty: 1 }
+                        ],
+                        partsCount: 1,
+                        status: 'Cancelled',
+                        notes: 'Customer cancelled order - part no longer needed'
+                    },
+                    {
+                        orderNumber: 'FLX-2024-001-002',
+                        date: '2024-02-01 10:15',
+                        engineer: 'John Smith',
+                        worksOrder: 'WO-12341',
+                        machineSerial: 'FLX-2024-001',
+                        model: 'FLEXI 20S/1200',
+                        parts: [
+                            { partNum: '30073A', desc: 'Wheel Helical', qty: 2 }
+                        ],
+                        partsCount: 1,
+                        status: 'Completed',
+                        notes: 'Second order for same truck - follow-up repair'
+                    }
+                ];
+                updateOrderStats();
+            }
+        }
+
+        function updateOrderStats() {
+            document.getElementById('totalOrders').textContent = orders.length;
+            document.getElementById('pendingOrders').textContent = 
+                orders.filter(o => o.status === 'Pending').length;
+            document.getElementById('completedOrders').textContent = 
+                orders.filter(o => o.status === 'Completed').length;
+        }
+
+        function renderOrders() {
+            const tbody = document.getElementById('ordersTableBody');
+            
+            if (orders.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
+                            No orders found
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = orders.map((order, index) => `
+                <tr onclick="openEditModal(${index})">
+                    <td><span class="order-number">${order.orderNumber || order.orderNum || 'ORD-' + (index + 1)}</span></td>
+                    <td>${order.date || order.orderDate || 'N/A'}</td>
+                    <td>${order.engineer || order.engineerName || 'N/A'}</td>
+                    <td>${order.worksOrder || 'N/A'}</td>
+                    <td>${order.partsCount || order.totalParts || (order.parts ? order.parts.length : 0)} parts</td>
+                    <td><span class="order-status status-${(order.status || 'pending').toLowerCase()}">${order.status || 'Pending'}</span></td>
+                </tr>
+            `).join('');
+        }
+
+        let currentOrderIndex = null;
+        let selectedStatus = null;
+
+        function openEditModal(index) {
+            currentOrderIndex = index;
+            const order = orders[index];
+            
+            // Populate order info
+            document.getElementById('modalOrderNumber').textContent = order.orderNumber || order.orderNum || 'ORD-' + (index + 1);
+            document.getElementById('modalOrderDate').textContent = order.date || order.orderDate || 'N/A';
+            document.getElementById('modalEngineer').textContent = order.engineer || order.engineerName || 'N/A';
+            document.getElementById('modalWorksOrder').textContent = order.worksOrder || 'N/A';
+            document.getElementById('modalMachineSerial').textContent = order.machineSerial || 'N/A';
+            document.getElementById('modalModel').textContent = order.model || 'N/A';
+            
+            // Populate parts list
+            const partsList = document.getElementById('modalPartsList');
+            if (order.parts && order.parts.length > 0) {
+                partsList.innerHTML = order.parts.map(part => `
+                    <div class="parts-list-item">
+                        <span class="part-item-name">${part.partNum || part.partNumber} - ${part.desc || part.description || 'No description'}</span>
+                        <span class="part-item-qty">×${part.qty || part.quantity || 1}</span>
+                    </div>
+                `).join('');
+            } else if (order.partsList) {
+                partsList.innerHTML = `<div style="color: #999; padding: 10px;">${order.partsList}</div>`;
+            } else {
+                partsList.innerHTML = '<div style="text-align: center; color: #666; padding: 10px;">No parts information</div>';
+            }
+            
+            // Set current status
+            selectedStatus = order.status || 'Pending';
+            selectStatus(selectedStatus);
+            
+            // Set notes
+            document.getElementById('modalNotes').value = order.notes || order.comments || '';
+            
+            // Show modal
+            document.getElementById('editOrderModal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('editOrderModal').classList.remove('active');
+            currentOrderIndex = null;
+            selectedStatus = null;
+        }
+
+        function selectStatus(status) {
+            selectedStatus = status;
+            
+            // Update UI
+            document.querySelectorAll('.status-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            const options = {
+                'Pending': 0,
+                'Completed': 1,
+                'Cancelled': 2
+            };
+            
+            document.querySelectorAll('.status-option')[options[status]].classList.add('selected');
+        }
+
+        async function saveOrderChanges() {
+            if (currentOrderIndex === null) return;
+            
+            const order = orders[currentOrderIndex];
+            const notes = document.getElementById('modalNotes').value;
+            
+            // Update local order object
+            order.status = selectedStatus;
+            order.notes = notes;
+            
+            // Try to update in Google Sheets
+            try {
+                const updateData = {
+                    action: 'updateOrder',
+                    orderNumber: order.orderNumber || order.orderNum,
+                    status: selectedStatus,
+                    notes: notes
+                };
+                
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(updateData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showToast('Order updated successfully!');
+                } else {
+                    showToast('Order updated locally (API update pending)');
+                }
+            } catch (error) {
+                console.error('Error updating order:', error);
+                showToast('Order updated locally (offline mode)');
+            }
+            
+            // Update UI
+            updateOrderStats();
+            renderOrders();
+            closeEditModal();
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('editOrderModal');
+            if (e.target === modal) {
+                closeEditModal();
+            }
+        });
+
+        function toggleCart() {
+            document.getElementById('cartSection').classList.toggle('open');
+        }
+
+        async function loadMetadata() {
+            try {
+                const response = await fetch(`${API_URL}?action=getSystemsAndModels`);
+                const data = await response.json();
+                if (data.success) {
+                    systems = data.systems;
+                    models = data.models;
+                    populateFilters();
+                }
+            } catch (error) {
+                console.error('Error loading metadata:', error);
+            }
+        }
+
+        async function loadParts() {
+            try {
+                const response = await fetch(`${API_URL}?action=getAllParts`);
+                const data = await response.json();
+                if (data.success) {
+                    allParts = data.parts;
+                    filteredParts = allParts;
+                    document.getElementById('totalPartsCount').textContent = allParts.length;
+                    renderParts();
+                }
+            } catch (error) {
+                console.error('Error loading parts:', error);
+                document.getElementById('resultsContainer').innerHTML = 
+                    '<div class="empty-state"><div class="empty-state-icon">⚠️</div><p>Error loading parts</p></div>';
+            }
+        }
+
+        function populateFilters() {
+            const systemSelect = document.getElementById('systemFilter');
+            const modelSelect = document.getElementById('modelFilter');
+            const orderSystemSelect = document.getElementById('orderSystem');
+            const orderModelSelect = document.getElementById('orderModel');
+
+            systems.forEach(system => {
+                systemSelect.add(new Option(system, system));
+                orderSystemSelect.add(new Option(system, system));
+            });
+
+            models.forEach(model => {
+                modelSelect.add(new Option(model, model));
+                orderModelSelect.add(new Option(model, model));
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', filterParts);
+            document.getElementById('systemFilter').addEventListener('change', filterParts);
+            document.getElementById('modelFilter').addEventListener('change', filterParts);
+            document.getElementById('submitBtn').addEventListener('click', submitOrder);
+        }
+
+        function filterParts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const systemFilter = document.getElementById('systemFilter').value.toLowerCase();
+            const modelFilter = document.getElementById('modelFilter').value.toLowerCase();
+
+            filteredParts = allParts.filter(part => {
+                const matchesSearch = !searchTerm || 
+                    part.partNum.toLowerCase().includes(searchTerm) ||
+                    part.desc.toLowerCase().includes(searchTerm) ||
+                    part.supplier.toLowerCase().includes(searchTerm);
+
+                const matchesSystem = !systemFilter || 
+                    part.system.toLowerCase().includes(systemFilter);
+
+                const matchesModel = !modelFilter || 
+                    part.models.toLowerCase().includes(modelFilter);
+
+                return matchesSearch && matchesSystem && matchesModel;
+            });
+
+            renderParts();
+        }
+
+        function renderParts() {
+            const container = document.getElementById('resultsContainer');
+            document.getElementById('resultsCount').textContent = `${filteredParts.length} parts found`;
+            document.getElementById('filteredCount').textContent = filteredParts.length;
+
+            if (filteredParts.length === 0) {
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';
+                return;
+            }
+
+            container.innerHTML = filteredParts.map(part => `
+                <div class="part-card" onclick='addToCart(${JSON.stringify(part)})'>
+                    <div class="part-number">${part.partNum}</div>
+                    <div class="part-desc">${part.desc || 'No description available'}</div>
+                    <div class="part-details">
+                        ${part.supplier ? `<div class="part-detail">
+                            <span class="part-detail-label">Supplier</span>
+                            <span class="part-detail-value">${part.supplier}</span>
+                        </div>` : ''}
+                        ${part.system ? `<div class="part-detail">
+                            <span class="part-detail-label">System</span>
+                            <span class="part-detail-value">${part.system}</span>
+                        </div>` : ''}
+                        ${part.stockLevel ? `<div class="part-detail">
+                            <span class="part-detail-label">Stock</span>
+                            <span class="part-detail-value">${part.stockLevel}</span>
+                        </div>` : ''}
+                    </div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${JSON.stringify(part).replace(/"/g, '&quot;')})">
+                        Add to Cart
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addToCart(part) {
+            const existing = cart.find(item => item.partNum === part.partNum);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ ...part, qty: 1 });
+            }
+            updateCart();
+            saveCartToStorage();
+            showToast(`${part.partNum} added to cart`);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartBadge = document.getElementById('cartBadge');
+            const emptyCart = document.getElementById('emptyCart');
+            const orderForm = document.getElementById('orderForm');
+
+            cartBadge.textContent = cart.length;
+            document.getElementById('cartItemsCount').textContent = cart.length;
+            document.getElementById('cartItemsCountText').textContent = cart.length;
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = '';
+                emptyCart.style.display = 'block';
+                orderForm.style.display = 'none';
+                return;
+            }
+
+            emptyCart.style.display = 'none';
+            orderForm.style.display = 'block';
+
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-header">
+                        <div class="cart-item-number">${item.partNum}</div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
+                    </div>
+                    <div class="cart-item-desc">${item.desc || 'No description'}</div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="updateQty(${index}, -1)">−</button>
+                        <input type="number" class="qty-input" value="${item.qty}" 
+                            onchange="updateQtyDirect(${index}, this.value)" min="1">
+                        <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+            saveCartToStorage();
+        }
+
+        function updateQty(index, change) {
+            cart[index].qty = Math.max(1, cart[index].qty + change);
+            updateCart();
+            saveCartToStorage();
+        }
+
+        function updateQtyDirect(index, value) {
+            cart[index].qty = Math.max(1, parseInt(value) || 1);
+            updateCart();
+            saveCartToStorage();
+        }
+
+        async function submitOrder() {
+            const engineerName = document.getElementById('engineerName').value.trim();
+            const worksOrder = document.getElementById('worksOrder').value.trim();
+
+            if (!engineerName || !worksOrder) {
+                showToast('Please fill required fields');
+                return;
+            }
+
+            if (cart.length === 0) {
+                showToast('Cart is empty');
+                return;
+            }
+
+            const machineSerial = document.getElementById('machineSerial').value.trim();
+            
+            // Generate order number based on truck serial
+            let orderNumber = 'ORD-001';
+            if (machineSerial) {
+                // Count existing orders for this machine
+                const existingOrders = orders.filter(o => 
+                    (o.machineSerial || '').toLowerCase() === machineSerial.toLowerCase()
+                ).length;
+                orderNumber = `${machineSerial}-${String(existingOrders + 1).padStart(3, '0')}`;
+            } else {
+                // No serial provided, use generic numbering
+                orderNumber = `ORD-${String(orders.length + 1).padStart(3, '0')}`;
+            }
+
+            const orderData = {
+                action: 'submitOrder',
+                orderNumber: orderNumber,
+                engineerName,
+                worksOrder,
+                machineSerial: machineSerial,
+                model: document.getElementById('orderModel').value,
+                system: document.getElementById('orderSystem').value,
+                comments: document.getElementById('comments').value,
+                parts: cart
+            };
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(orderData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('Order submitted successfully!');
+                    
+                    // Add to local orders array for immediate display
+                    orders.unshift({
+                        orderNumber: orderNumber,
+                        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
+                        engineer: engineerName,
+                        engineerName: engineerName,
+                        worksOrder: worksOrder,
+                        machineSerial: machineSerial,
+                        model: orderData.model,
+                        parts: cart,
+                        partsCount: cart.length,
+                        status: 'Pending',
+                        notes: orderData.comments
+                    });
+                    
+                    updateOrderStats();
+                    
+                    cart = [];
+                    updateCart();
+                    saveCartToStorage();
+                    clearForm();
+                    toggleCart();
+                } else {
+                    showToast('Error submitting order');
+                }
+            } catch (error) {
+                console.error('Error submitting order:', error);
+                showToast('Error submitting order');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Order';
+            }
+        }
+
+        function clearForm() {
+            document.getElementById('engineerName').value = '';
+            document.getElementById('worksOrder').value = '';
+            document.getElementById('machineSerial').value = '';
+            document.getElementById('orderModel').value = '';
+            document.getElementById('orderSystem').value = '';
+            document.getElementById('comments').value = '';
+        }
+
+        function saveCartToStorage() {
+            localStorage.setItem('flexiPartsCart', JSON.stringify(cart));
+        }
+
+        function loadCartFromStorage() {
+            const saved = localStorage.getItem('flexiPartsCart');
+            if (saved) {
+                cart = JSON.parse(saved);
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
