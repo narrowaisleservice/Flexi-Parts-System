@@ -1678,11 +1678,11 @@
                 const cleanSearchTerm = searchTerm.replace(/[\s\-\.]/g, '');
                 
                 filteredParts = allParts.filter(part => {
-                    // Safety checks for undefined/null values
-                    const partNum = (part.partNum || part.partNumber || part.part_num || '').toString().toLowerCase();
-                    const desc = (part.desc || part.description || '').toString().toLowerCase();
-                    const supplier = (part.supplier || '').toString().toLowerCase();
-                    const system = (part.system || '').toString().toLowerCase();
+                    // Safety checks - convert to string first, then toLowerCase
+                    const partNum = String(part.partNum || part.partNumber || part.part_num || '').toLowerCase();
+                    const desc = String(part.desc || part.description || '').toLowerCase();
+                    const supplier = String(part.supplier || '').toLowerCase();
+                    const system = String(part.system || '').toLowerCase();
                     
                     // Create cleaned version for flexible matching
                     const partNumClean = partNum.replace(/[\s\-\.]/g, '');
