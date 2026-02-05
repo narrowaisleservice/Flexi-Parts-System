@@ -1640,9 +1640,14 @@
             document.getElementById('submitBtn').addEventListener('click', submitOrder);
         }
 
+        let searchTimeout;
+        
         function filterParts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
             const resultsHeader = document.getElementById('resultsHeader');
+            
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
             
             if (!searchTerm) {
                 hasSearched = false;
@@ -1658,33 +1663,53 @@
                 return;
             }
 
+            // Show searching indicator
             hasSearched = true;
             resultsHeader.style.display = 'block';
+            document.getElementById('resultsCount').textContent = 'Searching...';
 
-            filteredParts = allParts.filter(part => {
-                const matchesSearch = 
-                    part.partNum.toLowerCase().includes(searchTerm) ||
-                    (part.desc && part.desc.toLowerCase().includes(searchTerm)) ||
-                    (part.supplier && part.supplier.toLowerCase().includes(searchTerm)) ||
-                    (part.system && part.system.toLowerCase().includes(searchTerm));
+            // Debounce the search - wait 300ms after user stops typing
+            searchTimeout = setTimeout(() => {
+                // Remove spaces and special chars for flexible matching
+                const cleanSearchTerm = searchTerm.replace(/[\s\-\.]/g, '');
+                
+                filteredParts = allParts.filter(part => {
+                    // Create searchable strings
+                    const partNumClean = (part.partNum || '').toLowerCase().replace(/[\s\-\.]/g, '');
+                    const desc = (part.desc || '').toLowerCase();
+                    const supplier = (part.supplier || '').toLowerCase();
+                    const system = (part.system || '').toLowerCase();
+                    
+                    // Match either exact substring or cleaned version
+                    return partNumClean.includes(cleanSearchTerm) ||
+                           (part.partNum || '').toLowerCase().includes(searchTerm) ||
+                           desc.includes(searchTerm) ||
+                           supplier.includes(searchTerm) ||
+                           system.includes(searchTerm);
+                });
 
-                return matchesSearch;
-            });
-
-            renderParts();
+                renderParts();
+            }, 300);
         }
 
         function renderParts() {
             const container = document.getElementById('resultsContainer');
-            document.getElementById('resultsCount').textContent = `${filteredParts.length} parts found`;
-            document.getElementById('filteredCount').textContent = filteredParts.length;
+            const resultCount = filteredParts.length;
+            
+            document.getElementById('resultsCount').textContent = `${resultCount} part${resultCount !== 1 ? 's' : ''} found`;
+            document.getElementById('filteredCount').textContent = resultCount;
 
-            if (filteredParts.length === 0) {
+            if (resultCount === 0) {
                 container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p><p style="font-size: 0.9em; margin-top: 8px;">Try a different search term</p></div>';
                 return;
             }
 
-            container.innerHTML = filteredParts.map(part => `
+            // Limit initial display to 100 parts for performance
+            const displayLimit = 100;
+            const partsToShow = filteredParts.slice(0, displayLimit);
+            const hasMore = resultCount > displayLimit;
+
+            container.innerHTML = partsToShow.map(part => `
                 <div class="part-card">
                     <div class="part-number">${part.partNum}</div>
                     <div class="part-desc">${part.desc || 'No description available'}</div>
@@ -1707,6 +1732,20 @@
                     </button>
                 </div>
             `).join('');
+
+            // Add "show more" message if needed
+            if (hasMore) {
+                const showMoreDiv = document.createElement('div');
+                showMoreDiv.style.gridColumn = '1 / -1';
+                showMoreDiv.style.textAlign = 'center';
+                showMoreDiv.style.padding = '30px';
+                showMoreDiv.style.color = '#666';
+                showMoreDiv.innerHTML = `
+                    <p style="font-size: 1.2em; margin-bottom: 10px;">Showing first ${displayLimit} of ${resultCount} results</p>
+                    <p style="font-size: 0.95em;">💡 Refine your search to see specific parts</p>
+                `;
+                container.appendChild(showMoreDiv);
+            }
         }
 
         function addToCart(part) {
