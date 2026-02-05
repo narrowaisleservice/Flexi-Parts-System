@@ -54,6 +54,19 @@
 
         .header-content {
             flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .header-logo {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-text {
+            flex: 1;
         }
 
         .header h1 {
@@ -1066,8 +1079,11 @@
         <div class="page-section active" id="partsPage">
             <div class="header">
                 <div class="header-content">
-                    <h1 id="greeting">GOOD MORNING</h1>
-                    <p class="header-subtitle">FLEXI PARTS ORDERING SYSTEM</p>
+                    <img src="https://drive.google.com/uc?export=view&id=1cIKHoT2g0xUP7kFHQLYFRpyBRsrQULz2" alt="Flexi Logo" class="header-logo">
+                    <div class="header-text">
+                        <h1 id="greeting">GOOD MORNING</h1>
+                        <p class="header-subtitle">FLEXI PARTS ORDERING SYSTEM</p>
+                    </div>
                 </div>
                 <button class="nav-link" onclick="showPage('orders')">View Orders</button>
             </div>
@@ -1116,8 +1132,11 @@
         <div class="page-section" id="ordersPage">
             <div class="header">
                 <div class="header-content">
-                    <h1>ORDERS DASHBOARD</h1>
-                    <p class="header-subtitle">FLEXI PARTS ORDER MANAGEMENT</p>
+                    <img src="https://drive.google.com/uc?export=view&id=1cIKHoT2g0xUP7kFHQLYFRpyBRsrQULz2" alt="Flexi Logo" class="header-logo">
+                    <div class="header-text">
+                        <h1>ORDERS DASHBOARD</h1>
+                        <p class="header-subtitle">FLEXI PARTS ORDER MANAGEMENT</p>
+                    </div>
                 </div>
                 <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
             </div>
