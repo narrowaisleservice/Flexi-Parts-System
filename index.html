@@ -1574,7 +1574,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxYoWHGu1RiJPdJMVGtTGVX6_6LVNLotIOa45a3wY69pCqqb7II4ntjEbUYCukXDOuu/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzTdpdDuzrVg-WeUmbHy7YkvqoLGwJMk9H04TdjklZhWyRVM9OGZQb7mcjia1xy9Rex/exec';
         
         let allParts = [];
         let filteredParts = [];
@@ -1881,10 +1881,11 @@
                 const cleanSearchTerm = searchTerm.replace(/[\s\-\.]/g, '');
                 
                 filteredParts = allParts.filter(part => {
-                    const partNum = String(part.partNum || part.partNumber || '').toLowerCase();
-                    const desc = String(part.desc || part.description || '').toLowerCase();
-                    const supplier = String(part.supplier || '').toLowerCase();
-                    const system = String(part.system || '').toLowerCase();
+                    // Use actual field names from Google Sheets
+                    const partNum = String(part['Part Number'] || part.partNum || part.partNumber || '').toLowerCase();
+                    const desc = String(part['Description'] || part.desc || part.description || '').toLowerCase();
+                    const supplier = String(part['Supplier Code'] || part.supplier || '').toLowerCase();
+                    const system = String(part['System'] || part.system || '').toLowerCase();
                     
                     const partNumClean = partNum.replace(/[\s\-\.]/g, '');
                     
@@ -1919,22 +1920,37 @@
             const hasMore = resultCount > displayLimit;
 
             container.innerHTML = partsToShow.map(part => {
-                const partNumber = part.partNum || part.partNumber || 'N/A';
+                const partNumber = part['Part Number'] || part.partNum || part.partNumber || 'N/A';
+                const description = part['Description'] || part.desc || part.description || 'No description';
+                const supplier = part['Supplier Code'] || part.supplier || '';
+                const system = part['System'] || part.system || '';
+                const stockLevel = part['Stock Level'] || part.stockLevel || '';
+                
                 return `
                 <div class="part-card">
                     <div class="part-number">${partNumber}</div>
-                    <div class="part-desc">${part.desc || part.description || 'No description'}</div>
+                    <div class="part-desc">${description}</div>
                     <div class="part-details">
-                        ${part.supplier ? `<div class="part-detail">
+                        ${supplier ? `<div class="part-detail">
                             <span class="part-detail-label">Supplier</span>
-                            <span class="part-detail-value">${part.supplier}</span>
+                            <span class="part-detail-value">${supplier}</span>
                         </div>` : ''}
-                        ${part.system ? `<div class="part-detail">
+                        ${system ? `<div class="part-detail">
                             <span class="part-detail-label">System</span>
-                            <span class="part-detail-value">${part.system}</span>
+                            <span class="part-detail-value">${system}</span>
+                        </div>` : ''}
+                        ${stockLevel ? `<div class="part-detail">
+                            <span class="part-detail-label">Stock</span>
+                            <span class="part-detail-value">${stockLevel}</span>
                         </div>` : ''}
                     </div>
-                    <button class="add-to-cart" onclick='addToCart(${JSON.stringify(part).replace(/'/g, "&#39;")})'>
+                    <button class="add-to-cart" onclick='addToCart(${JSON.stringify({
+                        'Part Number': partNumber,
+                        'Description': description,
+                        'Supplier Code': supplier,
+                        'System': system,
+                        'Stock Level': stockLevel
+                    }).replace(/'/g, "&#39;")})'>
                         Add to Cart
                     </button>
                 </div>
@@ -1955,7 +1971,8 @@
         }
 
         function addToCart(part) {
-            const existing = cart.find(item => (item.partNum || item.partNumber) === (part.partNum || part.partNumber));
+            const partNumber = part['Part Number'] || part.partNum || part.partNumber;
+            const existing = cart.find(item => (item['Part Number'] || item.partNum || item.partNumber) === partNumber);
             if (existing) {
                 existing.qty++;
             } else {
@@ -1963,7 +1980,7 @@
             }
             updateCart();
             saveCartToStorage();
-            showToast(`${part.partNum || part.partNumber} added to cart`);
+            showToast(`${partNumber} added to cart`);
         }
 
         function updateCart() {
@@ -1986,13 +2003,17 @@
             emptyCart.style.display = 'none';
             orderForm.style.display = 'block';
 
-            cartItems.innerHTML = cart.map((item, index) => `
+            cartItems.innerHTML = cart.map((item, index) => {
+                const partNumber = item['Part Number'] || item.partNum || item.partNumber || 'N/A';
+                const description = item['Description'] || item.desc || item.description || 'No description';
+                
+                return `
                 <div class="cart-item">
                     <div class="cart-item-header">
-                        <div class="cart-item-number">${item.partNum || item.partNumber}</div>
+                        <div class="cart-item-number">${partNumber}</div>
                         <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
                     </div>
-                    <div class="cart-item-desc">${item.desc || item.description || 'No description'}</div>
+                    <div class="cart-item-desc">${description}</div>
                     <div class="qty-control">
                         <button class="qty-btn" onclick="updateQty(${index}, -1)">−</button>
                         <input type="number" class="qty-input" value="${item.qty}" 
@@ -2000,7 +2021,7 @@
                         <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
                     </div>
                 </div>
-            `).join('');
+            `}).join('');
         }
 
         function removeFromCart(index) {
