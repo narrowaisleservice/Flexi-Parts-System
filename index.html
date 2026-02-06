@@ -1797,7 +1797,25 @@
         }
 
         function renderFrequentParts() {
-            if (frequentParts.length === 0) return;
+    if (frequentParts.length === 0) return;
+
+    const widget = document.getElementById('frequentPartsWidget');
+    const grid = document.getElementById('frequentPartsGrid');
+    
+    widget.style.display = 'block';
+    
+    grid.innerHTML = frequentParts.map(item => {
+        const partNumber = item.part['Part Number'] || item.part.partNum || item.part.partNumber || 'N/A';
+        const description = item.part['Description'] || item.part.desc || item.part.description || 'No description';
+        
+        return `
+        <div class="frequent-part-item" onclick='quickAddPart(${JSON.stringify(item.part).replace(/'/g, "&#39;")})'>
+            <div class="frequent-part-num">${partNumber}</div>
+            <div class="frequent-part-desc">${description}</div>
+            <div class="frequent-part-count">Ordered ${item.count} times</div>
+        </div>
+    `}).join('');
+}
 
             const widget = document.getElementById('frequentPartsWidget');
             const grid = document.getElementById('frequentPartsGrid');
