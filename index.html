@@ -1886,11 +1886,16 @@
                                     <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Model</div>
                                     <div style="font-weight: 600;">${order.model || 'N/A'}</div>
                                 </div>
-                                <div>
-                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Status</div>
-                                    <div><span class="order-status status-${(order.status || 'pending').toLowerCase()}">${order.status || 'Pending'}</span></div>
-                                </div>
                             </div>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <div class="modal-section-title">Order Status</div>
+                            <select id="modalOrderStatus" style="width: 100%; padding: 12px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: inherit; font-size: 1em;">
+                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
                         </div>
                         
                         <div class="modal-section">
@@ -1914,20 +1919,66 @@
                             </div>
                         </div>
                         
-                        ${order.comments || order.notes ? `
                         <div class="modal-section">
-                            <div class="modal-section-title">Comments</div>
-                            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border); color: var(--text-secondary);">
-                                ${order.comments || order.notes}
-                            </div>
+                            <div class="modal-section-title">Notes</div>
+                            <textarea id="modalOrderNotes" style="width: 100%; min-height: 100px; padding: 15px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: inherit; font-size: 0.95em; resize: vertical;" placeholder="Add notes about this order...">${order.comments || order.notes || ''}</textarea>
                         </div>
-                        ` : ''}
+                        
+                        <div class="modal-actions">
+                            <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button>
+                            <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button>
+                        </div>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(modal);
             modal.id = 'orderModal';
+        }
+
+        async function saveOrderChanges(index) {
+            const order = orders[index];
+            const newStatus = document.getElementById('modalOrderStatus').value;
+            const newNotes = document.getElementById('modalOrderNotes').value;
+            
+            const saveBtn = event.target;
+            saveBtn.disabled = true;
+            saveBtn.textContent = 'Saving...';
+            
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        action: 'updateOrder',
+                        orderNumber: order.orderNumber,
+                        status: newStatus,
+                        notes: newNotes
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update local order
+                    orders[index].status = newStatus;
+                    orders[index].notes = newNotes;
+                    orders[index].comments = newNotes;
+                    
+                    updateOrderStats();
+                    renderOrders();
+                    closeOrderModal();
+                    showToast('Order updated successfully!');
+                } else {
+                    showToast('Error updating order');
+                    saveBtn.disabled = false;
+                    saveBtn.textContent = 'Save Changes';
+                }
+            } catch (error) {
+                console.error('Error updating order:', error);
+                showToast('Error updating order');
+                saveBtn.disabled = false;
+                saveBtn.textContent = 'Save Changes';
+            }
         }
 
         function closeOrderModal() {
