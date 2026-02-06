@@ -1574,7 +1574,7 @@
     </div>
 
     <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbyLzEtj3Nch5C0rTY28xX9ypQKyFhvk8tG-RB5YKtq9i_0VNHh4C7tUvjDH_8EZ6nBQ/exec';
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzTdpdDuzrVg-WeUmbHy7YkvqoLGwJMk9H04TdjklZhWyRVM9OGZQb7mcjia1xy9Rex/exec';
         
         let allParts = [];
         let filteredParts = [];
@@ -1840,7 +1840,7 @@
             }
 
             tbody.innerHTML = orders.map((order, index) => `
-                <tr>
+                <tr onclick="openOrderModal(${index})">
                     <td><span class="order-number">${order.orderNumber || 'ORD-' + (index + 1)}</span></td>
                     <td>${order.date || order.orderDate || 'N/A'}</td>
                     <td>${order.serviceController || order.engineer || 'N/A'}</td>
@@ -1849,6 +1849,92 @@
                     <td><span class="order-status status-${(order.status || 'pending').toLowerCase()}">${order.status || 'Pending'}</span></td>
                 </tr>
             `).join('');
+        }
+
+        function openOrderModal(index) {
+            const order = orders[index];
+            
+            // Create modal HTML
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay active';
+            modal.innerHTML = `
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2>${order.orderNumber || 'Order Details'}</h2>
+                        <button class="modal-close" onclick="closeOrderModal()">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-section">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                                <div>
+                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Date</div>
+                                    <div style="font-weight: 600;">${order.date || order.orderDate || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Service Controller</div>
+                                    <div style="font-weight: 600;">${order.serviceController || order.engineer || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Works Order</div>
+                                    <div style="font-weight: 600;">${order.worksOrder || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Machine Serial</div>
+                                    <div style="font-weight: 600;">${order.machineSerial || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Model</div>
+                                    <div style="font-weight: 600;">${order.model || 'N/A'}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Status</div>
+                                    <div><span class="order-status status-${(order.status || 'pending').toLowerCase()}">${order.status || 'Pending'}</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="modal-section">
+                            <div class="modal-section-title">Parts (${order.parts ? order.parts.length : 0})</div>
+                            <div style="max-height: 300px; overflow-y: auto;">
+                                ${order.parts && order.parts.length > 0 ? order.parts.map(part => {
+                                    const partNum = part['Part Number'] || part.partNum || part.partNumber || 'N/A';
+                                    const desc = part['Description'] || part.desc || part.description || 'No description';
+                                    return `
+                                        <div style="background: var(--dark-bg); padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border);">
+                                            <div style="display: flex; justify-content: space-between; align-items: start;">
+                                                <div>
+                                                    <div style="font-weight: 700; color: var(--primary-red); margin-bottom: 4px;">${partNum}</div>
+                                                    <div style="color: var(--text-secondary); font-size: 0.9em;">${desc}</div>
+                                                </div>
+                                                <div style="color: white; font-weight: 600;">Qty: ${part.qty || 1}</div>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('') : '<p style="color: #666;">No parts in this order</p>'}
+                            </div>
+                        </div>
+                        
+                        ${order.comments || order.notes ? `
+                        <div class="modal-section">
+                            <div class="modal-section-title">Comments</div>
+                            <div style="background: var(--dark-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--border); color: var(--text-secondary);">
+                                ${order.comments || order.notes}
+                            </div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.id = 'orderModal';
+        }
+
+        function closeOrderModal() {
+            const modal = document.getElementById('orderModal');
+            if (modal) {
+                modal.remove();
+            }
         }
 
         function setupEventListeners() {
@@ -2227,8 +2313,8 @@
             lines.forEach(partNum => {
                 const cleanPartNum = partNum.replace(/[\s\-\.]/g, '').toLowerCase();
                 const part = allParts.find(p => {
-                    const pNum = String(p.partNum || p.partNumber || '').toLowerCase().replace(/[\s\-\.]/g, '');
-                    return pNum === cleanPartNum || String(p.partNum || p.partNumber || '').toLowerCase() === partNum.toLowerCase();
+                    const pNum = String(p['Part Number'] || p.partNum || p.partNumber || '').toLowerCase().replace(/[\s\-\.]/g, '');
+                    return pNum === cleanPartNum || String(p['Part Number'] || p.partNum || p.partNumber || '').toLowerCase() === partNum.toLowerCase();
                 });
 
                 if (part) {
@@ -2333,6 +2419,11 @@
             const bulkModal = document.getElementById('bulkImportModal');
             if (e.target === bulkModal) {
                 closeBulkImport();
+            }
+            
+            const orderModal = document.getElementById('orderModal');
+            if (e.target === orderModal) {
+                closeOrderModal();
             }
         });
     </script>
