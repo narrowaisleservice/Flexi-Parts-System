@@ -1816,21 +1816,6 @@
         </div>
     `}).join('');
 }
-
-            const widget = document.getElementById('frequentPartsWidget');
-            const grid = document.getElementById('frequentPartsGrid');
-            
-            widget.style.display = 'block';
-            
-            grid.innerHTML = frequentParts.map(item => `
-                <div class="frequent-part-item" onclick='quickAddPart(${JSON.stringify(item.part).replace(/'/g, "&#39;")})'>
-                    <div class="frequent-part-num">${item.part.partNum || item.part.partNumber}</div>
-                    <div class="frequent-part-desc">${item.part.desc || item.part.description || 'No description'}</div>
-                    <div class="frequent-part-count">Ordered ${item.count} times</div>
-                </div>
-            `).join('');
-        }
-
         function quickAddPart(part) {
             addToCart(part);
         }
