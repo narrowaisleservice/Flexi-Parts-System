@@ -1378,6 +1378,7 @@ async function loadOrders() {
         if (data.success && data.orders) {
             orders = data.orders;
             lastOrderCount = orders.length;
+            if (orders.length) console.log('RAW order:', JSON.stringify(orders[0]));
             learnFromOrders();
         }
     } catch(e) { orders = []; }
@@ -2394,9 +2395,12 @@ self.addEventListener('fetch', e => {
     const blob = new Blob([swCode], { type: 'application/javascript' });
     const swUrl = URL.createObjectURL(blob);
 
-    navigator.serviceWorker.register(swUrl, { scope: '/' })
-        .then(reg => console.log('SW registered:', reg.scope))
-        .catch(err => console.warn('SW registration failed:', err));
+    // Blob-based SW doesn't work on all hosts (e.g. GitHub Pages) — skip silently
+    try {
+        navigator.serviceWorker.register(swUrl)
+            .then(reg => console.log('SW registered'))
+            .catch(() => {}); // fail silently
+    } catch(e) {}
 }
 
 function updateOnlineStatus() {
@@ -2473,6 +2477,7 @@ function dismissInstall() {
 
 // Inject PWA manifest dynamically
 function injectManifest() {
+    try {
     const manifest = {
         name: 'Flexi Parts Order System',
         short_name: 'Flexi Parts',
@@ -2488,6 +2493,7 @@ function injectManifest() {
     };
     const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
     document.getElementById('pwaManifest').href = URL.createObjectURL(blob);
+    } catch(e) {} // fail silently on hosts that don't support it
 }
 
 
