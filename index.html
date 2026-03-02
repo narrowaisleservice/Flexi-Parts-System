@@ -821,12 +821,24 @@ async function loadParts() {
         const res = await fetch(`${API_URL}?action=getAllParts`);
         const data = await res.json();
         if (data.success && data.parts?.length) {
-            allParts = data.parts;
+            allParts = data.parts.map(normalisePart);
         } else {
             loadDemoParts();
         }
     } catch(e) { loadDemoParts(); }
     document.getElementById('totalPartsCount').textContent = allParts.length;
+}
+
+// Normalise any field-name variation from the API into consistent keys
+function normalisePart(p) {
+    return {
+        'Part Number':   p['Part Number']   || p.partNum      || p.partNumber   || p['part number'] || p['PART NUMBER'] || '',
+        'Description':   p['Description']   || p.desc         || p.description  || p['DESCRIPTION'] || '',
+        'Supplier Code': p['Supplier Code'] || p.supplier     || p.supplierCode || p['supplier code'] || p['SUPPLIER CODE'] || '',
+        'System':        p['System']        || p.system       || p['SYSTEM']    || '',
+        'Stock Level':   p['Stock Level']   || p.stockLevel   || p.stock        || p['stock level']  || p['STOCK LEVEL']  || '',
+        _raw: p  // keep original in case anything else needs it
+    };
 }
 
 function loadDemoParts() {
