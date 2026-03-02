@@ -630,6 +630,230 @@
             margin-top: 2px;
         }
 
+
+        /* ══════════════════════════════
+           SMART SERIAL MEMORY
+        ══════════════════════════════ */
+        .serial-memory-card {
+            background: rgba(220,38,38,.08);
+            border: 1px solid rgba(220,38,38,.25);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-top: 10px;
+            display: none;
+        }
+        .serial-memory-card.show { display: block; }
+        .serial-memory-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .serial-memory-title {
+            font-size: .85em;
+            font-weight: 800;
+            color: var(--primary-red);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .serial-memory-forget {
+            background: transparent;
+            border: none;
+            color: #555;
+            cursor: pointer;
+            font-size: .8em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            transition: color .2s;
+        }
+        .serial-memory-forget:hover { color: var(--primary-red); }
+        .serial-memory-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .serial-memory-field { }
+        .serial-memory-label {
+            font-size: .75em;
+            color: #555;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 2px;
+        }
+        .serial-memory-value {
+            font-size: .95em;
+            font-weight: 700;
+            color: white;
+        }
+        .serial-memory-apply {
+            width: 100%;
+            margin-top: 12px;
+            padding: 10px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-family: inherit;
+            font-size: .9em;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            transition: all .2s;
+        }
+        .serial-memory-apply:hover { background: #ef4444; }
+
+        /* ══════════════════════════════
+           WEAR PATTERN ALERT
+        ══════════════════════════════ */
+        .wear-alert {
+            background: rgba(239,68,68,.1);
+            border: 1px solid rgba(239,68,68,.3);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .wear-alert.show { display: block; }
+        .wear-alert-title {
+            font-size: .9em;
+            font-weight: 800;
+            color: #f87171;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .wear-alert-item {
+            font-size: .88em;
+            color: #ccc;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            line-height: 1.4;
+        }
+        .wear-alert-item:last-child { border-bottom: none; }
+        .wear-alert-part { color: #f87171; font-weight: 700; }
+
+        /* ══════════════════════════════
+           COST ESTIMATOR
+        ══════════════════════════════ */
+        .cost-bar {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .cost-bar.show { display: flex; justify-content: space-between; align-items: center; }
+        .cost-bar-label {
+            font-size: .85em;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+        .cost-bar-total {
+            font-size: 1.6em;
+            font-weight: 900;
+            color: #4ade80;
+            letter-spacing: -1px;
+        }
+        .cost-bar-breakdown {
+            font-size: .78em;
+            color: #555;
+            margin-top: 2px;
+        }
+
+        /* ══════════════════════════════
+           PHOTO ATTACH
+        ══════════════════════════════ */
+        .photo-attach-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            margin-bottom: 16px;
+            position: relative;
+        }
+        .photo-attach-area:hover {
+            border-color: var(--primary-red);
+            background: rgba(220,38,38,.05);
+        }
+        .photo-attach-area.has-photo {
+            border-color: #4ade80;
+            background: rgba(74,222,128,.05);
+            border-style: solid;
+        }
+        .photo-attach-label {
+            font-size: .9em;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 4px;
+        }
+        .photo-attach-sub {
+            font-size: .8em;
+            color: #555;
+        }
+        .photo-attach-input { display: none; }
+        .photo-previews {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        .photo-preview-wrap {
+            position: relative;
+            width: 70px;
+            height: 70px;
+        }
+        .photo-preview-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+        }
+        .photo-preview-remove {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 18px;
+            height: 18px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: .7em;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Cost on part cards */
+        .part-cost {
+            display: inline-block;
+            background: rgba(74,222,128,.15);
+            border: 1px solid rgba(74,222,128,.25);
+            color: #4ade80;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: .85em;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
         /* ── PRINT STYLES ── */
         @media print {
             body { background: white !important; color: black !important; }
@@ -886,7 +1110,38 @@
             </div>
             <div class="form-group">
                 <label>Machine Serial</label>
-                <input type="text" id="machineSerial" oninput="loadOrderHistory(); checkOrderAnomalies();">
+                <input type="text" id="machineSerial" oninput="onSerialInput();" autocomplete="off">
+                <!-- Smart serial memory card -->
+                <div class="serial-memory-card" id="serialMemoryCard">
+                    <div class="serial-memory-header">
+                        <div class="serial-memory-title">📟 Known Machine</div>
+                        <button class="serial-memory-forget" onclick="forgetSerial()">Forget</button>
+                    </div>
+                    <div class="serial-memory-grid">
+                        <div class="serial-memory-field">
+                            <div class="serial-memory-label">Model</div>
+                            <div class="serial-memory-value" id="smModel">—</div>
+                        </div>
+                        <div class="serial-memory-field">
+                            <div class="serial-memory-label">Last Ordered</div>
+                            <div class="serial-memory-value" id="smLastOrder">—</div>
+                        </div>
+                        <div class="serial-memory-field">
+                            <div class="serial-memory-label">Total Orders</div>
+                            <div class="serial-memory-value" id="smTotalOrders">—</div>
+                        </div>
+                        <div class="serial-memory-field">
+                            <div class="serial-memory-label">Last Engineer</div>
+                            <div class="serial-memory-value" id="smEngineer">—</div>
+                        </div>
+                    </div>
+                    <button class="serial-memory-apply" onclick="applySerialMemory()">↙ Auto-fill Model & Engineer</button>
+                </div>
+            </div>
+            <!-- Wear pattern alert -->
+            <div class="wear-alert" id="wearAlert">
+                <div class="wear-alert-title">🔁 Repeat Wear Pattern Detected</div>
+                <div id="wearAlertItems"></div>
             </div>
             <div class="form-group">
                 <label>Model</label>
@@ -899,6 +1154,24 @@
                 <textarea id="comments" placeholder="Additional notes..."></textarea>
             </div>
             <!-- Urgent flag -->
+            <!-- Cost estimator -->
+            <div class="cost-bar" id="costBar">
+                <div>
+                    <div class="cost-bar-label">Estimated Order Cost</div>
+                    <div class="cost-bar-breakdown" id="costBreakdown"></div>
+                </div>
+                <div class="cost-bar-total" id="costTotal">£0.00</div>
+            </div>
+            <!-- Photo attach -->
+            <div class="form-group">
+                <label>Attach Photos (optional)</label>
+                <div class="photo-attach-area" id="photoAttachArea" onclick="document.getElementById('photoInput').click()">
+                    <div class="photo-attach-label">📷 Tap to add photos</div>
+                    <div class="photo-attach-sub">Attach photos of the fault or broken part</div>
+                    <div class="photo-previews" id="photoPreviews"></div>
+                </div>
+                <input type="file" class="photo-attach-input" id="photoInput" accept="image/*" multiple capture="environment" onchange="handlePhotoAttach(this)">
+            </div>
             <!-- Anomaly warning banner -->
             <div class="anomaly-banner" id="anomalyBanner" style="display:none;">
                 <div class="anomaly-icon">⚠️</div>
@@ -1083,6 +1356,7 @@ function normalisePart(p) {
         'Supplier Code': p['Supplier Code'] || p.supplier     || p.supplierCode || p['supplier code'] || p['SUPPLIER CODE'] || '',
         'System':        p['System']        || p.system       || p['SYSTEM']    || '',
         'Stock Level':   p['Stock Level']   || p.stockLevel   || p.stock        || p['stock level']  || p['STOCK LEVEL']  || '',
+        'Cost':          p['Cost'] || p.cost || p['Price'] || p.price || p['COST'] || p['PRICE'] || '',
         _raw: p  // keep original in case anything else needs it
     };
 }
@@ -1104,6 +1378,7 @@ async function loadOrders() {
         if (data.success && data.orders) {
             orders = data.orders;
             lastOrderCount = orders.length;
+            learnFromOrders();
         }
     } catch(e) { orders = []; }
     updateOrderStats();
@@ -1545,9 +1820,11 @@ function renderParts() {
         const sup  = p['Supplier Code'] || p.supplier || '';
         const sys  = p['System'] || p.system || '';
         const stk  = p['Stock Level'] || p.stockLevel || '';
+        const cost = p['Cost'] || p.cost || p['Price'] || p.price || '';
         return `<div class="part-card">
             <div class="part-number">${num}</div>
             <div class="part-desc">${desc}</div>
+            ${cost ? `<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>` : ''}
             <div class="part-details">
                 ${sup ? `<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>` : ''}
                 ${sys ? `<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>` : ''}
@@ -1570,6 +1847,7 @@ function addToCart(part) {
     const ex  = cart.find(i => (i['Part Number'] || i.partNum || i.partNumber) === num);
     if (ex) ex.qty++; else cart.push({...part, qty:1});
     updateCart(); saveCartToStorage();
+    haptic('medium');
     showToast(`${num} added to cart`);
 }
 
@@ -1583,8 +1861,8 @@ function updateCart() {
     document.getElementById('cartItemsCountText').textContent = cart.length;
     if (!cart.length) { items.innerHTML=''; empty.style.display='block'; form.style.display='none'; return; }
     empty.style.display = 'none'; form.style.display = 'block';
-    // Run anomaly check whenever cart changes
     setTimeout(checkOrderAnomalies, 50);
+    updateCostEstimate();
     items.innerHTML = cart.map((item, i) => {
         const num  = item['Part Number'] || item.partNum || 'N/A';
         const desc = item['Description'] || item.desc || 'No description';
@@ -1603,7 +1881,7 @@ function updateCart() {
     }).join('');
 }
 
-function removeFromCart(i)      { cart.splice(i,1); updateCart(); saveCartToStorage(); }
+function removeFromCart(i)      { cart.splice(i,1); updateCart(); saveCartToStorage(); haptic('light'); }
 function updateQty(i, d)        { cart[i].qty = Math.max(1, cart[i].qty+d); updateCart(); saveCartToStorage(); }
 function updateQtyDirect(i, v)  { cart[i].qty = Math.max(1, parseInt(v)||1); updateCart(); saveCartToStorage(); }
 
@@ -1667,7 +1945,10 @@ async function submitOrder() {
         const res = await fetch(API_URL, { method:'POST', body:JSON.stringify(orderData) });
         const result = await res.json();
         if (result.success) {
-            showToast('Order submitted successfully!');
+            haptic('success');
+            showToast('Order submitted successfully! 🎉');
+            const submitDate = new Date().toISOString().slice(0,16).replace('T',' ');
+            saveSerialOnSubmit(serial, orderData.model, sc, submitDate);
             orders.unshift({
                 orderNumber, urgent: isUrgent,
                 date: new Date().toISOString().slice(0,16).replace('T',' '),
@@ -1676,7 +1957,7 @@ async function submitOrder() {
                 status:'Pending', notes:orderData.comments
             });
             updateOrderStats(); applyFilters();
-            cart=[]; isUrgent=false;
+            cart=[]; isUrgent=false; attachedPhotos=[]; renderPhotoPreviews();
             document.getElementById('urgentToggle').classList.remove('active');
             document.getElementById('urgentIndicator').textContent='⚑';
             updateCart(); saveCartToStorage(); clearForm(); toggleCart();
@@ -2207,6 +2488,263 @@ function injectManifest() {
     };
     const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
     document.getElementById('pwaManifest').href = URL.createObjectURL(blob);
+}
+
+
+// ════════════════════════════════════════════════════════
+//  HAPTIC FEEDBACK
+// ════════════════════════════════════════════════════════
+function haptic(type = 'light') {
+    if (!navigator.vibrate) return;
+    const patterns = {
+        light:   [10],
+        medium:  [20],
+        success: [10, 50, 10],
+        error:   [50, 30, 50],
+        heavy:   [40]
+    };
+    navigator.vibrate(patterns[type] || patterns.light);
+}
+
+// ════════════════════════════════════════════════════════
+//  SMART SERIAL MEMORY
+// ════════════════════════════════════════════════════════
+function getSerialDB() {
+    try { return JSON.parse(localStorage.getItem('flexi-serial-db') || '{}'); }
+    catch(e) { return {}; }
+}
+
+function saveSerialDB(db) {
+    localStorage.setItem('flexi-serial-db', JSON.stringify(db));
+}
+
+function learnFromOrders() {
+    // Build serial memory from existing order history
+    const db = getSerialDB();
+    orders.forEach(o => {
+        const serial = (o.machineSerial || '').trim();
+        if (!serial) return;
+        const key = serial.toLowerCase();
+        if (!db[key]) db[key] = { serial, model: '', lastEngineer: '', lastDate: '', orderCount: 0 };
+        db[key].orderCount = (db[key].orderCount || 0) + 1;
+        if (o.model) db[key].model = o.model;
+        if (o.serviceController || o.engineer) db[key].lastEngineer = o.serviceController || o.engineer;
+        // Keep most recent date
+        const d = o.date || o.orderDate || '';
+        if (!db[key].lastDate || d > db[key].lastDate) db[key].lastDate = d;
+    });
+    saveSerialDB(db);
+}
+
+function onSerialInput() {
+    const serial = document.getElementById('machineSerial').value.trim();
+    loadOrderHistory();
+    checkOrderAnomalies();
+    checkWearPatterns(serial);
+    showSerialMemory(serial);
+}
+
+function showSerialMemory(serial) {
+    const card = document.getElementById('serialMemoryCard');
+    if (!serial || serial.length < 3) { card.classList.remove('show'); return; }
+
+    const db  = getSerialDB();
+    const key = serial.toLowerCase();
+    const mem = db[key];
+
+    if (!mem) { card.classList.remove('show'); return; }
+
+    document.getElementById('smModel').textContent       = mem.model || '—';
+    document.getElementById('smLastOrder').textContent   = mem.lastDate ? mem.lastDate.slice(0,10) : '—';
+    document.getElementById('smTotalOrders').textContent = mem.orderCount || '—';
+    document.getElementById('smEngineer').textContent    = mem.lastEngineer || '—';
+    card.classList.add('show');
+    haptic('light');
+}
+
+function applySerialMemory() {
+    const serial = document.getElementById('machineSerial').value.trim();
+    const db     = getSerialDB();
+    const mem    = db[serial.toLowerCase()];
+    if (!mem) return;
+
+    if (mem.model) {
+        const sel = document.getElementById('orderModel');
+        // Find matching option
+        for (let i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value === mem.model) {
+                sel.selectedIndex = i;
+                break;
+            }
+        }
+    }
+    if (mem.lastEngineer) {
+        const sc = document.getElementById('serviceController');
+        if (!sc.value) sc.value = mem.lastEngineer;
+    }
+    haptic('success');
+    showToast('Machine details auto-filled ✓');
+    checkOrderAnomalies();
+}
+
+function forgetSerial() {
+    const serial = document.getElementById('machineSerial').value.trim();
+    if (!serial) return;
+    const db = getSerialDB();
+    delete db[serial.toLowerCase()];
+    saveSerialDB(db);
+    document.getElementById('serialMemoryCard').classList.remove('show');
+    showToast('Machine forgotten');
+}
+
+// Save to serial DB when order is submitted
+function saveSerialOnSubmit(serial, model, engineer, date) {
+    if (!serial) return;
+    const db  = getSerialDB();
+    const key = serial.toLowerCase();
+    if (!db[key]) db[key] = { serial, model: '', lastEngineer: '', lastDate: '', orderCount: 0 };
+    db[key].orderCount = (db[key].orderCount || 0) + 1;
+    if (model)    db[key].model        = model;
+    if (engineer) db[key].lastEngineer = engineer;
+    if (date)     db[key].lastDate     = date;
+    saveSerialDB(db);
+}
+
+// ════════════════════════════════════════════════════════
+//  WEAR PATTERN DETECTION
+// ════════════════════════════════════════════════════════
+function checkWearPatterns(serial) {
+    const alertEl    = document.getElementById('wearAlert');
+    const itemsEl    = document.getElementById('wearAlertItems');
+    if (!serial || serial.length < 3) { alertEl.classList.remove('show'); return; }
+
+    // Get all orders for this machine
+    const machineOrders = orders.filter(o =>
+        (o.machineSerial || '').toLowerCase() === serial.toLowerCase()
+    );
+    if (machineOrders.length < 2) { alertEl.classList.remove('show'); return; }
+
+    // Count part frequency per machine
+    const partCount = {};
+    const partDates = {};
+    machineOrders.forEach(o => {
+        const d = o.date || o.orderDate || '';
+        (o.parts || []).forEach(p => {
+            const num = String(p['Part Number'] || p.partNum || p.partNumber || '');
+            if (!num) return;
+            partCount[num] = (partCount[num] || 0) + 1;
+            if (!partDates[num]) partDates[num] = [];
+            partDates[num].push(d);
+        });
+    });
+
+    // Flag parts ordered 3+ times
+    const wearParts = Object.entries(partCount)
+        .filter(([, count]) => count >= 3)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4);
+
+    if (!wearParts.length) { alertEl.classList.remove('show'); return; }
+
+    itemsEl.innerHTML = wearParts.map(([num, count]) => {
+        const part = allParts.find(p => (p['Part Number'] || p.partNum || '') === num);
+        const desc = part ? (part['Description'] || part.desc || '') : '';
+        const dates = (partDates[num] || []).sort();
+        const first = dates[0] ? dates[0].slice(0,10) : '';
+        const last  = dates[dates.length-1] ? dates[dates.length-1].slice(0,10) : '';
+        return `<div class="wear-alert-item">
+            <span class="wear-alert-part">${num}</span>${desc ? ' — ' + desc : ''}
+            <br><small>Ordered <strong>${count}×</strong> for this machine${first ? ' (first: ' + first + ', last: ' + last + ')' : ''}</small>
+        </div>`;
+    }).join('');
+
+    alertEl.classList.add('show');
+    haptic('medium');
+}
+
+// ════════════════════════════════════════════════════════
+//  COST ESTIMATOR
+// ════════════════════════════════════════════════════════
+function updateCostEstimate() {
+    const bar = document.getElementById('costBar');
+    const totalEl = document.getElementById('costTotal');
+    const breakdownEl = document.getElementById('costBreakdown');
+
+    const hasAnyPrice = cart.some(item => {
+        const cost = parseFloat(item['Cost'] || item.cost || item['Price'] || item.price || 0);
+        return cost > 0;
+    });
+
+    if (!hasAnyPrice || !cart.length) { bar.classList.remove('show'); return; }
+
+    let total = 0;
+    let known = 0;
+    cart.forEach(item => {
+        const cost = parseFloat(item['Cost'] || item.cost || item['Price'] || item.price || 0);
+        if (cost > 0) {
+            total += cost * (item.qty || 1);
+            known++;
+        }
+    });
+
+    bar.classList.add('show');
+    totalEl.textContent = '£' + total.toFixed(2);
+    const unknown = cart.length - known;
+    breakdownEl.textContent = unknown > 0
+        ? `${known} priced, ${unknown} unpriced item${unknown > 1 ? 's' : ''}`
+        : `${cart.length} item${cart.length > 1 ? 's' : ''}`;
+}
+
+// ════════════════════════════════════════════════════════
+//  PHOTO ATTACH
+// ════════════════════════════════════════════════════════
+let attachedPhotos = []; // array of { dataUrl, name }
+
+function handlePhotoAttach(input) {
+    const files = Array.from(input.files);
+    if (!files.length) return;
+
+    files.forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            attachedPhotos.push({ dataUrl: e.target.result, name: file.name });
+            renderPhotoPreviews();
+        };
+        reader.readAsDataURL(file);
+    });
+    haptic('success');
+    // Reset input so same file can be re-added
+    input.value = '';
+}
+
+function renderPhotoPreviews() {
+    const area     = document.getElementById('photoAttachArea');
+    const previews = document.getElementById('photoPreviews');
+
+    previews.innerHTML = attachedPhotos.map((p, i) => `
+        <div class="photo-preview-wrap">
+            <img class="photo-preview-img" src="${p.dataUrl}" alt="Photo ${i+1}">
+            <button class="photo-preview-remove" onclick="removePhoto(${i}); event.stopPropagation();">✕</button>
+        </div>
+    `).join('');
+
+    area.classList.toggle('has-photo', attachedPhotos.length > 0);
+
+    const label = area.querySelector('.photo-attach-label');
+    const sub   = area.querySelector('.photo-attach-sub');
+    if (attachedPhotos.length) {
+        label.textContent = `📷 ${attachedPhotos.length} photo${attachedPhotos.length > 1 ? 's' : ''} attached`;
+        sub.textContent   = 'Tap to add more';
+    } else {
+        label.textContent = '📷 Tap to add photos';
+        sub.textContent   = 'Attach photos of the fault or broken part';
+    }
+}
+
+function removePhoto(index) {
+    attachedPhotos.splice(index, 1);
+    renderPhotoPreviews();
+    haptic('light');
 }
 
 // ── CLOSE MODALS ON BACKDROP CLICK ──
