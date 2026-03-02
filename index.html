@@ -8,11 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary-red: #DC2626;
@@ -33,2453 +29,1465 @@
             letter-spacing: 0.3px;
         }
 
-        /* Login Page Styles */
-        .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+        /* ── LOGIN ── */
+        .login-container { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+        .login-box { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:50px 40px; width:100%; max-width:450px; border-left:4px solid var(--primary-red); }
+        .login-logo { text-align:center; margin-bottom:40px; }
+        .login-logo img { height:60px; margin-bottom:20px; }
+        .login-title { font-size:2.5em; font-weight:700; text-transform:uppercase; letter-spacing:-1px; margin-bottom:10px; }
+        .login-subtitle { font-size:1.1em; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+        .login-form { margin-top:30px; }
+        .login-btn { width:100%; padding:18px; background:var(--primary-red); border:none; border-radius:8px; color:white; font-size:1.1em; font-weight:800; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:2px; margin-top:10px; }
+        .login-btn:hover { background:#ef4444; }
+        .login-btn:disabled { opacity:.5; cursor:not-allowed; }
+        .login-error { background:rgba(239,68,68,.2); border:1px solid rgba(239,68,68,.3); color:#f87171; padding:12px 16px; border-radius:8px; margin-bottom:20px; font-size:.95em; font-weight:600; display:none; }
+        .login-error.show { display:block; }
 
-        .login-box {
+        /* ── APP SHELL ── */
+        .app-container { display:none; }
+        .app-container.show { display:block; }
+        .container { max-width:1600px; margin:0 auto; padding:30px; }
+
+        /* ── HEADER ── */
+        .header { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:50px 40px; margin-bottom:30px; border-left:4px solid var(--primary-red); display:flex; justify-content:space-between; align-items:center; }
+        .header-content { flex:1; display:flex; align-items:center; gap:30px; }
+        .header-logo { height:80px; width:auto; object-fit:contain; }
+        .header-text { flex:1; }
+        .header h1 { font-size:4em; font-weight:400; letter-spacing:-2px; margin-bottom:8px; text-transform:uppercase; }
+        .header-subtitle { font-size:1.3em; color:var(--text-secondary); font-weight:500; letter-spacing:1px; text-transform:uppercase; }
+        .header-actions { display:flex; gap:15px; align-items:center; }
+        .user-info { padding:12px 20px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:.95em; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+        .user-name { color:var(--primary-red); font-weight:700; }
+        .nav-link, .logout-btn { padding:12px 24px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:1em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; text-decoration:none; display:inline-block; }
+        .nav-link:hover, .logout-btn:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
+
+        /* ── PAGE SECTIONS ── */
+        .page-section { display:none; }
+        .page-section.active { display:block; }
+
+        /* ── STATS ── */
+        .stats-bar { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-bottom:30px; }
+        .stat-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:24px; transition:all .2s; }
+        .stat-card:hover { background:var(--hover-bg); border-color:var(--primary-red); }
+        .stat-value { font-size:3.5em; font-weight:900; color:var(--primary-red); margin-bottom:4px; letter-spacing:-2px; line-height:1; }
+        .stat-label { font-size:1em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; }
+
+        /* ── FREQUENT PARTS ── */
+        .frequent-parts { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:30px; }
+        .frequent-parts-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+        .frequent-parts-title { font-size:1.8em; font-weight:700; text-transform:uppercase; letter-spacing:-1px; }
+        .frequent-parts-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:15px; }
+        .frequent-part-item { background:var(--dark-bg); border:1px solid var(--border); padding:16px; border-radius:8px; cursor:pointer; transition:all .2s; }
+        .frequent-part-item:hover { background:var(--hover-bg); border-color:var(--primary-red); transform:translateY(-2px); }
+        .frequent-part-num { font-size:1.3em; font-weight:800; color:var(--primary-red); margin-bottom:4px; }
+        .frequent-part-desc { font-size:.9em; color:var(--text-secondary); margin-bottom:8px; line-height:1.3; }
+        .frequent-part-count { font-size:.8em; color:#666; text-transform:uppercase; letter-spacing:.5px; }
+
+        /* ── SEARCH ── */
+        .search-section { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:30px; }
+        .search-actions { display:flex; gap:15px; margin-bottom:20px; }
+        .search-box { position:relative; flex:1; }
+        .search-box input { width:100%; padding:18px 50px 18px 20px; font-size:1.1em; background:var(--dark-bg); border:1px solid var(--border); border-radius:10px; color:white; font-weight:600; transition:all .2s; font-family:inherit; }
+        .search-box input:focus { outline:none; border-color:var(--primary-red); background:#000; }
+        .search-box input::placeholder { color:#666; }
+        .search-icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); color:#666; font-size:1.2em; }
+        .bulk-import-btn { padding:12px 24px; background:var(--primary-red); border:none; border-radius:8px; color:white; font-size:.95em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; }
+        .bulk-import-btn:hover { background:#ef4444; }
+        .results-header { margin:30px 0 20px; padding:16px 20px; background:rgba(220,38,38,.1); border-left:3px solid var(--primary-red); border-radius:8px; }
+        .results-count { font-size:1.2em; font-weight:800; color:white; letter-spacing:1px; text-transform:uppercase; }
+
+        /* ── PARTS GRID ── */
+        .results-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:20px; margin-bottom:40px; }
+        .part-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:24px; transition:all .2s; }
+        .part-card:hover { background:var(--hover-bg); border-color:var(--primary-red); transform:translateY(-2px); }
+        .part-number { font-size:1.8em; font-weight:900; color:var(--primary-red); margin-bottom:8px; letter-spacing:-1px; line-height:1; }
+        .part-desc { font-size:1.05em; color:var(--text-secondary); margin-bottom:16px; min-height:40px; line-height:1.5; font-weight:500; }
+        .part-details { display:grid; gap:8px; margin-bottom:16px; padding-top:16px; border-top:1px solid var(--border); }
+        .part-detail { display:flex; justify-content:space-between; font-size:.9em; }
+        .part-detail-label { color:#666; font-weight:600; text-transform:uppercase; letter-spacing:.5px; font-size:.85em; }
+        .part-detail-value { color:white; font-weight:700; font-size:.95em; }
+        .add-to-cart { width:100%; padding:16px; background:var(--primary-red); border:none; border-radius:8px; color:white; font-size:1.05em; font-weight:800; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1.5px; }
+        .add-to-cart:hover { background:#ef4444; transform:translateY(-1px); }
+
+        /* ── CART TOGGLE ── */
+        .cart-toggle { position:fixed; bottom:30px; right:30px; width:64px; height:64px; background:var(--primary-red); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8em; cursor:pointer; z-index:1001; transition:all .2s; box-shadow:0 4px 20px rgba(220,38,38,.4); }
+        .cart-toggle:hover { transform:scale(1.1); background:#ef4444; box-shadow:0 6px 30px rgba(220,38,38,.6); }
+        .cart-badge { position:absolute; top:8px; right:8px; background:white; color:var(--primary-red); width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.45em; font-weight:800; }
+
+        /* ── CART PANEL ── */
+        .cart-section { position:fixed; right:-480px; top:0; width:480px; height:100vh; background:var(--dark-bg); border-left:1px solid var(--border); padding:30px; overflow-y:auto; z-index:1000; transition:right .3s ease; }
+        .cart-section.open { right:0; }
+        .cart-close { position:absolute; top:20px; right:20px; width:36px; height:36px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.3em; cursor:pointer; color:#999; transition:all .2s; }
+        .cart-close:hover { background:var(--hover-bg); color:white; border-color:var(--primary-red); }
+        .cart-header { margin-bottom:30px; padding-bottom:20px; border-bottom:1px solid var(--border); }
+        .cart-header h2 { font-size:2.5em; font-weight:900; margin-bottom:4px; letter-spacing:-1px; text-transform:uppercase; }
+        .cart-subtitle { font-size:1em; color:var(--text-secondary); font-weight:600; letter-spacing:.5px; text-transform:uppercase; }
+        .cart-item { background:var(--card-bg); border:1px solid var(--border); padding:20px; border-radius:10px; margin-bottom:12px; }
+        .cart-item-header { display:flex; justify-content:space-between; align-items:start; margin-bottom:10px; }
+        .cart-item-number { font-weight:900; color:var(--primary-red); font-size:1.4em; letter-spacing:-.5px; }
+        .remove-item { background:transparent; border:1px solid var(--border); color:#999; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:.85em; font-weight:600; transition:all .2s; }
+        .remove-item:hover { background:rgba(220,38,38,.1); border-color:var(--primary-red); color:var(--primary-red); }
+        .cart-item-desc { color:var(--text-secondary); font-size:.9em; margin-bottom:12px; }
+        .qty-control { display:flex; align-items:center; gap:12px; }
+        .qty-btn { background:var(--dark-bg); border:1px solid var(--border); color:white; width:32px; height:32px; border-radius:6px; cursor:pointer; font-size:1.2em; font-weight:600; transition:all .2s; display:flex; align-items:center; justify-content:center; }
+        .qty-btn:hover { background:var(--hover-bg); border-color:var(--primary-red); }
+        .qty-input { width:60px; padding:8px; text-align:center; background:var(--dark-bg); border:1px solid var(--border); border-radius:6px; color:white; font-weight:600; font-family:inherit; }
+
+        /* ── ORDER HISTORY (in cart) ── */
+        .order-history-section { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; }
+        .order-history-title { font-size:1.2em; font-weight:700; text-transform:uppercase; color:var(--primary-red); margin-bottom:15px; letter-spacing:.5px; }
+        .order-history-list { max-height:200px; overflow-y:auto; }
+        .order-history-item { background:var(--dark-bg); padding:12px; border-radius:6px; margin-bottom:8px; border:1px solid var(--border); cursor:pointer; transition:all .2s; }
+        .order-history-item:hover { border-color:var(--primary-red); background:var(--hover-bg); }
+        .order-history-item-header { display:flex; justify-content:space-between; margin-bottom:4px; }
+        .order-history-number { font-weight:700; color:var(--primary-red); font-size:.95em; }
+        .order-history-date { font-size:.85em; color:#666; }
+        .order-history-parts { font-size:.85em; color:var(--text-secondary); }
+
+        /* ── ORDER FORM ── */
+        .order-form { margin-top:30px; padding-top:30px; border-top:1px solid var(--border); }
+        .form-group { margin-bottom:20px; }
+        .form-group label { display:block; margin-bottom:8px; color:var(--text-secondary); font-size:.9em; font-weight:700; text-transform:uppercase; letter-spacing:1px; }
+        .form-group input, .form-group select, .form-group textarea { width:100%; padding:12px 14px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; transition:all .2s; }
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--primary-red); background:var(--dark-bg); }
+        .form-group textarea { resize:vertical; min-height:80px; }
+        .form-group select option { background:var(--card-bg); }
+
+        /* ── URGENT FLAG ── */
+        .urgent-toggle { display:flex; align-items:center; gap:10px; padding:12px 16px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:all .2s; margin-bottom:20px; }
+        .urgent-toggle.active { border-color:#f59e0b; background:rgba(245,158,11,.1); }
+        .urgent-toggle input { display:none; }
+        .urgent-indicator { width:18px; height:18px; border:2px solid var(--border); border-radius:4px; transition:all .2s; display:flex; align-items:center; justify-content:center; font-size:.8em; }
+        .urgent-toggle.active .urgent-indicator { background:#f59e0b; border-color:#f59e0b; }
+        .urgent-label { font-weight:700; font-size:.95em; text-transform:uppercase; letter-spacing:.5px; color:var(--text-secondary); }
+        .urgent-toggle.active .urgent-label { color:#f59e0b; }
+
+        .submit-order { width:100%; padding:18px; background:var(--primary-red); border:none; border-radius:8px; color:white; font-size:1.1em; font-weight:800; cursor:pointer; transition:all .2s; font-family:inherit; margin-top:20px; text-transform:uppercase; letter-spacing:2px; }
+        .submit-order:hover { background:#ef4444; }
+        .submit-order:disabled { opacity:.5; cursor:not-allowed; }
+
+        /* ── EMPTY STATE ── */
+        .empty-state { text-align:center; padding:60px 20px; color:#666; }
+        .empty-state-icon { font-size:4em; margin-bottom:16px; opacity:.3; }
+
+        /* ── TOAST ── */
+        .toast { position:fixed; bottom:110px; right:30px; background:var(--card-bg); border:1px solid var(--border); border-left:3px solid var(--primary-red); color:white; padding:16px 24px; border-radius:8px; animation:slideIn .3s ease; z-index:2000; font-weight:600; font-size:.95em; }
+        @keyframes slideIn { from { transform:translateX(400px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+
+        .search-prompt { text-align:center; padding:80px 40px; color:var(--text-secondary); }
+        .search-prompt-icon { font-size:5em; margin-bottom:20px; opacity:.3; }
+        .search-prompt-title { font-size:1.8em; font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
+        .search-prompt-text { font-size:1.1em; font-weight:500; }
+
+        /* ══════════════════════════════════════
+           ORDERS DASHBOARD — NEW FEATURES
+        ══════════════════════════════════════ */
+
+        /* ── FILTER BAR ── */
+        .orders-filter-bar {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 50px 40px;
-            width: 100%;
-            max-width: 450px;
-            border-left: 4px solid var(--primary-red);
-        }
-
-        .login-logo {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .login-logo img {
-            height: 60px;
-            margin-bottom: 20px;
-        }
-
-        .login-title {
-            font-size: 2.5em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-        }
-
-        .login-subtitle {
-            font-size: 1.1em;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .login-form {
-            margin-top: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 16px;
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-family: inherit;
-            font-size: 1em;
-            transition: all 0.2s ease;
-            font-weight: 600;
-        }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-red);
-        }
-
-        .login-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 1.1em;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-top: 10px;
-        }
-
-        .login-btn:hover {
-            background: #ef4444;
-        }
-
-        .login-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .login-error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #f87171;
-            padding: 12px 16px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 0.95em;
-            font-weight: 600;
-            display: none;
-        }
-
-        .login-error.show {
-            display: block;
-        }
-
-        /* Hide main app initially */
-        .app-container {
-            display: none;
-        }
-
-        .app-container.show {
-            display: block;
-        }
-
-        .container {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 30px;
-        }
-
-        /* Header */
-        .header {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 50px 40px;
-            margin-bottom: 30px;
-            border-left: 4px solid var(--primary-red);
+            padding: 24px 30px;
+            margin-bottom: 24px;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 16px;
+            align-items: flex-end;
+            flex-wrap: wrap;
         }
-
-        .header-content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 30px;
+        .filter-group { display:flex; flex-direction:column; gap:8px; flex:1; min-width:160px; }
+        .filter-label { font-size:.8em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+        .filter-input, .filter-select {
+            padding:10px 14px;
+            background:var(--dark-bg);
+            border:1px solid var(--border);
+            border-radius:8px;
+            color:white;
+            font-family:inherit;
+            font-size:.95em;
+            font-weight:600;
+            transition:all .2s;
         }
-
-        .header-logo {
-            height: 80px;
-            width: auto;
-            object-fit: contain;
+        .filter-input:focus, .filter-select:focus { outline:none; border-color:var(--primary-red); }
+        .filter-input::placeholder { color:#555; }
+        .filter-select option { background:var(--card-bg); }
+        .filter-btn {
+            padding:10px 20px;
+            background:transparent;
+            border:1px solid var(--border);
+            border-radius:8px;
+            color:var(--text-secondary);
+            font-family:inherit;
+            font-size:.9em;
+            font-weight:700;
+            cursor:pointer;
+            text-transform:uppercase;
+            letter-spacing:.5px;
+            transition:all .2s;
+            white-space:nowrap;
         }
-
-        .header-text {
-            flex: 1;
+        .filter-btn:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
+        .filter-btn.active { background:rgba(220,38,38,.15); border-color:var(--primary-red); color:var(--primary-red); }
+        .sort-btn {
+            padding:10px 16px;
+            background:transparent;
+            border:1px solid var(--border);
+            border-radius:8px;
+            color:var(--text-secondary);
+            font-family:inherit;
+            font-size:.9em;
+            font-weight:700;
+            cursor:pointer;
+            text-transform:uppercase;
+            letter-spacing:.5px;
+            transition:all .2s;
+            display:flex;
+            align-items:center;
+            gap:6px;
         }
+        .sort-btn:hover { border-color:var(--primary-red); color:white; }
+        .sort-btn.asc::after { content:'↑'; color:var(--primary-red); }
+        .sort-btn.desc::after { content:'↓'; color:var(--primary-red); }
 
-        .header h1 {
-            font-size: 4em;
-            font-weight: 400;
-            letter-spacing: -2px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
+        /* ── EXPORT TOOLBAR ── */
+        .orders-toolbar {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:16px;
+            flex-wrap:wrap;
+            gap:12px;
         }
-
-        .header-subtitle {
-            font-size: 1.3em;
-            color: var(--text-secondary);
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .orders-results-label { font-size:1em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+        .orders-results-label span { color:white; }
+        .export-group { display:flex; gap:10px; }
+        .export-btn {
+            padding:10px 20px;
+            border:1px solid var(--border);
+            border-radius:8px;
+            font-family:inherit;
+            font-size:.9em;
+            font-weight:700;
+            cursor:pointer;
+            text-transform:uppercase;
+            letter-spacing:.5px;
+            transition:all .2s;
+            display:flex;
+            align-items:center;
+            gap:8px;
         }
+        .export-btn-csv { background:transparent; color:var(--text-secondary); }
+        .export-btn-csv:hover { background:rgba(74,222,128,.1); border-color:#4ade80; color:#4ade80; }
+        .export-btn-pdf { background:transparent; color:var(--text-secondary); }
+        .export-btn-pdf:hover { background:rgba(220,38,38,.15); border-color:var(--primary-red); color:var(--primary-red); }
 
-        .header-actions {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+        /* ── ORDERS TABLE ── */
+        .orders-table-container { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; overflow-x:auto; }
+        .orders-table { width:100%; border-collapse:collapse; }
+        .orders-table th { text-align:left; padding:16px; border-bottom:2px solid var(--border); color:var(--text-secondary); font-size:.9em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; user-select:none; white-space:nowrap; }
+        .orders-table th:hover { color:white; }
+        .orders-table th.sortable::after { content:' ⇅'; color:#555; font-size:.8em; }
+        .orders-table th.sort-asc::after { content:' ↑'; color:var(--primary-red); }
+        .orders-table th.sort-desc::after { content:' ↓'; color:var(--primary-red); }
+        .orders-table td { padding:16px; border-bottom:1px solid var(--border); color:white; font-size:.95em; }
+        .orders-table tr:hover { background:var(--hover-bg); cursor:pointer; }
+        .order-number { color:var(--primary-red); font-weight:700; font-size:1.1em; }
+        .order-status { display:inline-block; padding:6px 12px; border-radius:6px; font-size:.85em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+        .status-pending { background:rgba(234,179,8,.2); color:#facc15; border:1px solid rgba(234,179,8,.3); }
+        .status-completed { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.3); }
+        .status-cancelled { background:rgba(239,68,68,.2); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+        .urgent-badge { display:inline-block; background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:6px; }
+        .no-results-row td { text-align:center; padding:60px; color:#666; }
 
-        .user-info {
-            padding: 12px 20px;
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 0.95em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        /* ── ORDER MODAL — FULL REDESIGN WITH TIMELINE ── */
+        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.8); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; }
+        .modal-overlay.active { display:flex; }
+        .modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; width:90%; max-width:760px; max-height:90vh; overflow-y:auto; animation:modalSlideIn .3s ease; }
+        @keyframes modalSlideIn { from { opacity:0; transform:translateY(-50px); } to { opacity:1; transform:translateY(0); } }
+        .modal-header { padding:30px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+        .modal-header h2 { font-size:2em; font-weight:700; text-transform:uppercase; letter-spacing:-1px; }
+        .modal-header-meta { display:flex; align-items:center; gap:12px; }
+        .modal-close { background:transparent; border:1px solid var(--border); width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.5em; cursor:pointer; color:#999; transition:all .2s; }
+        .modal-close:hover { background:var(--hover-bg); color:white; border-color:var(--primary-red); }
+        .modal-body { padding:30px; }
+        .modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px; }
+        .modal-field { background:var(--dark-bg); padding:16px; border-radius:8px; border:1px solid var(--border); }
+        .modal-field-label { font-size:.8em; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+        .modal-field-value { font-size:1.05em; font-weight:600; color:white; }
+        .modal-section { margin-bottom:28px; }
+        .modal-section-title { font-size:1.1em; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--primary-red); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
+        .modal-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+        .modal-actions { display:flex; gap:12px; margin-top:30px; }
+        .modal-btn { flex:1; padding:16px; border:none; border-radius:8px; font-size:1em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; }
+        .modal-btn-primary { background:var(--primary-red); color:white; }
+        .modal-btn-primary:hover { background:#ef4444; }
+        .modal-btn-secondary { background:transparent; border:1px solid var(--border); color:white; }
+        .modal-btn-secondary:hover { background:var(--hover-bg); }
 
-        .user-name {
-            color: var(--primary-red);
-            font-weight: 700;
-        }
-
-        .nav-link, .logout-btn {
-            padding: 12px 24px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .nav-link:hover, .logout-btn:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-red);
-            color: white;
-        }
-
-        /* Page Sections */
-        .page-section {
-            display: none;
-        }
-
-        .page-section.active {
-            display: block;
-        }
-
-        /* Stats */
-        .stats-bar {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.2s ease;
-        }
-
-        .stat-card:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-red);
-        }
-
-        .stat-value {
-            font-size: 3.5em;
-            font-weight: 900;
-            color: var(--primary-red);
-            margin-bottom: 4px;
-            letter-spacing: -2px;
-            line-height: 1;
-        }
-
-        .stat-label {
-            font-size: 1em;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        /* Frequently Ordered Widget */
-        .frequent-parts {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .frequent-parts-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .frequent-parts-title {
-            font-size: 1.8em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        .frequent-parts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .frequent-part-item {
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            padding: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .frequent-part-item:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-red);
-            transform: translateY(-2px);
-        }
-
-        .frequent-part-num {
-            font-size: 1.3em;
-            font-weight: 800;
-            color: var(--primary-red);
-            margin-bottom: 4px;
-        }
-
-        .frequent-part-desc {
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-
-        .frequent-part-count {
-            font-size: 0.8em;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Bulk Import Button */
-        .bulk-import-btn {
-            padding: 12px 24px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 0.95em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-        }
-
-        .bulk-import-btn:hover {
-            background: #ef4444;
-        }
-
-        /* Search Section */
-        .search-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
-
-        .search-actions {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .search-box {
+        /* ══════════════════════════════
+           STATUS TIMELINE
+        ══════════════════════════════ */
+        .timeline {
             position: relative;
-            flex: 1;
+            padding: 10px 0;
         }
-
-        .search-box input {
-            width: 100%;
-            padding: 18px 50px 18px 20px;
-            font-size: 1.1em;
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: white;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            letter-spacing: 0.5px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--primary-red);
-            background: #000;
-        }
-
-        .search-box input::placeholder {
-            color: #666;
-        }
-
-        .search-icon {
+        .timeline::before {
+            content: '';
             position: absolute;
-            right: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #666;
-            font-size: 1.2em;
+            left: 19px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
         }
-
-        .results-header {
-            margin: 30px 0 20px;
-            padding: 16px 20px;
-            background: rgba(220, 38, 38, 0.1);
-            border-left: 3px solid var(--primary-red);
-            border-radius: 8px;
-        }
-
-        .results-count {
-            font-size: 1.2em;
-            font-weight: 800;
-            color: white;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        /* Parts Grid */
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        .timeline-step {
+            display: flex;
             gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .part-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 24px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-
-        .part-card:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-red);
-            transform: translateY(-2px);
-        }
-
-        .part-number {
-            font-size: 1.8em;
-            font-weight: 900;
-            color: var(--primary-red);
-            margin-bottom: 8px;
-            letter-spacing: -1px;
-            line-height: 1;
-        }
-
-        .part-desc {
-            font-size: 1.05em;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            min-height: 40px;
-            line-height: 1.5;
-            font-weight: 500;
-        }
-
-        .part-details {
-            display: grid;
-            gap: 8px;
-            margin-bottom: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
-        }
-
-        .part-detail {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-        }
-
-        .part-detail-label {
-            color: #666;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-size: 0.85em;
-        }
-
-        .part-detail-value {
-            color: white;
-            font-weight: 700;
-            font-size: 0.95em;
-        }
-
-        .add-to-cart {
-            width: 100%;
-            padding: 16px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 1.05em;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .add-to-cart:hover {
-            background: #ef4444;
-            transform: translateY(-1px);
-        }
-
-        .add-to-cart:active {
-            transform: translateY(0);
-        }
-
-        /* Cart Button */
-        .cart-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 64px;
-            height: 64px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8em;
-            cursor: pointer;
-            z-index: 1001;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 20px rgba(220, 38, 38, 0.4);
-        }
-
-        .cart-toggle:hover {
-            transform: scale(1.1);
-            background: #ef4444;
-            box-shadow: 0 6px 30px rgba(220, 38, 38, 0.6);
-        }
-
-        .cart-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: white;
-            color: var(--primary-red);
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.45em;
-            font-weight: 800;
-        }
-
-        /* Cart Panel */
-        .cart-section {
-            position: fixed;
-            right: -480px;
-            top: 0;
-            width: 480px;
-            height: 100vh;
-            background: var(--dark-bg);
-            border-left: 1px solid var(--border);
-            padding: 30px;
-            overflow-y: auto;
-            z-index: 1000;
-            transition: right 0.3s ease;
-        }
-
-        .cart-section.open {
-            right: 0;
-        }
-
-        .cart-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 36px;
-            height: 36px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3em;
-            cursor: pointer;
-            color: #999;
-            transition: all 0.2s ease;
-        }
-
-        .cart-close:hover {
-            background: var(--hover-bg);
-            color: white;
-            border-color: var(--primary-red);
-        }
-
-        .cart-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .cart-header h2 {
-            font-size: 2.5em;
-            font-weight: 900;
-            margin-bottom: 4px;
-            letter-spacing: -1px;
-            text-transform: uppercase;
-        }
-
-        .cart-subtitle {
-            font-size: 1em;
-            color: var(--text-secondary);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .cart-items {
-            margin-bottom: 30px;
-        }
-
-        .cart-item {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-        }
-
-        .cart-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            margin-bottom: 10px;
-        }
-
-        .cart-item-number {
-            font-weight: 900;
-            color: var(--primary-red);
-            font-size: 1.4em;
-            letter-spacing: -0.5px;
-        }
-
-        .remove-item {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: #999;
-            padding: 6px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85em;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .remove-item:hover {
-            background: rgba(220, 38, 38, 0.1);
-            border-color: var(--primary-red);
-            color: var(--primary-red);
-        }
-
-        .cart-item-desc {
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            margin-bottom: 12px;
-        }
-
-        .qty-control {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .qty-btn {
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            color: white;
-            width: 32px;
-            height: 32px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1.2em;
-            font-weight: 600;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qty-btn:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-red);
-        }
-
-        .qty-input {
-            width: 60px;
-            padding: 8px;
-            text-align: center;
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: white;
-            font-weight: 600;
-            font-family: inherit;
-        }
-
-        /* Order History Section */
-        .order-history-section {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .order-history-title {
-            font-size: 1.2em;
-            font-weight: 700;
-            text-transform: uppercase;
-            color: var(--primary-red);
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
-        }
-
-        .order-history-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .order-history-item {
-            background: var(--dark-bg);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .order-history-item:hover {
-            border-color: var(--primary-red);
-            background: var(--hover-bg);
-        }
-
-        .order-history-item-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 4px;
-        }
-
-        .order-history-number {
-            font-weight: 700;
-            color: var(--primary-red);
-            font-size: 0.95em;
-        }
-
-        .order-history-date {
-            font-size: 0.85em;
-            color: #666;
-        }
-
-        .order-history-parts {
-            font-size: 0.85em;
-            color: var(--text-secondary);
-        }
-
-        .order-form {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 14px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-family: inherit;
-            font-size: 0.95em;
-            transition: all 0.2s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-red);
-            background: var(--dark-bg);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 80px;
-        }
-
-        .submit-order {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-size: 1.1em;
-            font-weight: 800;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            margin-top: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-
-        .submit-order:hover {
-            background: #ef4444;
-        }
-
-        .submit-order:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: #666;
-        }
-
-        .empty-state-icon {
-            font-size: 4em;
-            margin-bottom: 16px;
-            opacity: 0.3;
-        }
-
-        .toast {
-            position: fixed;
-            bottom: 110px;
-            right: 30px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--primary-red);
-            color: white;
-            padding: 16px 24px;
-            border-radius: 8px;
-            animation: slideIn 0.3s ease;
-            z-index: 2000;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .search-prompt {
-            text-align: center;
-            padding: 80px 40px;
-            color: var(--text-secondary);
-        }
-
-        .search-prompt-icon {
-            font-size: 5em;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        .search-prompt-title {
-            font-size: 1.8em;
-            font-weight: 700;
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .search-prompt-text {
-            font-size: 1.1em;
-            font-weight: 500;
-        }
-
-        /* Orders Table */
-        .orders-table-container {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            overflow-x: auto;
-        }
-
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .orders-table th {
-            text-align: left;
-            padding: 16px;
-            border-bottom: 2px solid var(--border);
-            color: var(--text-secondary);
-            font-size: 0.9em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .orders-table td {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-            color: white;
-            font-size: 0.95em;
-        }
-
-        .orders-table tr:hover {
-            background: var(--hover-bg);
-            cursor: pointer;
-        }
-
-        .order-number {
-            color: var(--primary-red);
-            font-weight: 700;
-            font-size: 1.1em;
-        }
-
-        .order-status {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.85em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .status-pending {
-            background: rgba(234, 179, 8, 0.2);
-            color: #facc15;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-        }
-
-        .status-completed {
-            background: rgba(34, 197, 94, 0.2);
-            color: #4ade80;
-            border: 1px solid rgba(34, 197, 94, 0.3);
-        }
-
-        .status-cancelled {
-            background: rgba(239, 68, 68, 0.2);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.3);
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(4px);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-        }
-
-        .modal {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            width: 90%;
-            max-width: 700px;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalSlideIn 0.3s ease;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .modal-header {
-            padding: 30px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .modal-header h2 {
-            font-size: 2em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: -1px;
-        }
-
-        .modal-close {
-            background: transparent;
-            border: 1px solid var(--border);
+            align-items: flex-start;
+            margin-bottom: 24px;
+            position: relative;
+        }
+        .timeline-step:last-child { margin-bottom: 0; }
+        .timeline-dot {
             width: 40px;
             height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5em;
-            cursor: pointer;
-            color: #999;
-            transition: all 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: var(--hover-bg);
-            color: white;
-            border-color: var(--primary-red);
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .modal-section {
-            margin-bottom: 30px;
-        }
-
-        .modal-section-title {
-            font-size: 1.1em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--primary-red);
-            margin-bottom: 15px;
-        }
-
-        /* Bulk Import Modal */
-        .bulk-import-textarea {
-            width: 100%;
-            min-height: 300px;
-            padding: 20px;
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            font-family: 'Courier New', monospace;
-            font-size: 1em;
-            resize: vertical;
-            line-height: 1.8;
-        }
-
-        .bulk-import-textarea:focus {
-            outline: none;
-            border-color: var(--primary-red);
-        }
-
-        .bulk-import-instructions {
-            background: rgba(220, 38, 38, 0.1);
-            border-left: 3px solid var(--primary-red);
-            padding: 15px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            color: var(--text-secondary);
-            font-size: 0.95em;
-            line-height: 1.6;
-        }
-
-        .bulk-import-results {
-            margin-top: 20px;
-            padding: 15px 20px;
-            background: var(--dark-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            display: none;
-        }
-
-        .bulk-import-results.show {
-            display: block;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 12px;
-            margin-top: 30px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-family: inherit;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .modal-btn-primary {
-            background: var(--primary-red);
-            color: white;
-        }
-
-        .modal-btn-primary:hover {
-            background: #ef4444;
-        }
-
-        .modal-btn-secondary {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: white;
-        }
-
-        .modal-btn-secondary:hover {
-            background: var(--hover-bg);
-        }
-
-        /* Notification Bell */
-        .notification-bell {
-            position: relative;
-            padding: 12px 20px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-secondary);
-            font-size: 1.2em;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .notification-bell:hover {
-            background: var(--hover-bg);
-            border-color: var(--primary-red);
-            color: white;
-        }
-
-        .notification-badge {
-            position: absolute;
-            top: 6px;
-            right: 12px;
-            background: var(--primary-red);
-            color: white;
-            width: 18px;
-            height: 18px;
             border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--dark-bg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.6em;
-            font-weight: 800;
+            font-size: 1em;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: all .3s;
+        }
+        .timeline-dot.done {
+            border-color: #4ade80;
+            background: rgba(74,222,128,.15);
+        }
+        .timeline-dot.active {
+            border-color: var(--primary-red);
+            background: rgba(220,38,38,.15);
+            box-shadow: 0 0 0 4px rgba(220,38,38,.15);
+            animation: pulseDot 2s infinite;
+        }
+        .timeline-dot.cancelled {
+            border-color: #f87171;
+            background: rgba(239,68,68,.15);
+        }
+        @keyframes pulseDot {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(220,38,38,.15); }
+            50% { box-shadow: 0 0 0 8px rgba(220,38,38,.05); }
+        }
+        .timeline-content { flex: 1; padding-top: 8px; }
+        .timeline-title { font-size: 1.1em; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+        .timeline-title.done { color: #4ade80; }
+        .timeline-title.active { color: white; }
+        .timeline-title.inactive { color: #555; }
+        .timeline-title.cancelled-title { color: #f87171; }
+        .timeline-desc { font-size: .9em; color: var(--text-secondary); margin-bottom: 4px; }
+        .timeline-timestamp { font-size: .8em; color: #555; font-weight: 600; }
+
+        /* Status select in modal */
+        .status-select-wrapper { display:flex; gap:12px; align-items:center; }
+        .status-select-wrapper select { flex:1; padding:12px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:1em; font-weight:600; }
+        .status-select-wrapper select:focus { outline:none; border-color:var(--primary-red); }
+        .status-select-wrapper select option { background:var(--card-bg); }
+
+        /* Parts list in modal */
+        .modal-parts-list { max-height:260px; overflow-y:auto; }
+        .modal-part-row { background:var(--dark-bg); padding:14px 16px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+        .modal-part-info { flex:1; }
+        .modal-part-num { font-weight:800; color:var(--primary-red); font-size:1.05em; margin-bottom:3px; }
+        .modal-part-desc { font-size:.88em; color:var(--text-secondary); }
+        .modal-part-qty { background:var(--card-bg); border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-weight:700; font-size:.9em; white-space:nowrap; }
+
+        /* ── BULK IMPORT ── */
+        .bulk-import-textarea { width:100%; min-height:300px; padding:20px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:'Courier New',monospace; font-size:1em; resize:vertical; line-height:1.8; }
+        .bulk-import-textarea:focus { outline:none; border-color:var(--primary-red); }
+        .bulk-import-instructions { background:rgba(220,38,38,.1); border-left:3px solid var(--primary-red); padding:15px 20px; border-radius:8px; margin-bottom:20px; color:var(--text-secondary); font-size:.95em; line-height:1.6; }
+        .bulk-import-results { margin-top:20px; padding:15px 20px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; display:none; }
+        .bulk-import-results.show { display:block; }
+
+        /* ── NOTIFICATION ── */
+        .notification-bell { position:relative; padding:12px 20px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:1.2em; cursor:pointer; transition:all .2s; }
+        .notification-bell:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
+        .notification-badge { position:absolute; top:6px; right:12px; background:var(--primary-red); color:white; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6em; font-weight:800; }
+        .browser-notification { position:fixed; top:30px; right:30px; background:var(--card-bg); border:1px solid var(--border); border-left:3px solid var(--primary-red); padding:20px 24px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,.5); z-index:3000; animation:slideInFromTop .3s ease; max-width:400px; }
+        @keyframes slideInFromTop { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+        .browser-notification-title { font-size:1.1em; font-weight:700; color:white; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; }
+        .browser-notification-body { font-size:.95em; color:var(--text-secondary); line-height:1.5; }
+
+        /* ── PRINT STYLES ── */
+        @media print {
+            body { background: white !important; color: black !important; }
+            .app-container { display: block !important; }
+            .cart-toggle, .cart-section, .notification-bell, .header-actions,
+            .orders-filter-bar, .orders-toolbar .export-group,
+            .modal-actions, .nav-link, .logout-btn { display: none !important; }
+            .page-section { display: none !important; }
+            .page-section.active { display: block !important; }
+            .header { background: white !important; border: none !important; padding: 10px 0 !important; }
+            .header h1 { color: black !important; font-size: 2em !important; }
+            .orders-table-container { border: none !important; padding: 0 !important; }
+            .orders-table th, .orders-table td { color: black !important; border-color: #ddd !important; }
+            .stat-card { border: 1px solid #ddd !important; background: white !important; }
+            .stat-value { color: #DC2626 !important; }
+            .stat-label { color: #666 !important; }
+            #printTitle { display: block !important; font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: black; }
+        }
+        #printTitle { display: none; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width:1200px) { .results-grid { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); } }
+        @media (max-width:768px) {
+            .container { padding:20px; }
+            .header { flex-direction:column; align-items:flex-start; gap:20px; }
+            .header h1 { font-size:2em; }
+            .cart-section { width:100%; right:-100%; }
+            .results-grid { grid-template-columns:1fr; }
+            .stats-bar { grid-template-columns:1fr; }
+            .modal-grid { grid-template-columns:1fr; }
+            .orders-filter-bar { flex-direction:column; }
         }
 
-        /* Browser Notification Toast */
-        .browser-notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-left: 3px solid var(--primary-red);
-            padding: 20px 24px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            z-index: 3000;
-            animation: slideInFromTop 0.3s ease;
-            max-width: 400px;
-        }
-
-        @keyframes slideInFromTop {
-            from {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .browser-notification-title {
-            font-size: 1.1em;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .browser-notification-body {
-            font-size: 0.95em;
-            color: var(--text-secondary);
-            line-height: 1.5;
-        }
-
-        @media (max-width: 1200px) {
-            .results-grid {
-                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 20px;
-            }
-
-            .header h1 {
-                font-size: 2em;
-            }
-
-            .cart-section {
-                width: 100%;
-                right: -100%;
-            }
-
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-bar {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 14px;
-            height: 14px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: var(--dark-bg);
-            border-left: 1px solid var(--border);
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, var(--primary-red) 0%, #ef4444 100%);
-            border-radius: 7px;
-            border: 2px solid var(--dark-bg);
-            transition: background 0.2s ease;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #ef4444 0%, #ff5555 100%);
-            border: 2px solid var(--card-bg);
-        }
-
-        ::-webkit-scrollbar-corner {
-            background: var(--dark-bg);
-        }
+        ::-webkit-scrollbar { width:14px; height:14px; }
+        ::-webkit-scrollbar-track { background:var(--dark-bg); border-left:1px solid var(--border); }
+        ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,var(--primary-red) 0%,#ef4444 100%); border-radius:7px; border:2px solid var(--dark-bg); }
+        ::-webkit-scrollbar-thumb:hover { background:linear-gradient(180deg,#ef4444 0%,#ff5555 100%); }
+        ::-webkit-scrollbar-corner { background:var(--dark-bg); }
     </style>
 </head>
 <body>
-    <!-- LOGIN PAGE -->
-    <div class="login-container" id="loginPage">
-        <div class="login-box">
-            <div class="login-logo">
-                <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo">
-                <div class="login-title">LOGIN</div>
-                <div class="login-subtitle">Parts Ordering System</div>
-            </div>
 
-            <div class="login-error" id="loginError">Invalid username or password</div>
-
-            <form class="login-form" id="loginForm">
-                <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" id="loginUsername" required autocomplete="username">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" required autocomplete="current-password">
-                </div>
-                <button type="submit" class="login-btn" id="loginBtn">Login</button>
-            </form>
+<!-- ── LOGIN PAGE ── -->
+<div class="login-container" id="loginPage">
+    <div class="login-box">
+        <div class="login-logo">
+            <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo">
+            <div class="login-title">LOGIN</div>
+            <div class="login-subtitle">Parts Ordering System</div>
         </div>
+        <div class="login-error" id="loginError">Invalid username or password</div>
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="loginUsername" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="loginPassword" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="login-btn" id="loginBtn">Login</button>
+        </form>
     </div>
+</div>
 
-    <!-- MAIN APP (Hidden until logged in) -->
-    <div class="app-container" id="appContainer">
-        <div class="cart-toggle" id="cartToggle" onclick="toggleCart()">
-            🛒
-            <div class="cart-badge" id="cartBadge">0</div>
-        </div>
+<!-- ── MAIN APP ── -->
+<div class="app-container" id="appContainer">
+    <button class="cart-toggle" id="cartToggle" onclick="toggleCart()">
+        🛒
+        <div class="cart-badge" id="cartBadge">0</div>
+    </button>
 
-        <div class="container">
-            <!-- PARTS ORDERING PAGE -->
-            <div class="page-section active" id="partsPage">
-                <div class="header">
-                    <div class="header-content">
-                        <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
-                        <div class="header-text">
-                            <h1 id="greeting">GOOD MORNING</h1>
-                            <p class="header-subtitle">PARTS ORDERING SYSTEM</p>
-                        </div>
-                    </div>
-                    <div class="header-actions">
-                        <div class="user-info">
-                            <span class="user-name" id="userName">User</span>
-                        </div>
-                        <button class="nav-link" onclick="showPage('orders')">View Orders</button>
-                        <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="container">
+
+        <!-- ══ PARTS PAGE ══ -->
+        <div class="page-section active" id="partsPage">
+            <div class="header">
+                <div class="header-content">
+                    <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                    <div class="header-text">
+                        <h1 id="greeting">GOOD MORNING</h1>
+                        <p class="header-subtitle">PARTS ORDERING SYSTEM</p>
                     </div>
                 </div>
-
-                <div class="stats-bar">
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalPartsCount">0</div>
-                        <div class="stat-label">Total Parts</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="filteredCount">0</div>
-                        <div class="stat-label">Results</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="cartItemsCount">0</div>
-                        <div class="stat-label">In Cart</div>
-                    </div>
-                </div>
-
-                <!-- Frequently Ordered Parts -->
-                <div class="frequent-parts" id="frequentPartsWidget" style="display: none;">
-                    <div class="frequent-parts-header">
-                        <div class="frequent-parts-title">⚡ Frequently Ordered</div>
-                    </div>
-                    <div class="frequent-parts-grid" id="frequentPartsGrid"></div>
-                </div>
-
-                <div class="search-section">
-                    <div class="search-actions">
-                        <div class="search-box">
-                            <input 
-                                type="text" 
-                                id="searchInput" 
-                                placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..."
-                                autocomplete="off"
-                            >
-                            <span class="search-icon">🔍</span>
-                        </div>
-                        <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
-                    </div>
-
-                    <div class="results-header" id="resultsHeader" style="display: none;">
-                        <div class="results-count" id="resultsCount">Loading parts...</div>
-                    </div>
-                </div>
-
-                <div id="resultsContainer" class="results-grid">
-                    <div class="search-prompt">
-                        <div class="search-prompt-icon">🔍</div>
-                        <div class="search-prompt-title">Start Searching</div>
-                        <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
-                    </div>
+                <div class="header-actions">
+                    <div class="user-info"><span class="user-name" id="userName">User</span></div>
+                    <button class="nav-link" onclick="showPage('orders')">View Orders</button>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
             </div>
 
-            <!-- ORDERS DASHBOARD PAGE -->
-            <div class="page-section" id="ordersPage">
-                <div class="header">
-                    <div class="header-content">
-                        <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
-                        <div class="header-text">
-                            <h1>ORDERS DASHBOARD</h1>
-                            <p class="header-subtitle">PARTS ORDER MANAGEMENT</p>
-                        </div>
-                    </div>
-                    <div class="header-actions">
-                        <button class="notification-bell" title="Notifications">
-                            🔔
-                            <span class="notification-badge" id="notificationBadge" style="display: none;">0</span>
-                        </button>
-                        <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
-                        <button class="logout-btn" onclick="logout()">Logout</button>
-                    </div>
-                </div>
+            <div class="stats-bar">
+                <div class="stat-card"><div class="stat-value" id="totalPartsCount">0</div><div class="stat-label">Total Parts</div></div>
+                <div class="stat-card"><div class="stat-value" id="filteredCount">0</div><div class="stat-label">Results</div></div>
+                <div class="stat-card"><div class="stat-value" id="cartItemsCount">0</div><div class="stat-label">In Cart</div></div>
+            </div>
 
-                <div class="stats-bar">
-                    <div class="stat-card">
-                        <div class="stat-value" id="totalOrders">0</div>
-                        <div class="stat-label">Total Orders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="pendingOrders">0</div>
-                        <div class="stat-label">Pending</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="completedOrders">0</div>
-                        <div class="stat-label">Completed</div>
-                    </div>
+            <div class="frequent-parts" id="frequentPartsWidget" style="display:none;">
+                <div class="frequent-parts-header">
+                    <div class="frequent-parts-title">⚡ Frequently Ordered</div>
                 </div>
+                <div class="frequent-parts-grid" id="frequentPartsGrid"></div>
+            </div>
 
-                <div class="orders-table-container">
-                    <table class="orders-table">
-                        <thead>
-                            <tr>
-                                <th>Order #</th>
-                                <th>Date</th>
-                                <th>Service Controller</th>
-                                <th>Works Order</th>
-                                <th>Parts</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="ordersTableBody">
-                            <tr>
-                                <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
-                                    Loading orders...
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <div class="search-section">
+                <div class="search-actions">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..." autocomplete="off">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
+                </div>
+                <div class="results-header" id="resultsHeader" style="display:none;">
+                    <div class="results-count" id="resultsCount">Loading parts...</div>
+                </div>
+            </div>
+
+            <div id="resultsContainer" class="results-grid">
+                <div class="search-prompt">
+                    <div class="search-prompt-icon">🔍</div>
+                    <div class="search-prompt-title">Start Searching</div>
+                    <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
                 </div>
             </div>
         </div>
 
-        <!-- CART PANEL -->
-        <div class="cart-section" id="cartSection">
-            <div class="cart-close" onclick="toggleCart()">✕</div>
-            
-            <div class="cart-header">
-                <h2>Order Cart</h2>
-                <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
+        <!-- ══ ORDERS DASHBOARD PAGE ══ -->
+        <div class="page-section" id="ordersPage">
+            <div id="printTitle">Flexi Parts — Orders Export</div>
+            <div class="header">
+                <div class="header-content">
+                    <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                    <div class="header-text">
+                        <h1>ORDERS DASHBOARD</h1>
+                        <p class="header-subtitle">PARTS ORDER MANAGEMENT</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="notification-bell" title="Notifications">
+                        🔔
+                        <span class="notification-badge" id="notificationBadge" style="display:none;">0</span>
+                    </button>
+                    <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                </div>
             </div>
 
-            <div id="cartItems" class="cart-items"></div>
-
-            <!-- Order History Section -->
-            <div class="order-history-section" id="orderHistorySection" style="display: none;">
-                <div class="order-history-title">📋 Previous Orders for This Truck</div>
-                <div class="order-history-list" id="orderHistoryList"></div>
+            <div class="stats-bar">
+                <div class="stat-card"><div class="stat-value" id="totalOrders">0</div><div class="stat-label">Total Orders</div></div>
+                <div class="stat-card"><div class="stat-value" id="pendingOrders">0</div><div class="stat-label">Pending</div></div>
+                <div class="stat-card"><div class="stat-value" id="completedOrders">0</div><div class="stat-label">Completed</div></div>
             </div>
 
-            <div class="order-form" id="orderForm" style="display: none;">
-                <div class="form-group">
-                    <label>Service Controller *</label>
-                    <input type="text" id="serviceController" required>
+            <!-- ── FILTER BAR (NEW) ── -->
+            <div class="orders-filter-bar">
+                <div class="filter-group">
+                    <span class="filter-label">Search Orders</span>
+                    <input type="text" class="filter-input" id="filterSearch" placeholder="Order #, engineer, works order..." oninput="applyFilters()">
                 </div>
-                <div class="form-group">
-                    <label>Works Order *</label>
-                    <input type="text" id="worksOrder" required>
-                </div>
-                <div class="form-group">
-                    <label>Machine Serial</label>
-                    <input type="text" id="machineSerial" oninput="loadOrderHistory()">
-                </div>
-                <div class="form-group">
-                    <label>Model</label>
-                    <select id="orderModel">
-                        <option value="">Select model</option>
+                <div class="filter-group" style="max-width:160px;">
+                    <span class="filter-label">Status</span>
+                    <select class="filter-select" id="filterStatus" onchange="applyFilters()">
+                        <option value="">All Statuses</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label>Comments</label>
-                    <textarea id="comments" placeholder="Additional notes..."></textarea>
+                <div class="filter-group" style="max-width:140px;">
+                    <span class="filter-label">Date From</span>
+                    <input type="date" class="filter-input" id="filterDateFrom" onchange="applyFilters()">
                 </div>
-                <button class="submit-order" id="submitBtn">Submit Order</button>
+                <div class="filter-group" style="max-width:140px;">
+                    <span class="filter-label">Date To</span>
+                    <input type="date" class="filter-input" id="filterDateTo" onchange="applyFilters()">
+                </div>
+                <button class="filter-btn" onclick="clearFilters()">✕ Clear</button>
             </div>
 
-            <div class="empty-state" id="emptyCart">
-                <div class="empty-state-icon">🛒</div>
-                <p>Your cart is empty</p>
-                <p style="font-size: 0.9em; margin-top: 8px;">Add parts to get started</p>
+            <!-- ── EXPORT TOOLBAR (NEW) ── -->
+            <div class="orders-toolbar">
+                <div class="orders-results-label">Showing <span id="filteredOrdersCount">0</span> orders</div>
+                <div class="export-group">
+                    <button class="export-btn export-btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
+                    <button class="export-btn export-btn-pdf" onclick="exportPDF()">🖨 Print / PDF</button>
+                </div>
+            </div>
+
+            <div class="orders-table-container">
+                <table class="orders-table">
+                    <thead>
+                        <tr>
+                            <th class="sortable" onclick="sortOrders('orderNumber')">Order #</th>
+                            <th class="sortable" onclick="sortOrders('date')">Date</th>
+                            <th class="sortable" onclick="sortOrders('serviceController')">Service Controller</th>
+                            <th class="sortable" onclick="sortOrders('worksOrder')">Works Order</th>
+                            <th>Parts</th>
+                            <th class="sortable" onclick="sortOrders('status')">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ordersTableBody">
+                        <tr><td colspan="6" style="text-align:center;padding:60px;color:#666;">Loading orders...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
+    </div><!-- /container -->
 
-        <!-- BULK IMPORT MODAL -->
-        <div class="modal-overlay" id="bulkImportModal">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2>Bulk Import Parts</h2>
-                    <button class="modal-close" onclick="closeBulkImport()">✕</button>
+    <!-- ══ CART PANEL ══ -->
+    <div class="cart-section" id="cartSection">
+        <div class="cart-close" onclick="toggleCart()">✕</div>
+        <div class="cart-header">
+            <h2>Order Cart</h2>
+            <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
+        </div>
+        <div id="cartItems" class="cart-items"></div>
+
+        <div class="order-history-section" id="orderHistorySection" style="display:none;">
+            <div class="order-history-title">📋 Previous Orders for This Truck</div>
+            <div class="order-history-list" id="orderHistoryList"></div>
+        </div>
+
+        <div class="order-form" id="orderForm" style="display:none;">
+            <div class="form-group">
+                <label>Service Controller *</label>
+                <input type="text" id="serviceController" required>
+            </div>
+            <div class="form-group">
+                <label>Works Order *</label>
+                <input type="text" id="worksOrder" required>
+            </div>
+            <div class="form-group">
+                <label>Machine Serial</label>
+                <input type="text" id="machineSerial" oninput="loadOrderHistory()">
+            </div>
+            <div class="form-group">
+                <label>Model</label>
+                <select id="orderModel">
+                    <option value="">Select model</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Comments</label>
+                <textarea id="comments" placeholder="Additional notes..."></textarea>
+            </div>
+            <!-- Urgent flag -->
+            <label class="urgent-toggle" id="urgentToggle" onclick="toggleUrgent()">
+                <input type="checkbox" id="urgentCheckbox">
+                <div class="urgent-indicator" id="urgentIndicator">⚑</div>
+                <span class="urgent-label">Mark as Urgent Order</span>
+            </label>
+            <button class="submit-order" id="submitBtn">Submit Order</button>
+        </div>
+
+        <div class="empty-state" id="emptyCart">
+            <div class="empty-state-icon">🛒</div>
+            <p>Your cart is empty</p>
+            <p style="font-size:.9em;margin-top:8px;">Add parts to get started</p>
+        </div>
+    </div>
+
+    <!-- ══ BULK IMPORT MODAL ══ -->
+    <div class="modal-overlay" id="bulkImportModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Bulk Import Parts</h2>
+                <button class="modal-close" onclick="closeBulkImport()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="bulk-import-instructions">
+                    <strong>Instructions:</strong> Paste part numbers below, one per line. The system will search and add matching parts to your cart.
                 </div>
-                <div class="modal-body">
-                    <div class="bulk-import-instructions">
-                        <strong>Instructions:</strong> Paste part numbers below, one per line. The system will search and add matching parts to your cart.
-                    </div>
-                    <textarea class="bulk-import-textarea" id="bulkImportTextarea" placeholder="30071
-30073A
-30074
-3008262
-..."></textarea>
-                    <div class="bulk-import-results" id="bulkImportResults"></div>
-                    <div class="modal-actions">
-                        <button class="modal-btn modal-btn-secondary" onclick="closeBulkImport()">Cancel</button>
-                        <button class="modal-btn modal-btn-primary" onclick="processBulkImport()">Add to Cart</button>
-                    </div>
+                <textarea class="bulk-import-textarea" id="bulkImportTextarea" placeholder="30071&#10;30073A&#10;30074&#10;3008262&#10;..."></textarea>
+                <div class="bulk-import-results" id="bulkImportResults"></div>
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeBulkImport()">Cancel</button>
+                    <button class="modal-btn modal-btn-primary" onclick="processBulkImport()">Add to Cart</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <script>
-        const API_URL = 'https://script.google.com/macros/s/AKfycbzaaerk9g1JWGOjXKfrm3m9Knr1OEohRxoMSio3imj8K3xF5RgrC4FL8WWbnzlv4Mr8/exec';
-        
-        let allParts = [];
-        let filteredParts = [];
-        let cart = [];
-        let models = [];
-        let orders = [];
-        let currentUser = null;
-        let lastOrderCount = 0;
-        let notificationCheckInterval = null;
-        let frequentParts = [];
+</div><!-- /app-container -->
 
-        // Check if user is already logged in
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedSession = localStorage.getItem('flexiSession');
-            if (savedSession) {
-                try {
-                    const session = JSON.parse(savedSession);
-                    if (session.username && session.timestamp) {
-                        // Check if session is less than 24 hours old
-                        const hoursSinceLogin = (Date.now() - session.timestamp) / (1000 * 60 * 60);
-                        if (hoursSinceLogin < 24) {
-                            currentUser = session;
-                            showApp();
-                            return;
-                        }
-                    }
-                } catch (e) {
-                    console.error('Error parsing session:', e);
-                }
-            }
-            // No valid session, show login
-            document.getElementById('loginPage').style.display = 'flex';
-        });
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbzaaerk9g1JWGOjXKfrm3m9Knr1OEohRxoMSio3imj8K3xF5RgrC4FL8WWbnzlv4Mr8/exec';
 
-        // Login form handler
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            const loginBtn = document.getElementById('loginBtn');
-            const loginError = document.getElementById('loginError');
+let allParts = [];
+let filteredParts = [];
+let cart = [];
+let orders = [];
+let displayedOrders = []; // after filter/sort
+let currentUser = null;
+let lastOrderCount = 0;
+let notificationCheckInterval = null;
+let frequentParts = [];
+let isUrgent = false;
 
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Logging in...';
-            loginError.classList.remove('show');
+// Sort state
+let sortField = 'date';
+let sortDir = 'desc';
 
-            try {
-                const response = await fetch(`${API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
-                const data = await response.json();
-
-                if (data.success) {
-                    currentUser = {
-                        username: data.user.username,
-                        name: data.user.name,
-                        role: data.user.role,
-                        timestamp: Date.now()
-                    };
-                    localStorage.setItem('flexiSession', JSON.stringify(currentUser));
+// ── SESSION ──
+document.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('flexiSession');
+    if (saved) {
+        try {
+            const session = JSON.parse(saved);
+            if (session.username && session.timestamp) {
+                if ((Date.now() - session.timestamp) / 3600000 < 24) {
+                    currentUser = session;
                     showApp();
-                } else {
-                    loginError.classList.add('show');
-                    loginBtn.disabled = false;
-                    loginBtn.textContent = 'Login';
+                    return;
                 }
-            } catch (error) {
-                console.error('Login error:', error);
-                loginError.textContent = 'Connection error. Please try again.';
-                loginError.classList.add('show');
-                loginBtn.disabled = false;
-                loginBtn.textContent = 'Login';
             }
-        });
+        } catch(e) {}
+    }
+    document.getElementById('loginPage').style.display = 'flex';
+});
 
-        function logout() {
-            localStorage.removeItem('flexiSession');
-            localStorage.removeItem('flexiPartsCart');
-            if (notificationCheckInterval) {
-                clearInterval(notificationCheckInterval);
-            }
-            location.reload();
+document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    const loginBtn = document.getElementById('loginBtn');
+    const loginError = document.getElementById('loginError');
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Logging in...';
+    loginError.classList.remove('show');
+    try {
+        const res = await fetch(`${API_URL}?action=login&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
+        const data = await res.json();
+        if (data.success) {
+            currentUser = { username: data.user.username, name: data.user.name, role: data.user.role, timestamp: Date.now() };
+            localStorage.setItem('flexiSession', JSON.stringify(currentUser));
+            showApp();
+        } else {
+            loginError.classList.add('show');
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'Login';
         }
+    } catch(err) {
+        loginError.textContent = 'Connection error. Please try again.';
+        loginError.classList.add('show');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+    }
+});
 
-        async function showApp() {
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('appContainer').classList.add('show');
-            document.getElementById('userName').textContent = currentUser.name || currentUser.username;
-            
-            await init();
-            
-            // Start notification polling
-            startNotificationPolling();
-            
-            // Request notification permission
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-        }
-
-        async function init() {
-            setGreeting();
-            await loadParts();
-            await loadOrders();
-            await loadFrequentParts();
-            populateModels();
-            setupEventListeners();
-            loadCartFromStorage();
-            updateCart();
-        }
-
-        function setGreeting() {
-            const hour = new Date().getHours();
-            let greeting = 'GOOD EVENING';
-            
-            if (hour < 12) {
-                greeting = 'GOOD MORNING';
-            } else if (hour < 18) {
-                greeting = 'GOOD AFTERNOON';
-            }
-            
-            document.getElementById('greeting').textContent = greeting;
-        }
-
-        function showPage(page) {
-            if (page === 'parts') {
-                document.getElementById('partsPage').classList.add('active');
-                document.getElementById('ordersPage').classList.remove('active');
-            } else if (page === 'orders') {
-                document.getElementById('partsPage').classList.remove('active');
-                document.getElementById('ordersPage').classList.add('active');
-                renderOrders();
-            }
-        }
-
-        function toggleCart() {
-            document.getElementById('cartSection').classList.toggle('open');
-        }
-
-        function populateModels() {
-            const modelSelect = document.getElementById('orderModel');
-
-            const flexiModels = [
-                'Flexi G3',
-                'Flexi G4',
-                '15VN/VNA',
-                '17N/1000',
-                '17N+/1100',
-                '20S/1200',
-                '22S+/1250',
-                '25W+/1350',
-                'MAX 22S+/1250',
-                'MAX 25W/1350',
-                'MAX 25EW/1400',
-                'Other'
-            ];
-
-            flexiModels.forEach(model => {
-                const option = document.createElement('option');
-                option.value = model;
-                option.textContent = model;
-                modelSelect.appendChild(option);
-            });
-        }
-
-        async function loadParts() {
-            try {
-                const response = await fetch(`${API_URL}?action=getAllParts`);
-                const data = await response.json();
-                if (data.success && data.parts && data.parts.length > 0) {
-                    allParts = data.parts;
-                    document.getElementById('totalPartsCount').textContent = allParts.length;
-                    console.log(`✅ Loaded ${allParts.length} parts from API`);
-                } else {
-                    console.warn('No parts in API response, loading demo data');
-                    loadDemoParts();
-                }
-            } catch (error) {
-                console.error('Error loading parts:', error);
-                loadDemoParts();
-            }
-        }
-
-        function loadDemoParts() {
-            allParts = [
-                { partNum: '2015.00.002', supplier: 'SUP-001', desc: 'Fork Pin Kit round head', system: 'MAST' },
-                { partNum: '3004082B', supplier: 'SUP-002', desc: 'VNA back of mast pipe', system: 'MAST' },
-                { partNum: '30071', supplier: 'SUP-003', desc: 'Spacer (drive axle)', system: 'TRANSMISSION' },
-                { partNum: '30073A', supplier: 'SUP-004', desc: 'Wheel Helical', system: 'TRANSMISSION' },
-                { partNum: '30074', supplier: 'SUP-005', desc: 'Intermediate gear', system: 'TRANSMISSION' }
-            ];
-            document.getElementById('totalPartsCount').textContent = allParts.length;
-        }
-
-        async function loadOrders() {
-            try {
-                const response = await fetch(`${API_URL}?action=getOrders`);
-                const data = await response.json();
-                if (data.success && data.orders) {
-                    orders = data.orders;
-                    lastOrderCount = orders.length;
-                    updateOrderStats();
-                }
-            } catch (error) {
-                console.error('Error loading orders:', error);
-                orders = [];
-                updateOrderStats();
-            }
-        }
-
-        async function loadFrequentParts() {
-            try {
-                const response = await fetch(`${API_URL}?action=getFrequentParts&limit=10`);
-                const data = await response.json();
-                if (data.success && data.parts && data.parts.length > 0) {
-                    frequentParts = data.parts;
-                    renderFrequentParts();
-                }
-            } catch (error) {
-                console.error('Error loading frequent parts:', error);
-            }
-        }
-
-        function renderFrequentParts() {
-    if (frequentParts.length === 0) return;
-
-    const widget = document.getElementById('frequentPartsWidget');
-    const grid = document.getElementById('frequentPartsGrid');
-    
-    widget.style.display = 'block';
-    
-    grid.innerHTML = frequentParts.map(item => {
-        const partNumber = item.part['Part Number'] || item.part.partNum || item.part.partNumber || 'N/A';
-        const description = item.part['Description'] || item.part.desc || item.part.description || 'No description';
-        
-        return `
-        <div class="frequent-part-item" onclick='quickAddPart(${JSON.stringify(item.part).replace(/'/g, "&#39;")})'>
-            <div class="frequent-part-num">${partNumber}</div>
-            <div class="frequent-part-desc">${description}</div>
-            <div class="frequent-part-count">Ordered ${item.count} times</div>
-        </div>
-    `}).join('');
+function logout() {
+    localStorage.removeItem('flexiSession');
+    localStorage.removeItem('flexiPartsCart');
+    if (notificationCheckInterval) clearInterval(notificationCheckInterval);
+    location.reload();
 }
-        function quickAddPart(part) {
-            addToCart(part);
+
+async function showApp() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('appContainer').classList.add('show');
+    document.getElementById('userName').textContent = currentUser.name || currentUser.username;
+    await init();
+    startNotificationPolling();
+    if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
+}
+
+async function init() {
+    setGreeting();
+    await loadParts();
+    await loadOrders();
+    await loadFrequentParts();
+    populateModels();
+    setupEventListeners();
+    loadCartFromStorage();
+    updateCart();
+}
+
+function setGreeting() {
+    const h = new Date().getHours();
+    document.getElementById('greeting').textContent = h < 12 ? 'GOOD MORNING' : h < 18 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
+}
+
+function showPage(page) {
+    document.getElementById('partsPage').classList.toggle('active', page === 'parts');
+    document.getElementById('ordersPage').classList.toggle('active', page === 'orders');
+    if (page === 'orders') renderOrders();
+}
+
+function toggleCart() { document.getElementById('cartSection').classList.toggle('open'); }
+
+function populateModels() {
+    const sel = document.getElementById('orderModel');
+    ['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other']
+        .forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
+}
+
+// ── DATA LOADING ──
+async function loadParts() {
+    try {
+        const res = await fetch(`${API_URL}?action=getAllParts`);
+        const data = await res.json();
+        if (data.success && data.parts?.length) {
+            allParts = data.parts;
+        } else {
+            loadDemoParts();
         }
+    } catch(e) { loadDemoParts(); }
+    document.getElementById('totalPartsCount').textContent = allParts.length;
+}
 
-        function updateOrderStats() {
-            document.getElementById('totalOrders').textContent = orders.length;
-            document.getElementById('pendingOrders').textContent = 
-                orders.filter(o => o.status === 'Pending').length;
-            document.getElementById('completedOrders').textContent = 
-                orders.filter(o => o.status === 'Completed').length;
+function loadDemoParts() {
+    allParts = [
+        { 'Part Number':'2015.00.002', 'Supplier Code':'SUP-001', 'Description':'Fork Pin Kit round head', 'System':'MAST' },
+        { 'Part Number':'3004082B',    'Supplier Code':'SUP-002', 'Description':'VNA back of mast pipe',   'System':'MAST' },
+        { 'Part Number':'30071',       'Supplier Code':'SUP-003', 'Description':'Spacer (drive axle)',     'System':'TRANSMISSION' },
+        { 'Part Number':'30073A',      'Supplier Code':'SUP-004', 'Description':'Wheel Helical',           'System':'TRANSMISSION' },
+        { 'Part Number':'30074',       'Supplier Code':'SUP-005', 'Description':'Intermediate gear',       'System':'TRANSMISSION' }
+    ];
+}
+
+async function loadOrders() {
+    try {
+        const res = await fetch(`${API_URL}?action=getOrders`);
+        const data = await res.json();
+        if (data.success && data.orders) {
+            orders = data.orders;
+            lastOrderCount = orders.length;
         }
+    } catch(e) { orders = []; }
+    updateOrderStats();
+    applyFilters();
+}
 
-        function renderOrders() {
-            const tbody = document.getElementById('ordersTableBody');
-            
-            if (orders.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align: center; padding: 60px; color: #666;">
-                            No orders found
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            tbody.innerHTML = orders.map((order, index) => `
-                <tr onclick="openOrderModal(${index})">
-                    <td><span class="order-number">${order.orderNumber || 'ORD-' + (index + 1)}</span></td>
-                    <td>${order.date || order.orderDate || 'N/A'}</td>
-                    <td>${order.serviceController || order.engineer || 'N/A'}</td>
-                    <td>${order.worksOrder || 'N/A'}</td>
-                    <td>${order.partsCount || (order.parts ? order.parts.length : 0)} parts</td>
-                    <td><span class="order-status status-${(order.status || 'pending').toLowerCase()}">${order.status || 'Pending'}</span></td>
-                </tr>
-            `).join('');
+async function loadFrequentParts() {
+    try {
+        const res = await fetch(`${API_URL}?action=getFrequentParts&limit=10`);
+        const data = await res.json();
+        if (data.success && data.parts?.length) {
+            frequentParts = data.parts;
+            renderFrequentParts();
         }
+    } catch(e) {}
+}
 
-        function openOrderModal(index) {
-            const order = orders[index];
-            
-            // Create modal HTML
-            const modal = document.createElement('div');
-            modal.className = 'modal-overlay active';
-            modal.innerHTML = `
-                <div class="modal">
-                    <div class="modal-header">
-                        <h2>${order.orderNumber || 'Order Details'}</h2>
-                        <button class="modal-close" onclick="closeOrderModal()">✕</button>
+function renderFrequentParts() {
+    if (!frequentParts.length) return;
+    document.getElementById('frequentPartsWidget').style.display = 'block';
+    document.getElementById('frequentPartsGrid').innerHTML = frequentParts.map(item => {
+        const num  = item.part['Part Number'] || item.part.partNum || 'N/A';
+        const desc = item.part['Description'] || item.part.desc || 'No description';
+        return `<div class="frequent-part-item" onclick='quickAddPart(${JSON.stringify(item.part).replace(/'/g,"&#39;")})'>
+            <div class="frequent-part-num">${num}</div>
+            <div class="frequent-part-desc">${desc}</div>
+            <div class="frequent-part-count">Ordered ${item.count} times</div>
+        </div>`;
+    }).join('');
+}
+
+function quickAddPart(part) { addToCart(part); }
+
+function updateOrderStats() {
+    document.getElementById('totalOrders').textContent    = orders.length;
+    document.getElementById('pendingOrders').textContent  = orders.filter(o => o.status === 'Pending').length;
+    document.getElementById('completedOrders').textContent = orders.filter(o => o.status === 'Completed').length;
+}
+
+// ════════════════════════════════════════
+//  FILTER, SORT & RENDER ORDERS  (NEW)
+// ════════════════════════════════════════
+
+function applyFilters() {
+    const search    = (document.getElementById('filterSearch')?.value   || '').toLowerCase();
+    const status    = document.getElementById('filterStatus')?.value    || '';
+    const dateFrom  = document.getElementById('filterDateFrom')?.value  || '';
+    const dateTo    = document.getElementById('filterDateTo')?.value    || '';
+
+    displayedOrders = orders.filter(o => {
+        // text search
+        if (search) {
+            const hay = [
+                o.orderNumber, o.serviceController, o.engineer,
+                o.worksOrder, o.machineSerial, o.model
+            ].join(' ').toLowerCase();
+            if (!hay.includes(search)) return false;
+        }
+        // status
+        if (status && (o.status || 'Pending') !== status) return false;
+        // date range
+        if (dateFrom || dateTo) {
+            const raw = o.date || o.orderDate || '';
+            const d   = raw.slice(0, 10); // "YYYY-MM-DD"
+            if (dateFrom && d < dateFrom) return false;
+            if (dateTo   && d > dateTo)   return false;
+        }
+        return true;
+    });
+
+    // sort
+    displayedOrders.sort((a, b) => {
+        let va = fieldVal(a, sortField);
+        let vb = fieldVal(b, sortField);
+        if (va < vb) return sortDir === 'asc' ? -1 :  1;
+        if (va > vb) return sortDir === 'asc' ?  1 : -1;
+        return 0;
+    });
+
+    document.getElementById('filteredOrdersCount').textContent = displayedOrders.length;
+    renderOrders();
+}
+
+function fieldVal(o, f) {
+    const map = {
+        orderNumber: o.orderNumber || '',
+        date: o.date || o.orderDate || '',
+        serviceController: (o.serviceController || o.engineer || '').toLowerCase(),
+        worksOrder: (o.worksOrder || '').toLowerCase(),
+        status: (o.status || 'Pending').toLowerCase()
+    };
+    return map[f] ?? '';
+}
+
+function sortOrders(field) {
+    if (sortField === field) {
+        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+    } else {
+        sortField = field;
+        sortDir   = 'asc';
+    }
+    // Update header classes
+    document.querySelectorAll('.orders-table th').forEach(th => {
+        th.classList.remove('sort-asc','sort-desc');
+    });
+    const idx = { orderNumber:0, date:1, serviceController:2, worksOrder:3, status:5 }[field];
+    if (idx !== undefined) {
+        const th = document.querySelectorAll('.orders-table th')[idx];
+        th?.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+    applyFilters();
+}
+
+function clearFilters() {
+    document.getElementById('filterSearch').value   = '';
+    document.getElementById('filterStatus').value   = '';
+    document.getElementById('filterDateFrom').value = '';
+    document.getElementById('filterDateTo').value   = '';
+    applyFilters();
+}
+
+function renderOrders() {
+    const tbody = document.getElementById('ordersTableBody');
+    if (!displayedOrders.length) {
+        const msg = orders.length ? 'No orders match your filters' : 'No orders found';
+        tbody.innerHTML = `<tr class="no-results-row"><td colspan="6">${msg}</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = displayedOrders.map((order, i) => {
+        const urgentBadge = order.urgent ? '<span class="urgent-badge">⚑ Urgent</span>' : '';
+        return `<tr onclick="openOrderModal(${orders.indexOf(order)})">
+            <td><span class="order-number">${order.orderNumber || 'ORD-' + (i+1)}</span>${urgentBadge}</td>
+            <td>${order.date || order.orderDate || 'N/A'}</td>
+            <td>${order.serviceController || order.engineer || 'N/A'}</td>
+            <td>${order.worksOrder || 'N/A'}</td>
+            <td>${order.partsCount || (order.parts?.length || 0)} parts</td>
+            <td><span class="order-status status-${(order.status||'pending').toLowerCase()}">${order.status||'Pending'}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+// ════════════════════════════════════════
+//  EXPORT  (NEW)
+// ════════════════════════════════════════
+
+function exportCSV() {
+    if (!displayedOrders.length) { showToast('No orders to export'); return; }
+
+    const headers = ['Order Number','Date','Service Controller','Works Order','Machine Serial','Model','Parts Count','Status','Urgent','Notes'];
+    const rows = displayedOrders.map(o => [
+        o.orderNumber || '',
+        o.date || o.orderDate || '',
+        o.serviceController || o.engineer || '',
+        o.worksOrder || '',
+        o.machineSerial || '',
+        o.model || '',
+        o.partsCount || (o.parts?.length || 0),
+        o.status || 'Pending',
+        o.urgent ? 'Yes' : 'No',
+        (o.comments || o.notes || '').replace(/"/g, '""')
+    ].map(v => `"${v}"`).join(','));
+
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `flexi-orders-${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast(`Exported ${displayedOrders.length} orders to CSV`);
+}
+
+function exportPDF() {
+    // Temporarily set print title
+    const d = new Date().toLocaleDateString('en-GB');
+    document.getElementById('printTitle').textContent = `Flexi Parts — Orders Export  (${displayedOrders.length} orders, printed ${d})`;
+    window.print();
+}
+
+// ════════════════════════════════════════
+//  ORDER MODAL WITH STATUS TIMELINE  (NEW)
+// ════════════════════════════════════════
+
+function buildTimeline(order) {
+    const status = (order.status || 'Pending');
+    const isCancelled = status === 'Cancelled';
+    const isCompleted = status === 'Completed';
+    const isPending   = status === 'Pending';
+
+    const orderDate    = order.date || order.orderDate || '';
+    const completedAt  = order.completedAt || '';
+    const cancelledAt  = order.cancelledAt || '';
+
+    const steps = [
+        {
+            icon: '📋',
+            title: 'Order Placed',
+            desc: `Submitted by ${order.serviceController || order.engineer || 'Unknown'}`,
+            timestamp: orderDate,
+            state: 'done'
+        },
+        {
+            icon: '🔄',
+            title: 'Processing',
+            desc: 'Order received by parts team',
+            timestamp: isPending ? 'In progress...' : (completedAt || cancelledAt || ''),
+            state: isCancelled ? 'cancelled' : (isCompleted ? 'done' : 'active')
+        },
+        {
+            icon: isCancelled ? '✕' : '✅',
+            title: isCancelled ? 'Cancelled' : 'Completed',
+            desc: isCancelled ? 'Order was cancelled' : 'All parts fulfilled',
+            timestamp: isCancelled ? (cancelledAt || '') : (completedAt || (isCompleted ? 'Completed' : '')),
+            state: isCancelled ? 'cancelled' : (isCompleted ? 'done' : 'inactive')
+        }
+    ];
+
+    return `<div class="timeline">${steps.map(s => {
+        const dotClass = s.state === 'done' ? 'done' : s.state === 'active' ? 'active' : s.state === 'cancelled' ? 'cancelled' : '';
+        const titleClass = s.state === 'done' ? 'done' : s.state === 'active' ? 'active' : s.state === 'cancelled' ? 'cancelled-title' : 'inactive';
+        return `<div class="timeline-step">
+            <div class="timeline-dot ${dotClass}">${s.icon}</div>
+            <div class="timeline-content">
+                <div class="timeline-title ${titleClass}">${s.title}</div>
+                <div class="timeline-desc">${s.desc}</div>
+                ${s.timestamp ? `<div class="timeline-timestamp">${s.timestamp}</div>` : ''}
+            </div>
+        </div>`;
+    }).join('')}</div>`;
+}
+
+function openOrderModal(index) {
+    const order = orders[index];
+    const urgentBadge = order.urgent ? '<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>' : '';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal-overlay active';
+    modal.id = 'orderModal';
+    modal.innerHTML = `
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <h2>${order.orderNumber || 'Order Details'}</h2>
+                    ${urgentBadge}
+                </div>
+                <button class="modal-close" onclick="closeOrderModal()">✕</button>
+            </div>
+            <div class="modal-body">
+
+                <!-- Info grid -->
+                <div class="modal-grid">
+                    <div class="modal-field">
+                        <div class="modal-field-label">Date</div>
+                        <div class="modal-field-value">${order.date || order.orderDate || 'N/A'}</div>
                     </div>
-                    <div class="modal-body">
-                        <div class="modal-section">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-                                <div>
-                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Date</div>
-                                    <div style="font-weight: 600;">${order.date || order.orderDate || 'N/A'}</div>
-                                </div>
-                                <div>
-                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Service Controller</div>
-                                    <div style="font-weight: 600;">${order.serviceController || order.engineer || 'N/A'}</div>
-                                </div>
-                                <div>
-                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Works Order</div>
-                                    <div style="font-weight: 600;">${order.worksOrder || 'N/A'}</div>
-                                </div>
-                                <div>
-                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Machine Serial</div>
-                                    <div style="font-weight: 600;">${order.machineSerial || 'N/A'}</div>
-                                </div>
-                                <div>
-                                    <div style="color: #666; font-size: 0.85em; margin-bottom: 4px; text-transform: uppercase; font-weight: 600;">Model</div>
-                                    <div style="font-weight: 600;">${order.model || 'N/A'}</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <div class="modal-section-title">Order Status</div>
-                            <select id="modalOrderStatus" style="width: 100%; padding: 12px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: inherit; font-size: 1em;">
-                                <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                                <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                            </select>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <div class="modal-section-title">Parts (${order.parts ? order.parts.length : 0})</div>
-                            <div style="max-height: 300px; overflow-y: auto;">
-                                ${order.parts && order.parts.length > 0 ? order.parts.map(part => {
-                                    const partNum = part['Part Number'] || part.partNum || part.partNumber || 'N/A';
-                                    const desc = part['Description'] || part.desc || part.description || 'No description';
-                                    return `
-                                        <div style="background: var(--dark-bg); padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid var(--border);">
-                                            <div style="display: flex; justify-content: space-between; align-items: start;">
-                                                <div>
-                                                    <div style="font-weight: 700; color: var(--primary-red); margin-bottom: 4px;">${partNum}</div>
-                                                    <div style="color: var(--text-secondary); font-size: 0.9em;">${desc}</div>
-                                                </div>
-                                                <div style="color: white; font-weight: 600;">Qty: ${part.qty || 1}</div>
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('') : '<p style="color: #666;">No parts in this order</p>'}
-                            </div>
-                        </div>
-                        
-                        <div class="modal-section">
-                            <div class="modal-section-title">Notes</div>
-                            <textarea id="modalOrderNotes" style="width: 100%; min-height: 100px; padding: 15px; background: var(--dark-bg); border: 1px solid var(--border); border-radius: 8px; color: white; font-family: inherit; font-size: 0.95em; resize: vertical;" placeholder="Add notes about this order...">${order.comments || order.notes || ''}</textarea>
-                        </div>
-                        
-                        <div class="modal-actions">
-                            <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button>
-                            <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button>
-                        </div>
+                    <div class="modal-field">
+                        <div class="modal-field-label">Service Controller</div>
+                        <div class="modal-field-value">${order.serviceController || order.engineer || 'N/A'}</div>
+                    </div>
+                    <div class="modal-field">
+                        <div class="modal-field-label">Works Order</div>
+                        <div class="modal-field-value">${order.worksOrder || 'N/A'}</div>
+                    </div>
+                    <div class="modal-field">
+                        <div class="modal-field-label">Machine Serial</div>
+                        <div class="modal-field-value">${order.machineSerial || 'N/A'}</div>
+                    </div>
+                    <div class="modal-field">
+                        <div class="modal-field-label">Model</div>
+                        <div class="modal-field-value">${order.model || 'N/A'}</div>
+                    </div>
+                    <div class="modal-field">
+                        <div class="modal-field-label">Parts Count</div>
+                        <div class="modal-field-value">${order.parts?.length || order.partsCount || 0} parts</div>
                     </div>
                 </div>
-            `;
-            
-            document.body.appendChild(modal);
-            modal.id = 'orderModal';
-        }
 
-        async function saveOrderChanges(index) {
-            const order = orders[index];
-            const newStatus = document.getElementById('modalOrderStatus').value;
-            const newNotes = document.getElementById('modalOrderNotes').value;
-            
-            const saveBtn = event.target;
-            saveBtn.disabled = true;
-            saveBtn.textContent = 'Saving...';
-            
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        action: 'updateOrder',
-                        orderNumber: order.orderNumber,
-                        status: newStatus,
-                        notes: newNotes
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Update local order
-                    orders[index].status = newStatus;
-                    orders[index].notes = newNotes;
-                    orders[index].comments = newNotes;
-                    
-                    updateOrderStats();
-                    renderOrders();
-                    closeOrderModal();
-                    showToast('Order updated successfully!');
-                } else {
-                    showToast('Error updating order');
-                    saveBtn.disabled = false;
-                    saveBtn.textContent = 'Save Changes';
-                }
-            } catch (error) {
-                console.error('Error updating order:', error);
-                showToast('Error updating order');
-                saveBtn.disabled = false;
-                saveBtn.textContent = 'Save Changes';
-            }
-        }
-
-        function closeOrderModal() {
-            const modal = document.getElementById('orderModal');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
-        function setupEventListeners() {
-            document.getElementById('searchInput').addEventListener('input', filterParts);
-            document.getElementById('submitBtn').addEventListener('click', submitOrder);
-            document.getElementById('machineSerial').addEventListener('input', loadOrderHistory);
-        }
-
-        function filterParts() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-            const resultsHeader = document.getElementById('resultsHeader');
-            
-            if (!searchTerm) {
-                resultsHeader.style.display = 'none';
-                document.getElementById('resultsContainer').innerHTML = `
-                    <div class="search-prompt">
-                        <div class="search-prompt-icon">🔍</div>
-                        <div class="search-prompt-title">Start Searching</div>
-                        <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
-                    </div>
-                `;
-                document.getElementById('filteredCount').textContent = '0';
-                return;
-            }
-
-            resultsHeader.style.display = 'block';
-            document.getElementById('resultsCount').textContent = 'Searching...';
-
-            try {
-                const cleanSearchTerm = searchTerm.replace(/[\s\-\.]/g, '');
-                
-                filteredParts = allParts.filter(part => {
-                    // Use actual field names from Google Sheets
-                    const partNum = String(part['Part Number'] || part.partNum || part.partNumber || '').toLowerCase();
-                    const desc = String(part['Description'] || part.desc || part.description || '').toLowerCase();
-                    const supplier = String(part['Supplier Code'] || part.supplier || '').toLowerCase();
-                    const system = String(part['System'] || part.system || '').toLowerCase();
-                    
-                    const partNumClean = partNum.replace(/[\s\-\.]/g, '');
-                    
-                    return partNumClean.includes(cleanSearchTerm) ||
-                           partNum.includes(searchTerm) ||
-                           desc.includes(searchTerm) ||
-                           supplier.includes(searchTerm) ||
-                           system.includes(searchTerm);
-                });
-
-                renderParts();
-            } catch (error) {
-                console.error('Search error:', error);
-                document.getElementById('resultsCount').textContent = 'Search error';
-            }
-        }
-
-        function renderParts() {
-            const container = document.getElementById('resultsContainer');
-            const resultCount = filteredParts.length;
-            
-            document.getElementById('resultsCount').textContent = `${resultCount} part${resultCount !== 1 ? 's' : ''} found`;
-            document.getElementById('filteredCount').textContent = resultCount;
-
-            if (resultCount === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';
-                return;
-            }
-
-            const displayLimit = 100;
-            const partsToShow = filteredParts.slice(0, displayLimit);
-            const hasMore = resultCount > displayLimit;
-
-            container.innerHTML = partsToShow.map(part => {
-                const partNumber = part['Part Number'] || part.partNum || part.partNumber || 'N/A';
-                const description = part['Description'] || part.desc || part.description || 'No description';
-                const supplier = part['Supplier Code'] || part.supplier || '';
-                const system = part['System'] || part.system || '';
-                const stockLevel = part['Stock Level'] || part.stockLevel || '';
-                
-                return `
-                <div class="part-card">
-                    <div class="part-number">${partNumber}</div>
-                    <div class="part-desc">${description}</div>
-                    <div class="part-details">
-                        ${supplier ? `<div class="part-detail">
-                            <span class="part-detail-label">Supplier</span>
-                            <span class="part-detail-value">${supplier}</span>
-                        </div>` : ''}
-                        ${system ? `<div class="part-detail">
-                            <span class="part-detail-label">System</span>
-                            <span class="part-detail-value">${system}</span>
-                        </div>` : ''}
-                        ${stockLevel ? `<div class="part-detail">
-                            <span class="part-detail-label">Stock</span>
-                            <span class="part-detail-value">${stockLevel}</span>
-                        </div>` : ''}
-                    </div>
-                    <button class="add-to-cart" onclick='addToCart(${JSON.stringify({
-                        'Part Number': partNumber,
-                        'Description': description,
-                        'Supplier Code': supplier,
-                        'System': system,
-                        'Stock Level': stockLevel
-                    }).replace(/'/g, "&#39;")})'>
-                        Add to Cart
-                    </button>
+                <!-- Status Timeline (NEW) -->
+                <div class="modal-section">
+                    <div class="modal-section-title">Order Status Timeline</div>
+                    ${buildTimeline(order)}
                 </div>
-            `}).join('');
 
-            if (hasMore) {
-                const showMoreDiv = document.createElement('div');
-                showMoreDiv.style.gridColumn = '1 / -1';
-                showMoreDiv.style.textAlign = 'center';
-                showMoreDiv.style.padding = '30px';
-                showMoreDiv.style.color = '#666';
-                showMoreDiv.innerHTML = `
-                    <p style="font-size: 1.2em; margin-bottom: 10px;">Showing first ${displayLimit} of ${resultCount} results</p>
-                    <p style="font-size: 0.95em;">💡 Refine your search to see specific parts</p>
-                `;
-                container.appendChild(showMoreDiv);
-            }
-        }
-
-        function addToCart(part) {
-            const partNumber = part['Part Number'] || part.partNum || part.partNumber;
-            const existing = cart.find(item => (item['Part Number'] || item.partNum || item.partNumber) === partNumber);
-            if (existing) {
-                existing.qty++;
-            } else {
-                cart.push({ ...part, qty: 1 });
-            }
-            updateCart();
-            saveCartToStorage();
-            showToast(`${partNumber} added to cart`);
-        }
-
-        function updateCart() {
-            const cartItems = document.getElementById('cartItems');
-            const cartBadge = document.getElementById('cartBadge');
-            const emptyCart = document.getElementById('emptyCart');
-            const orderForm = document.getElementById('orderForm');
-
-            cartBadge.textContent = cart.length;
-            document.getElementById('cartItemsCount').textContent = cart.length;
-            document.getElementById('cartItemsCountText').textContent = cart.length;
-
-            if (cart.length === 0) {
-                cartItems.innerHTML = '';
-                emptyCart.style.display = 'block';
-                orderForm.style.display = 'none';
-                return;
-            }
-
-            emptyCart.style.display = 'none';
-            orderForm.style.display = 'block';
-
-            cartItems.innerHTML = cart.map((item, index) => {
-                const partNumber = item['Part Number'] || item.partNum || item.partNumber || 'N/A';
-                const description = item['Description'] || item.desc || item.description || 'No description';
-                
-                return `
-                <div class="cart-item">
-                    <div class="cart-item-header">
-                        <div class="cart-item-number">${partNumber}</div>
-                        <button class="remove-item" onclick="removeFromCart(${index})">Remove</button>
-                    </div>
-                    <div class="cart-item-desc">${description}</div>
-                    <div class="qty-control">
-                        <button class="qty-btn" onclick="updateQty(${index}, -1)">−</button>
-                        <input type="number" class="qty-input" value="${item.qty}" 
-                            onchange="updateQtyDirect(${index}, this.value)" min="1">
-                        <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+                <!-- Update Status -->
+                <div class="modal-section">
+                    <div class="modal-section-title">Update Status</div>
+                    <div class="status-select-wrapper">
+                        <select id="modalOrderStatus">
+                            <option value="Pending"   ${order.status === 'Pending'   ? 'selected' : ''}>Pending</option>
+                            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
                     </div>
                 </div>
-            `}).join('');
-        }
 
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCart();
-            saveCartToStorage();
-        }
-
-        function updateQty(index, change) {
-            cart[index].qty = Math.max(1, cart[index].qty + change);
-            updateCart();
-            saveCartToStorage();
-        }
-
-        function updateQtyDirect(index, value) {
-            cart[index].qty = Math.max(1, parseInt(value) || 1);
-            updateCart();
-            saveCartToStorage();
-        }
-
-        function loadOrderHistory() {
-            const machineSerial = document.getElementById('machineSerial').value.trim();
-            const historySection = document.getElementById('orderHistorySection');
-            const historyList = document.getElementById('orderHistoryList');
-
-            if (!machineSerial) {
-                historySection.style.display = 'none';
-                return;
-            }
-
-            const machineOrders = orders.filter(o => 
-                (o.machineSerial || '').toLowerCase() === machineSerial.toLowerCase()
-            );
-
-            if (machineOrders.length === 0) {
-                historySection.style.display = 'none';
-                return;
-            }
-
-            historySection.style.display = 'block';
-            historyList.innerHTML = machineOrders.slice(0, 5).map(order => `
-                <div class="order-history-item" onclick='loadOrderParts(${JSON.stringify(order.parts).replace(/'/g, "&#39;")})'>
-                    <div class="order-history-item-header">
-                        <div class="order-history-number">${order.orderNumber}</div>
-                        <div class="order-history-date">${order.date || 'N/A'}</div>
+                <!-- Parts list -->
+                <div class="modal-section">
+                    <div class="modal-section-title">Parts (${order.parts?.length || 0})</div>
+                    <div class="modal-parts-list">
+                        ${order.parts?.length ? order.parts.map(p => {
+                            const num  = p['Part Number'] || p.partNum || p.partNumber || 'N/A';
+                            const desc = p['Description'] || p.desc || p.description || 'No description';
+                            return `<div class="modal-part-row">
+                                <div class="modal-part-info">
+                                    <div class="modal-part-num">${num}</div>
+                                    <div class="modal-part-desc">${desc}</div>
+                                </div>
+                                <div class="modal-part-qty">Qty: ${p.qty || 1}</div>
+                            </div>`;
+                        }).join('') : '<p style="color:#666;">No parts in this order</p>'}
                     </div>
-                    <div class="order-history-parts">${order.partsCount || 0} parts</div>
                 </div>
-            `).join('');
-        }
 
-        function loadOrderParts(parts) {
-            if (!parts || parts.length === 0) return;
-            
-            let addedCount = 0;
-            parts.forEach(part => {
-                const existing = cart.find(item => (item.partNum || item.partNumber) === (part.partNum || part.partNumber));
-                if (existing) {
-                    existing.qty += (part.qty || 1);
-                } else {
-                    cart.push({ ...part, qty: part.qty || 1 });
-                }
-                addedCount++;
-            });
-
-            updateCart();
-            saveCartToStorage();
-            showToast(`${addedCount} parts added from previous order`);
-        }
-
-        async function submitOrder() {
-            const serviceController = document.getElementById('serviceController').value.trim();
-            const worksOrder = document.getElementById('worksOrder').value.trim();
-
-            if (!serviceController || !worksOrder) {
-                showToast('Please fill required fields');
-                return;
-            }
-
-            if (cart.length === 0) {
-                showToast('Cart is empty');
-                return;
-            }
-
-            const machineSerial = document.getElementById('machineSerial').value.trim();
-            
-            const orderNumber = machineSerial ? 
-                `${machineSerial}-${String(Math.floor(Math.random() * 1000)).padStart(3, '0')}` :
-                `ORD-${String(Math.floor(Math.random() * 10000)).padStart(4, '0')}`;
-
-            const orderData = {
-                action: 'submitOrder',
-                orderNumber: orderNumber,
-                serviceController: serviceController,
-                worksOrder: worksOrder,
-                machineSerial: machineSerial,
-                model: document.getElementById('orderModel').value,
-                comments: document.getElementById('comments').value,
-                parts: cart,
-                submittedBy: currentUser.username
-            };
-
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
-
-            try {
-                const response = await fetch(API_URL, {
-                    method: 'POST',
-                    body: JSON.stringify(orderData)
-                });
-
-                const result = await response.json();
-
-                if (result.success) {
-                    showToast('Order submitted successfully!');
-                    
-                    orders.unshift({
-                        orderNumber: orderNumber,
-                        date: new Date().toISOString().slice(0, 16).replace('T', ' '),
-                        serviceController: serviceController,
-                        worksOrder: worksOrder,
-                        machineSerial: machineSerial,
-                        model: orderData.model,
-                        parts: cart,
-                        partsCount: cart.length,
-                        status: 'Pending',
-                        notes: orderData.comments
-                    });
-                    
-                    updateOrderStats();
-                    
-                    cart = [];
-                    updateCart();
-                    saveCartToStorage();
-                    clearForm();
-                    toggleCart();
-                } else {
-                    showToast('Error submitting order');
-                }
-            } catch (error) {
-                console.error('Error submitting order:', error);
-                showToast('Error submitting order');
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Order';
-            }
-        }
-
-        function clearForm() {
-            document.getElementById('serviceController').value = '';
-            document.getElementById('worksOrder').value = '';
-            document.getElementById('machineSerial').value = '';
-            document.getElementById('orderModel').value = '';
-            document.getElementById('comments').value = '';
-            document.getElementById('orderHistorySection').style.display = 'none';
-        }
-
-        function saveCartToStorage() {
-            localStorage.setItem('flexiPartsCart', JSON.stringify(cart));
-        }
-
-        function loadCartFromStorage() {
-            const saved = localStorage.getItem('flexiPartsCart');
-            if (saved) {
-                cart = JSON.parse(saved);
-            }
-        }
-
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.body.appendChild(toast);
-            setTimeout(() => toast.remove(), 3000);
-        }
-
-        // Bulk Import Functions
-        function openBulkImport() {
-            document.getElementById('bulkImportModal').classList.add('active');
-            document.getElementById('bulkImportTextarea').value = '';
-            document.getElementById('bulkImportResults').classList.remove('show');
-        }
-
-        function closeBulkImport() {
-            document.getElementById('bulkImportModal').classList.remove('active');
-        }
-
-        function processBulkImport() {
-            const textarea = document.getElementById('bulkImportTextarea');
-            const results = document.getElementById('bulkImportResults');
-            const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-
-            if (lines.length === 0) {
-                results.innerHTML = '<p style="color: #f87171;">No part numbers entered</p>';
-                results.classList.add('show');
-                return;
-            }
-
-            let found = 0;
-            let notFound = [];
-
-            lines.forEach(partNum => {
-                const cleanPartNum = partNum.replace(/[\s\-\.]/g, '').toLowerCase();
-                const part = allParts.find(p => {
-                    const pNum = String(p['Part Number'] || p.partNum || p.partNumber || '').toLowerCase().replace(/[\s\-\.]/g, '');
-                    return pNum === cleanPartNum || String(p['Part Number'] || p.partNum || p.partNumber || '').toLowerCase() === partNum.toLowerCase();
-                });
-
-                if (part) {
-                    addToCart(part);
-                    found++;
-                } else {
-                    notFound.push(partNum);
-                }
-            });
-
-            let resultHTML = `<p style="color: #4ade80; margin-bottom: 10px;">✓ Added ${found} parts to cart</p>`;
-            if (notFound.length > 0) {
-                resultHTML += `<p style="color: #facc15; margin-bottom: 5px;">⚠ Not found: ${notFound.length} parts</p>`;
-                resultHTML += `<p style="color: #666; font-size: 0.85em;">${notFound.join(', ')}</p>`;
-            }
-
-            results.innerHTML = resultHTML;
-            results.classList.add('show');
-
-            if (found > 0) {
-                setTimeout(() => {
-                    closeBulkImport();
-                    showToast(`Bulk import: ${found} parts added`);
-                }, 2000);
-            }
-        }
-
-        // Real-time Notification Polling
-        function startNotificationPolling() {
-            // Check for new orders every 30 seconds
-            notificationCheckInterval = setInterval(async () => {
-                try {
-                    const response = await fetch(`${API_URL}?action=getOrders`);
-                    const data = await response.json();
-                    
-                    if (data.success && data.orders) {
-                        const newOrderCount = data.orders.length;
-                        
-                        if (newOrderCount > lastOrderCount) {
-                            const newOrders = data.orders.slice(0, newOrderCount - lastOrderCount);
-                            
-                            // Update orders
-                            orders = data.orders;
-                            updateOrderStats();
-                            
-                            // Show notification for each new order
-                            newOrders.forEach(order => {
-                                showBrowserNotification(order);
-                            });
-                            
-                            // Update badge
-                            const badge = document.getElementById('notificationBadge');
-                            badge.textContent = newOrderCount - lastOrderCount;
-                            badge.style.display = 'flex';
-                            
-                            setTimeout(() => {
-                                badge.style.display = 'none';
-                            }, 10000);
-                        }
-                        
-                        lastOrderCount = newOrderCount;
-                    }
-                } catch (error) {
-                    console.error('Error checking for new orders:', error);
-                }
-            }, 30000); // 30 seconds
-        }
-
-        function showBrowserNotification(order) {
-            // In-app notification
-            const notification = document.createElement('div');
-            notification.className = 'browser-notification';
-            notification.innerHTML = `
-                <div class="browser-notification-title">🔔 New Order Received</div>
-                <div class="browser-notification-body">
-                    <strong>${order.orderNumber}</strong><br>
-                    From: ${order.serviceController || order.engineer}<br>
-                    Parts: ${order.partsCount || 0}
+                <!-- Notes -->
+                <div class="modal-section">
+                    <div class="modal-section-title">Notes</div>
+                    <textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes about this order...">${order.comments || order.notes || ''}</textarea>
                 </div>
-            `;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => notification.remove(), 10000);
 
-            // Browser notification if permission granted
-            if ('Notification' in window && Notification.permission === 'granted') {
-                new Notification('New Parts Order', {
-                    body: `${order.orderNumber} - ${order.partsCount || 0} parts from ${order.serviceController || order.engineer}`,
-                    icon: 'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg',
-                    tag: order.orderNumber
-                });
-            }
+                <div class="modal-actions">
+                    <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button>
+                    <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button>
+                </div>
+            </div>
+        </div>`;
 
-            // Play sound
-            const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUKrj7rhdGwU7ldbxzXwtBXJBkKfj7bNiHAU7k9XzzYIsBS58zfLdijYKFWO36+6YTg0MUKni7r5dGwU7mNTyz4UtBSJ6yPDij0ELE1+25+2jWBELRqHe77BiHQU6ktPy0YYtBSR8yO/dkD8JHWK06OyYUAwOS6Xi7rtcHwU8l9XzzYQuBSJ6yPDh kUEKEVy16+6kWBAKRKHe7rdaHAU6ktPy0YUsBSR7yPDejj8II1606eukVRELRqHe7bBaHQU4ktPy0YUsBSV6yPDdjT4JH1y16e2kUQ8LRqDd7bBZHAU4ktPy0YUtBSV7yPDdjD4JH1216eyjUQ8LRp/c7a9ZGwU3ktLx0IQrBSZ4yPDejj8II1y16+ylURAJRp/d77BaHAU5ktLy0YUsBSZ5yPDejj8IH1y16+ykUQ8KRqDd7rBaHAU4ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/diT4IH1y16+ukUQ8KRqDd7r9ZGwU3ktLy0IQrBSd4yO/d');
-            audio.volume = 0.3;
-            audio.play().catch(() => {}); // Ignore if autoplay blocked
-        }
+    document.body.appendChild(modal);
+}
 
-        // Close modal on outside click
-        document.addEventListener('click', function(e) {
-            const bulkModal = document.getElementById('bulkImportModal');
-            if (e.target === bulkModal) {
-                closeBulkImport();
-            }
-            
-            const orderModal = document.getElementById('orderModal');
-            if (e.target === orderModal) {
-                closeOrderModal();
-            }
+async function saveOrderChanges(index) {
+    const order = orders[index];
+    const newStatus = document.getElementById('modalOrderStatus').value;
+    const newNotes  = document.getElementById('modalOrderNotes').value;
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    try {
+        const res = await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action:'updateOrder', orderNumber:order.orderNumber, status:newStatus, notes:newNotes })
         });
-    </script>
+        const result = await res.json();
+        if (result.success) {
+            orders[index].status   = newStatus;
+            orders[index].notes    = newNotes;
+            orders[index].comments = newNotes;
+            if (newStatus === 'Completed') orders[index].completedAt = new Date().toLocaleString('en-GB');
+            if (newStatus === 'Cancelled') orders[index].cancelledAt = new Date().toLocaleString('en-GB');
+            updateOrderStats();
+            applyFilters();
+            closeOrderModal();
+            showToast('Order updated successfully!');
+        } else {
+            showToast('Error updating order');
+            btn.disabled = false; btn.textContent = 'Save Changes';
+        }
+    } catch(e) {
+        showToast('Error updating order');
+        btn.disabled = false; btn.textContent = 'Save Changes';
+    }
+}
+
+function closeOrderModal() {
+    document.getElementById('orderModal')?.remove();
+}
+
+// ── SEARCH ──
+function setupEventListeners() {
+    document.getElementById('searchInput').addEventListener('input', filterParts);
+    document.getElementById('submitBtn').addEventListener('click', submitOrder);
+    document.getElementById('machineSerial').addEventListener('input', loadOrderHistory);
+}
+
+function filterParts() {
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+    const hdr  = document.getElementById('resultsHeader');
+    if (!term) {
+        hdr.style.display = 'none';
+        document.getElementById('filteredCount').textContent = '0';
+        document.getElementById('resultsContainer').innerHTML = `
+            <div class="search-prompt">
+                <div class="search-prompt-icon">🔍</div>
+                <div class="search-prompt-title">Start Searching</div>
+                <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
+            </div>`;
+        return;
+    }
+    hdr.style.display = 'block';
+    document.getElementById('resultsCount').textContent = 'Searching...';
+    const clean = term.replace(/[\s\-.]/g,'');
+    filteredParts = allParts.filter(p => {
+        const num  = String(p['Part Number'] || p.partNum || '').toLowerCase();
+        const desc = String(p['Description'] || p.desc || '').toLowerCase();
+        const sup  = String(p['Supplier Code'] || p.supplier || '').toLowerCase();
+        const sys  = String(p['System'] || p.system || '').toLowerCase();
+        return num.replace(/[\s\-.]/g,'').includes(clean) || num.includes(term) || desc.includes(term) || sup.includes(term) || sys.includes(term);
+    });
+    renderParts();
+}
+
+function renderParts() {
+    const container = document.getElementById('resultsContainer');
+    const count = filteredParts.length;
+    document.getElementById('resultsCount').textContent = `${count} part${count!==1?'s':''} found`;
+    document.getElementById('filteredCount').textContent = count;
+    if (!count) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>'; return; }
+    const limit = 100;
+    const show  = filteredParts.slice(0, limit);
+    container.innerHTML = show.map(p => {
+        const num  = p['Part Number'] || p.partNum || 'N/A';
+        const desc = p['Description'] || p.desc || 'No description';
+        const sup  = p['Supplier Code'] || p.supplier || '';
+        const sys  = p['System'] || p.system || '';
+        const stk  = p['Stock Level'] || p.stockLevel || '';
+        return `<div class="part-card">
+            <div class="part-number">${num}</div>
+            <div class="part-desc">${desc}</div>
+            <div class="part-details">
+                ${sup ? `<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>` : ''}
+                ${sys ? `<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>` : ''}
+                ${stk ? `<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>` : ''}
+            </div>
+            <button class="add-to-cart" onclick='addToCart(${JSON.stringify({"Part Number":num,"Description":desc,"Supplier Code":sup,"System":sys,"Stock Level":stk}).replace(/'/g,"&#39;")})'>Add to Cart</button>
+        </div>`;
+    }).join('');
+    if (count > limit) {
+        const d = document.createElement('div');
+        d.style.cssText = 'grid-column:1/-1;text-align:center;padding:30px;color:#666;';
+        d.innerHTML = `<p style="font-size:1.2em;margin-bottom:10px;">Showing first ${limit} of ${count} results</p><p style="font-size:.95em;">💡 Refine your search to see specific parts</p>`;
+        container.appendChild(d);
+    }
+}
+
+// ── CART ──
+function addToCart(part) {
+    const num = part['Part Number'] || part.partNum || part.partNumber;
+    const ex  = cart.find(i => (i['Part Number'] || i.partNum || i.partNumber) === num);
+    if (ex) ex.qty++; else cart.push({...part, qty:1});
+    updateCart(); saveCartToStorage();
+    showToast(`${num} added to cart`);
+}
+
+function updateCart() {
+    const badge   = document.getElementById('cartBadge');
+    const empty   = document.getElementById('emptyCart');
+    const form    = document.getElementById('orderForm');
+    const items   = document.getElementById('cartItems');
+    badge.textContent = cart.length;
+    document.getElementById('cartItemsCount').textContent    = cart.length;
+    document.getElementById('cartItemsCountText').textContent = cart.length;
+    if (!cart.length) { items.innerHTML=''; empty.style.display='block'; form.style.display='none'; return; }
+    empty.style.display = 'none'; form.style.display = 'block';
+    items.innerHTML = cart.map((item, i) => {
+        const num  = item['Part Number'] || item.partNum || 'N/A';
+        const desc = item['Description'] || item.desc || 'No description';
+        return `<div class="cart-item">
+            <div class="cart-item-header">
+                <div class="cart-item-number">${num}</div>
+                <button class="remove-item" onclick="removeFromCart(${i})">Remove</button>
+            </div>
+            <div class="cart-item-desc">${desc}</div>
+            <div class="qty-control">
+                <button class="qty-btn" onclick="updateQty(${i},-1)">−</button>
+                <input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1">
+                <button class="qty-btn" onclick="updateQty(${i},1)">+</button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function removeFromCart(i)      { cart.splice(i,1); updateCart(); saveCartToStorage(); }
+function updateQty(i, d)        { cart[i].qty = Math.max(1, cart[i].qty+d); updateCart(); saveCartToStorage(); }
+function updateQtyDirect(i, v)  { cart[i].qty = Math.max(1, parseInt(v)||1); updateCart(); saveCartToStorage(); }
+
+function toggleUrgent() {
+    isUrgent = !isUrgent;
+    document.getElementById('urgentToggle').classList.toggle('active', isUrgent);
+    document.getElementById('urgentIndicator').textContent = isUrgent ? '✓' : '⚑';
+}
+
+// ── ORDER HISTORY ──
+function loadOrderHistory() {
+    const serial = document.getElementById('machineSerial').value.trim();
+    const section = document.getElementById('orderHistorySection');
+    const list    = document.getElementById('orderHistoryList');
+    if (!serial) { section.style.display='none'; return; }
+    const matches = orders.filter(o => (o.machineSerial||'').toLowerCase() === serial.toLowerCase());
+    if (!matches.length) { section.style.display='none'; return; }
+    section.style.display = 'block';
+    list.innerHTML = matches.slice(0,5).map(o => `
+        <div class="order-history-item" onclick='loadOrderParts(${JSON.stringify(o.parts).replace(/'/g,"&#39;")})'>
+            <div class="order-history-item-header">
+                <div class="order-history-number">${o.orderNumber}</div>
+                <div class="order-history-date">${o.date||'N/A'}</div>
+            </div>
+            <div class="order-history-parts">${o.partsCount||0} parts</div>
+        </div>`).join('');
+}
+
+function loadOrderParts(parts) {
+    if (!parts?.length) return;
+    parts.forEach(p => {
+        const id = p['Part Number'] || p.partNum || p.partNumber;
+        const ex = cart.find(i => (i['Part Number']||i.partNum||i.partNumber) === id);
+        if (ex) ex.qty += (p.qty||1); else cart.push({...p, qty:p.qty||1});
+    });
+    updateCart(); saveCartToStorage();
+    showToast(`${parts.length} parts added from previous order`);
+}
+
+// ── SUBMIT ORDER ──
+async function submitOrder() {
+    const sc = document.getElementById('serviceController').value.trim();
+    const wo = document.getElementById('worksOrder').value.trim();
+    if (!sc || !wo) { showToast('Please fill required fields'); return; }
+    if (!cart.length) { showToast('Cart is empty'); return; }
+    const serial = document.getElementById('machineSerial').value.trim();
+    const orderNumber = serial
+        ? `${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`
+        : `ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;
+    const orderData = {
+        action:'submitOrder', orderNumber,
+        serviceController:sc, worksOrder:wo, machineSerial:serial,
+        model: document.getElementById('orderModel').value,
+        comments: document.getElementById('comments').value,
+        parts: cart, urgent: isUrgent,
+        submittedBy: currentUser.username
+    };
+    const btn = document.getElementById('submitBtn');
+    btn.disabled=true; btn.textContent='Submitting...';
+    try {
+        const res = await fetch(API_URL, { method:'POST', body:JSON.stringify(orderData) });
+        const result = await res.json();
+        if (result.success) {
+            showToast('Order submitted successfully!');
+            orders.unshift({
+                orderNumber, urgent: isUrgent,
+                date: new Date().toISOString().slice(0,16).replace('T',' '),
+                serviceController:sc, worksOrder:wo, machineSerial:serial,
+                model:orderData.model, parts:cart, partsCount:cart.length,
+                status:'Pending', notes:orderData.comments
+            });
+            updateOrderStats(); applyFilters();
+            cart=[]; isUrgent=false;
+            document.getElementById('urgentToggle').classList.remove('active');
+            document.getElementById('urgentIndicator').textContent='⚑';
+            updateCart(); saveCartToStorage(); clearForm(); toggleCart();
+        } else { showToast('Error submitting order'); }
+    } catch(e) { showToast('Error submitting order'); }
+    finally { btn.disabled=false; btn.textContent='Submit Order'; }
+}
+
+function clearForm() {
+    ['serviceController','worksOrder','machineSerial','comments'].forEach(id => document.getElementById(id).value='');
+    document.getElementById('orderModel').value='';
+    document.getElementById('orderHistorySection').style.display='none';
+}
+
+function saveCartToStorage() { localStorage.setItem('flexiPartsCart', JSON.stringify(cart)); }
+function loadCartFromStorage() { try { cart = JSON.parse(localStorage.getItem('flexiPartsCart')||'[]'); } catch(e){cart=[];} }
+
+function showToast(msg) {
+    const t = document.createElement('div');
+    t.className='toast'; t.textContent=msg;
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(), 3000);
+}
+
+// ── BULK IMPORT ──
+function openBulkImport() {
+    document.getElementById('bulkImportModal').classList.add('active');
+    document.getElementById('bulkImportTextarea').value='';
+    document.getElementById('bulkImportResults').classList.remove('show');
+}
+function closeBulkImport() { document.getElementById('bulkImportModal').classList.remove('active'); }
+function processBulkImport() {
+    const lines = document.getElementById('bulkImportTextarea').value.split('\n').map(l=>l.trim()).filter(Boolean);
+    const res   = document.getElementById('bulkImportResults');
+    if (!lines.length) { res.innerHTML='<p style="color:#f87171;">No part numbers entered</p>'; res.classList.add('show'); return; }
+    let found=0, notFound=[];
+    lines.forEach(num => {
+        const clean = num.replace(/[\s\-.]/g,'').toLowerCase();
+        const p = allParts.find(x => {
+            const n = String(x['Part Number']||x.partNum||'').toLowerCase();
+            return n.replace(/[\s\-.]/g,'')===clean || n===num.toLowerCase();
+        });
+        if (p) { addToCart(p); found++; } else notFound.push(num);
+    });
+    let html = `<p style="color:#4ade80;margin-bottom:10px;">✓ Added ${found} parts to cart</p>`;
+    if (notFound.length) html += `<p style="color:#facc15;margin-bottom:5px;">⚠ Not found: ${notFound.length} parts</p><p style="color:#666;font-size:.85em;">${notFound.join(', ')}</p>`;
+    res.innerHTML=html; res.classList.add('show');
+    if (found) setTimeout(()=>{ closeBulkImport(); showToast(`Bulk import: ${found} parts added`); }, 2000);
+}
+
+// ── NOTIFICATIONS ──
+function startNotificationPolling() {
+    notificationCheckInterval = setInterval(async () => {
+        if (document.hidden) return; // don't poll when tab is hidden
+        try {
+            const res  = await fetch(`${API_URL}?action=getOrders`);
+            const data = await res.json();
+            if (data.success && data.orders) {
+                const newCount = data.orders.length;
+                if (newCount > lastOrderCount) {
+                    const newOrders = data.orders.slice(0, newCount - lastOrderCount);
+                    orders = data.orders;
+                    updateOrderStats(); applyFilters();
+                    newOrders.forEach(showBrowserNotification);
+                    const badge = document.getElementById('notificationBadge');
+                    badge.textContent = newCount - lastOrderCount;
+                    badge.style.display = 'flex';
+                    setTimeout(()=>badge.style.display='none', 10000);
+                }
+                lastOrderCount = newCount;
+            }
+        } catch(e) {}
+    }, 30000);
+}
+
+function showBrowserNotification(order) {
+    const n = document.createElement('div');
+    n.className = 'browser-notification';
+    n.innerHTML = `<div class="browser-notification-title">🔔 New Order Received</div>
+        <div class="browser-notification-body"><strong>${order.orderNumber}</strong><br>
+        From: ${order.serviceController||order.engineer}<br>Parts: ${order.partsCount||0}</div>`;
+    document.body.appendChild(n);
+    setTimeout(()=>n.remove(), 10000);
+    if ('Notification' in window && Notification.permission==='granted') {
+        new Notification('New Parts Order', {
+            body: `${order.orderNumber} — ${order.partsCount||0} parts from ${order.serviceController||order.engineer}`,
+            icon: 'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg',
+            tag:  order.orderNumber
+        });
+    }
+}
+
+// ── CLOSE MODALS ON BACKDROP CLICK ──
+document.addEventListener('click', e => {
+    if (e.target === document.getElementById('bulkImportModal')) closeBulkImport();
+    if (e.target?.id === 'orderModal') closeOrderModal();
+});
+</script>
 </body>
 </html>
