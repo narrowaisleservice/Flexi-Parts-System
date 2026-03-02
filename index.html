@@ -821,7 +821,9 @@ async function loadParts() {
         const res = await fetch(`${API_URL}?action=getAllParts`);
         const data = await res.json();
         if (data.success && data.parts?.length) {
+            console.log('RAW part from API:', JSON.stringify(data.parts[0]));
             allParts = data.parts.map(normalisePart);
+            console.log('Normalised part:', JSON.stringify(allParts[0]));
         } else {
             loadDemoParts();
         }
@@ -913,7 +915,7 @@ function applyFilters() {
             const hay = [
                 o.orderNumber, o.serviceController, o.engineer,
                 o.worksOrder, o.machineSerial, o.model
-            ].join(' ').toLowerCase();
+            ].map(v => String(v ?? '')).join(' ').toLowerCase();
             if (!hay.includes(search)) return false;
         }
         // status
@@ -942,12 +944,13 @@ function applyFilters() {
 }
 
 function fieldVal(o, f) {
+    const s = v => String(v ?? '');
     const map = {
-        orderNumber: o.orderNumber || '',
-        date: o.date || o.orderDate || '',
-        serviceController: (o.serviceController || o.engineer || '').toLowerCase(),
-        worksOrder: (o.worksOrder || '').toLowerCase(),
-        status: (o.status || 'Pending').toLowerCase()
+        orderNumber:       s(o.orderNumber),
+        date:              s(o.date || o.orderDate || ''),
+        serviceController: s(o.serviceController || o.engineer || '').toLowerCase(),
+        worksOrder:        s(o.worksOrder || '').toLowerCase(),
+        status:            s(o.status || 'Pending').toLowerCase()
     };
     return map[f] ?? '';
 }
