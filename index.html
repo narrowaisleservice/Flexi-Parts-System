@@ -420,6 +420,93 @@
         .browser-notification-title { font-size:1.1em; font-weight:700; color:white; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; }
         .browser-notification-body { font-size:.95em; color:var(--text-secondary); line-height:1.5; }
 
+        /* ══════════════════════════════
+           NATURAL LANGUAGE SEARCH
+        ══════════════════════════════ */
+        .nl-hints {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .nl-hint-label {
+            font-size: .8em;
+            font-weight: 700;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .nl-pill {
+            padding: 6px 14px;
+            background: transparent;
+            border: 1px solid #333;
+            border-radius: 20px;
+            color: #888;
+            font-size: .85em;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .nl-pill:hover {
+            border-color: var(--primary-red);
+            color: white;
+            background: rgba(220,38,38,.1);
+        }
+        .nl-banner {
+            margin-top: 14px;
+            padding: 12px 18px;
+            background: rgba(220,38,38,.08);
+            border: 1px solid rgba(220,38,38,.25);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: .92em;
+            color: #ccc;
+            font-weight: 500;
+        }
+        .nl-banner-icon { font-size: 1.1em; flex-shrink: 0; }
+
+        /* ══════════════════════════════
+           ORDER ANOMALY BANNER
+        ══════════════════════════════ */
+        .anomaly-banner {
+            background: rgba(245,158,11,.1);
+            border: 1px solid rgba(245,158,11,.35);
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .anomaly-icon { font-size: 1.4em; flex-shrink: 0; margin-top: 1px; }
+        .anomaly-content { flex: 1; }
+        .anomaly-title {
+            font-size: 1em;
+            font-weight: 800;
+            color: #f59e0b;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 5px;
+        }
+        .anomaly-msg { font-size: .9em; color: #ccc; line-height: 1.5; }
+        .anomaly-msg ul { padding-left: 16px; margin-top: 4px; }
+        .anomaly-msg li { margin-bottom: 3px; }
+        .anomaly-dismiss {
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 2px 6px;
+            flex-shrink: 0;
+            transition: color .2s;
+        }
+        .anomaly-dismiss:hover { color: white; }
+
         /* ── PRINT STYLES ── */
         @media print {
             body { background: white !important; color: black !important; }
@@ -527,10 +614,24 @@
             <div class="search-section">
                 <div class="search-actions">
                     <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="SEARCH BY PART NUMBER, DESCRIPTION, OR SUPPLIER..." autocomplete="off">
+                        <input type="text" id="searchInput" placeholder="SEARCH PARTS OR ASK NATURALLY — e.g. 'something for the mast'..." autocomplete="off">
                         <span class="search-icon">🔍</span>
                     </div>
                     <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
+                </div>
+                <!-- Natural language hint pills -->
+                <div class="nl-hints" id="nlHints">
+                    <span class="nl-hint-label">Try asking:</span>
+                    <button class="nl-pill" onclick="nlSearch('mast parts')">mast parts</button>
+                    <button class="nl-pill" onclick="nlSearch('drive axle')">drive axle</button>
+                    <button class="nl-pill" onclick="nlSearch('transmission gear')">transmission gear</button>
+                    <button class="nl-pill" onclick="nlSearch('hydraulic')">hydraulic</button>
+                    <button class="nl-pill" onclick="nlSearch('pin kit')">pin kit</button>
+                </div>
+                <!-- NL interpretation banner -->
+                <div class="nl-banner" id="nlBanner" style="display:none;">
+                    <span class="nl-banner-icon">🧠</span>
+                    <span id="nlBannerText"></span>
                 </div>
                 <div class="results-header" id="resultsHeader" style="display:none;">
                     <div class="results-count" id="resultsCount">Loading parts...</div>
@@ -653,11 +754,11 @@
             </div>
             <div class="form-group">
                 <label>Machine Serial</label>
-                <input type="text" id="machineSerial" oninput="loadOrderHistory()">
+                <input type="text" id="machineSerial" oninput="loadOrderHistory(); checkOrderAnomalies();">
             </div>
             <div class="form-group">
                 <label>Model</label>
-                <select id="orderModel">
+                <select id="orderModel" onchange="checkOrderAnomalies()">
                     <option value="">Select model</option>
                 </select>
             </div>
@@ -666,6 +767,15 @@
                 <textarea id="comments" placeholder="Additional notes..."></textarea>
             </div>
             <!-- Urgent flag -->
+            <!-- Anomaly warning banner -->
+            <div class="anomaly-banner" id="anomalyBanner" style="display:none;">
+                <div class="anomaly-icon">⚠️</div>
+                <div class="anomaly-content">
+                    <div class="anomaly-title">Order Anomaly Detected</div>
+                    <div class="anomaly-msg" id="anomalyMsg"></div>
+                </div>
+                <button class="anomaly-dismiss" onclick="dismissAnomaly()">✕</button>
+            </div>
             <label class="urgent-toggle" id="urgentToggle" onclick="toggleUrgent()">
                 <input type="checkbox" id="urgentCheckbox">
                 <div class="urgent-indicator" id="urgentIndicator">⚑</div>
@@ -1236,21 +1346,46 @@ function setupEventListeners() {
 }
 
 function filterParts() {
-    const term = document.getElementById('searchInput').value.toLowerCase().trim();
+    const raw  = document.getElementById('searchInput').value;
+    const term = raw.toLowerCase().trim();
     const hdr  = document.getElementById('resultsHeader');
+    const nlBanner = document.getElementById('nlBanner');
+
     if (!term) {
         hdr.style.display = 'none';
+        nlBanner.style.display = 'none';
         document.getElementById('filteredCount').textContent = '0';
         document.getElementById('resultsContainer').innerHTML = `
             <div class="search-prompt">
                 <div class="search-prompt-icon">🔍</div>
                 <div class="search-prompt-title">Start Searching</div>
-                <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
+                <div class="search-prompt-text">Enter a part number, description, or try natural language like "mast parts" or "drive axle"</div>
             </div>`;
         return;
     }
+
     hdr.style.display = 'block';
     document.getElementById('resultsCount').textContent = 'Searching...';
+
+    // ── Natural language path ──
+    if (isNaturalLanguage(term)) {
+        const nlResult = parseNLQuery(term);
+        if (nlResult) {
+            nlBanner.style.display = 'flex';
+            document.getElementById('nlBannerText').textContent = nlResult.interpretation;
+            filteredParts = allParts.filter(p => {
+                const desc = String(p['Description'] || p.desc || '').toLowerCase();
+                const sys  = String(p['System'] || p.system || '').toLowerCase();
+                const num  = String(p['Part Number'] || p.partNum || '').toLowerCase();
+                return nlResult.keywords.some(kw => desc.includes(kw) || sys.includes(kw) || num.includes(kw));
+            });
+            renderParts();
+            return;
+        }
+    }
+
+    // ── Standard search path ──
+    nlBanner.style.display = 'none';
     const clean = term.replace(/[\s\-.]/g,'');
     filteredParts = allParts.filter(p => {
         const num  = String(p['Part Number'] || p.partNum || '').toLowerCase();
@@ -1314,6 +1449,8 @@ function updateCart() {
     document.getElementById('cartItemsCountText').textContent = cart.length;
     if (!cart.length) { items.innerHTML=''; empty.style.display='block'; form.style.display='none'; return; }
     empty.style.display = 'none'; form.style.display = 'block';
+    // Run anomaly check whenever cart changes
+    setTimeout(checkOrderAnomalies, 50);
     items.innerHTML = cart.map((item, i) => {
         const num  = item['Part Number'] || item.partNum || 'N/A';
         const desc = item['Description'] || item.desc || 'No description';
@@ -1496,6 +1633,171 @@ function showBrowserNotification(order) {
             tag:  order.orderNumber
         });
     }
+}
+
+
+// ════════════════════════════════════════════════════════
+//  NATURAL LANGUAGE SEARCH
+// ════════════════════════════════════════════════════════
+
+// Keyword → system/description mappings
+const NL_SYNONYMS = {
+    // Systems
+    mast:         ['mast','vna','lift'],
+    transmission: ['transmission','trans','gearbox','gear','axle','drive','wheel','helical','intermediate'],
+    hydraulic:    ['hydraulic','hyd','pump','cylinder','valve','seal','oil','fluid'],
+    electrical:   ['electrical','electric','motor','wiring','wire','cable','sensor','switch','solenoid','battery','charger'],
+    brake:        ['brake','braking','friction','pad'],
+    steering:     ['steering','steer','tiller','handle'],
+    chassis:      ['chassis','frame','body','panel','cover','guard'],
+    fork:         ['fork','pin','attachment','carriage'],
+    wheel:        ['wheel','tyre','tire','bearing','hub'],
+    // Common natural phrases
+    'drive axle':        ['axle','drive','spacer','wheel','transmission'],
+    'something for the mast': ['mast','lift','vna'],
+    'pin kit':           ['pin','kit'],
+    'pipe':              ['pipe','tube','hose'],
+    'seal':              ['seal','o-ring','gasket','ring'],
+    'bolt':              ['bolt','screw','fastener','nut','washer'],
+};
+
+// Stopwords to ignore
+const STOPWORDS = new Set(['something','for','the','a','an','of','to','in','on','with','and','or','part','parts','i','need','want','get','find','show','me','some','any']);
+
+function parseNLQuery(raw) {
+    const lower = raw.toLowerCase().trim();
+
+    // First try direct multi-word phrase match
+    for (const [phrase, keywords] of Object.entries(NL_SYNONYMS)) {
+        if (lower.includes(phrase)) {
+            return { keywords, interpretation: `Searching for parts related to "${phrase}"` };
+        }
+    }
+
+    // Otherwise tokenise and expand
+    const tokens = lower.split(/\s+/).filter(t => t.length > 1 && !STOPWORDS.has(t));
+    if (!tokens.length) return null;
+
+    let expanded = [...tokens];
+    let matched = [];
+
+    tokens.forEach(token => {
+        for (const [phrase, keywords] of Object.entries(NL_SYNONYMS)) {
+            if (phrase.includes(token) || token.includes(phrase.split(' ')[0])) {
+                expanded = [...new Set([...expanded, ...keywords])];
+                matched.push(phrase);
+            }
+        }
+    });
+
+    if (!expanded.length) return null;
+    return {
+        keywords: expanded,
+        interpretation: matched.length
+            ? `Interpreting as: ${[...new Set(matched)].join(', ')}`
+            : `Searching for: ${tokens.join(', ')}`
+    };
+}
+
+// Detect if a query looks like natural language rather than a part number
+function isNaturalLanguage(term) {
+    // Part numbers are typically short alphanumeric codes
+    if (/^[a-z0-9\-\.\/]{2,12}$/i.test(term.trim())) return false;
+    // Contains spaces or common words = natural language
+    if (term.includes(' ')) return true;
+    // Contains only letters and is longer = likely natural language
+    if (/^[a-z]{4,}$/i.test(term.trim())) return true;
+    return false;
+}
+
+function nlSearch(term) {
+    document.getElementById('searchInput').value = term;
+    filterParts();
+}
+
+// ════════════════════════════════════════════════════════
+//  ORDER ANOMALY DETECTION
+// ════════════════════════════════════════════════════════
+
+function checkOrderAnomalies() {
+    const banner  = document.getElementById('anomalyBanner');
+    const msgEl   = document.getElementById('anomalyMsg');
+    if (!cart.length) { banner.style.display = 'none'; return; }
+
+    const model  = document.getElementById('orderModel').value;
+    const issues = [];
+
+    // 1. Unusually large order
+    const totalQty = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
+    if (totalQty > 20) {
+        issues.push(`Large order: ${totalQty} total items. Double-check quantities are correct.`);
+    }
+
+    // 2. Duplicate part numbers in cart (shouldn't happen but just in case)
+    const nums = cart.map(i => i['Part Number'] || i.partNum || '');
+    const dupes = nums.filter((n, i) => nums.indexOf(n) !== i);
+    if (dupes.length) {
+        issues.push(`Possible duplicate parts: ${[...new Set(dupes)].join(', ')}`);
+    }
+
+    // 3. Model-system mismatch — warn if ordering VNA parts for a non-VNA model
+    if (model && !model.includes('VNA') && !model.includes('15')) {
+        const vnaParts = cart.filter(p => {
+            const sys  = String(p['System'] || p.system || '').toUpperCase();
+            const desc = String(p['Description'] || p.desc || '').toUpperCase();
+            return sys.includes('VNA') || desc.includes('VNA');
+        });
+        if (vnaParts.length) {
+            const names = vnaParts.map(p => p['Part Number'] || p.partNum).join(', ');
+            issues.push(`VNA-specific part(s) on a non-VNA model (${model}): ${names}`);
+        }
+    }
+
+    // 4. Check against order history for this machine — flag parts never ordered for this model before
+    const serial = document.getElementById('machineSerial').value.trim();
+    if (serial && orders.length) {
+        const machineOrders = orders.filter(o =>
+            (o.machineSerial || '').toLowerCase() === serial.toLowerCase()
+        );
+        if (machineOrders.length >= 3) {
+            // Build set of all part numbers ever ordered for this machine
+            const historicParts = new Set();
+            machineOrders.forEach(o => {
+                (o.parts || []).forEach(p => {
+                    const n = p['Part Number'] || p.partNum || p.partNumber;
+                    if (n) historicParts.add(String(n).toLowerCase());
+                });
+            });
+            const neverOrdered = cart.filter(p => {
+                const n = String(p['Part Number'] || p.partNum || '').toLowerCase();
+                return n && !historicParts.has(n);
+            });
+            if (neverOrdered.length && neverOrdered.length <= 5) {
+                const names = neverOrdered.map(p => p['Part Number'] || p.partNum).join(', ');
+                issues.push(`New part(s) not previously ordered for this machine: ${names}`);
+            }
+        }
+    }
+
+    // 5. Very high quantity on a single part
+    cart.forEach(item => {
+        if ((item.qty || 1) >= 10) {
+            issues.push(`High quantity (${item.qty}×) on ${item['Part Number'] || item.partNum} — is this intentional?`);
+        }
+    });
+
+    if (!issues.length) {
+        banner.style.display = 'none';
+        return;
+    }
+
+    const listItems = issues.map(i => `<li>${i}</li>`).join('');
+    msgEl.innerHTML = `<ul>${listItems}</ul>`;
+    banner.style.display = 'flex';
+}
+
+function dismissAnomaly() {
+    document.getElementById('anomalyBanner').style.display = 'none';
 }
 
 // ── CLOSE MODALS ON BACKDROP CLICK ──
