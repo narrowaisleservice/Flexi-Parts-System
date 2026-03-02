@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flexi Parts Order System</title>
+    <meta name="theme-color" content="#DC2626">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Flexi Parts">
+    <link rel="manifest" id="pwaManifest">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -507,6 +512,124 @@
         }
         .anomaly-dismiss:hover { color: white; }
 
+
+        /* ══════════════════════════════
+           VOICE SEARCH
+        ══════════════════════════════ */
+        .voice-btn {
+            position: absolute;
+            right: 52px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 6px;
+            transition: all .2s;
+            opacity: .5;
+        }
+        .voice-btn:hover { opacity: 1; background: var(--hover-bg); }
+        .voice-btn.listening {
+            opacity: 1;
+            animation: voicePulse 1s infinite;
+            filter: hue-rotate(0deg);
+        }
+        @keyframes voicePulse {
+            0%, 100% { transform: translateY(-50%) scale(1); }
+            50% { transform: translateY(-50%) scale(1.25); }
+        }
+        .voice-listening-badge {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-red);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 700;
+            letter-spacing: .5px;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 20px rgba(220,38,38,.5);
+            animation: badgeIn .2s ease;
+        }
+        @keyframes badgeIn { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+        .voice-dot {
+            width: 10px; height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: voiceDot .6s infinite alternate;
+        }
+        .voice-dot:nth-child(2) { animation-delay: .2s; }
+        .voice-dot:nth-child(3) { animation-delay: .4s; }
+        @keyframes voiceDot { from { opacity:.3; transform:scaleY(.5); } to { opacity:1; transform:scaleY(1); } }
+
+        /* ══════════════════════════════
+           OFFLINE / PWA
+        ══════════════════════════════ */
+        .offline-banner {
+            background: rgba(245,158,11,.15);
+            border-bottom: 1px solid rgba(245,158,11,.3);
+            color: #f59e0b;
+            padding: 12px 30px;
+            font-size: 1em;
+            font-weight: 700;
+            letter-spacing: .5px;
+            text-align: center;
+        }
+        .install-banner {
+            background: rgba(220,38,38,.1);
+            border-bottom: 1px solid rgba(220,38,38,.2);
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            font-size: .95em;
+            font-weight: 600;
+            color: #ccc;
+        }
+        .install-btn {
+            padding: 8px 20px;
+            background: var(--primary-red);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            font-family: inherit;
+            font-size: .9em;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            transition: all .2s;
+        }
+        .install-btn:hover { background: #ef4444; }
+        .install-dismiss {
+            background: transparent;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 4px 8px;
+            transition: color .2s;
+        }
+        .install-dismiss:hover { color: white; }
+        .offline-stat {
+            font-size: .7em;
+            color: #f59e0b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            display: block;
+            margin-top: 2px;
+        }
+
         /* ── PRINT STYLES ── */
         @media print {
             body { background: white !important; color: black !important; }
@@ -574,6 +697,14 @@
 
 <!-- ── MAIN APP ── -->
 <div class="app-container" id="appContainer">
+    <!-- Offline banner -->
+    <div class="offline-banner" id="offlineBanner" style="display:none;">📡 You're offline — showing cached parts catalogue</div>
+    <!-- Install banner -->
+    <div class="install-banner" id="installBanner" style="display:none;">
+        <span>📲 Install Flexi Parts as an app for offline access</span>
+        <button class="install-btn" onclick="installPWA()">Install</button>
+        <button class="install-dismiss" onclick="dismissInstall()">✕</button>
+    </div>
     <button class="cart-toggle" id="cartToggle" onclick="toggleCart()">
         🛒
         <div class="cart-badge" id="cartBadge">0</div>
@@ -599,7 +730,7 @@
             </div>
 
             <div class="stats-bar">
-                <div class="stat-card"><div class="stat-value" id="totalPartsCount">0</div><div class="stat-label">Total Parts</div></div>
+                <div class="stat-card"><div class="stat-value" id="totalPartsCount">0</div><div class="stat-label">Total Parts</div><span class="offline-stat" id="offlineStat" style="display:none;">📦 Cached</span></div>
                 <div class="stat-card"><div class="stat-value" id="filteredCount">0</div><div class="stat-label">Results</div></div>
                 <div class="stat-card"><div class="stat-value" id="cartItemsCount">0</div><div class="stat-label">In Cart</div></div>
             </div>
@@ -616,6 +747,7 @@
                     <div class="search-box">
                         <input type="text" id="searchInput" placeholder="SEARCH PARTS OR ASK NATURALLY — e.g. 'something for the mast'..." autocomplete="off">
                         <span class="search-icon">🔍</span>
+                        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceSearch()" title="Voice Search">🎤</button>
                     </div>
                     <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
                 </div>
@@ -897,6 +1029,8 @@ async function showApp() {
 
 async function init() {
     setGreeting();
+    injectManifest();
+    initOfflineSupport();
     await loadParts();
     await loadOrders();
     await loadFrequentParts();
@@ -904,6 +1038,7 @@ async function init() {
     setupEventListeners();
     loadCartFromStorage();
     updateCart();
+    initVoiceSearch();
 }
 
 function setGreeting() {
@@ -931,9 +1066,8 @@ async function loadParts() {
         const res = await fetch(`${API_URL}?action=getAllParts`);
         const data = await res.json();
         if (data.success && data.parts?.length) {
-            console.log('RAW part from API:', JSON.stringify(data.parts[0]));
             allParts = data.parts.map(normalisePart);
-            console.log('Normalised part:', JSON.stringify(allParts[0]));
+            cacheParts(allParts); // Save for offline use
         } else {
             loadDemoParts();
         }
@@ -1798,6 +1932,281 @@ function checkOrderAnomalies() {
 
 function dismissAnomaly() {
     document.getElementById('anomalyBanner').style.display = 'none';
+}
+
+
+// ════════════════════════════════════════════════════════
+//  VOICE SEARCH
+// ════════════════════════════════════════════════════════
+
+let recognition = null;
+let isListening = false;
+let voiceBadge = null;
+
+function initVoiceSearch() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        document.getElementById('voiceBtn').style.display = 'none';
+        return;
+    }
+    recognition = new SpeechRecognition();
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-GB';
+
+    recognition.onstart = () => {
+        isListening = true;
+        document.getElementById('voiceBtn').classList.add('listening');
+        showVoiceBadge();
+    };
+
+    recognition.onresult = (e) => {
+        const transcript = Array.from(e.results)
+            .map(r => r[0].transcript)
+            .join('');
+        document.getElementById('searchInput').value = transcript;
+        // Show interim results live
+        if (e.results[0].isFinal) {
+            filterParts();
+        } else {
+            document.getElementById('searchInput').value = transcript;
+        }
+    };
+
+    recognition.onerror = (e) => {
+        console.warn('Voice error:', e.error);
+        stopVoice();
+        if (e.error === 'not-allowed') showToast('Microphone access denied');
+    };
+
+    recognition.onend = () => {
+        stopVoice();
+        filterParts();
+    };
+}
+
+function toggleVoiceSearch() {
+    if (!recognition) { showToast('Voice search not supported in this browser'); return; }
+    if (isListening) {
+        recognition.stop();
+    } else {
+        document.getElementById('searchInput').value = '';
+        recognition.start();
+    }
+}
+
+function stopVoice() {
+    isListening = false;
+    document.getElementById('voiceBtn').classList.remove('listening');
+    hideVoiceBadge();
+}
+
+function showVoiceBadge() {
+    if (voiceBadge) return;
+    voiceBadge = document.createElement('div');
+    voiceBadge.className = 'voice-listening-badge';
+    voiceBadge.innerHTML = '<div class="voice-dot"></div><div class="voice-dot"></div><div class="voice-dot"></div><span>Listening...</span>';
+    document.body.appendChild(voiceBadge);
+}
+
+function hideVoiceBadge() {
+    if (voiceBadge) { voiceBadge.remove(); voiceBadge = null; }
+}
+
+// ════════════════════════════════════════════════════════
+//  OFFLINE MODE + PWA
+// ════════════════════════════════════════════════════════
+
+const CACHE_KEY = 'flexi-parts-cache-v1';
+let deferredInstallPrompt = null;
+
+function initOfflineSupport() {
+    // Register service worker inline via blob
+    registerServiceWorker();
+
+    // Listen for online/offline
+    window.addEventListener('online',  updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    // PWA install prompt
+    window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+        // Show install banner after 10 seconds if not dismissed before
+        const dismissed = localStorage.getItem('installDismissed');
+        if (!dismissed) {
+            setTimeout(() => {
+                document.getElementById('installBanner').style.display = 'flex';
+            }, 10000);
+        }
+    });
+
+    window.addEventListener('appinstalled', () => {
+        document.getElementById('installBanner').style.display = 'none';
+        showToast('✅ Flexi Parts installed as app!');
+    });
+}
+
+function registerServiceWorker() {
+    if (!('serviceWorker' in navigator)) return;
+
+    const swCode = `
+const CACHE = 'flexi-parts-v1';
+const FONTS = 'https://fonts.googleapis.com';
+
+self.addEventListener('install', e => {
+    self.skipWaiting();
+});
+
+self.addEventListener('activate', e => {
+    e.waitUntil(
+        caches.keys().then(keys =>
+            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+        )
+    );
+    self.clients.claim();
+});
+
+self.addEventListener('fetch', e => {
+    const url = e.request.url;
+
+    // Network-first for API calls — fall back to cached if offline
+    if (url.includes('script.google.com')) {
+        e.respondWith(
+            fetch(e.request)
+                .then(res => {
+                    const clone = res.clone();
+                    caches.open(CACHE).then(c => c.put(e.request, clone));
+                    return res;
+                })
+                .catch(() => caches.match(e.request))
+        );
+        return;
+    }
+
+    // Cache-first for fonts and static assets
+    if (url.includes('fonts.g') || url.includes('fonts.googleapis')) {
+        e.respondWith(
+            caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
+                caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+                return res;
+            }))
+        );
+        return;
+    }
+
+    // For the app itself: network-first, cache fallback
+    e.respondWith(
+        fetch(e.request)
+            .then(res => {
+                if (res.ok) {
+                    caches.open(CACHE).then(c => c.put(e.request, res.clone()));
+                }
+                return res;
+            })
+            .catch(() => caches.match(e.request))
+    );
+});
+`;
+
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const swUrl = URL.createObjectURL(blob);
+
+    navigator.serviceWorker.register(swUrl, { scope: '/' })
+        .then(reg => console.log('SW registered:', reg.scope))
+        .catch(err => console.warn('SW registration failed:', err));
+}
+
+function updateOnlineStatus() {
+    const isOnline = navigator.onLine;
+    const banner   = document.getElementById('offlineBanner');
+    const stat     = document.getElementById('offlineStat');
+
+    if (!isOnline) {
+        banner.style.display = 'block';
+        if (stat) stat.style.display = 'block';
+        // If we have cached parts already loaded, keep them
+        if (!allParts.length) {
+            loadCachedParts();
+        }
+    } else {
+        banner.style.display = 'none';
+        if (stat) stat.style.display = 'none';
+    }
+}
+
+function cacheParts(parts) {
+    try {
+        // Store parts in localStorage as offline fallback
+        // Compress slightly by only storing essential fields
+        const slim = parts.map(p => ({
+            'Part Number':   p['Part Number'],
+            'Description':   p['Description'],
+            'Supplier Code': p['Supplier Code'],
+            'System':        p['System'],
+            'Stock Level':   p['Stock Level']
+        }));
+        localStorage.setItem('flexi-parts-offline', JSON.stringify(slim));
+        localStorage.setItem('flexi-parts-cached-at', new Date().toISOString());
+        console.log('Parts cached for offline use:', slim.length);
+    } catch(e) {
+        console.warn('Could not cache parts (storage full?):', e);
+    }
+}
+
+function loadCachedParts() {
+    try {
+        const cached = localStorage.getItem('flexi-parts-offline');
+        const cachedAt = localStorage.getItem('flexi-parts-cached-at');
+        if (cached) {
+            allParts = JSON.parse(cached);
+            document.getElementById('totalPartsCount').textContent = allParts.length;
+            const ago = cachedAt ? new Date(cachedAt).toLocaleDateString('en-GB') : 'unknown date';
+            document.getElementById('offlineBanner').textContent =
+                `📡 Offline — showing ${allParts.length} cached parts (last updated ${ago})`;
+            showToast(`Offline mode: loaded ${allParts.length} cached parts`);
+        } else {
+            document.getElementById('offlineBanner').textContent =
+                '📡 Offline — no cached parts available. Connect to load catalogue.';
+        }
+    } catch(e) {
+        console.warn('Could not load cached parts:', e);
+    }
+}
+
+async function installPWA() {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    const { outcome } = await deferredInstallPrompt.userChoice;
+    if (outcome === 'accepted') {
+        document.getElementById('installBanner').style.display = 'none';
+    }
+    deferredInstallPrompt = null;
+}
+
+function dismissInstall() {
+    document.getElementById('installBanner').style.display = 'none';
+    localStorage.setItem('installDismissed', '1');
+}
+
+// Inject PWA manifest dynamically
+function injectManifest() {
+    const manifest = {
+        name: 'Flexi Parts Order System',
+        short_name: 'Flexi Parts',
+        description: 'Parts ordering system for Flexi forklift engineers',
+        start_url: './',
+        display: 'standalone',
+        background_color: '#000000',
+        theme_color: '#DC2626',
+        orientation: 'any',
+        icons: [
+            { src: 'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }
+        ]
+    };
+    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    document.getElementById('pwaManifest').href = URL.createObjectURL(blob);
 }
 
 // ── CLOSE MODALS ON BACKDROP CLICK ──
