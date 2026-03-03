@@ -35,6 +35,73 @@
             letter-spacing: 0.3px;
         }
 
+        /* ══════════════════════════════════════
+           IMAGE LAZY LOADING STYLES
+        ══════════════════════════════════════ */
+        .lazy-loading {
+            background: linear-gradient(90deg, var(--border) 25%, rgba(255,255,255,.05) 50%, var(--border) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        .lazy-loaded {
+            animation: fadeInImage 0.4s ease-out;
+        }
+        @keyframes fadeInImage {
+            from { opacity: 0; transform: scale(0.98); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .lazy-error {
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 2em;
+        }
+
+        .part-image-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%;
+            background: var(--dark-bg);
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            border-bottom: 1px solid var(--border);
+        }
+        .part-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+        .part-image-placeholder {
+            position: relative;
+            width: 100%;
+            padding-bottom: 75%;
+            background: linear-gradient(135deg, var(--border) 0%, rgba(255,255,255,.02) 100%);
+            border-radius: 8px 8px 0 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .placeholder-icon {
+            font-size: 3em;
+            opacity: 0.4;
+        }
+
+        .part-card-content {
+            padding: 24px;
+        }
+
         /* ── LOGIN ── */
         .login-container { display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
         .login-box { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:50px 40px; width:100%; max-width:450px; border-left:4px solid var(--primary-red); }
@@ -102,9 +169,9 @@
         .results-header { margin:30px 0 20px; padding:16px 20px; background:rgba(220,38,38,.1); border-left:3px solid var(--primary-red); border-radius:8px; }
         .results-count { font-size:1.2em; font-weight:800; color:white; letter-spacing:1px; text-transform:uppercase; }
 
-        /* ── PARTS GRID ── */
-        .results-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:20px; margin-bottom:40px; }
-        .part-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:24px; transition:all .2s; }
+        /* ── PARTS GRID (WITH IMAGE SUPPORT) ── */
+        .results-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; margin-bottom:40px; }
+        .part-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; overflow:hidden; transition:all .2s; display:flex; flex-direction:column; }
         .part-card:hover { background:var(--hover-bg); border-color:var(--primary-red); transform:translateY(-2px); }
         .part-number { font-size:1.8em; font-weight:900; color:var(--primary-red); margin-bottom:8px; letter-spacing:-1px; line-height:1; }
         .part-desc { font-size:1.05em; color:var(--text-secondary); margin-bottom:16px; min-height:40px; line-height:1.5; font-weight:500; }
@@ -185,11 +252,7 @@
         .search-prompt-title { font-size:1.8em; font-weight:700; margin-bottom:12px; text-transform:uppercase; letter-spacing:1px; }
         .search-prompt-text { font-size:1.1em; font-weight:500; }
 
-        /* ══════════════════════════════════════
-           ORDERS DASHBOARD — NEW FEATURES
-        ══════════════════════════════════════ */
-
-        /* ── FILTER BAR ── */
+        /* ── ORDERS DASHBOARD ── */
         .orders-filter-bar {
             background: var(--card-bg);
             border: 1px solid var(--border);
@@ -215,7 +278,6 @@
             transition:all .2s;
         }
         .filter-input:focus, .filter-select:focus { outline:none; border-color:var(--primary-red); }
-        .filter-input::placeholder { color:#555; }
         .filter-select option { background:var(--card-bg); }
         .filter-btn {
             padding:10px 20px;
@@ -233,68 +295,11 @@
             white-space:nowrap;
         }
         .filter-btn:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
-        .filter-btn.active { background:rgba(220,38,38,.15); border-color:var(--primary-red); color:var(--primary-red); }
-        .sort-btn {
-            padding:10px 16px;
-            background:transparent;
-            border:1px solid var(--border);
-            border-radius:8px;
-            color:var(--text-secondary);
-            font-family:inherit;
-            font-size:.9em;
-            font-weight:700;
-            cursor:pointer;
-            text-transform:uppercase;
-            letter-spacing:.5px;
-            transition:all .2s;
-            display:flex;
-            align-items:center;
-            gap:6px;
-        }
-        .sort-btn:hover { border-color:var(--primary-red); color:white; }
-        .sort-btn.asc::after { content:'↑'; color:var(--primary-red); }
-        .sort-btn.desc::after { content:'↓'; color:var(--primary-red); }
 
-        /* ── EXPORT TOOLBAR ── */
-        .orders-toolbar {
-            display:flex;
-            justify-content:space-between;
-            align-items:center;
-            margin-bottom:16px;
-            flex-wrap:wrap;
-            gap:12px;
-        }
-        .orders-results-label { font-size:1em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
-        .orders-results-label span { color:white; }
-        .export-group { display:flex; gap:10px; }
-        .export-btn {
-            padding:10px 20px;
-            border:1px solid var(--border);
-            border-radius:8px;
-            font-family:inherit;
-            font-size:.9em;
-            font-weight:700;
-            cursor:pointer;
-            text-transform:uppercase;
-            letter-spacing:.5px;
-            transition:all .2s;
-            display:flex;
-            align-items:center;
-            gap:8px;
-        }
-        .export-btn-csv { background:transparent; color:var(--text-secondary); }
-        .export-btn-csv:hover { background:rgba(74,222,128,.1); border-color:#4ade80; color:#4ade80; }
-        .export-btn-pdf { background:transparent; color:var(--text-secondary); }
-        .export-btn-pdf:hover { background:rgba(220,38,38,.15); border-color:var(--primary-red); color:var(--primary-red); }
-
-        /* ── ORDERS TABLE ── */
         .orders-table-container { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; overflow-x:auto; }
         .orders-table { width:100%; border-collapse:collapse; }
         .orders-table th { text-align:left; padding:16px; border-bottom:2px solid var(--border); color:var(--text-secondary); font-size:.9em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; user-select:none; white-space:nowrap; }
         .orders-table th:hover { color:white; }
-        .orders-table th.sortable::after { content:' ⇅'; color:#555; font-size:.8em; }
-        .orders-table th.sort-asc::after { content:' ↑'; color:var(--primary-red); }
-        .orders-table th.sort-desc::after { content:' ↓'; color:var(--primary-red); }
         .orders-table td { padding:16px; border-bottom:1px solid var(--border); color:white; font-size:.95em; }
         .orders-table tr:hover { background:var(--hover-bg); cursor:pointer; }
         .order-number { color:var(--primary-red); font-weight:700; font-size:1.1em; }
@@ -302,581 +307,20 @@
         .status-pending { background:rgba(234,179,8,.2); color:#facc15; border:1px solid rgba(234,179,8,.3); }
         .status-completed { background:rgba(34,197,94,.2); color:#4ade80; border:1px solid rgba(34,197,94,.3); }
         .status-cancelled { background:rgba(239,68,68,.2); color:#f87171; border:1px solid rgba(239,68,68,.3); }
-        .urgent-badge { display:inline-block; background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:6px; }
-        .no-results-row td { text-align:center; padding:60px; color:#666; }
-
-        /* ── ORDER MODAL — FULL REDESIGN WITH TIMELINE ── */
-        .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.8); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; }
-        .modal-overlay.active { display:flex; }
-        .modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; width:90%; max-width:760px; max-height:90vh; overflow-y:auto; animation:modalSlideIn .3s ease; }
-        @keyframes modalSlideIn { from { opacity:0; transform:translateY(-50px); } to { opacity:1; transform:translateY(0); } }
-        .modal-header { padding:30px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-        .modal-header h2 { font-size:2em; font-weight:700; text-transform:uppercase; letter-spacing:-1px; }
-        .modal-header-meta { display:flex; align-items:center; gap:12px; }
-        .modal-close { background:transparent; border:1px solid var(--border); width:40px; height:40px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1.5em; cursor:pointer; color:#999; transition:all .2s; }
-        .modal-close:hover { background:var(--hover-bg); color:white; border-color:var(--primary-red); }
-        .modal-body { padding:30px; }
-        .modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:30px; }
-        .modal-field { background:var(--dark-bg); padding:16px; border-radius:8px; border:1px solid var(--border); }
-        .modal-field-label { font-size:.8em; font-weight:700; color:#666; text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-        .modal-field-value { font-size:1.05em; font-weight:600; color:white; }
-        .modal-section { margin-bottom:28px; }
-        .modal-section-title { font-size:1.1em; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--primary-red); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-        .modal-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
-        .modal-actions { display:flex; gap:12px; margin-top:30px; }
-        .modal-btn { flex:1; padding:16px; border:none; border-radius:8px; font-size:1em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; }
-        .modal-btn-primary { background:var(--primary-red); color:white; }
-        .modal-btn-primary:hover { background:#ef4444; }
-        .modal-btn-secondary { background:transparent; border:1px solid var(--border); color:white; }
-        .modal-btn-secondary:hover { background:var(--hover-bg); }
-
-        /* ══════════════════════════════
-           STATUS TIMELINE
-        ══════════════════════════════ */
-        .timeline {
-            position: relative;
-            padding: 10px 0;
-        }
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 19px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--border);
-        }
-        .timeline-step {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            margin-bottom: 24px;
-            position: relative;
-        }
-        .timeline-step:last-child { margin-bottom: 0; }
-        .timeline-dot {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid var(--border);
-            background: var(--dark-bg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1em;
-            flex-shrink: 0;
-            position: relative;
-            z-index: 1;
-            transition: all .3s;
-        }
-        .timeline-dot.done {
-            border-color: #4ade80;
-            background: rgba(74,222,128,.15);
-        }
-        .timeline-dot.active {
-            border-color: var(--primary-red);
-            background: rgba(220,38,38,.15);
-            box-shadow: 0 0 0 4px rgba(220,38,38,.15);
-            animation: pulseDot 2s infinite;
-        }
-        .timeline-dot.cancelled {
-            border-color: #f87171;
-            background: rgba(239,68,68,.15);
-        }
-        @keyframes pulseDot {
-            0%, 100% { box-shadow: 0 0 0 4px rgba(220,38,38,.15); }
-            50% { box-shadow: 0 0 0 8px rgba(220,38,38,.05); }
-        }
-        .timeline-content { flex: 1; padding-top: 8px; }
-        .timeline-title { font-size: 1.1em; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
-        .timeline-title.done { color: #4ade80; }
-        .timeline-title.active { color: white; }
-        .timeline-title.inactive { color: #555; }
-        .timeline-title.cancelled-title { color: #f87171; }
-        .timeline-desc { font-size: .9em; color: var(--text-secondary); margin-bottom: 4px; }
-        .timeline-timestamp { font-size: .8em; color: #555; font-weight: 600; }
-
-        /* Status select in modal */
-        .status-select-wrapper { display:flex; gap:12px; align-items:center; }
-        .status-select-wrapper select { flex:1; padding:12px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:1em; font-weight:600; }
-        .status-select-wrapper select:focus { outline:none; border-color:var(--primary-red); }
-        .status-select-wrapper select option { background:var(--card-bg); }
-
-        /* Parts list in modal */
-        .modal-parts-list { max-height:260px; overflow-y:auto; }
-        .modal-part-row { background:var(--dark-bg); padding:14px 16px; border-radius:8px; margin-bottom:8px; border:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
-        .modal-part-info { flex:1; }
-        .modal-part-num { font-weight:800; color:var(--primary-red); font-size:1.05em; margin-bottom:3px; }
-        .modal-part-desc { font-size:.88em; color:var(--text-secondary); }
-        .modal-part-qty { background:var(--card-bg); border:1px solid var(--border); padding:6px 12px; border-radius:6px; font-weight:700; font-size:.9em; white-space:nowrap; }
-
-        /* ── BULK IMPORT ── */
-        .bulk-import-textarea { width:100%; min-height:300px; padding:20px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:'Courier New',monospace; font-size:1em; resize:vertical; line-height:1.8; }
-        .bulk-import-textarea:focus { outline:none; border-color:var(--primary-red); }
-        .bulk-import-instructions { background:rgba(220,38,38,.1); border-left:3px solid var(--primary-red); padding:15px 20px; border-radius:8px; margin-bottom:20px; color:var(--text-secondary); font-size:.95em; line-height:1.6; }
-        .bulk-import-results { margin-top:20px; padding:15px 20px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; display:none; }
-        .bulk-import-results.show { display:block; }
-
-        /* ── NOTIFICATION ── */
-        .notification-bell { position:relative; padding:12px 20px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:1.2em; cursor:pointer; transition:all .2s; }
-        .notification-bell:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
-        .notification-badge { position:absolute; top:6px; right:12px; background:var(--primary-red); color:white; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6em; font-weight:800; }
-        .browser-notification { position:fixed; top:30px; right:30px; background:var(--card-bg); border:1px solid var(--border); border-left:3px solid var(--primary-red); padding:20px 24px; border-radius:12px; box-shadow:0 4px 20px rgba(0,0,0,.5); z-index:3000; animation:slideInFromTop .3s ease; max-width:400px; }
-        @keyframes slideInFromTop { from { transform:translateY(-100px); opacity:0; } to { transform:translateY(0); opacity:1; } }
-        .browser-notification-title { font-size:1.1em; font-weight:700; color:white; margin-bottom:8px; text-transform:uppercase; letter-spacing:.5px; }
-        .browser-notification-body { font-size:.95em; color:var(--text-secondary); line-height:1.5; }
-
-        /* ══════════════════════════════
-           NATURAL LANGUAGE SEARCH
-        ══════════════════════════════ */
-        .nl-hints {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 14px;
-        }
-        .nl-hint-label {
-            font-size: .8em;
-            font-weight: 700;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .nl-pill {
-            padding: 6px 14px;
-            background: transparent;
-            border: 1px solid #333;
-            border-radius: 20px;
-            color: #888;
-            font-size: .85em;
-            font-weight: 600;
-            font-family: inherit;
-            cursor: pointer;
-            transition: all .2s;
-        }
-        .nl-pill:hover {
-            border-color: var(--primary-red);
-            color: white;
-            background: rgba(220,38,38,.1);
-        }
-        .nl-banner {
-            margin-top: 14px;
-            padding: 12px 18px;
-            background: rgba(220,38,38,.08);
-            border: 1px solid rgba(220,38,38,.25);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: .92em;
-            color: #ccc;
-            font-weight: 500;
-        }
-        .nl-banner-icon { font-size: 1.1em; flex-shrink: 0; }
-
-        /* ══════════════════════════════
-           ORDER ANOMALY BANNER
-        ══════════════════════════════ */
-        .anomaly-banner {
-            background: rgba(245,158,11,.1);
-            border: 1px solid rgba(245,158,11,.35);
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-        }
-        .anomaly-icon { font-size: 1.4em; flex-shrink: 0; margin-top: 1px; }
-        .anomaly-content { flex: 1; }
-        .anomaly-title {
-            font-size: 1em;
-            font-weight: 800;
-            color: #f59e0b;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 5px;
-        }
-        .anomaly-msg { font-size: .9em; color: #ccc; line-height: 1.5; }
-        .anomaly-msg ul { padding-left: 16px; margin-top: 4px; }
-        .anomaly-msg li { margin-bottom: 3px; }
-        .anomaly-dismiss {
-            background: transparent;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 1.1em;
-            padding: 2px 6px;
-            flex-shrink: 0;
-            transition: color .2s;
-        }
-        .anomaly-dismiss:hover { color: white; }
-
-
-        /* ══════════════════════════════
-           VOICE SEARCH
-        ══════════════════════════════ */
-        .voice-btn {
-            position: absolute;
-            right: 52px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: transparent;
-            border: none;
-            font-size: 1.2em;
-            cursor: pointer;
-            padding: 4px 6px;
-            border-radius: 6px;
-            transition: all .2s;
-            opacity: .5;
-        }
-        .voice-btn:hover { opacity: 1; background: var(--hover-bg); }
-        .voice-btn.listening {
-            opacity: 1;
-            animation: voicePulse 1s infinite;
-            filter: hue-rotate(0deg);
-        }
-        @keyframes voicePulse {
-            0%, 100% { transform: translateY(-50%) scale(1); }
-            50% { transform: translateY(-50%) scale(1.25); }
-        }
-        .voice-listening-badge {
-            position: fixed;
-            bottom: 110px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--primary-red);
-            color: white;
-            padding: 14px 28px;
-            border-radius: 30px;
-            font-size: 1.1em;
-            font-weight: 700;
-            letter-spacing: .5px;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 4px 20px rgba(220,38,38,.5);
-            animation: badgeIn .2s ease;
-        }
-        @keyframes badgeIn { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
-        .voice-dot {
-            width: 10px; height: 10px;
-            background: white;
-            border-radius: 50%;
-            animation: voiceDot .6s infinite alternate;
-        }
-        .voice-dot:nth-child(2) { animation-delay: .2s; }
-        .voice-dot:nth-child(3) { animation-delay: .4s; }
-        @keyframes voiceDot { from { opacity:.3; transform:scaleY(.5); } to { opacity:1; transform:scaleY(1); } }
-
-        /* ══════════════════════════════
-           OFFLINE / PWA
-        ══════════════════════════════ */
-        .offline-banner {
-            background: rgba(245,158,11,.15);
-            border-bottom: 1px solid rgba(245,158,11,.3);
-            color: #f59e0b;
-            padding: 12px 30px;
-            font-size: 1em;
-            font-weight: 700;
-            letter-spacing: .5px;
-            text-align: center;
-        }
-        .install-banner {
-            background: rgba(220,38,38,.1);
-            border-bottom: 1px solid rgba(220,38,38,.2);
-            padding: 12px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            font-size: .95em;
-            font-weight: 600;
-            color: #ccc;
-        }
-        .install-btn {
-            padding: 8px 20px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-family: inherit;
-            font-size: .9em;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            transition: all .2s;
-        }
-        .install-btn:hover { background: #ef4444; }
-        .install-dismiss {
-            background: transparent;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 1.1em;
-            padding: 4px 8px;
-            transition: color .2s;
-        }
-        .install-dismiss:hover { color: white; }
-        .offline-stat {
-            font-size: .7em;
-            color: #f59e0b;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            display: block;
-            margin-top: 2px;
-        }
-
-
-        /* ══════════════════════════════
-           SMART SERIAL MEMORY
-        ══════════════════════════════ */
-        .serial-memory-card {
-            background: rgba(220,38,38,.08);
-            border: 1px solid rgba(220,38,38,.25);
-            border-radius: 10px;
-            padding: 14px 16px;
-            margin-top: 10px;
-            display: none;
-        }
-        .serial-memory-card.show { display: block; }
-        .serial-memory-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .serial-memory-title {
-            font-size: .85em;
-            font-weight: 800;
-            color: var(--primary-red);
-            text-transform: uppercase;
-            letter-spacing: .5px;
-        }
-        .serial-memory-forget {
-            background: transparent;
-            border: none;
-            color: #555;
-            cursor: pointer;
-            font-size: .8em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            transition: color .2s;
-        }
-        .serial-memory-forget:hover { color: var(--primary-red); }
-        .serial-memory-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-        .serial-memory-field { }
-        .serial-memory-label {
-            font-size: .75em;
-            color: #555;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 2px;
-        }
-        .serial-memory-value {
-            font-size: .95em;
-            font-weight: 700;
-            color: white;
-        }
-        .serial-memory-apply {
-            width: 100%;
-            margin-top: 12px;
-            padding: 10px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 6px;
-            color: white;
-            font-family: inherit;
-            font-size: .9em;
-            font-weight: 700;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            transition: all .2s;
-        }
-        .serial-memory-apply:hover { background: #ef4444; }
-
-        /* ══════════════════════════════
-           WEAR PATTERN ALERT
-        ══════════════════════════════ */
-        .wear-alert {
-            background: rgba(239,68,68,.1);
-            border: 1px solid rgba(239,68,68,.3);
-            border-radius: 10px;
-            padding: 14px 16px;
-            margin-bottom: 16px;
-            display: none;
-        }
-        .wear-alert.show { display: block; }
-        .wear-alert-title {
-            font-size: .9em;
-            font-weight: 800;
-            color: #f87171;
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .wear-alert-item {
-            font-size: .88em;
-            color: #ccc;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255,255,255,.05);
-            line-height: 1.4;
-        }
-        .wear-alert-item:last-child { border-bottom: none; }
-        .wear-alert-part { color: #f87171; font-weight: 700; }
-
-        /* ══════════════════════════════
-           COST ESTIMATOR
-        ══════════════════════════════ */
-        .cost-bar {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin-bottom: 16px;
-            display: none;
-        }
-        .cost-bar.show { display: flex; justify-content: space-between; align-items: center; }
-        .cost-bar-label {
-            font-size: .85em;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: .5px;
-        }
-        .cost-bar-total {
-            font-size: 1.6em;
-            font-weight: 900;
-            color: #4ade80;
-            letter-spacing: -1px;
-        }
-        .cost-bar-breakdown {
-            font-size: .78em;
-            color: #555;
-            margin-top: 2px;
-        }
-
-        /* ══════════════════════════════
-           PHOTO ATTACH
-        ══════════════════════════════ */
-        .photo-attach-area {
-            border: 2px dashed var(--border);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            cursor: pointer;
-            transition: all .2s;
-            margin-bottom: 16px;
-            position: relative;
-        }
-        .photo-attach-area:hover {
-            border-color: var(--primary-red);
-            background: rgba(220,38,38,.05);
-        }
-        .photo-attach-area.has-photo {
-            border-color: #4ade80;
-            background: rgba(74,222,128,.05);
-            border-style: solid;
-        }
-        .photo-attach-label {
-            font-size: .9em;
-            font-weight: 700;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: .5px;
-            margin-bottom: 4px;
-        }
-        .photo-attach-sub {
-            font-size: .8em;
-            color: #555;
-        }
-        .photo-attach-input { display: none; }
-        .photo-previews {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-            justify-content: center;
-        }
-        .photo-preview-wrap {
-            position: relative;
-            width: 70px;
-            height: 70px;
-        }
-        .photo-preview-img {
-            width: 70px;
-            height: 70px;
-            object-fit: cover;
-            border-radius: 6px;
-            border: 1px solid var(--border);
-        }
-        .photo-preview-remove {
-            position: absolute;
-            top: -6px;
-            right: -6px;
-            width: 18px;
-            height: 18px;
-            background: var(--primary-red);
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: .7em;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-        }
-
-        /* Cost on part cards */
-        .part-cost {
-            display: inline-block;
-            background: rgba(74,222,128,.15);
-            border: 1px solid rgba(74,222,128,.25);
-            color: #4ade80;
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: .85em;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
 
         /* ── PRINT STYLES ── */
         @media print {
             body { background: white !important; color: black !important; }
             .app-container { display: block !important; }
-            .cart-toggle, .cart-section, .notification-bell, .header-actions,
-            .orders-filter-bar, .orders-toolbar .export-group,
-            .modal-actions, .nav-link, .logout-btn { display: none !important; }
+            .cart-toggle, .cart-section, .header-actions { display: none !important; }
             .page-section { display: none !important; }
             .page-section.active { display: block !important; }
-            .header { background: white !important; border: none !important; padding: 10px 0 !important; }
-            .header h1 { color: black !important; font-size: 2em !important; }
             .orders-table-container { border: none !important; padding: 0 !important; }
             .orders-table th, .orders-table td { color: black !important; border-color: #ddd !important; }
-            .stat-card { border: 1px solid #ddd !important; background: white !important; }
-            .stat-value { color: #DC2626 !important; }
-            .stat-label { color: #666 !important; }
-            #printTitle { display: block !important; font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: black; }
         }
-        #printTitle { display: none; }
 
         /* ── RESPONSIVE ── */
-        @media (max-width:1200px) { .results-grid { grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); } }
+        @media (max-width:1200px) { .results-grid { grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); } }
         @media (max-width:768px) {
             .container { padding:20px; }
             .header { flex-direction:column; align-items:flex-start; gap:20px; }
@@ -884,15 +328,15 @@
             .cart-section { width:100%; right:-100%; }
             .results-grid { grid-template-columns:1fr; }
             .stats-bar { grid-template-columns:1fr; }
-            .modal-grid { grid-template-columns:1fr; }
-            .orders-filter-bar { flex-direction:column; }
         }
 
         ::-webkit-scrollbar { width:14px; height:14px; }
         ::-webkit-scrollbar-track { background:var(--dark-bg); border-left:1px solid var(--border); }
         ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,var(--primary-red) 0%,#ef4444 100%); border-radius:7px; border:2px solid var(--dark-bg); }
         ::-webkit-scrollbar-thumb:hover { background:linear-gradient(180deg,#ef4444 0%,#ff5555 100%); }
-        ::-webkit-scrollbar-corner { background:var(--dark-bg); }
+
+        /* Loading status text */
+        .load-status { grid-column:1/-1;text-align:center;padding:30px;color:#666;font-size:.9em; }
     </style>
 </head>
 <body>
@@ -922,21 +366,12 @@
 
 <!-- ── MAIN APP ── -->
 <div class="app-container" id="appContainer">
-    <!-- Offline banner -->
-    <div class="offline-banner" id="offlineBanner" style="display:none;">📡 You're offline — showing cached parts catalogue</div>
-    <!-- Install banner -->
-    <div class="install-banner" id="installBanner" style="display:none;">
-        <span>📲 Install Flexi Parts as an app for offline access</span>
-        <button class="install-btn" onclick="installPWA()">Install</button>
-        <button class="install-dismiss" onclick="dismissInstall()">✕</button>
-    </div>
     <button class="cart-toggle" id="cartToggle" onclick="toggleCart()">
         🛒
         <div class="cart-badge" id="cartBadge">0</div>
     </button>
 
     <div class="container">
-
         <!-- ══ PARTS PAGE ══ -->
         <div class="page-section active" id="partsPage">
             <div class="header">
@@ -955,7 +390,7 @@
             </div>
 
             <div class="stats-bar">
-                <div class="stat-card"><div class="stat-value" id="totalPartsCount">0</div><div class="stat-label">Total Parts</div><span class="offline-stat" id="offlineStat" style="display:none;">📦 Cached</span></div>
+                <div class="stat-card"><div class="stat-value" id="totalPartsCount">0</div><div class="stat-label">Total Parts</div></div>
                 <div class="stat-card"><div class="stat-value" id="filteredCount">0</div><div class="stat-label">Results</div></div>
                 <div class="stat-card"><div class="stat-value" id="cartItemsCount">0</div><div class="stat-label">In Cart</div></div>
             </div>
@@ -963,50 +398,27 @@
             <div class="search-section">
                 <div class="search-actions">
                     <div class="search-box">
-                        <input type="text" id="searchInput" placeholder="SEARCH PARTS OR ASK NATURALLY — e.g. 'something for the mast'..." autocomplete="off">
+                        <input type="text" id="searchInput" placeholder="SEARCH PARTS — e.g. 'mast', 'transmission', '30071'..." autocomplete="off">
                         <span class="search-icon">🔍</span>
-                        <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceSearch()" title="Voice Search">🎤</button>
                     </div>
                     <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
-                </div>
-                <!-- Natural language hint pills -->
-                <div class="nl-hints" id="nlHints">
-                    <span class="nl-hint-label">Try asking:</span>
-                    <button class="nl-pill" onclick="nlSearch('mast parts')">mast parts</button>
-                    <button class="nl-pill" onclick="nlSearch('drive axle')">drive axle</button>
-                    <button class="nl-pill" onclick="nlSearch('transmission gear')">transmission gear</button>
-                    <button class="nl-pill" onclick="nlSearch('hydraulic')">hydraulic</button>
-                    <button class="nl-pill" onclick="nlSearch('pin kit')">pin kit</button>
-                </div>
-                <!-- NL interpretation banner -->
-                <div class="nl-banner" id="nlBanner" style="display:none;">
-                    <span class="nl-banner-icon">🧠</span>
-                    <span id="nlBannerText"></span>
                 </div>
                 <div class="results-header" id="resultsHeader" style="display:none;">
                     <div class="results-count" id="resultsCount">Loading parts...</div>
                 </div>
             </div>
 
-            <div class="frequent-parts" id="frequentPartsWidget" style="display:none;">
-                <div class="frequent-parts-header">
-                    <div class="frequent-parts-title">⚡ Frequently Ordered</div>
-                </div>
-                <div class="frequent-parts-grid" id="frequentPartsGrid"></div>
-            </div>
-
             <div id="resultsContainer" class="results-grid">
                 <div class="search-prompt">
                     <div class="search-prompt-icon">🔍</div>
                     <div class="search-prompt-title">Start Searching</div>
-                    <div class="search-prompt-text">Enter a part number, description, or supplier to find parts</div>
+                    <div class="search-prompt-text">Enter a part number, description, or system to find parts</div>
                 </div>
             </div>
         </div>
 
         <!-- ══ ORDERS DASHBOARD PAGE ══ -->
         <div class="page-section" id="ordersPage">
-            <div id="printTitle">Flexi Parts — Orders Export</div>
             <div class="header">
                 <div class="header-content">
                     <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
@@ -1016,10 +428,6 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="notification-bell" title="Notifications">
-                        🔔
-                        <span class="notification-badge" id="notificationBadge" style="display:none;">0</span>
-                    </button>
                     <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
                     <button class="logout-btn" onclick="logout()">Logout</button>
                 </div>
@@ -1031,7 +439,6 @@
                 <div class="stat-card"><div class="stat-value" id="completedOrders">0</div><div class="stat-label">Completed</div></div>
             </div>
 
-            <!-- ── FILTER BAR (NEW) ── -->
             <div class="orders-filter-bar">
                 <div class="filter-group">
                     <span class="filter-label">Search Orders</span>
@@ -1046,36 +453,19 @@
                         <option value="Cancelled">Cancelled</option>
                     </select>
                 </div>
-                <div class="filter-group" style="max-width:140px;">
-                    <span class="filter-label">Date From</span>
-                    <input type="date" class="filter-input" id="filterDateFrom" onchange="applyFilters()">
-                </div>
-                <div class="filter-group" style="max-width:140px;">
-                    <span class="filter-label">Date To</span>
-                    <input type="date" class="filter-input" id="filterDateTo" onchange="applyFilters()">
-                </div>
                 <button class="filter-btn" onclick="clearFilters()">✕ Clear</button>
-            </div>
-
-            <!-- ── EXPORT TOOLBAR (NEW) ── -->
-            <div class="orders-toolbar">
-                <div class="orders-results-label">Showing <span id="filteredOrdersCount">0</span> orders</div>
-                <div class="export-group">
-                    <button class="export-btn export-btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
-                    <button class="export-btn export-btn-pdf" onclick="exportPDF()">🖨 Print / PDF</button>
-                </div>
             </div>
 
             <div class="orders-table-container">
                 <table class="orders-table">
                     <thead>
                         <tr>
-                            <th class="sortable" onclick="sortOrders('orderNumber')">Order #</th>
-                            <th class="sortable" onclick="sortOrders('date')">Date</th>
-                            <th class="sortable" onclick="sortOrders('serviceController')">Service Controller</th>
-                            <th class="sortable" onclick="sortOrders('worksOrder')">Works Order</th>
+                            <th>Order #</th>
+                            <th>Date</th>
+                            <th>Service Controller</th>
+                            <th>Works Order</th>
                             <th>Parts</th>
-                            <th class="sortable" onclick="sortOrders('status')">Status</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody id="ordersTableBody">
@@ -1084,7 +474,7 @@
                 </table>
             </div>
         </div>
-    </div><!-- /container -->
+    </div>
 
     <!-- ══ CART PANEL ══ -->
     <div class="cart-section" id="cartSection">
@@ -1096,7 +486,7 @@
         <div id="cartItems" class="cart-items"></div>
 
         <div class="order-history-section" id="orderHistorySection" style="display:none;">
-            <div class="order-history-title">📋 Previous Orders for This Truck</div>
+            <div class="order-history-title">📋 Previous Orders</div>
             <div class="order-history-list" id="orderHistoryList"></div>
         </div>
 
@@ -1111,76 +501,17 @@
             </div>
             <div class="form-group">
                 <label>Machine Serial</label>
-                <input type="text" id="machineSerial" oninput="onSerialInput();" autocomplete="off">
-                <!-- Smart serial memory card -->
-                <div class="serial-memory-card" id="serialMemoryCard">
-                    <div class="serial-memory-header">
-                        <div class="serial-memory-title">📟 Known Machine</div>
-                        <button class="serial-memory-forget" onclick="forgetSerial()">Forget</button>
-                    </div>
-                    <div class="serial-memory-grid">
-                        <div class="serial-memory-field">
-                            <div class="serial-memory-label">Model</div>
-                            <div class="serial-memory-value" id="smModel">—</div>
-                        </div>
-                        <div class="serial-memory-field">
-                            <div class="serial-memory-label">Last Ordered</div>
-                            <div class="serial-memory-value" id="smLastOrder">—</div>
-                        </div>
-                        <div class="serial-memory-field">
-                            <div class="serial-memory-label">Total Orders</div>
-                            <div class="serial-memory-value" id="smTotalOrders">—</div>
-                        </div>
-                        <div class="serial-memory-field">
-                            <div class="serial-memory-label">Last Engineer</div>
-                            <div class="serial-memory-value" id="smEngineer">—</div>
-                        </div>
-                    </div>
-                    <button class="serial-memory-apply" onclick="applySerialMemory()">↙ Auto-fill Model & Engineer</button>
-                </div>
-            </div>
-            <!-- Wear pattern alert -->
-            <div class="wear-alert" id="wearAlert">
-                <div class="wear-alert-title">🔁 Repeat Wear Pattern Detected</div>
-                <div id="wearAlertItems"></div>
+                <input type="text" id="machineSerial" autocomplete="off">
             </div>
             <div class="form-group">
                 <label>Model</label>
-                <select id="orderModel" onchange="checkOrderAnomalies()">
+                <select id="orderModel">
                     <option value="">Select model</option>
                 </select>
             </div>
             <div class="form-group">
                 <label>Comments</label>
                 <textarea id="comments" placeholder="Additional notes..."></textarea>
-            </div>
-            <!-- Urgent flag -->
-            <!-- Cost estimator -->
-            <div class="cost-bar" id="costBar">
-                <div>
-                    <div class="cost-bar-label">Estimated Order Cost</div>
-                    <div class="cost-bar-breakdown" id="costBreakdown"></div>
-                </div>
-                <div class="cost-bar-total" id="costTotal">£0.00</div>
-            </div>
-            <!-- Photo attach -->
-            <div class="form-group">
-                <label>Attach Photos (optional)</label>
-                <div class="photo-attach-area" id="photoAttachArea" onclick="document.getElementById('photoInput').click()">
-                    <div class="photo-attach-label">📷 Tap to add photos</div>
-                    <div class="photo-attach-sub">Attach photos of the fault or broken part</div>
-                    <div class="photo-previews" id="photoPreviews"></div>
-                </div>
-                <input type="file" class="photo-attach-input" id="photoInput" accept="image/*" multiple capture="environment" onchange="handlePhotoAttach(this)">
-            </div>
-            <!-- Anomaly warning banner -->
-            <div class="anomaly-banner" id="anomalyBanner" style="display:none;">
-                <div class="anomaly-icon">⚠️</div>
-                <div class="anomaly-content">
-                    <div class="anomaly-title">Order Anomaly Detected</div>
-                    <div class="anomaly-msg" id="anomalyMsg"></div>
-                </div>
-                <button class="anomaly-dismiss" onclick="dismissAnomaly()">✕</button>
             </div>
             <label class="urgent-toggle" id="urgentToggle" onclick="toggleUrgent()">
                 <input type="checkbox" id="urgentCheckbox">
@@ -1198,57 +529,24 @@
     </div>
 
     <!-- ══ BULK IMPORT MODAL ══ -->
-    <div class="modal-overlay" id="bulkImportModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Bulk Import Parts</h2>
-                <button class="modal-close" onclick="closeBulkImport()">✕</button>
+    <div class="modal-overlay" id="bulkImportModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:2000;align-items:center;justify-content:center;">
+        <div class="modal" style="background:var(--card-bg);border:1px solid var(--border);border-radius:16px;width:90%;max-width:600px;padding:30px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+                <h2 style="font-size:2em;font-weight:700;text-transform:uppercase;">Bulk Import Parts</h2>
+                <button onclick="closeBulkImport()" style="background:transparent;border:none;font-size:1.5em;cursor:pointer;color:#999;">✕</button>
             </div>
-            <div class="modal-body">
-                <div class="bulk-import-instructions">
-                    <strong>Instructions:</strong> Paste part numbers below, one per line. The system will search and add matching parts to your cart.
-                </div>
-                <textarea class="bulk-import-textarea" id="bulkImportTextarea" placeholder="30071&#10;30073A&#10;30074&#10;3008262&#10;..."></textarea>
-                <div class="bulk-import-results" id="bulkImportResults"></div>
-                <div class="modal-actions">
-                    <button class="modal-btn modal-btn-secondary" onclick="closeBulkImport()">Cancel</button>
-                    <button class="modal-btn modal-btn-primary" onclick="processBulkImport()">Add to Cart</button>
-                </div>
+            <p style="color:var(--text-secondary);margin-bottom:15px;">Paste part numbers below, one per line:</p>
+            <textarea class="bulk-import-textarea" id="bulkImportTextarea" placeholder="30071&#10;30073A&#10;30074&#10;..."></textarea>
+            <div style="display:flex;gap:12px;margin-top:20px;">
+                <button class="submit-order" style="background:transparent;border:1px solid var(--border);color:white;" onclick="closeBulkImport()">Cancel</button>
+                <button class="submit-order" onclick="processBulkImport()">Add to Cart</button>
             </div>
         </div>
     </div>
 
-</div><!-- /app-container -->
+</div>
 
 <script>
-
-// Normalise order field names and types from the API
-function normaliseOrder(o) {
-    // Parse ISO date to a readable local string
-    const rawDate = o.date || o.orderDate || '';
-    let displayDate = rawDate;
-    if (rawDate && rawDate.includes('T')) {
-        try {
-            displayDate = new Date(rawDate).toLocaleString('en-GB', {
-                day:'2-digit', month:'2-digit', year:'numeric',
-                hour:'2-digit', minute:'2-digit'
-            });
-        } catch(e) { displayDate = rawDate.slice(0,10); }
-    }
-    return {
-        ...o,
-        // Ensure serial is always a string
-        machineSerial: String(o.machineSerial || '').trim(),
-        // Normalise works order to string
-        worksOrder: String(o.worksOrder || '').trim(),
-        // Use parsed display date
-        date: displayDate,
-        // Keep raw ISO for date range filtering
-        _rawDate: rawDate.slice(0, 10),
-        // Normalise engineer/controller
-        serviceController: o.serviceController || o.engineer || '',
-    };
-}
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbzaaerk9g1JWGOjXKfrm3m9Knr1OEohRxoMSio3imj8K3xF5RgrC4FL8WWbnzlv4Mr8/exec';
 
@@ -1256,16 +554,180 @@ let allParts = [];
 let filteredParts = [];
 let cart = [];
 let orders = [];
-let displayedOrders = []; // after filter/sort
 let currentUser = null;
-let lastOrderCount = 0;
-let notificationCheckInterval = null;
-let frequentParts = [];
 let isUrgent = false;
 
-// Sort state
-let sortField = 'date';
-let sortDir = 'desc';
+let lazyLoadObserver = null;
+const PARTS_PER_PAGE = 12;
+let currentPage = 0;
+let isLoadingMore = false;
+
+// ── NORMALISE PARTS ──
+function normalisePart(p) {
+    return {
+        'Part Number':   p['Part Number']   || p.partNum      || p.partNumber   || p['part number'] || p['PART NUMBER'] || '',
+        'Description':   p['Description']   || p.desc         || p.description  || p['DESCRIPTION'] || '',
+        'Supplier Code': p['Supplier Code'] || p.supplier     || p.supplierCode || p['supplier code'] || p['SUPPLIER CODE'] || '',
+        'System':        p['System']        || p.system       || p['SYSTEM']    || '',
+        'Stock Level':   p['Stock Level']   || p.stockLevel   || p.stock        || p['stock level']  || p['STOCK LEVEL']  || '',
+        'Cost':          p['Cost'] || p.cost || p['Price'] || p.price || p['COST'] || p['PRICE'] || '',
+        'Image URL':     p['Image URL'] || p['image'] || p.imageUrl || p.image || '',
+        _raw: p
+    };
+}
+
+// ════════════════════════════════════════════════════════
+//  LAZY LOADING & IMAGE HANDLING
+// ════════════════════════════════════════════════════════
+
+function initLazyLoading() {
+    if (!('IntersectionObserver' in window)) return;
+
+    lazyLoadObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+
+            const img = entry.target;
+            const src = img.dataset.src;
+            
+            if (!src) return;
+
+            img.src = src;
+            img.removeAttribute('data-src');
+            
+            img.onload = () => {
+                img.classList.remove('lazy-loading');
+                img.classList.add('lazy-loaded');
+            };
+            img.onerror = () => {
+                img.classList.remove('lazy-loading');
+                img.classList.add('lazy-error');
+            };
+
+            lazyLoadObserver.unobserve(img);
+        });
+    }, {
+        rootMargin: '100px'
+    });
+
+    observeScrollSentinel();
+}
+
+function observeScrollSentinel() {
+    const sentinel = document.getElementById('scrollSentinel');
+    if (!sentinel || !lazyLoadObserver) return;
+    lazyLoadObserver.observe(sentinel);
+}
+
+function renderPartsLazily() {
+    const container = document.getElementById('resultsContainer');
+    const count = filteredParts.length;
+    
+    document.getElementById('resultsCount').textContent = `${count} part${count!==1?'s':''} found`;
+    document.getElementById('filteredCount').textContent = count;
+    
+    if (!count) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';
+        return;
+    }
+
+    currentPage = 0;
+    isLoadingMore = false;
+    container.innerHTML = '';
+    renderNextPage();
+}
+
+function renderNextPage() {
+    if (isLoadingMore) return;
+    isLoadingMore = true;
+
+    const container = document.getElementById('resultsContainer');
+    const startIdx = currentPage * PARTS_PER_PAGE;
+    const endIdx = startIdx + PARTS_PER_PAGE;
+    const partsToShow = filteredParts.slice(startIdx, endIdx);
+
+    if (!partsToShow.length) {
+        isLoadingMore = false;
+        const sentinel = document.getElementById('scrollSentinel');
+        if (sentinel) sentinel.remove();
+        return;
+    }
+
+    const html = partsToShow.map(p => renderPartCard(p)).join('');
+    const wrapper = document.createElement('div');
+    wrapper.innerHTML = html;
+    
+    wrapper.querySelectorAll('img[data-src]').forEach(img => {
+        if (lazyLoadObserver) lazyLoadObserver.observe(img);
+    });
+
+    container.appendChild(wrapper);
+
+    let sentinel = document.getElementById('scrollSentinel');
+    if (!sentinel) {
+        sentinel = document.createElement('div');
+        sentinel.id = 'scrollSentinel';
+        sentinel.style.cssText = 'height:1px;visibility:hidden;';
+        container.appendChild(sentinel);
+        observeScrollSentinel();
+    } else {
+        container.appendChild(sentinel);
+    }
+
+    currentPage++;
+    isLoadingMore = false;
+
+    const remaining = filteredParts.length - endIdx;
+    if (remaining > 0) {
+        const status = document.createElement('div');
+        status.className = 'load-status';
+        status.innerHTML = `Scroll to load more (${remaining} remaining)`;
+        container.appendChild(status);
+    }
+}
+
+function renderPartCard(p) {
+    const num  = p['Part Number'] || p.partNum || 'N/A';
+    const desc = p['Description'] || p.desc || 'No description';
+    const sup  = p['Supplier Code'] || p.supplier || '';
+    const sys  = p['System'] || p.system || '';
+    const stk  = p['Stock Level'] || p.stockLevel || '';
+    const cost = p['Cost'] || p.cost || p['Price'] || p.price || '';
+    const imgUrl = p['Image URL'] || p.image || '';
+
+    const imgHtml = imgUrl 
+        ? `<div class="part-image-container">
+             <img class="part-image lazy-loading" data-src="${escapeHtml(imgUrl)}" alt="${escapeHtml(desc)}">
+           </div>`
+        : `<div class="part-image-placeholder">
+             <div class="placeholder-icon">📦</div>
+           </div>`;
+
+    const partData = JSON.stringify({
+        "Part Number":num,"Description":desc,"Supplier Code":sup,"System":sys,"Stock Level":stk,"Image URL":imgUrl
+    }).replace(/'/g,"&#39;");
+
+    return `<div class="part-card">
+        ${imgHtml}
+        <div class="part-card-content">
+            <div class="part-number">${escapeHtml(num)}</div>
+            <div class="part-desc">${escapeHtml(desc)}</div>
+            ${cost ? `<div class="part-cost" style="display:inline-block;background:rgba(74,222,128,.15);border:1px solid rgba(74,222,128,.25);color:#4ade80;padding:3px 10px;border-radius:6px;font-size:.85em;font-weight:700;margin-bottom:12px;">£${parseFloat(cost).toFixed(2)}</div>` : ''}
+            <div class="part-details">
+                ${sup ? `<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${escapeHtml(sup)}</span></div>` : ''}
+                ${sys ? `<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${escapeHtml(sys)}</span></div>` : ''}
+                ${stk ? `<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${escapeHtml(stk)}</span></div>` : ''}
+            </div>
+            <button class="add-to-cart" onclick='addToCart(${partData})'>Add to Cart</button>
+        </div>
+    </div>`;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 
 // ── SESSION ──
 document.addEventListener('DOMContentLoaded', () => {
@@ -1317,7 +779,6 @@ document.getElementById('loginForm').addEventListener('submit', async e => {
 function logout() {
     localStorage.removeItem('flexiSession');
     localStorage.removeItem('flexiPartsCart');
-    if (notificationCheckInterval) clearInterval(notificationCheckInterval);
     location.reload();
 }
 
@@ -1326,22 +787,17 @@ async function showApp() {
     document.getElementById('appContainer').classList.add('show');
     document.getElementById('userName').textContent = currentUser.name || currentUser.username;
     await init();
-    startNotificationPolling();
-    if ('Notification' in window && Notification.permission === 'default') Notification.requestPermission();
 }
 
 async function init() {
     setGreeting();
-    injectManifest();
-    initOfflineSupport();
+    initLazyLoading();
     await loadParts();
     await loadOrders();
-    await loadFrequentParts();
     populateModels();
     setupEventListeners();
     loadCartFromStorage();
     updateCart();
-    initVoiceSearch();
 }
 
 function setGreeting() {
@@ -1355,7 +811,9 @@ function showPage(page) {
     if (page === 'orders') renderOrders();
 }
 
-function toggleCart() { document.getElementById('cartSection').classList.toggle('open'); }
+function toggleCart() { 
+    document.getElementById('cartSection').classList.toggle('open'); 
+}
 
 function populateModels() {
     const sel = document.getElementById('orderModel');
@@ -1370,34 +828,22 @@ async function loadParts() {
         const data = await res.json();
         if (data.success && data.parts?.length) {
             allParts = data.parts.map(normalisePart);
-            cacheParts(allParts); // Save for offline use
         } else {
             loadDemoParts();
         }
-    } catch(e) { loadDemoParts(); }
+    } catch(e) { 
+        loadDemoParts(); 
+    }
     document.getElementById('totalPartsCount').textContent = allParts.length;
-}
-
-// Normalise any field-name variation from the API into consistent keys
-function normalisePart(p) {
-    return {
-        'Part Number':   p['Part Number']   || p.partNum      || p.partNumber   || p['part number'] || p['PART NUMBER'] || '',
-        'Description':   p['Description']   || p.desc         || p.description  || p['DESCRIPTION'] || '',
-        'Supplier Code': p['Supplier Code'] || p.supplier     || p.supplierCode || p['supplier code'] || p['SUPPLIER CODE'] || '',
-        'System':        p['System']        || p.system       || p['SYSTEM']    || '',
-        'Stock Level':   p['Stock Level']   || p.stockLevel   || p.stock        || p['stock level']  || p['STOCK LEVEL']  || '',
-        'Cost':          p['Cost'] || p.cost || p['Price'] || p.price || p['COST'] || p['PRICE'] || '',
-        _raw: p  // keep original in case anything else needs it
-    };
 }
 
 function loadDemoParts() {
     allParts = [
-        { 'Part Number':'2015.00.002', 'Supplier Code':'SUP-001', 'Description':'Fork Pin Kit round head', 'System':'MAST' },
-        { 'Part Number':'3004082B',    'Supplier Code':'SUP-002', 'Description':'VNA back of mast pipe',   'System':'MAST' },
-        { 'Part Number':'30071',       'Supplier Code':'SUP-003', 'Description':'Spacer (drive axle)',     'System':'TRANSMISSION' },
-        { 'Part Number':'30073A',      'Supplier Code':'SUP-004', 'Description':'Wheel Helical',           'System':'TRANSMISSION' },
-        { 'Part Number':'30074',       'Supplier Code':'SUP-005', 'Description':'Intermediate gear',       'System':'TRANSMISSION' }
+        { 'Part Number':'2015.00.002', 'Supplier Code':'SUP-001', 'Description':'Fork Pin Kit round head', 'System':'MAST', 'Image URL':'https://via.placeholder.com/300x225?text=Pin+Kit' },
+        { 'Part Number':'3004082B',    'Supplier Code':'SUP-002', 'Description':'VNA back of mast pipe',   'System':'MAST', 'Image URL':'https://via.placeholder.com/300x225?text=Mast+Pipe' },
+        { 'Part Number':'30071',       'Supplier Code':'SUP-003', 'Description':'Spacer (drive axle)',     'System':'TRANSMISSION', 'Image URL':'https://via.placeholder.com/300x225?text=Spacer' },
+        { 'Part Number':'30073A',      'Supplier Code':'SUP-004', 'Description':'Wheel Helical',           'System':'TRANSMISSION', 'Image URL':'https://via.placeholder.com/300x225?text=Wheel' },
+        { 'Part Number':'30074',       'Supplier Code':'SUP-005', 'Description':'Intermediate gear',       'System':'TRANSMISSION', 'Image URL':'https://via.placeholder.com/300x225?text=Gear' }
     ];
 }
 
@@ -1406,41 +852,11 @@ async function loadOrders() {
         const res = await fetch(`${API_URL}?action=getOrders`);
         const data = await res.json();
         if (data.success && data.orders) {
-            orders = data.orders.map(normaliseOrder);
-            lastOrderCount = orders.length;
-            learnFromOrders();
+            orders = data.orders;
         }
     } catch(e) { orders = []; }
     updateOrderStats();
-    applyFilters();
 }
-
-async function loadFrequentParts() {
-    try {
-        const res = await fetch(`${API_URL}?action=getFrequentParts&limit=10`);
-        const data = await res.json();
-        if (data.success && data.parts?.length) {
-            frequentParts = data.parts;
-            renderFrequentParts();
-        }
-    } catch(e) {}
-}
-
-function renderFrequentParts() {
-    if (!frequentParts.length) return;
-    document.getElementById('frequentPartsWidget').style.display = 'block';
-    document.getElementById('frequentPartsGrid').innerHTML = frequentParts.map(item => {
-        const num  = item.part['Part Number'] || item.part.partNum || 'N/A';
-        const desc = item.part['Description'] || item.part.desc || 'No description';
-        return `<div class="frequent-part-item" onclick='quickAddPart(${JSON.stringify(item.part).replace(/'/g,"&#39;")})'>
-            <div class="frequent-part-num">${num}</div>
-            <div class="frequent-part-desc">${desc}</div>
-            <div class="frequent-part-count">Ordered ${item.count} times</div>
-        </div>`;
-    }).join('');
-}
-
-function quickAddPart(part) { addToCart(part); }
 
 function updateOrderStats() {
     document.getElementById('totalOrders').textContent    = orders.length;
@@ -1448,356 +864,72 @@ function updateOrderStats() {
     document.getElementById('completedOrders').textContent = orders.filter(o => o.status === 'Completed').length;
 }
 
-// ════════════════════════════════════════
-//  FILTER, SORT & RENDER ORDERS  (NEW)
-// ════════════════════════════════════════
+function renderOrders() {
+    const tbody = document.getElementById('ordersTableBody');
+    if (!orders.length) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:60px;color:#666;">No orders found</td></tr>`;
+        return;
+    }
+    tbody.innerHTML = orders.map((order, i) => `<tr>
+        <td><span class="order-number">${order.orderNumber || 'ORD-' + (i+1)}</span></td>
+        <td>${order.date || order.orderDate || 'N/A'}</td>
+        <td>${order.serviceController || order.engineer || 'N/A'}</td>
+        <td>${order.worksOrder || 'N/A'}</td>
+        <td>${order.partsCount || (order.parts?.length || 0)} parts</td>
+        <td><span class="order-status status-${(order.status||'pending').toLowerCase()}">${order.status||'Pending'}</span></td>
+    </tr>`).join('');
+}
 
 function applyFilters() {
-    const search    = (document.getElementById('filterSearch')?.value   || '').toLowerCase();
-    const status    = document.getElementById('filterStatus')?.value    || '';
-    const dateFrom  = document.getElementById('filterDateFrom')?.value  || '';
-    const dateTo    = document.getElementById('filterDateTo')?.value    || '';
+    const search = (document.getElementById('filterSearch')?.value || '').toLowerCase();
+    const status = document.getElementById('filterStatus')?.value || '';
 
-    displayedOrders = orders.filter(o => {
-        // text search
+    const filtered = orders.filter(o => {
         if (search) {
-            const hay = [
-                o.orderNumber, o.serviceController, o.engineer,
-                o.worksOrder, o.machineSerial, o.model
-            ].map(v => String(v ?? '')).join(' ').toLowerCase();
+            const hay = [o.orderNumber, o.serviceController, o.engineer, o.worksOrder]
+                .map(v => String(v ?? '')).join(' ').toLowerCase();
             if (!hay.includes(search)) return false;
         }
-        // status
         if (status && (o.status || 'Pending') !== status) return false;
-        // date range
-        if (dateFrom || dateTo) {
-            const d = o._rawDate || '';
-            if (dateFrom && d < dateFrom) return false;
-            if (dateTo   && d > dateTo)   return false;
-        }
         return true;
     });
 
-    // sort
-    displayedOrders.sort((a, b) => {
-        let va = fieldVal(a, sortField);
-        let vb = fieldVal(b, sortField);
-        if (va < vb) return sortDir === 'asc' ? -1 :  1;
-        if (va > vb) return sortDir === 'asc' ?  1 : -1;
-        return 0;
-    });
-
-    document.getElementById('filteredOrdersCount').textContent = displayedOrders.length;
-    renderOrders();
-}
-
-function fieldVal(o, f) {
-    const s = v => String(v ?? '');
-    const map = {
-        orderNumber:       s(o.orderNumber),
-        date:              s(o.date || o.orderDate || ''),
-        serviceController: s(o.serviceController || o.engineer || '').toLowerCase(),
-        worksOrder:        s(o.worksOrder || '').toLowerCase(),
-        status:            s(o.status || 'Pending').toLowerCase()
-    };
-    return map[f] ?? '';
-}
-
-function sortOrders(field) {
-    if (sortField === field) {
-        sortDir = sortDir === 'asc' ? 'desc' : 'asc';
-    } else {
-        sortField = field;
-        sortDir   = 'asc';
-    }
-    // Update header classes
-    document.querySelectorAll('.orders-table th').forEach(th => {
-        th.classList.remove('sort-asc','sort-desc');
-    });
-    const idx = { orderNumber:0, date:1, serviceController:2, worksOrder:3, status:5 }[field];
-    if (idx !== undefined) {
-        const th = document.querySelectorAll('.orders-table th')[idx];
-        th?.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
-    }
-    applyFilters();
-}
-
-function clearFilters() {
-    document.getElementById('filterSearch').value   = '';
-    document.getElementById('filterStatus').value   = '';
-    document.getElementById('filterDateFrom').value = '';
-    document.getElementById('filterDateTo').value   = '';
-    applyFilters();
-}
-
-function renderOrders() {
-    const tbody = document.getElementById('ordersTableBody');
-    if (!displayedOrders.length) {
-        const msg = orders.length ? 'No orders match your filters' : 'No orders found';
-        tbody.innerHTML = `<tr class="no-results-row"><td colspan="6">${msg}</td></tr>`;
-        return;
-    }
-    tbody.innerHTML = displayedOrders.map((order, i) => {
-        const urgentBadge = order.urgent ? '<span class="urgent-badge">⚑ Urgent</span>' : '';
-        return `<tr onclick="openOrderModal(${orders.indexOf(order)})">
-            <td><span class="order-number">${order.orderNumber || 'ORD-' + (i+1)}</span>${urgentBadge}</td>
+    document.getElementById('ordersTableBody').innerHTML = filtered.length 
+        ? filtered.map((order, i) => `<tr>
+            <td><span class="order-number">${order.orderNumber || 'ORD-' + (i+1)}</span></td>
             <td>${order.date || order.orderDate || 'N/A'}</td>
             <td>${order.serviceController || order.engineer || 'N/A'}</td>
             <td>${order.worksOrder || 'N/A'}</td>
             <td>${order.partsCount || (order.parts?.length || 0)} parts</td>
             <td><span class="order-status status-${(order.status||'pending').toLowerCase()}">${order.status||'Pending'}</span></td>
-        </tr>`;
-    }).join('');
+        </tr>`).join('')
+        : `<tr><td colspan="6" style="text-align:center;padding:60px;color:#666;">No matching orders</td></tr>`;
 }
 
-// ════════════════════════════════════════
-//  EXPORT  (NEW)
-// ════════════════════════════════════════
-
-function exportCSV() {
-    if (!displayedOrders.length) { showToast('No orders to export'); return; }
-
-    const headers = ['Order Number','Date','Service Controller','Works Order','Machine Serial','Model','Parts Count','Status','Urgent','Notes'];
-    const rows = displayedOrders.map(o => [
-        o.orderNumber || '',
-        o.date || o.orderDate || '',
-        o.serviceController || o.engineer || '',
-        o.worksOrder || '',
-        o.machineSerial || '',
-        o.model || '',
-        o.partsCount || (o.parts?.length || 0),
-        o.status || 'Pending',
-        o.urgent ? 'Yes' : 'No',
-        (o.comments || o.notes || '').replace(/"/g, '""')
-    ].map(v => `"${v}"`).join(','));
-
-    const csv = [headers.join(','), ...rows].join('\n');
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `flexi-orders-${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast(`Exported ${displayedOrders.length} orders to CSV`);
-}
-
-function exportPDF() {
-    // Temporarily set print title
-    const d = new Date().toLocaleDateString('en-GB');
-    document.getElementById('printTitle').textContent = `Flexi Parts — Orders Export  (${displayedOrders.length} orders, printed ${d})`;
-    window.print();
-}
-
-// ════════════════════════════════════════
-//  ORDER MODAL WITH STATUS TIMELINE  (NEW)
-// ════════════════════════════════════════
-
-function buildTimeline(order) {
-    const status = (order.status || 'Pending');
-    const isCancelled = status === 'Cancelled';
-    const isCompleted = status === 'Completed';
-    const isPending   = status === 'Pending';
-
-    const orderDate    = order.date || order.orderDate || '';
-    const completedAt  = order.completedAt || '';
-    const cancelledAt  = order.cancelledAt || '';
-
-    const steps = [
-        {
-            icon: '📋',
-            title: 'Order Placed',
-            desc: `Submitted by ${order.serviceController || order.engineer || 'Unknown'}`,
-            timestamp: orderDate,
-            state: 'done'
-        },
-        {
-            icon: '🔄',
-            title: 'Processing',
-            desc: 'Order received by parts team',
-            timestamp: isPending ? 'In progress...' : (completedAt || cancelledAt || ''),
-            state: isCancelled ? 'cancelled' : (isCompleted ? 'done' : 'active')
-        },
-        {
-            icon: isCancelled ? '✕' : '✅',
-            title: isCancelled ? 'Cancelled' : 'Completed',
-            desc: isCancelled ? 'Order was cancelled' : 'All parts fulfilled',
-            timestamp: isCancelled ? (cancelledAt || '') : (completedAt || (isCompleted ? 'Completed' : '')),
-            state: isCancelled ? 'cancelled' : (isCompleted ? 'done' : 'inactive')
-        }
-    ];
-
-    return `<div class="timeline">${steps.map(s => {
-        const dotClass = s.state === 'done' ? 'done' : s.state === 'active' ? 'active' : s.state === 'cancelled' ? 'cancelled' : '';
-        const titleClass = s.state === 'done' ? 'done' : s.state === 'active' ? 'active' : s.state === 'cancelled' ? 'cancelled-title' : 'inactive';
-        return `<div class="timeline-step">
-            <div class="timeline-dot ${dotClass}">${s.icon}</div>
-            <div class="timeline-content">
-                <div class="timeline-title ${titleClass}">${s.title}</div>
-                <div class="timeline-desc">${s.desc}</div>
-                ${s.timestamp ? `<div class="timeline-timestamp">${s.timestamp}</div>` : ''}
-            </div>
-        </div>`;
-    }).join('')}</div>`;
-}
-
-function openOrderModal(index) {
-    const order = orders[index];
-    const urgentBadge = order.urgent ? '<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>' : '';
-
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay active';
-    modal.id = 'orderModal';
-    modal.innerHTML = `
-        <div class="modal">
-            <div class="modal-header">
-                <div>
-                    <h2>${order.orderNumber || 'Order Details'}</h2>
-                    ${urgentBadge}
-                </div>
-                <button class="modal-close" onclick="closeOrderModal()">✕</button>
-            </div>
-            <div class="modal-body">
-
-                <!-- Info grid -->
-                <div class="modal-grid">
-                    <div class="modal-field">
-                        <div class="modal-field-label">Date</div>
-                        <div class="modal-field-value">${order.date || order.orderDate || 'N/A'}</div>
-                    </div>
-                    <div class="modal-field">
-                        <div class="modal-field-label">Service Controller</div>
-                        <div class="modal-field-value">${order.serviceController || order.engineer || 'N/A'}</div>
-                    </div>
-                    <div class="modal-field">
-                        <div class="modal-field-label">Works Order</div>
-                        <div class="modal-field-value">${order.worksOrder || 'N/A'}</div>
-                    </div>
-                    <div class="modal-field">
-                        <div class="modal-field-label">Machine Serial</div>
-                        <div class="modal-field-value">${order.machineSerial || 'N/A'}</div>
-                    </div>
-                    <div class="modal-field">
-                        <div class="modal-field-label">Model</div>
-                        <div class="modal-field-value">${order.model || 'N/A'}</div>
-                    </div>
-                    <div class="modal-field">
-                        <div class="modal-field-label">Parts Count</div>
-                        <div class="modal-field-value">${order.parts?.length || order.partsCount || 0} parts</div>
-                    </div>
-                </div>
-
-                <!-- Status Timeline (NEW) -->
-                <div class="modal-section">
-                    <div class="modal-section-title">Order Status Timeline</div>
-                    ${buildTimeline(order)}
-                </div>
-
-                <!-- Update Status -->
-                <div class="modal-section">
-                    <div class="modal-section-title">Update Status</div>
-                    <div class="status-select-wrapper">
-                        <select id="modalOrderStatus">
-                            <option value="Pending"   ${order.status === 'Pending'   ? 'selected' : ''}>Pending</option>
-                            <option value="Completed" ${order.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                            <option value="Cancelled" ${order.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Parts list -->
-                <div class="modal-section">
-                    <div class="modal-section-title">Parts (${order.parts?.length || 0})</div>
-                    <div class="modal-parts-list">
-                        ${order.parts?.length ? order.parts.map(p => {
-                            const num  = p['Part Number'] || p.partNum || p.partNumber || 'N/A';
-                            const desc = p['Description'] || p.desc || p.description || 'No description';
-                            return `<div class="modal-part-row">
-                                <div class="modal-part-info">
-                                    <div class="modal-part-num">${num}</div>
-                                    <div class="modal-part-desc">${desc}</div>
-                                </div>
-                                <div class="modal-part-qty">Qty: ${p.qty || 1}</div>
-                            </div>`;
-                        }).join('') : '<p style="color:#666;">No parts in this order</p>'}
-                    </div>
-                </div>
-
-                <!-- Notes -->
-                <div class="modal-section">
-                    <div class="modal-section-title">Notes</div>
-                    <textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes about this order...">${order.comments || order.notes || ''}</textarea>
-                </div>
-
-                <div class="modal-actions">
-                    <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button>
-                    <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button>
-                </div>
-            </div>
-        </div>`;
-
-    document.body.appendChild(modal);
-}
-
-async function saveOrderChanges(index) {
-    const order = orders[index];
-    const newStatus = document.getElementById('modalOrderStatus').value;
-    const newNotes  = document.getElementById('modalOrderNotes').value;
-    const btn = event.target;
-    btn.disabled = true;
-    btn.textContent = 'Saving...';
-    try {
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({ action:'updateOrder', orderNumber:order.orderNumber, status:newStatus, notes:newNotes })
-        });
-        const result = await res.json();
-        if (result.success) {
-            orders[index].status   = newStatus;
-            orders[index].notes    = newNotes;
-            orders[index].comments = newNotes;
-            if (newStatus === 'Completed') orders[index].completedAt = new Date().toLocaleString('en-GB');
-            if (newStatus === 'Cancelled') orders[index].cancelledAt = new Date().toLocaleString('en-GB');
-            updateOrderStats();
-            applyFilters();
-            closeOrderModal();
-            showToast('Order updated successfully!');
-        } else {
-            showToast('Error updating order');
-            btn.disabled = false; btn.textContent = 'Save Changes';
-        }
-    } catch(e) {
-        showToast('Error updating order');
-        btn.disabled = false; btn.textContent = 'Save Changes';
-    }
-}
-
-function closeOrderModal() {
-    document.getElementById('orderModal')?.remove();
+function clearFilters() {
+    document.getElementById('filterSearch').value = '';
+    document.getElementById('filterStatus').value = '';
+    renderOrders();
 }
 
 // ── SEARCH ──
 function setupEventListeners() {
     document.getElementById('searchInput').addEventListener('input', filterParts);
     document.getElementById('submitBtn').addEventListener('click', submitOrder);
-    document.getElementById('machineSerial').addEventListener('input', loadOrderHistory);
 }
 
 function filterParts() {
-    const raw  = document.getElementById('searchInput').value;
-    const term = raw.toLowerCase().trim();
+    const term = document.getElementById('searchInput').value.toLowerCase().trim();
     const hdr  = document.getElementById('resultsHeader');
-    const nlBanner = document.getElementById('nlBanner');
 
     if (!term) {
         hdr.style.display = 'none';
-        nlBanner.style.display = 'none';
         document.getElementById('filteredCount').textContent = '0';
         document.getElementById('resultsContainer').innerHTML = `
             <div class="search-prompt">
                 <div class="search-prompt-icon">🔍</div>
                 <div class="search-prompt-title">Start Searching</div>
-                <div class="search-prompt-text">Enter a part number, description, or try natural language like "mast parts" or "drive axle"</div>
+                <div class="search-prompt-text">Enter a part number, description, or system to find parts</div>
             </div>`;
         return;
     }
@@ -1805,25 +937,6 @@ function filterParts() {
     hdr.style.display = 'block';
     document.getElementById('resultsCount').textContent = 'Searching...';
 
-    // ── Natural language path ──
-    if (isNaturalLanguage(term)) {
-        const nlResult = parseNLQuery(term);
-        if (nlResult) {
-            nlBanner.style.display = 'flex';
-            document.getElementById('nlBannerText').textContent = nlResult.interpretation;
-            filteredParts = allParts.filter(p => {
-                const desc = String(p['Description'] || p.desc || '').toLowerCase();
-                const sys  = String(p['System'] || p.system || '').toLowerCase();
-                const num  = String(p['Part Number'] || p.partNum || '').toLowerCase();
-                return nlResult.keywords.some(kw => desc.includes(kw) || sys.includes(kw) || num.includes(kw));
-            });
-            renderParts();
-            return;
-        }
-    }
-
-    // ── Standard search path ──
-    nlBanner.style.display = 'none';
     const clean = term.replace(/[\s\-.]/g,'');
     filteredParts = allParts.filter(p => {
         const num  = String(p['Part Number'] || p.partNum || '').toLowerCase();
@@ -1832,42 +945,8 @@ function filterParts() {
         const sys  = String(p['System'] || p.system || '').toLowerCase();
         return num.replace(/[\s\-.]/g,'').includes(clean) || num.includes(term) || desc.includes(term) || sup.includes(term) || sys.includes(term);
     });
-    renderParts();
-}
-
-function renderParts() {
-    const container = document.getElementById('resultsContainer');
-    const count = filteredParts.length;
-    document.getElementById('resultsCount').textContent = `${count} part${count!==1?'s':''} found`;
-    document.getElementById('filteredCount').textContent = count;
-    if (!count) { container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>'; return; }
-    const limit = 100;
-    const show  = filteredParts.slice(0, limit);
-    container.innerHTML = show.map(p => {
-        const num  = p['Part Number'] || p.partNum || 'N/A';
-        const desc = p['Description'] || p.desc || 'No description';
-        const sup  = p['Supplier Code'] || p.supplier || '';
-        const sys  = p['System'] || p.system || '';
-        const stk  = p['Stock Level'] || p.stockLevel || '';
-        const cost = p['Cost'] || p.cost || p['Price'] || p.price || '';
-        return `<div class="part-card">
-            <div class="part-number">${num}</div>
-            <div class="part-desc">${desc}</div>
-            ${cost ? `<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>` : ''}
-            <div class="part-details">
-                ${sup ? `<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>` : ''}
-                ${sys ? `<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>` : ''}
-                ${stk ? `<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>` : ''}
-            </div>
-            <button class="add-to-cart" onclick='addToCart(${JSON.stringify({"Part Number":num,"Description":desc,"Supplier Code":sup,"System":sys,"Stock Level":stk}).replace(/'/g,"&#39;")})'>Add to Cart</button>
-        </div>`;
-    }).join('');
-    if (count > limit) {
-        const d = document.createElement('div');
-        d.style.cssText = 'grid-column:1/-1;text-align:center;padding:30px;color:#666;';
-        d.innerHTML = `<p style="font-size:1.2em;margin-bottom:10px;">Showing first ${limit} of ${count} results</p><p style="font-size:.95em;">💡 Refine your search to see specific parts</p>`;
-        container.appendChild(d);
-    }
+    
+    renderPartsLazily();
 }
 
 // ── CART ──
@@ -1875,8 +954,8 @@ function addToCart(part) {
     const num = part['Part Number'] || part.partNum || part.partNumber;
     const ex  = cart.find(i => (i['Part Number'] || i.partNum || i.partNumber) === num);
     if (ex) ex.qty++; else cart.push({...part, qty:1});
-    updateCart(); saveCartToStorage();
-    haptic('medium');
+    updateCart(); 
+    saveCartToStorage();
     showToast(`${num} added to cart`);
 }
 
@@ -1889,9 +968,8 @@ function updateCart() {
     document.getElementById('cartItemsCount').textContent    = cart.length;
     document.getElementById('cartItemsCountText').textContent = cart.length;
     if (!cart.length) { items.innerHTML=''; empty.style.display='block'; form.style.display='none'; return; }
-    empty.style.display = 'none'; form.style.display = 'block';
-    setTimeout(checkOrderAnomalies, 50);
-    updateCostEstimate();
+    empty.style.display = 'none'; 
+    form.style.display = 'block';
     items.innerHTML = cart.map((item, i) => {
         const num  = item['Part Number'] || item.partNum || 'N/A';
         const desc = item['Description'] || item.desc || 'No description';
@@ -1910,44 +988,13 @@ function updateCart() {
     }).join('');
 }
 
-function removeFromCart(i)      { cart.splice(i,1); updateCart(); saveCartToStorage(); haptic('light'); }
+function removeFromCart(i)      { cart.splice(i,1); updateCart(); saveCartToStorage(); }
 function updateQty(i, d)        { cart[i].qty = Math.max(1, cart[i].qty+d); updateCart(); saveCartToStorage(); }
 function updateQtyDirect(i, v)  { cart[i].qty = Math.max(1, parseInt(v)||1); updateCart(); saveCartToStorage(); }
 
 function toggleUrgent() {
     isUrgent = !isUrgent;
     document.getElementById('urgentToggle').classList.toggle('active', isUrgent);
-    document.getElementById('urgentIndicator').textContent = isUrgent ? '✓' : '⚑';
-}
-
-// ── ORDER HISTORY ──
-function loadOrderHistory() {
-    const serial = document.getElementById('machineSerial').value.trim();
-    const section = document.getElementById('orderHistorySection');
-    const list    = document.getElementById('orderHistoryList');
-    if (!serial) { section.style.display='none'; return; }
-    const matches = orders.filter(o => (o.machineSerial||'').toLowerCase() === serial.toLowerCase());
-    if (!matches.length) { section.style.display='none'; return; }
-    section.style.display = 'block';
-    list.innerHTML = matches.slice(0,5).map(o => `
-        <div class="order-history-item" onclick='loadOrderParts(${JSON.stringify(o.parts).replace(/'/g,"&#39;")})'>
-            <div class="order-history-item-header">
-                <div class="order-history-number">${o.orderNumber}</div>
-                <div class="order-history-date">${o.date||'N/A'}</div>
-            </div>
-            <div class="order-history-parts">${o.partsCount||0} parts</div>
-        </div>`).join('');
-}
-
-function loadOrderParts(parts) {
-    if (!parts?.length) return;
-    parts.forEach(p => {
-        const id = p['Part Number'] || p.partNum || p.partNumber;
-        const ex = cart.find(i => (i['Part Number']||i.partNum||i.partNumber) === id);
-        if (ex) ex.qty += (p.qty||1); else cart.push({...p, qty:p.qty||1});
-    });
-    updateCart(); saveCartToStorage();
-    showToast(`${parts.length} parts added from previous order`);
 }
 
 // ── SUBMIT ORDER ──
@@ -1956,13 +1003,12 @@ async function submitOrder() {
     const wo = document.getElementById('worksOrder').value.trim();
     if (!sc || !wo) { showToast('Please fill required fields'); return; }
     if (!cart.length) { showToast('Cart is empty'); return; }
-    const serial = document.getElementById('machineSerial').value.trim();
-    const orderNumber = serial
-        ? `${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`
-        : `ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;
+    
+    const orderNumber = `ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;
     const orderData = {
         action:'submitOrder', orderNumber,
-        serviceController:sc, worksOrder:wo, machineSerial:serial,
+        serviceController:sc, worksOrder:wo,
+        machine: document.getElementById('machineSerial').value.trim(),
         model: document.getElementById('orderModel').value,
         comments: document.getElementById('comments').value,
         parts: cart, urgent: isUrgent,
@@ -1974,31 +1020,25 @@ async function submitOrder() {
         const res = await fetch(API_URL, { method:'POST', body:JSON.stringify(orderData) });
         const result = await res.json();
         if (result.success) {
-            haptic('success');
             showToast('Order submitted successfully! 🎉');
-            const submitDate = new Date().toISOString().slice(0,16).replace('T',' ');
-            saveSerialOnSubmit(serial, orderData.model, sc, submitDate);
-            orders.unshift(normaliseOrder({
+            orders.unshift({
                 orderNumber, urgent: isUrgent,
                 date: new Date().toISOString(),
-                serviceController:sc, worksOrder:wo, machineSerial:serial,
+                serviceController:sc, worksOrder:wo,
                 model:orderData.model, parts:cart, partsCount:cart.length,
-                status:'Pending', notes:orderData.comments
-            }));
-            updateOrderStats(); applyFilters();
-            cart=[]; isUrgent=false; attachedPhotos=[]; renderPhotoPreviews();
+                status:'Pending'
+            });
+            updateOrderStats();
+            cart=[]; isUrgent=false;
+            ['serviceController','worksOrder','machineSerial','comments'].forEach(id => document.getElementById(id).value='');
+            document.getElementById('orderModel').value='';
             document.getElementById('urgentToggle').classList.remove('active');
-            document.getElementById('urgentIndicator').textContent='⚑';
-            updateCart(); saveCartToStorage(); clearForm(); toggleCart();
+            updateCart(); 
+            saveCartToStorage(); 
+            toggleCart();
         } else { showToast('Error submitting order'); }
     } catch(e) { showToast('Error submitting order'); }
     finally { btn.disabled=false; btn.textContent='Submit Order'; }
-}
-
-function clearForm() {
-    ['serviceController','worksOrder','machineSerial','comments'].forEach(id => document.getElementById(id).value='');
-    document.getElementById('orderModel').value='';
-    document.getElementById('orderHistorySection').style.display='none';
 }
 
 function saveCartToStorage() { localStorage.setItem('flexiPartsCart', JSON.stringify(cart)); }
@@ -2013,779 +1053,30 @@ function showToast(msg) {
 
 // ── BULK IMPORT ──
 function openBulkImport() {
-    document.getElementById('bulkImportModal').classList.add('active');
+    document.getElementById('bulkImportModal').style.display = 'flex';
     document.getElementById('bulkImportTextarea').value='';
-    document.getElementById('bulkImportResults').classList.remove('show');
 }
-function closeBulkImport() { document.getElementById('bulkImportModal').classList.remove('active'); }
+function closeBulkImport() { 
+    document.getElementById('bulkImportModal').style.display = 'none'; 
+}
 function processBulkImport() {
     const lines = document.getElementById('bulkImportTextarea').value.split('\n').map(l=>l.trim()).filter(Boolean);
-    const res   = document.getElementById('bulkImportResults');
-    if (!lines.length) { res.innerHTML='<p style="color:#f87171;">No part numbers entered</p>'; res.classList.add('show'); return; }
-    let found=0, notFound=[];
+    if (!lines.length) { showToast('No part numbers entered'); return; }
+    let found=0;
     lines.forEach(num => {
         const clean = num.replace(/[\s\-.]/g,'').toLowerCase();
         const p = allParts.find(x => {
             const n = String(x['Part Number']||x.partNum||'').toLowerCase();
             return n.replace(/[\s\-.]/g,'')===clean || n===num.toLowerCase();
         });
-        if (p) { addToCart(p); found++; } else notFound.push(num);
+        if (p) { addToCart(p); found++; }
     });
-    let html = `<p style="color:#4ade80;margin-bottom:10px;">✓ Added ${found} parts to cart</p>`;
-    if (notFound.length) html += `<p style="color:#facc15;margin-bottom:5px;">⚠ Not found: ${notFound.length} parts</p><p style="color:#666;font-size:.85em;">${notFound.join(', ')}</p>`;
-    res.innerHTML=html; res.classList.add('show');
-    if (found) setTimeout(()=>{ closeBulkImport(); showToast(`Bulk import: ${found} parts added`); }, 2000);
-}
-
-// ── NOTIFICATIONS ──
-function startNotificationPolling() {
-    notificationCheckInterval = setInterval(async () => {
-        if (document.hidden) return; // don't poll when tab is hidden
-        try {
-            const res  = await fetch(`${API_URL}?action=getOrders`);
-            const data = await res.json();
-            if (data.success && data.orders) {
-                const newCount = data.orders.length;
-                if (newCount > lastOrderCount) {
-                    const newOrders = data.orders.slice(0, newCount - lastOrderCount);
-                    orders = data.orders;
-                    updateOrderStats(); applyFilters();
-                    newOrders.forEach(showBrowserNotification);
-                    const badge = document.getElementById('notificationBadge');
-                    badge.textContent = newCount - lastOrderCount;
-                    badge.style.display = 'flex';
-                    setTimeout(()=>badge.style.display='none', 10000);
-                }
-                lastOrderCount = newCount;
-            }
-        } catch(e) {}
-    }, 30000);
-}
-
-function showBrowserNotification(order) {
-    const n = document.createElement('div');
-    n.className = 'browser-notification';
-    n.innerHTML = `<div class="browser-notification-title">🔔 New Order Received</div>
-        <div class="browser-notification-body"><strong>${order.orderNumber}</strong><br>
-        From: ${order.serviceController||order.engineer}<br>Parts: ${order.partsCount||0}</div>`;
-    document.body.appendChild(n);
-    setTimeout(()=>n.remove(), 10000);
-    if ('Notification' in window && Notification.permission==='granted') {
-        new Notification('New Parts Order', {
-            body: `${order.orderNumber} — ${order.partsCount||0} parts from ${order.serviceController||order.engineer}`,
-            icon: 'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg',
-            tag:  order.orderNumber
-        });
+    if (found) { 
+        closeBulkImport(); 
+        showToast(`Bulk import: ${found} parts added`); 
     }
 }
 
-
-// ════════════════════════════════════════════════════════
-//  NATURAL LANGUAGE SEARCH
-// ════════════════════════════════════════════════════════
-
-// Keyword → system/description mappings
-const NL_SYNONYMS = {
-    // Systems
-    mast:         ['mast','vna','lift'],
-    transmission: ['transmission','trans','gearbox','gear','axle','drive','wheel','helical','intermediate'],
-    hydraulic:    ['hydraulic','hyd','pump','cylinder','valve','seal','oil','fluid'],
-    electrical:   ['electrical','electric','motor','wiring','wire','cable','sensor','switch','solenoid','battery','charger'],
-    brake:        ['brake','braking','friction','pad'],
-    steering:     ['steering','steer','tiller','handle'],
-    chassis:      ['chassis','frame','body','panel','cover','guard'],
-    fork:         ['fork','pin','attachment','carriage'],
-    wheel:        ['wheel','tyre','tire','bearing','hub'],
-    // Common natural phrases
-    'drive axle':        ['axle','drive','spacer','wheel','transmission'],
-    'something for the mast': ['mast','lift','vna'],
-    'pin kit':           ['pin','kit'],
-    'pipe':              ['pipe','tube','hose'],
-    'seal':              ['seal','o-ring','gasket','ring'],
-    'bolt':              ['bolt','screw','fastener','nut','washer'],
-};
-
-// Stopwords to ignore
-const STOPWORDS = new Set(['something','for','the','a','an','of','to','in','on','with','and','or','part','parts','i','need','want','get','find','show','me','some','any']);
-
-function parseNLQuery(raw) {
-    const lower = raw.toLowerCase().trim();
-
-    // First try direct multi-word phrase match
-    for (const [phrase, keywords] of Object.entries(NL_SYNONYMS)) {
-        if (lower.includes(phrase)) {
-            return { keywords, interpretation: `Searching for parts related to "${phrase}"` };
-        }
-    }
-
-    // Otherwise tokenise and expand
-    const tokens = lower.split(/\s+/).filter(t => t.length > 1 && !STOPWORDS.has(t));
-    if (!tokens.length) return null;
-
-    let expanded = [...tokens];
-    let matched = [];
-
-    tokens.forEach(token => {
-        for (const [phrase, keywords] of Object.entries(NL_SYNONYMS)) {
-            if (phrase.includes(token) || token.includes(phrase.split(' ')[0])) {
-                expanded = [...new Set([...expanded, ...keywords])];
-                matched.push(phrase);
-            }
-        }
-    });
-
-    if (!expanded.length) return null;
-    return {
-        keywords: expanded,
-        interpretation: matched.length
-            ? `Interpreting as: ${[...new Set(matched)].join(', ')}`
-            : `Searching for: ${tokens.join(', ')}`
-    };
-}
-
-// Detect if a query looks like natural language rather than a part number
-function isNaturalLanguage(term) {
-    // Part numbers are typically short alphanumeric codes
-    if (/^[a-z0-9\-\.\/]{2,12}$/i.test(term.trim())) return false;
-    // Contains spaces or common words = natural language
-    if (term.includes(' ')) return true;
-    // Contains only letters and is longer = likely natural language
-    if (/^[a-z]{4,}$/i.test(term.trim())) return true;
-    return false;
-}
-
-function nlSearch(term) {
-    document.getElementById('searchInput').value = term;
-    filterParts();
-}
-
-// ════════════════════════════════════════════════════════
-//  ORDER ANOMALY DETECTION
-// ════════════════════════════════════════════════════════
-
-function checkOrderAnomalies() {
-    const banner  = document.getElementById('anomalyBanner');
-    const msgEl   = document.getElementById('anomalyMsg');
-    if (!cart.length) { banner.style.display = 'none'; return; }
-
-    const model  = document.getElementById('orderModel').value;
-    const issues = [];
-
-    // 1. Unusually large order
-    const totalQty = cart.reduce((sum, i) => sum + (i.qty || 1), 0);
-    if (totalQty > 20) {
-        issues.push(`Large order: ${totalQty} total items. Double-check quantities are correct.`);
-    }
-
-    // 2. Duplicate part numbers in cart (shouldn't happen but just in case)
-    const nums = cart.map(i => i['Part Number'] || i.partNum || '');
-    const dupes = nums.filter((n, i) => nums.indexOf(n) !== i);
-    if (dupes.length) {
-        issues.push(`Possible duplicate parts: ${[...new Set(dupes)].join(', ')}`);
-    }
-
-    // 3. Model-system mismatch — warn if ordering VNA parts for a non-VNA model
-    if (model && !model.includes('VNA') && !model.includes('15')) {
-        const vnaParts = cart.filter(p => {
-            const sys  = String(p['System'] || p.system || '').toUpperCase();
-            const desc = String(p['Description'] || p.desc || '').toUpperCase();
-            return sys.includes('VNA') || desc.includes('VNA');
-        });
-        if (vnaParts.length) {
-            const names = vnaParts.map(p => p['Part Number'] || p.partNum).join(', ');
-            issues.push(`VNA-specific part(s) on a non-VNA model (${model}): ${names}`);
-        }
-    }
-
-    // 4. Check against order history for this machine — flag parts never ordered for this model before
-    const serial = document.getElementById('machineSerial').value.trim();
-    if (serial && orders.length) {
-        const machineOrders = orders.filter(o =>
-            (o.machineSerial || '').toLowerCase() === serial.toLowerCase()
-        );
-        if (machineOrders.length >= 3) {
-            // Build set of all part numbers ever ordered for this machine
-            const historicParts = new Set();
-            machineOrders.forEach(o => {
-                (o.parts || []).forEach(p => {
-                    const n = p['Part Number'] || p.partNum || p.partNumber;
-                    if (n) historicParts.add(String(n).toLowerCase());
-                });
-            });
-            const neverOrdered = cart.filter(p => {
-                const n = String(p['Part Number'] || p.partNum || '').toLowerCase();
-                return n && !historicParts.has(n);
-            });
-            if (neverOrdered.length && neverOrdered.length <= 5) {
-                const names = neverOrdered.map(p => p['Part Number'] || p.partNum).join(', ');
-                issues.push(`New part(s) not previously ordered for this machine: ${names}`);
-            }
-        }
-    }
-
-    // 5. Very high quantity on a single part
-    cart.forEach(item => {
-        if ((item.qty || 1) >= 10) {
-            issues.push(`High quantity (${item.qty}×) on ${item['Part Number'] || item.partNum} — is this intentional?`);
-        }
-    });
-
-    if (!issues.length) {
-        banner.style.display = 'none';
-        return;
-    }
-
-    const listItems = issues.map(i => `<li>${i}</li>`).join('');
-    msgEl.innerHTML = `<ul>${listItems}</ul>`;
-    banner.style.display = 'flex';
-}
-
-function dismissAnomaly() {
-    document.getElementById('anomalyBanner').style.display = 'none';
-}
-
-
-// ════════════════════════════════════════════════════════
-//  VOICE SEARCH
-// ════════════════════════════════════════════════════════
-
-let recognition = null;
-let isListening = false;
-let voiceBadge = null;
-
-function initVoiceSearch() {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        document.getElementById('voiceBtn').style.display = 'none';
-        return;
-    }
-    recognition = new SpeechRecognition();
-    recognition.continuous = false;
-    recognition.interimResults = true;
-    recognition.lang = 'en-GB';
-
-    recognition.onstart = () => {
-        isListening = true;
-        document.getElementById('voiceBtn').classList.add('listening');
-        showVoiceBadge();
-    };
-
-    recognition.onresult = (e) => {
-        const transcript = Array.from(e.results)
-            .map(r => r[0].transcript)
-            .join('');
-        document.getElementById('searchInput').value = transcript;
-        // Show interim results live
-        if (e.results[0].isFinal) {
-            filterParts();
-        } else {
-            document.getElementById('searchInput').value = transcript;
-        }
-    };
-
-    recognition.onerror = (e) => {
-        console.warn('Voice error:', e.error);
-        stopVoice();
-        if (e.error === 'not-allowed') showToast('Microphone access denied');
-    };
-
-    recognition.onend = () => {
-        stopVoice();
-        filterParts();
-    };
-}
-
-function toggleVoiceSearch() {
-    if (!recognition) { showToast('Voice search not supported in this browser'); return; }
-    if (isListening) {
-        recognition.stop();
-    } else {
-        document.getElementById('searchInput').value = '';
-        recognition.start();
-    }
-}
-
-function stopVoice() {
-    isListening = false;
-    document.getElementById('voiceBtn').classList.remove('listening');
-    hideVoiceBadge();
-}
-
-function showVoiceBadge() {
-    if (voiceBadge) return;
-    voiceBadge = document.createElement('div');
-    voiceBadge.className = 'voice-listening-badge';
-    voiceBadge.innerHTML = '<div class="voice-dot"></div><div class="voice-dot"></div><div class="voice-dot"></div><span>Listening...</span>';
-    document.body.appendChild(voiceBadge);
-}
-
-function hideVoiceBadge() {
-    if (voiceBadge) { voiceBadge.remove(); voiceBadge = null; }
-}
-
-// ════════════════════════════════════════════════════════
-//  OFFLINE MODE + PWA
-// ════════════════════════════════════════════════════════
-
-const CACHE_KEY = 'flexi-parts-cache-v1';
-let deferredInstallPrompt = null;
-
-function initOfflineSupport() {
-    // Register service worker inline via blob
-    registerServiceWorker();
-
-    // Listen for online/offline
-    window.addEventListener('online',  updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus();
-
-    // PWA install prompt
-    window.addEventListener('beforeinstallprompt', e => {
-        e.preventDefault();
-        deferredInstallPrompt = e;
-        // Show install banner after 10 seconds if not dismissed before
-        const dismissed = localStorage.getItem('installDismissed');
-        if (!dismissed) {
-            setTimeout(() => {
-                document.getElementById('installBanner').style.display = 'flex';
-            }, 10000);
-        }
-    });
-
-    window.addEventListener('appinstalled', () => {
-        document.getElementById('installBanner').style.display = 'none';
-        showToast('✅ Flexi Parts installed as app!');
-    });
-}
-
-function registerServiceWorker() {
-    if (!('serviceWorker' in navigator)) return;
-
-    const swCode = `
-const CACHE = 'flexi-parts-v1';
-const FONTS = 'https://fonts.googleapis.com';
-
-self.addEventListener('install', e => {
-    self.skipWaiting();
-});
-
-self.addEventListener('activate', e => {
-    e.waitUntil(
-        caches.keys().then(keys =>
-            Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-        )
-    );
-    self.clients.claim();
-});
-
-self.addEventListener('fetch', e => {
-    const url = e.request.url;
-
-    // Network-first for API calls — fall back to cached if offline
-    if (url.includes('script.google.com')) {
-        e.respondWith(
-            fetch(e.request)
-                .then(res => {
-                    const clone = res.clone();
-                    caches.open(CACHE).then(c => c.put(e.request, clone));
-                    return res;
-                })
-                .catch(() => caches.match(e.request))
-        );
-        return;
-    }
-
-    // Cache-first for fonts and static assets
-    if (url.includes('fonts.g') || url.includes('fonts.googleapis')) {
-        e.respondWith(
-            caches.match(e.request).then(cached => cached || fetch(e.request).then(res => {
-                caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-                return res;
-            }))
-        );
-        return;
-    }
-
-    // For the app itself: network-first, cache fallback
-    e.respondWith(
-        fetch(e.request)
-            .then(res => {
-                if (res.ok) {
-                    caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-                }
-                return res;
-            })
-            .catch(() => caches.match(e.request))
-    );
-});
-`;
-
-    const blob = new Blob([swCode], { type: 'application/javascript' });
-    const swUrl = URL.createObjectURL(blob);
-
-    // Blob-based SW doesn't work on all hosts (e.g. GitHub Pages) — skip silently
-    try {
-        navigator.serviceWorker.register(swUrl)
-            .then(reg => console.log('SW registered'))
-            .catch(() => {}); // fail silently
-    } catch(e) {}
-}
-
-function updateOnlineStatus() {
-    const isOnline = navigator.onLine;
-    const banner   = document.getElementById('offlineBanner');
-    const stat     = document.getElementById('offlineStat');
-
-    if (!isOnline) {
-        banner.style.display = 'block';
-        if (stat) stat.style.display = 'block';
-        // If we have cached parts already loaded, keep them
-        if (!allParts.length) {
-            loadCachedParts();
-        }
-    } else {
-        banner.style.display = 'none';
-        if (stat) stat.style.display = 'none';
-    }
-}
-
-function cacheParts(parts) {
-    try {
-        // Store parts in localStorage as offline fallback
-        // Compress slightly by only storing essential fields
-        const slim = parts.map(p => ({
-            'Part Number':   p['Part Number'],
-            'Description':   p['Description'],
-            'Supplier Code': p['Supplier Code'],
-            'System':        p['System'],
-            'Stock Level':   p['Stock Level']
-        }));
-        localStorage.setItem('flexi-parts-offline', JSON.stringify(slim));
-        localStorage.setItem('flexi-parts-cached-at', new Date().toISOString());
-        console.log('Parts cached for offline use:', slim.length);
-    } catch(e) {
-        console.warn('Could not cache parts (storage full?):', e);
-    }
-}
-
-function loadCachedParts() {
-    try {
-        const cached = localStorage.getItem('flexi-parts-offline');
-        const cachedAt = localStorage.getItem('flexi-parts-cached-at');
-        if (cached) {
-            allParts = JSON.parse(cached);
-            document.getElementById('totalPartsCount').textContent = allParts.length;
-            const ago = cachedAt ? new Date(cachedAt).toLocaleDateString('en-GB') : 'unknown date';
-            document.getElementById('offlineBanner').textContent =
-                `📡 Offline — showing ${allParts.length} cached parts (last updated ${ago})`;
-            showToast(`Offline mode: loaded ${allParts.length} cached parts`);
-        } else {
-            document.getElementById('offlineBanner').textContent =
-                '📡 Offline — no cached parts available. Connect to load catalogue.';
-        }
-    } catch(e) {
-        console.warn('Could not load cached parts:', e);
-    }
-}
-
-async function installPWA() {
-    if (!deferredInstallPrompt) return;
-    deferredInstallPrompt.prompt();
-    const { outcome } = await deferredInstallPrompt.userChoice;
-    if (outcome === 'accepted') {
-        document.getElementById('installBanner').style.display = 'none';
-    }
-    deferredInstallPrompt = null;
-}
-
-function dismissInstall() {
-    document.getElementById('installBanner').style.display = 'none';
-    localStorage.setItem('installDismissed', '1');
-}
-
-// Inject PWA manifest dynamically
-function injectManifest() {
-    try {
-    const manifest = {
-        name: 'Flexi Parts Order System',
-        short_name: 'Flexi Parts',
-        description: 'Parts ordering system for Flexi forklift engineers',
-        start_url: './',
-        display: 'standalone',
-        background_color: '#000000',
-        theme_color: '#DC2626',
-        orientation: 'any',
-        icons: [
-            { src: 'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any maskable' }
-        ]
-    };
-    const blob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-    document.getElementById('pwaManifest').href = URL.createObjectURL(blob);
-    } catch(e) {} // fail silently on hosts that don't support it
-}
-
-
-// ════════════════════════════════════════════════════════
-//  HAPTIC FEEDBACK
-// ════════════════════════════════════════════════════════
-function haptic(type = 'light') {
-    if (!navigator.vibrate) return;
-    const patterns = {
-        light:   [10],
-        medium:  [20],
-        success: [10, 50, 10],
-        error:   [50, 30, 50],
-        heavy:   [40]
-    };
-    navigator.vibrate(patterns[type] || patterns.light);
-}
-
-// ════════════════════════════════════════════════════════
-//  SMART SERIAL MEMORY
-// ════════════════════════════════════════════════════════
-function getSerialDB() {
-    try { return JSON.parse(localStorage.getItem('flexi-serial-db') || '{}'); }
-    catch(e) { return {}; }
-}
-
-function saveSerialDB(db) {
-    localStorage.setItem('flexi-serial-db', JSON.stringify(db));
-}
-
-function learnFromOrders() {
-    // Build serial memory from existing order history
-    const db = getSerialDB();
-    orders.forEach(o => {
-        const serial = (o.machineSerial || '').trim();
-        if (!serial) return;
-        const key = serial.toLowerCase();
-        if (!db[key]) db[key] = { serial, model: '', lastEngineer: '', lastDate: '', orderCount: 0 };
-        db[key].orderCount = (db[key].orderCount || 0) + 1;
-        if (o.model) db[key].model = o.model;
-        if (o.serviceController || o.engineer) db[key].lastEngineer = o.serviceController || o.engineer;
-        // Keep most recent date
-        const d = o.date || o.orderDate || '';
-        if (!db[key].lastDate || d > db[key].lastDate) db[key].lastDate = d;
-    });
-    saveSerialDB(db);
-}
-
-function onSerialInput() {
-    const serial = document.getElementById('machineSerial').value.trim();
-    loadOrderHistory();
-    checkOrderAnomalies();
-    checkWearPatterns(serial);
-    showSerialMemory(serial);
-}
-
-function showSerialMemory(serial) {
-    const card = document.getElementById('serialMemoryCard');
-    if (!serial || serial.length < 3) { card.classList.remove('show'); return; }
-
-    const db  = getSerialDB();
-    const key = serial.toLowerCase();
-    const mem = db[key];
-
-    if (!mem) { card.classList.remove('show'); return; }
-
-    document.getElementById('smModel').textContent       = mem.model || '—';
-    document.getElementById('smLastOrder').textContent   = mem.lastDate ? mem.lastDate.slice(0,10) : '—';
-    document.getElementById('smTotalOrders').textContent = mem.orderCount || '—';
-    document.getElementById('smEngineer').textContent    = mem.lastEngineer || '—';
-    card.classList.add('show');
-    haptic('light');
-}
-
-function applySerialMemory() {
-    const serial = document.getElementById('machineSerial').value.trim();
-    const db     = getSerialDB();
-    const mem    = db[serial.toLowerCase()];
-    if (!mem) return;
-
-    if (mem.model) {
-        const sel = document.getElementById('orderModel');
-        // Find matching option
-        for (let i = 0; i < sel.options.length; i++) {
-            if (sel.options[i].value === mem.model) {
-                sel.selectedIndex = i;
-                break;
-            }
-        }
-    }
-    if (mem.lastEngineer) {
-        const sc = document.getElementById('serviceController');
-        if (!sc.value) sc.value = mem.lastEngineer;
-    }
-    haptic('success');
-    showToast('Machine details auto-filled ✓');
-    checkOrderAnomalies();
-}
-
-function forgetSerial() {
-    const serial = document.getElementById('machineSerial').value.trim();
-    if (!serial) return;
-    const db = getSerialDB();
-    delete db[serial.toLowerCase()];
-    saveSerialDB(db);
-    document.getElementById('serialMemoryCard').classList.remove('show');
-    showToast('Machine forgotten');
-}
-
-// Save to serial DB when order is submitted
-function saveSerialOnSubmit(serial, model, engineer, date) {
-    if (!serial) return;
-    const db  = getSerialDB();
-    const key = serial.toLowerCase();
-    if (!db[key]) db[key] = { serial, model: '', lastEngineer: '', lastDate: '', orderCount: 0 };
-    db[key].orderCount = (db[key].orderCount || 0) + 1;
-    if (model)    db[key].model        = model;
-    if (engineer) db[key].lastEngineer = engineer;
-    if (date)     db[key].lastDate     = date;
-    saveSerialDB(db);
-}
-
-// ════════════════════════════════════════════════════════
-//  WEAR PATTERN DETECTION
-// ════════════════════════════════════════════════════════
-function checkWearPatterns(serial) {
-    const alertEl    = document.getElementById('wearAlert');
-    const itemsEl    = document.getElementById('wearAlertItems');
-    if (!serial || serial.length < 3) { alertEl.classList.remove('show'); return; }
-
-    // Get all orders for this machine
-    const machineOrders = orders.filter(o =>
-        String(o.machineSerial || '').toLowerCase() === serial.toLowerCase()
-    );
-    if (machineOrders.length < 2) { alertEl.classList.remove('show'); return; }
-
-    // Count part frequency per machine
-    const partCount = {};
-    const partDates = {};
-    machineOrders.forEach(o => {
-        const d = o.date || o.orderDate || '';
-        (o.parts || []).forEach(p => {
-            const num = String(p['Part Number'] || p.partNum || p.partNumber || '');
-            if (!num) return;
-            partCount[num] = (partCount[num] || 0) + 1;
-            if (!partDates[num]) partDates[num] = [];
-            partDates[num].push(d);
-        });
-    });
-
-    // Flag parts ordered 3+ times
-    const wearParts = Object.entries(partCount)
-        .filter(([, count]) => count >= 3)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 4);
-
-    if (!wearParts.length) { alertEl.classList.remove('show'); return; }
-
-    itemsEl.innerHTML = wearParts.map(([num, count]) => {
-        const part = allParts.find(p => (p['Part Number'] || p.partNum || '') === num);
-        const desc = part ? (part['Description'] || part.desc || '') : '';
-        const dates = (partDates[num] || []).sort();
-        const first = dates[0] ? dates[0].slice(0,10) : '';
-        const last  = dates[dates.length-1] ? dates[dates.length-1].slice(0,10) : '';
-        return `<div class="wear-alert-item">
-            <span class="wear-alert-part">${num}</span>${desc ? ' — ' + desc : ''}
-            <br><small>Ordered <strong>${count}×</strong> for this machine${first ? ' (first: ' + first + ', last: ' + last + ')' : ''}</small>
-        </div>`;
-    }).join('');
-
-    alertEl.classList.add('show');
-    haptic('medium');
-}
-
-// ════════════════════════════════════════════════════════
-//  COST ESTIMATOR
-// ════════════════════════════════════════════════════════
-function updateCostEstimate() {
-    const bar = document.getElementById('costBar');
-    const totalEl = document.getElementById('costTotal');
-    const breakdownEl = document.getElementById('costBreakdown');
-
-    const hasAnyPrice = cart.some(item => {
-        const cost = parseFloat(item['Cost'] || item.cost || item['Price'] || item.price || 0);
-        return cost > 0;
-    });
-
-    if (!hasAnyPrice || !cart.length) { bar.classList.remove('show'); return; }
-
-    let total = 0;
-    let known = 0;
-    cart.forEach(item => {
-        const cost = parseFloat(item['Cost'] || item.cost || item['Price'] || item.price || 0);
-        if (cost > 0) {
-            total += cost * (item.qty || 1);
-            known++;
-        }
-    });
-
-    bar.classList.add('show');
-    totalEl.textContent = '£' + total.toFixed(2);
-    const unknown = cart.length - known;
-    breakdownEl.textContent = unknown > 0
-        ? `${known} priced, ${unknown} unpriced item${unknown > 1 ? 's' : ''}`
-        : `${cart.length} item${cart.length > 1 ? 's' : ''}`;
-}
-
-// ════════════════════════════════════════════════════════
-//  PHOTO ATTACH
-// ════════════════════════════════════════════════════════
-let attachedPhotos = []; // array of { dataUrl, name }
-
-function handlePhotoAttach(input) {
-    const files = Array.from(input.files);
-    if (!files.length) return;
-
-    files.forEach(file => {
-        const reader = new FileReader();
-        reader.onload = e => {
-            attachedPhotos.push({ dataUrl: e.target.result, name: file.name });
-            renderPhotoPreviews();
-        };
-        reader.readAsDataURL(file);
-    });
-    haptic('success');
-    // Reset input so same file can be re-added
-    input.value = '';
-}
-
-function renderPhotoPreviews() {
-    const area     = document.getElementById('photoAttachArea');
-    const previews = document.getElementById('photoPreviews');
-
-    previews.innerHTML = attachedPhotos.map((p, i) => `
-        <div class="photo-preview-wrap">
-            <img class="photo-preview-img" src="${p.dataUrl}" alt="Photo ${i+1}">
-            <button class="photo-preview-remove" onclick="removePhoto(${i}); event.stopPropagation();">✕</button>
-        </div>
-    `).join('');
-
-    area.classList.toggle('has-photo', attachedPhotos.length > 0);
-
-    const label = area.querySelector('.photo-attach-label');
-    const sub   = area.querySelector('.photo-attach-sub');
-    if (attachedPhotos.length) {
-        label.textContent = `📷 ${attachedPhotos.length} photo${attachedPhotos.length > 1 ? 's' : ''} attached`;
-        sub.textContent   = 'Tap to add more';
-    } else {
-        label.textContent = '📷 Tap to add photos';
-        sub.textContent   = 'Attach photos of the fault or broken part';
-    }
-}
-
-function removePhoto(index) {
-    attachedPhotos.splice(index, 1);
-    renderPhotoPreviews();
-    haptic('light');
-}
-
-// ── CLOSE MODALS ON BACKDROP CLICK ──
-document.addEventListener('click', e => {
-    if (e.target === document.getElementById('bulkImportModal')) closeBulkImport();
-    if (e.target?.id === 'orderModal') closeOrderModal();
-});
 </script>
 </body>
 </html>
