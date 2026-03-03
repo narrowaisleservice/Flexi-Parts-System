@@ -115,71 +115,6 @@
         .add-to-cart { width:100%; padding:16px; background:var(--primary-red); border:none; border-radius:8px; color:white; font-size:1.05em; font-weight:800; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1.5px; }
         .add-to-cart:hover { background:#ef4444; transform:translateY(-1px); }
 
-        /* ══════════════════════════════════════
-           IMAGE LAZY LOADING (NEW)
-        ══════════════════════════════════════ */
-        .lazy-loading {
-            background: linear-gradient(90deg, var(--border) 25%, rgba(255,255,255,.05) 50%, var(--border) 75%);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-        .lazy-loaded {
-            animation: fadeInImage 0.4s ease-out;
-        }
-        @keyframes fadeInImage {
-            from { opacity: 0; transform: scale(0.98); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        .lazy-error {
-            background: var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            font-size: 2em;
-        }
-
-        .part-image-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 75%;
-            background: var(--dark-bg);
-            border-radius: 8px 8px 0 0;
-            overflow: hidden;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 16px;
-        }
-        .part-image {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center;
-            display: block;
-        }
-        .part-image-placeholder {
-            position: relative;
-            width: 100%;
-            padding-bottom: 75%;
-            background: linear-gradient(135deg, var(--border) 0%, rgba(255,255,255,.02) 100%);
-            border-radius: 8px 8px 0 0;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 16px;
-        }
-        .placeholder-icon {
-            font-size: 3em;
-            opacity: 0.4;
-        }
-
         /* ── CART TOGGLE ── */
         .cart-toggle { position:fixed; bottom:30px; right:30px; width:64px; height:64px; background:var(--primary-red); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.8em; cursor:pointer; z-index:1001; transition:all .2s; box-shadow:0 4px 20px rgba(220,38,38,.4); }
         .cart-toggle:hover { transform:scale(1.1); background:#ef4444; box-shadow:0 6px 30px rgba(220,38,38,.6); }
@@ -1915,14 +1850,7 @@ function renderParts() {
         const sys  = p['System'] || p.system || '';
         const stk  = p['Stock Level'] || p.stockLevel || '';
         const cost = p['Cost'] || p.cost || p['Price'] || p.price || '';
-        const imgUrl = p['Image URL'] || p.image || '';
-
-        const imgHtml = imgUrl 
-            ? `<div class="part-image-container"><img class="part-image lazy-loading" data-src="${escapeHtml(imgUrl)}" alt="${escapeHtml(desc)}" onload="this.classList.remove('lazy-loading'); this.classList.add('lazy-loaded');" onerror="this.classList.remove('lazy-loading'); this.classList.add('lazy-error');"></div>`
-            : `<div class="part-image-placeholder"><div class="placeholder-icon">📦</div></div>`;
-
         return `<div class="part-card">
-            ${imgHtml}
             <div class="part-number">${num}</div>
             <div class="part-desc">${desc}</div>
             ${cost ? `<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>` : ''}
@@ -1934,39 +1862,12 @@ function renderParts() {
             <button class="add-to-cart" onclick='addToCart(${JSON.stringify({"Part Number":num,"Description":desc,"Supplier Code":sup,"System":sys,"Stock Level":stk}).replace(/'/g,"&#39;")})'>Add to Cart</button>
         </div>`;
     }).join('');
-
-    // Initialize lazy loading for images that have data-src
-    if ('IntersectionObserver' in window) {
-        const imageObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        observer.unobserve(img);
-                    }
-                }
-            });
-        }, { rootMargin: '100px' });
-
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
-
     if (count > limit) {
         const d = document.createElement('div');
         d.style.cssText = 'grid-column:1/-1;text-align:center;padding:30px;color:#666;';
         d.innerHTML = `<p style="font-size:1.2em;margin-bottom:10px;">Showing first ${limit} of ${count} results</p><p style="font-size:.95em;">💡 Refine your search to see specific parts</p>`;
         container.appendChild(d);
     }
-}
-
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
 }
 
 // ── CART ──
