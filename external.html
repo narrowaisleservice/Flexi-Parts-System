@@ -626,6 +626,7 @@
             pointer-events: none;
         }
         @keyframes toastIn { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
 
         /* OFFLINE */
         .offline-bar {
@@ -880,8 +881,20 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     document.getElementById('searchInput').addEventListener('input', doSearch);
     loadCartFromStorage();
+
+    // Show loading state
+    document.getElementById('partsList').innerHTML = `<div class="empty-search"><div class="empty-search-icon" style="animation:spin 1s linear infinite;display:inline-block;">⏳</div><h3>Loading Catalogue</h3><p>Fetching parts from the database...</p></div>`;
+
     await loadParts();
     renderCart();
+
+    // Update placeholder now parts are ready
+    if (allParts.length) {
+        toast(`✓ ${allParts.length} parts loaded`);
+        document.getElementById('partsList').innerHTML = `<div class="empty-search"><div class="empty-search-icon">🔍</div><h3>Search the Catalogue</h3><p>${allParts.length} parts available — enter a part number, description, or use natural language.</p></div>`;
+    } else {
+        document.getElementById('partsList').innerHTML = `<div class="empty-search"><div class="empty-search-icon">⚠️</div><h3>Could Not Load Parts</h3><p>Please check your connection and refresh the page.</p></div>`;
+    }
 });
 
 // ══════════════════════════════════════════════════════
@@ -891,32 +904,36 @@ async function loadParts() {
     try {
         const res = await fetch(`${API_URL}?action=getAllParts`);
         const data = await res.json();
-        if (data.success && data.parts?.length) {
+        if (data.parts?.length) {
             allParts = data.parts.map(normalisePart);
             cacheParts(allParts);
             return;
         }
-    } catch(e) {}
-    // Try cache
+    } catch(e) { console.warn('API fetch failed, trying cache', e); }
+    // Fallback to cache
     try {
-        const cached = localStorage.getItem('flexi-parts-offline');
-        if (cached) { allParts = JSON.parse(cached); toast('Showing cached parts catalogue'); }
-    } catch(e) {}
+        const cached = localStorage.getItem('flexi-ext-parts');
+        if (cached) {
+            allParts = JSON.parse(cached);
+            toast('Showing cached parts catalogue');
+        }
+    } catch(e) { console.warn('Cache load failed', e); }
 }
 
 function normalisePart(p) {
+    // Handles both raw API format and already-normalised cache format
     return {
-        num:  p['Part Number']   || p.partNum      || p.partNumber   || p['part number'] || '',
-        desc: p['Description']   || p.desc         || p.description  || '',
-        sup:  p['Supplier Code'] || p.supplier     || p.supplierCode || '',
-        sys:  p['System']        || p.system        || '',
-        stk:  p['Stock Level']   || p.stockLevel   || '',
-        cost: p['Cost'] || p.cost || p['Price'] || p.price || ''
+        num:  p.num  || p['Part Number']   || p.partNum      || p.partNumber   || p['part number'] || '',
+        desc: p.desc || p['Description']   || p.description  || '',
+        sup:  p.sup  || p['Supplier Code'] || p.supplier     || p.supplierCode || '',
+        sys:  p.sys  || p['System']        || p.system       || '',
+        stk:  p.stk  || p['Stock Level']   || p.stockLevel   || '',
+        cost: p.cost || p['Cost']          || p['Price']     || p.price        || ''
     };
 }
 
 function cacheParts(parts) {
-    try { localStorage.setItem('flexi-parts-offline', JSON.stringify(parts.map(p => ({ 'Part Number':p.num,'Description':p.desc,'Supplier Code':p.sup,'System':p.sys,'Stock Level':p.stk }))));} catch(e){}
+    try { localStorage.setItem('flexi-ext-parts', JSON.stringify(parts)); } catch(e) {}
 }
 
 // ══════════════════════════════════════════════════════
