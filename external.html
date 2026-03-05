@@ -69,10 +69,10 @@
         .add-btn { padding:9px 18px; background:var(--red); border:none; border-radius:8px; color:#fff; font-family:'Barlow Condensed',sans-serif; font-size:.95em; font-weight:700; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all .2s; white-space:nowrap; }
         .add-btn:hover { background:var(--red2); }
         .add-btn.added { background:#16a34a; }
-        .empty-msg { padding:60px 28px; text-align:center; color:var(--light); }
+        .empty-msg { padding:60px 28px; text-align:center; color:var(--muted); }
         .empty-msg .ico { font-size:3em; opacity:.4; margin-bottom:12px; }
-        .empty-msg h3 { font-family:'Barlow Condensed',sans-serif; font-size:1.4em; font-weight:700; text-transform:uppercase; color:var(--muted); margin-bottom:8px; letter-spacing:1px; }
-        .empty-msg p { font-size:.92em; }
+        .empty-msg h3 { font-family:'Barlow Condensed',sans-serif; font-size:1.4em; font-weight:700; text-transform:uppercase; color:var(--text); margin-bottom:8px; letter-spacing:1px; }
+        .empty-msg p { font-size:.92em; color:var(--muted); }
 
         .sidebar { display:flex; flex-direction:column; gap:24px; position:sticky; top:90px; }
 
@@ -90,7 +90,7 @@
         .ci-ctrl { display:flex; align-items:center; gap:6px; margin-top:8px; }
         .qb { width:26px; height:26px; border:1.5px solid var(--border); border-radius:6px; background:var(--bg); color:var(--text); font-size:1em; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; }
         .qb:hover { border-color:var(--red); color:var(--red); }
-        .qv { width:38px; text-align:center; border:1.5px solid var(--border); border-radius:6px; padding:4px; font-family:'Barlow',sans-serif; font-weight:600; font-size:.88em; }
+        .qv { width:38px; text-align:center; border:1.5px solid var(--border); border-radius:6px; padding:4px; font-family:'Barlow',sans-serif; font-weight:600; font-size:.88em; background:var(--bg); color:var(--text); }
         .ci-rm { background:none; border:none; color:var(--light); cursor:pointer; font-size:.85em; padding:2px 4px; border-radius:4px; transition:color .15s; }
         .ci-rm:hover { color:var(--red); }
 
@@ -146,7 +146,7 @@
         .sbtn-new:hover { border-color:var(--red); color:var(--red); }
 
         .bulk-info { background:rgba(220,38,38,.06); border-left:3px solid var(--red); padding:12px 16px; margin-bottom:14px; font-size:.88em; color:var(--muted); line-height:1.6; border-radius:4px; }
-        .bulk-ta { width:100%; min-height:200px; padding:14px; font-family:'Courier New',monospace; font-size:.92em; border:1.5px solid var(--border); border-radius:8px; resize:vertical; transition:border-color .2s; }
+        .bulk-ta { width:100%; min-height:200px; padding:14px; font-family:'Courier New',monospace; font-size:.92em; border:1.5px solid var(--border); border-radius:8px; resize:vertical; transition:border-color .2s; background:var(--bg); color:var(--text); }
         .bulk-ta:focus { outline:none; border-color:var(--red); }
         .bulk-res { margin-top:12px; padding:12px 14px; background:var(--bg); border-radius:8px; display:none; font-size:.9em; }
         .bulk-res.show { display:block; }
@@ -306,7 +306,7 @@
         <div class="m-body" style="padding:40px 32px;">
             <div class="suc-icon">✅</div>
             <div class="suc-title">Order Submitted!</div>
-            <div class="suc-sub">Your PDF has been downloaded. Your email client should have opened with the order pre-filled — <strong>please attach the PDF and send</strong> to complete your order.</div>
+            <div class="suc-sub">Your PDF has downloaded to your device. Your email client has opened with the order details pre-filled — <strong>please attach the PDF and hit send</strong> to complete your order.</div>
             <span class="suc-num" id="sucNum">EXT-000000</span>
             <div class="suc-btns">
                 <button class="sbtn sbtn-dl" onclick="downloadPDF()">⬇ Download PDF</button>
@@ -656,7 +656,7 @@ function submitOrder() {
     // Download PDF
     makePDF(orderData);
 
-    // Open mailto
+    // Open mailto with full order details in body
     openMailto(orderData);
 
     // Show success
@@ -675,26 +675,28 @@ function openMailto(d) {
     var lines = [];
     for (var i = 0; i < d.parts.length; i++) {
         var p = d.parts[i];
-        lines.push('  ' + (i+1) + '. ' + (p['Part Number']||'') + '  —  ' + (p['Description']||'') + '  (Qty: ' + p.qty + ')');
+        lines.push('  ' + (i+1) + '. ' + (p['Part Number']||'') + '  -  ' + (p['Description']||'') + '  (Qty: ' + p.qty + ')');
     }
     var body = (d.urgent ? '*** URGENT ORDER ***\n\n' : '')
         + 'ORDER REFERENCE: ' + d.orderNumber + '\n'
         + 'Date: ' + d.orderDate + '\n\n'
-        + '-- CUSTOMER --\n'
+        + '-- CUSTOMER DETAILS --\n'
         + 'Company:  ' + d.company + '\n'
         + 'Contact:  ' + d.contact + '\n'
         + 'Email:    ' + d.email + '\n'
         + 'Phone:    ' + (d.phone || 'Not provided') + '\n\n'
-        + '-- MACHINE --\n'
+        + '-- MACHINE DETAILS --\n'
         + 'Serial:   ' + (d.machineSerial || 'Not provided') + '\n'
         + 'Model:    ' + (d.model || 'Not provided') + '\n'
         + 'PO / Ref: ' + (d.worksOrder || 'Not provided') + '\n'
         + 'Delivery: ' + (d.deliveryAddress || 'Not provided') + '\n\n'
-        + '-- PARTS --\n'
+        + '-- PARTS REQUIRED --\n'
         + lines.join('\n') + '\n\n'
         + 'Total: ' + d.parts.length + ' line item(s)\n'
         + (d.comments ? '\n-- NOTES --\n' + d.comments + '\n' : '')
-        + '\nA PDF copy has been saved to your device — please attach it to this email.';
+        + '\n----------------------------------------\n'
+        + 'A PDF copy of this order has been saved to your device.\n'
+        + 'Please attach it to this email before sending.';
 
     var subject = (d.urgent ? '[URGENT] ' : '') + 'Parts Order ' + d.orderNumber + ' - ' + d.company;
     window.location.href = 'mailto:' + PEMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
@@ -812,18 +814,27 @@ function downloadPDF() {
 
 function processBulk() {
     var raw = document.getElementById('bulkTa').value;
+    var res = document.getElementById('bulkRes');
+
+    if (!allParts.length) {
+        res.innerHTML = '<span style="color:#d97706;font-weight:600;">Parts catalogue not loaded yet — please wait and try again.</span>';
+        res.classList.add('show');
+        return;
+    }
+
     var lines = raw.split('\n');
     var nums = [];
     for (var i = 0; i < lines.length; i++) {
         var l = lines[i].trim();
         if (l) nums.push(l);
     }
-    var res = document.getElementById('bulkRes');
+
     if (!nums.length) {
         res.innerHTML = '<span style="color:var(--red)">No part numbers entered.</span>';
         res.classList.add('show');
         return;
     }
+
     var found = 0;
     var notFound = [];
     for (var i = 0; i < nums.length; i++) {
@@ -831,23 +842,27 @@ function processBulk() {
         var clean = num.replace(/[\s\-.]/g, '').toLowerCase();
         var matched = null;
         for (var j = 0; j < allParts.length; j++) {
-            var n = allParts[j].num.replace(/[\s\-.]/g, '').toLowerCase();
-            if (n === clean || allParts[j].num.toLowerCase() === num.toLowerCase()) {
+            var pClean = allParts[j].num.replace(/[\s\-.]/g, '').toLowerCase();
+            var pOrig  = allParts[j].num.toLowerCase();
+            if (pClean === clean || pOrig === num.toLowerCase()) {
                 matched = allParts[j];
                 break;
             }
         }
         if (matched) { addToCart(matched); found++; } else { notFound.push(num); }
     }
-    var html = '<p style="color:#16a34a;font-weight:600;margin-bottom:6px;">Added ' + found + ' parts to cart</p>';
-    if (notFound.length) html += '<p style="color:#d97706;font-weight:600;">Not found: ' + notFound.join(', ') + '</p>';
+
+    var html = '';
+    if (found)        html += '<p style="color:#4ade80;font-weight:600;margin-bottom:6px;">✓ Added ' + found + ' part' + (found !== 1 ? 's' : '') + ' to cart</p>';
+    if (notFound.length) html += '<p style="color:#d97706;font-weight:600;">⚠ Not found (' + notFound.length + '): ' + notFound.join(', ') + '</p>';
     res.innerHTML = html;
     res.classList.add('show');
+
     if (found) {
         setTimeout(function() {
             document.getElementById('bulkOverlay').classList.remove('show');
-            toast(found + ' parts added');
-        }, 1800);
+            toast('✓ ' + found + ' parts added to cart');
+        }, 1600);
     }
 }
 
