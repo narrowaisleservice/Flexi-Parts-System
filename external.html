@@ -843,7 +843,7 @@
         <div class="modal-body" style="text-align:center;padding:40px 32px;">
             <div class="success-icon">✅</div>
             <div class="success-title">Order Submitted!</div>
-            <div class="success-sub">Your PDF has been downloaded to your device. Your email client has opened with the order pre-filled — <strong>please attach the PDF and hit send</strong> to complete your order to <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="0f7f6e7d7b7c4f616e7d7d60786e667c636a216c60217a64">[email&#160;protected]</a></strong>.</div>
+            <div class="success-sub">Your PDF has been downloaded to your device. Your email client has opened with the order details pre-filled — <strong>please attach the PDF and hit send</strong> to complete your order.</div>
             <span class="success-order-num" id="successOrderNum">ORD-0000</span>
             <div class="success-actions">
                 <button class="success-btn success-btn-dl" id="dlPdfBtn" onclick="downloadPDF()">⬇ Download PDF</button>
@@ -856,13 +856,13 @@
 <!-- ── TOAST ── -->
 <div class="toast-container" id="toastContainer"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ══════════════════════════════════════════════════════
 // CONFIG
 // ══════════════════════════════════════════════════════
 const API_URL = 'https://script.google.com/macros/s/AKfycbzaaerk9g1JWGOjXKfrm3m9Knr1OEohRxoMSio3imj8K3xF5RgrC4FL8WWbnzlv4Mr8/exec';
 
-const PARTS_EMAIL = 'parts@narrowaisle.co.uk';
+const PARTS_EMAIL = 'parts' + '@' + 'narrowaisle.co.uk';
 
 // ══════════════════════════════════════════════════════
 // STATE
@@ -1303,7 +1303,7 @@ function generateOrderPDF(data, returnBase64 = false) {
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(7.5);
     doc.setTextColor(155, 152, 149);
-    doc.text('Narrow Aisle Ltd  |  parts@narrowaisle.co.uk  |  www.flexi.co.uk', W/2, footerY + 1, { align: 'center' });
+    doc.text('Narrow Aisle Ltd  |  parts' + '@' + 'narrowaisle.co.uk  |  www.flexi.co.uk', W/2, footerY + 1, { align: 'center' });
     doc.text(`Generated ${new Date().toLocaleString('en-GB')}`, W/2, footerY + 6, { align: 'center' });
 
     if (returnBase64) return doc.output('datauristring');
