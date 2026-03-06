@@ -1536,7 +1536,12 @@ async function runFaultParser() {
     if (analyseBtn) { analyseBtn.disabled = true; analyseBtn.textContent = '⏳ Analysing…'; }
 
     // Build a compact parts list for the AI (part number + description only)
-    const catalogue = allParts.slice(0, 800).map(p => `${p['Part Number']||''}: ${p['Description']||''}`).join('\n');
+    // Keep catalogue compact to stay within Groq token limits
+    const catalogue = allParts.slice(0, 300).map(p => {
+        const num = (p['Part Number']||'').trim();
+        const desc = (p['Description']||'').trim().slice(0, 60);
+        return `${num}: ${desc}`;
+    }).filter(l => l.length > 2).join('\n');
 
     const prompt = `You are a forklift parts specialist for Flexi narrow aisle forklifts.
 A fault report has been submitted${model ? ` for a ${model}` : ''}.
