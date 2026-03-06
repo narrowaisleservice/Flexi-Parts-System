@@ -361,6 +361,9 @@
 
         .part-cost { display:inline-block; background:rgba(74,222,128,.15); border:1px solid rgba(74,222,128,.25); color:#4ade80; padding:3px 10px; border-radius:6px; font-size:.85em; font-weight:700; margin-bottom:12px; }
 
+        /* ORDER TYPE BADGE in table */
+        .order-type-badge { display:inline-block; padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:6px; background:rgba(99,102,241,.2); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
+
         /* PRINT */
         @media print {
             body { background:white !important; color:black !important; }
@@ -400,7 +403,7 @@
 </head>
 <body>
 
-<!-- ── MAIN APP (no login — loads directly) ── -->
+<!-- ── MAIN APP ── -->
 <div class="app-container" id="appContainer">
     <div class="offline-banner" id="offlineBanner" style="display:none;">📡 You're offline — showing cached parts catalogue</div>
     <div class="install-banner" id="installBanner" style="display:none;">
@@ -507,7 +510,15 @@
             <div class="orders-filter-bar">
                 <div class="filter-group">
                     <span class="filter-label">Search Orders</span>
-                    <input type="text" class="filter-input" id="filterSearch" placeholder="Order #, engineer, works order..." oninput="applyFilters()">
+                    <input type="text" class="filter-input" id="filterSearch" placeholder="Order #, name, works order..." oninput="applyFilters()">
+                </div>
+                <div class="filter-group" style="max-width:180px;">
+                    <span class="filter-label">Order Type</span>
+                    <select class="filter-select" id="filterOrderType" onchange="applyFilters()">
+                        <option value="">All Types</option>
+                        <option value="Service Controller">Service Controller</option>
+                        <option value="Service Engineer">Service Engineer</option>
+                    </select>
                 </div>
                 <div class="filter-group" style="max-width:160px;">
                     <span class="filter-label">Status</span>
@@ -543,14 +554,15 @@
                         <tr>
                             <th class="sortable" onclick="sortOrders('orderNumber')">Order #</th>
                             <th class="sortable" onclick="sortOrders('date')">Date</th>
-                            <th class="sortable" onclick="sortOrders('serviceController')">Service Controller</th>
+                            <th class="sortable" onclick="sortOrders('serviceController')">Name</th>
+                            <th>Order Type</th>
                             <th class="sortable" onclick="sortOrders('worksOrder')">Works Order</th>
                             <th>Parts</th>
                             <th class="sortable" onclick="sortOrders('status')">Status</th>
                         </tr>
                     </thead>
                     <tbody id="ordersTableBody">
-                        <tr><td colspan="6" style="text-align:center;padding:60px;color:#666;">Loading orders...</td></tr>
+                        <tr><td colspan="7" style="text-align:center;padding:60px;color:#666;">Loading orders...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -573,12 +585,20 @@
 
         <div class="order-form" id="orderForm" style="display:none;">
             <div class="form-group">
-                <label>Service Controller *</label>
-                <input type="text" id="serviceController" required>
+                <label>Your Name *</label>
+                <input type="text" id="serviceController" required placeholder="Enter your name">
             </div>
             <div class="form-group">
-                <label>Works Order *</label>
-                <input type="text" id="worksOrder" required>
+                <label>Order Type</label>
+                <select id="orderType">
+                    <option value="">Select type...</option>
+                    <option value="Service Controller">Service Controller</option>
+                    <option value="Service Engineer">Service Engineer</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Works Order</label>
+                <input type="text" id="worksOrder">
             </div>
             <div class="form-group">
                 <label>Machine Serial</label>
@@ -695,7 +715,7 @@ function normaliseOrder(o) {
             displayDate = new Date(rawDate).toLocaleString('en-GB', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
         } catch(e) { displayDate = rawDate.slice(0,10); }
     }
-    return { ...o, machineSerial: String(o.machineSerial || '').trim(), worksOrder: String(o.worksOrder || '').trim(), date: displayDate, _rawDate: rawDate.slice(0, 10), serviceController: o.serviceController || o.engineer || '' };
+    return { ...o, machineSerial: String(o.machineSerial || '').trim(), worksOrder: String(o.worksOrder || '').trim(), date: displayDate, _rawDate: rawDate.slice(0, 10), serviceController: o.serviceController || o.engineer || '', orderType: o.orderType || '' };
 }
 
 const API_URL = 'https://script.google.com/macros/s/AKfycbzaaerk9g1JWGOjXKfrm3m9Knr1OEohRxoMSio3imj8K3xF5RgrC4FL8WWbnzlv4Mr8/exec';
@@ -704,10 +724,7 @@ let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders =
 let lastOrderCount = 0, notificationCheckInterval = null, frequentParts = [], isUrgent = false;
 let sortField = 'date', sortDir = 'desc';
 
-// ── INIT — runs on page load, no login required ──
-document.addEventListener('DOMContentLoaded', () => {
-    init();
-});
+document.addEventListener('DOMContentLoaded', () => { init(); });
 
 async function init() {
     setGreeting();
@@ -817,17 +834,19 @@ function updateOrderStats() {
 }
 
 function applyFilters() {
-    const search   = (document.getElementById('filterSearch')?.value   || '').toLowerCase();
-    const status   = document.getElementById('filterStatus')?.value    || '';
-    const dateFrom = document.getElementById('filterDateFrom')?.value  || '';
-    const dateTo   = document.getElementById('filterDateTo')?.value    || '';
+    const search    = (document.getElementById('filterSearch')?.value    || '').toLowerCase();
+    const status    = document.getElementById('filterStatus')?.value     || '';
+    const orderType = document.getElementById('filterOrderType')?.value  || '';
+    const dateFrom  = document.getElementById('filterDateFrom')?.value   || '';
+    const dateTo    = document.getElementById('filterDateTo')?.value     || '';
 
     displayedOrders = orders.filter(o => {
         if (search) {
-            const hay = [o.orderNumber, o.serviceController, o.engineer, o.worksOrder, o.machineSerial, o.model].map(v => String(v ?? '')).join(' ').toLowerCase();
+            const hay = [o.orderNumber, o.serviceController, o.engineer, o.worksOrder, o.machineSerial, o.model, o.orderType].map(v => String(v ?? '')).join(' ').toLowerCase();
             if (!hay.includes(search)) return false;
         }
         if (status && (o.status || 'Pending') !== status) return false;
+        if (orderType && (o.orderType || '') !== orderType) return false;
         if (dateFrom || dateTo) {
             const d = o._rawDate || '';
             if (dateFrom && d < dateFrom) return false;
@@ -856,7 +875,7 @@ function sortOrders(field) {
     sortDir = sortField === field ? (sortDir === 'asc' ? 'desc' : 'asc') : 'asc';
     sortField = field;
     document.querySelectorAll('.orders-table th').forEach(th => th.classList.remove('sort-asc','sort-desc'));
-    const idx = { orderNumber:0, date:1, serviceController:2, worksOrder:3, status:5 }[field];
+    const idx = { orderNumber:0, date:1, serviceController:2, worksOrder:4, status:6 }[field];
     if (idx !== undefined) document.querySelectorAll('.orders-table th')[idx]?.classList.add(sortDir === 'asc' ? 'sort-asc' : 'sort-desc');
     applyFilters();
 }
@@ -864,6 +883,7 @@ function sortOrders(field) {
 function clearFilters() {
     document.getElementById('filterSearch').value = '';
     document.getElementById('filterStatus').value = '';
+    document.getElementById('filterOrderType').value = '';
     document.getElementById('filterDateFrom').value = '';
     document.getElementById('filterDateTo').value = '';
     applyFilters();
@@ -871,14 +891,16 @@ function clearFilters() {
 
 function renderOrders() {
     const tbody = document.getElementById('ordersTableBody');
-    if (!displayedOrders.length) { tbody.innerHTML = `<tr class="no-results-row"><td colspan="6">${orders.length ? 'No orders match your filters' : 'No orders found'}</td></tr>`; return; }
+    if (!displayedOrders.length) { tbody.innerHTML = `<tr class="no-results-row"><td colspan="7">${orders.length ? 'No orders match your filters' : 'No orders found'}</td></tr>`; return; }
     tbody.innerHTML = displayedOrders.map((order, i) => {
         const urgentBadge = order.urgent ? '<span class="urgent-badge">⚑ Urgent</span>' : '';
+        const typeBadge   = order.orderType ? `<span class="order-type-badge">${order.orderType}</span>` : '';
         return `<tr onclick="openOrderModal(${orders.indexOf(order)})">
             <td><span class="order-number">${order.orderNumber || 'ORD-' + (i+1)}</span>${urgentBadge}</td>
             <td>${order.date || order.orderDate || 'N/A'}</td>
             <td>${order.serviceController || order.engineer || 'N/A'}</td>
-            <td>${order.worksOrder || 'N/A'}</td>
+            <td>${typeBadge || '<span style="color:#555;">—</span>'}</td>
+            <td>${order.worksOrder || '—'}</td>
             <td>${order.partsCount || (order.parts?.length || 0)} parts</td>
             <td><span class="order-status status-${(order.status||'pending').toLowerCase()}">${order.status||'Pending'}</span></td>
         </tr>`;
@@ -887,8 +909,8 @@ function renderOrders() {
 
 function exportCSV() {
     if (!displayedOrders.length) { showToast('No orders to export'); return; }
-    const headers = ['Order Number','Date','Service Controller','Works Order','Machine Serial','Model','Parts Count','Status','Urgent','Notes'];
-    const rows = displayedOrders.map(o => [o.orderNumber||'', o.date||o.orderDate||'', o.serviceController||o.engineer||'', o.worksOrder||'', o.machineSerial||'', o.model||'', o.partsCount||(o.parts?.length||0), o.status||'Pending', o.urgent?'Yes':'No', (o.comments||o.notes||'').replace(/"/g,'""')].map(v => `"${v}"`).join(','));
+    const headers = ['Order Number','Date','Name','Order Type','Works Order','Machine Serial','Model','Parts Count','Status','Urgent','Notes'];
+    const rows = displayedOrders.map(o => [o.orderNumber||'', o.date||o.orderDate||'', o.serviceController||o.engineer||'', o.orderType||'', o.worksOrder||'', o.machineSerial||'', o.model||'', o.partsCount||(o.parts?.length||0), o.status||'Pending', o.urgent?'Yes':'No', (o.comments||o.notes||'').replace(/"/g,'""')].map(v => `"${v}"`).join(','));
     const csv = [headers.join(','), ...rows].join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -921,19 +943,20 @@ function buildTimeline(order) {
 function openOrderModal(index) {
     const order = orders[index];
     const urgentBadge = order.urgent ? '<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>' : '';
+    const typeBadge   = order.orderType ? `<span class="order-type-badge" style="margin-left:0">${order.orderType}</span>` : '';
     const modal = document.createElement('div');
     modal.className = 'modal-overlay active';
     modal.id = 'orderModal';
     modal.innerHTML = `<div class="modal">
-        <div class="modal-header"><div><h2>${order.orderNumber||'Order Details'}</h2>${urgentBadge}</div><button class="modal-close" onclick="closeOrderModal()">✕</button></div>
+        <div class="modal-header"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><h2>${order.orderNumber||'Order Details'}</h2>${urgentBadge}${typeBadge}</div><button class="modal-close" onclick="closeOrderModal()">✕</button></div>
         <div class="modal-body">
             <div class="modal-grid">
                 <div class="modal-field"><div class="modal-field-label">Date</div><div class="modal-field-value">${order.date||order.orderDate||'N/A'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Service Controller</div><div class="modal-field-value">${order.serviceController||order.engineer||'N/A'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Works Order</div><div class="modal-field-value">${order.worksOrder||'N/A'}</div></div>
+                <div class="modal-field"><div class="modal-field-label">Name</div><div class="modal-field-value">${order.serviceController||order.engineer||'N/A'}</div></div>
+                <div class="modal-field"><div class="modal-field-label">Order Type</div><div class="modal-field-value">${order.orderType||'—'}</div></div>
+                <div class="modal-field"><div class="modal-field-label">Works Order</div><div class="modal-field-value">${order.worksOrder||'—'}</div></div>
                 <div class="modal-field"><div class="modal-field-label">Machine Serial</div><div class="modal-field-value">${order.machineSerial||'N/A'}</div></div>
                 <div class="modal-field"><div class="modal-field-label">Model</div><div class="modal-field-value">${order.model||'N/A'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Parts Count</div><div class="modal-field-value">${order.parts?.length||order.partsCount||0} parts</div></div>
             </div>
             <div class="modal-section"><div class="modal-section-title">Order Status Timeline</div>${buildTimeline(order)}</div>
             <div class="modal-section"><div class="modal-section-title">Update Status</div>
@@ -1123,11 +1146,12 @@ function loadOrderParts(parts) {
 async function submitOrder() {
     const sc = document.getElementById('serviceController').value.trim();
     const wo = document.getElementById('worksOrder').value.trim();
-    if (!sc || !wo) { showToast('Please fill required fields'); return; }
+    const ot = document.getElementById('orderType').value;
+    if (!sc) { showToast('Please enter your name'); return; }
     if (!cart.length) { showToast('Cart is empty'); return; }
     const serial = document.getElementById('machineSerial').value.trim();
     const orderNumber = serial ? `${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}` : `ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;
-    const orderData = { action:'submitOrder', orderNumber, serviceController:sc, worksOrder:wo, machineSerial:serial, model:document.getElementById('orderModel').value, comments:document.getElementById('comments').value, parts:cart, urgent:isUrgent };
+    const orderData = { action:'submitOrder', orderNumber, serviceController:sc, orderType:ot, worksOrder:wo, machineSerial:serial, model:document.getElementById('orderModel').value, comments:document.getElementById('comments').value, parts:cart, urgent:isUrgent };
     const btn = document.getElementById('submitBtn');
     btn.disabled=true; btn.textContent='Submitting...';
     try {
@@ -1136,7 +1160,7 @@ async function submitOrder() {
         if (result.success) {
             haptic('success'); showToast('Order submitted successfully! 🎉');
             saveSerialOnSubmit(serial, orderData.model, sc, new Date().toISOString().slice(0,16).replace('T',' '));
-            orders.unshift(normaliseOrder({ orderNumber, urgent:isUrgent, date:new Date().toISOString(), serviceController:sc, worksOrder:wo, machineSerial:serial, model:orderData.model, parts:cart, partsCount:cart.length, status:'Pending', notes:orderData.comments }));
+            orders.unshift(normaliseOrder({ orderNumber, urgent:isUrgent, date:new Date().toISOString(), serviceController:sc, orderType:ot, worksOrder:wo, machineSerial:serial, model:orderData.model, parts:cart, partsCount:cart.length, status:'Pending', notes:orderData.comments }));
             updateOrderStats(); applyFilters();
             cart=[]; isUrgent=false; attachedPhotos=[]; renderPhotoPreviews();
             document.getElementById('urgentToggle').classList.remove('active');
@@ -1150,6 +1174,7 @@ async function submitOrder() {
 function clearForm() {
     ['serviceController','worksOrder','machineSerial','comments'].forEach(id => document.getElementById(id).value='');
     document.getElementById('orderModel').value='';
+    document.getElementById('orderType').value='';
     document.getElementById('orderHistorySection').style.display='none';
 }
 
