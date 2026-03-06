@@ -778,7 +778,7 @@ function normaliseOrder(o) {
     return { ...o, machineSerial: String(o.machineSerial || '').trim(), worksOrder: String(o.worksOrder || '').trim(), date: displayDate, _rawDate: rawDate.slice(0, 10), serviceController: o.serviceController || o.engineer || '', orderType: o.orderType || '' };
 }
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbxDkeW9ir3VvlQOa91DXMI33g_elS-fYOjfT2PQxzi37N5PtbJk3-gmeGNklGcC5pX0/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxx2gxQn99Rm3z0q9mLIgtBzY33CT3wjQeKdJIx-sNCyoRjkoszVyXNk6aQ1Gig9g33/exec';
 
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let lastOrderCount = 0, notificationCheckInterval = null, frequentParts = [], isUrgent = false;
