@@ -769,6 +769,7 @@ async function loadParts() {
         else loadDemoParts();
     } catch(e) { loadDemoParts(); }
     document.getElementById('totalPartsCount').textContent = allParts.length;
+    showToast(`✅ ${allParts.length} parts loaded`);
 }
 
 function normalisePart(p) {
