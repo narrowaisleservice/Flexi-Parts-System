@@ -1599,7 +1599,7 @@ function renderAIResults(parsed) {
     if (found.length) {
         html += `<div class="ai-section-title">✅ Found in catalogue (${found.length})</div>`;
         found.forEach((item, i) => {
-            const part = allParts.find(p => (p['Part Number']||'').toLowerCase() === item.partNumber.toLowerCase());
+            const part = allParts.find(p => String(p['Part Number']||'').toLowerCase() === String(item.partNumber||'').toLowerCase());
             if (!part) return;
             aiFoundParts.push(part);
             const desc = part['Description'] || 'No description';
