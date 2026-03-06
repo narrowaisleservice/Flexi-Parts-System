@@ -1538,8 +1538,8 @@ async function runFaultParser() {
     // Build a compact parts list for the AI (part number + description only)
     // Keep catalogue compact to stay within Groq token limits
     const catalogue = allParts.slice(0, 300).map(p => {
-        const num = (p['Part Number']||'').trim();
-        const desc = (p['Description']||'').trim().slice(0, 60);
+        const num = String(p['Part Number']||'').trim();
+        const desc = String(p['Description']||'').trim().slice(0, 60);
         return `${num}: ${desc}`;
     }).filter(l => l.length > 2).join('\n');
 
