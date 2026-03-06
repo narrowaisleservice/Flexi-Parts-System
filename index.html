@@ -365,47 +365,33 @@
         /* ORDER TYPE BADGE in table */
         .order-type-badge { display:inline-block; padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:6px; background:rgba(99,102,241,.2); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
 
-        /* ── AI FAULT PARSER ── */
-        .ai-fault-btn { background:#7c3aed !important; }
-        .ai-fault-btn:hover { background:#6d28d9 !important; }
 
-        /* Loading spinner */
-        .ai-thinking { display:flex; align-items:center; gap:12px; padding:24px 20px; color:var(--text-secondary); font-size:1em; font-weight:600; background:rgba(124,58,237,.08); border:1px solid rgba(124,58,237,.2); border-radius:10px; }
+        /* ── AI FAULT PARSER ── */
+        .ai-fault-btn:hover { background:#6d28d9 !important; }
+        .ai-thinking { display:flex; align-items:center; gap:12px; padding:20px; color:var(--text-secondary); font-size:1em; font-weight:600; }
         .ai-thinking-dots { display:flex; gap:5px; }
         .ai-thinking-dot { width:8px; height:8px; background:#7c3aed; border-radius:50%; animation:aiDot .8s infinite alternate; }
-        .ai-thinking-dot:nth-child(2){animation-delay:.25s} .ai-thinking-dot:nth-child(3){animation-delay:.5s}
-        @keyframes aiDot { from{opacity:.2;transform:translateY(0)}to{opacity:1;transform:translateY(-5px)} }
-
-        .ai-result-part { background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:flex-start; gap:12px; transition:all .2s; cursor:pointer; }
-        .ai-result-part:hover { border-color:#7c3aed; background:#111; }
-        .ai-result-part.selected { border-color:#7c3aed; background:rgba(124,58,237,.08); }
-        .ai-result-check { width:20px; height:20px; min-width:20px; accent-color:#7c3aed; cursor:pointer; margin-top:2px; }
+        .ai-thinking-dot:nth-child(2){animation-delay:.2s} .ai-thinking-dot:nth-child(3){animation-delay:.4s}
+        @keyframes aiDot { from{opacity:.2;transform:translateY(0)}to{opacity:1;transform:translateY(-4px)} }
+        .ai-result-part { background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:12px; transition:all .2s; }
+        .ai-result-part:hover { border-color:#7c3aed; }
+        .ai-result-check { width:20px; height:20px; accent-color:#7c3aed; cursor:pointer; flex-shrink:0; }
         .ai-result-info { flex:1; }
-        .ai-result-num { font-weight:800; color:#a78bfa; font-size:1.05em; margin-bottom:3px; }
-        .ai-result-desc { font-size:.88em; color:var(--text-secondary); margin-bottom:4px; }
-        .ai-result-reason { font-size:.82em; color:#666; font-style:italic; line-height:1.4; }
-
-        .ai-result-notfound { background:rgba(245,158,11,.06); border:1px solid rgba(245,158,11,.18); border-radius:8px; padding:12px 16px; margin-bottom:8px; }
-        .ai-result-notfound-num { font-weight:700; color:#f59e0b; font-size:.95em; margin-bottom:3px; }
-        .ai-result-notfound-desc { font-size:.82em; color:#888; line-height:1.4; }
-
-        .ai-section-title { font-size:.8em; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:1.5px; margin:18px 0 10px; padding-bottom:6px; border-bottom:1px solid var(--border); }
-
-        .ai-fault-textarea { width:100%; min-height:150px; padding:16px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; resize:vertical; line-height:1.6; transition:border-color .2s; }
+        .ai-result-num { font-weight:800; color:#a78bfa; font-size:1.05em; margin-bottom:2px; }
+        .ai-result-desc { font-size:.88em; color:var(--text-secondary); }
+        .ai-result-reason { font-size:.8em; color:#555; margin-top:3px; font-style:italic; }
+        .ai-result-notfound { background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.2); border-radius:8px; padding:12px 16px; margin-bottom:8px; }
+        .ai-result-notfound-num { font-weight:700; color:#f59e0b; font-size:.95em; }
+        .ai-result-notfound-desc { font-size:.82em; color:#888; margin-top:2px; }
+        .ai-section-title { font-size:.8em; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:1px; margin:16px 0 10px; }
+        .ai-fault-textarea { width:100%; min-height:140px; padding:16px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; resize:vertical; line-height:1.6; }
         .ai-fault-textarea:focus { outline:none; border-color:#7c3aed; }
-        .ai-fault-textarea::placeholder { color:#444; }
-
         .ai-model-hint { display:flex; align-items:center; gap:10px; margin-top:12px; }
         .ai-model-hint label { font-size:.85em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
         .ai-model-hint select { flex:1; padding:8px 12px; background:var(--dark-bg); border:1px solid var(--border); border-radius:6px; color:white; font-family:inherit; font-size:.9em; }
-        .ai-model-hint select:focus { outline:none; border-color:#7c3aed; }
-
         .ai-add-selected-btn { width:100%; padding:14px; background:#7c3aed; border:none; border-radius:8px; color:white; font-size:1em; font-weight:700; cursor:pointer; font-family:inherit; text-transform:uppercase; letter-spacing:1px; transition:all .2s; margin-top:16px; }
-        .ai-add-selected-btn:hover { background:#6d28d9; transform:translateY(-1px); }
-        .ai-add-selected-btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
-
-        .ai-error-msg { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); border-radius:8px; padding:16px 18px; color:#f87171; font-size:.95em; line-height:1.5; }
-        .ai-error-msg strong { display:block; margin-bottom:6px; font-size:1.05em; }
+        .ai-add-selected-btn:hover { background:#6d28d9; }
+        .ai-add-selected-btn:disabled { opacity:.4; cursor:not-allowed; }
 
         /* PRINT */
         @media print {
@@ -435,7 +421,6 @@
             .stats-bar { grid-template-columns:1fr; }
             .modal-grid { grid-template-columns:1fr; }
             .orders-filter-bar { flex-direction:column; }
-            .search-actions { flex-wrap:wrap; }
         }
 
         ::-webkit-scrollbar { width:14px; height:14px; }
@@ -491,7 +476,7 @@
                         <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceSearch()" title="Voice Search">🎤</button>
                     </div>
                     <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
-                    <button class="bulk-import-btn ai-fault-btn" onclick="openFaultParser()">🤖 AI Fault Parser</button>
+                    <button class="bulk-import-btn ai-fault-btn" onclick="openFaultParser()" style="background:#7c3aed;">🤖 AI Fault Parser</button>
                 </div>
                 <div class="nl-hints" id="nlHints">
                     <span class="nl-hint-label">Try asking:</span>
@@ -749,6 +734,7 @@
         </div>
     </div>
 
+
     <!-- ══ AI FAULT PARSER MODAL ══ -->
     <div class="modal-overlay" id="faultParserModal">
         <div class="modal">
@@ -757,7 +743,7 @@
                 <button class="modal-close" onclick="closeFaultParser()">✕</button>
             </div>
             <div class="modal-body">
-                <div class="bulk-import-instructions" style="border-color:#7c3aed;background:rgba(124,58,237,.1);color:#ccc;">
+                <div class="bulk-import-instructions" style="border-color:#7c3aed;background:rgba(124,58,237,.1);">
                     Paste in a job description, fault report, or engineer notes. The AI will read it and suggest matching parts from your catalogue.
                 </div>
                 <textarea class="ai-fault-textarea" id="faultTextarea" placeholder="e.g. Machine making grinding noise on drive side, wheel looks worn and there is play in the axle. Also the mast chain is slack and one of the fork pins is missing..."></textarea>
@@ -768,10 +754,10 @@
                     </select>
                 </div>
                 <div id="faultParserResults" style="margin-top:20px;"></div>
-                <button class="ai-add-selected-btn" id="aiAddSelectedBtn" onclick="addSelectedAIParts()" style="display:none;">✚ Add Selected Parts to Cart</button>
+                <button class="ai-add-selected-btn" id="aiAddSelectedBtn" onclick="addSelectedAIParts()" style="display:none;">Add Selected Parts to Cart</button>
                 <div class="modal-actions" style="margin-top:12px;">
                     <button class="modal-btn modal-btn-secondary" onclick="closeFaultParser()">Close</button>
-                    <button class="modal-btn modal-btn-primary" id="analyseBtn" style="background:#7c3aed;" onclick="runFaultParser()">🔍 Analyse Fault</button>
+                    <button class="modal-btn modal-btn-primary" style="background:#7c3aed;border-color:#7c3aed;" onclick="runFaultParser()">Analyse Fault</button>
                 </div>
             </div>
         </div>
@@ -780,10 +766,6 @@
 </div><!-- /app-container -->
 
 <script>
-
-// ══════════════════════════════════════════
-// UTILITIES
-// ══════════════════════════════════════════
 
 function normaliseOrder(o) {
     const rawDate = o.date || o.orderDate || '';
@@ -796,7 +778,7 @@ function normaliseOrder(o) {
     return { ...o, machineSerial: String(o.machineSerial || '').trim(), worksOrder: String(o.worksOrder || '').trim(), date: displayDate, _rawDate: rawDate.slice(0, 10), serviceController: o.serviceController || o.engineer || '', orderType: o.orderType || '' };
 }
 
-const API_URL = 'https://script.google.com/macros/s/AKfycbzaaerk9g1JWGOjXKfrm3m9Knr1OEohRxoMSio3imj8K3xF5RgrC4FL8WWbnzlv4Mr8/exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbxDkeW9ir3VvlQOa91DXMI33g_elS-fYOjfT2PQxzi37N5PtbJk3-gmeGNklGcC5pX0/exec';
 
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let lastOrderCount = 0, notificationCheckInterval = null, frequentParts = [], isUrgent = false;
@@ -834,16 +816,10 @@ function showPage(page) {
 function toggleCart() { document.getElementById('cartSection').classList.toggle('open'); }
 
 function populateModels() {
-    const models = ['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other'];
-    [document.getElementById('orderModel'), document.getElementById('faultModel')].forEach(sel => {
-        if (!sel) return;
-        models.forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
-    });
+    const sel = document.getElementById('orderModel');
+    ['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other']
+        .forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
 }
-
-// ══════════════════════════════════════════
-// DATA LOADING
-// ══════════════════════════════════════════
 
 async function loadParts() {
     try {
@@ -911,10 +887,6 @@ function renderFrequentParts() {
 }
 
 function quickAddPart(part) { addToCart(part); }
-
-// ══════════════════════════════════════════
-// ORDERS
-// ══════════════════════════════════════════
 
 function updateOrderStats() {
     document.getElementById('totalOrders').textContent    = orders.length;
@@ -1093,10 +1065,6 @@ async function saveOrderChanges(index) {
 
 function closeOrderModal() { document.getElementById('orderModal')?.remove(); }
 
-// ══════════════════════════════════════════
-// SEARCH & PARTS
-// ══════════════════════════════════════════
-
 function setupEventListeners() {
     document.getElementById('searchInput').addEventListener('input', filterParts);
     document.getElementById('submitBtn').addEventListener('click', submitOrder);
@@ -1172,10 +1140,6 @@ function renderParts() {
         container.appendChild(d);
     }
 }
-
-// ══════════════════════════════════════════
-// CART
-// ══════════════════════════════════════════
 
 function addToCart(part) {
     const num = part['Part Number']||part.partNum||part.partNumber;
@@ -1281,12 +1245,8 @@ function loadCartFromStorage() { try { cart = JSON.parse(localStorage.getItem('f
 
 function showToast(msg) {
     const t = document.createElement('div'); t.className='toast'; t.textContent=msg;
-    document.body.appendChild(t); setTimeout(()=>t.remove(), 3500);
+    document.body.appendChild(t); setTimeout(()=>t.remove(), 3000);
 }
-
-// ══════════════════════════════════════════
-// BULK IMPORT
-// ══════════════════════════════════════════
 
 function openBulkImport() { document.getElementById('bulkImportModal').classList.add('active'); document.getElementById('bulkImportTextarea').value=''; document.getElementById('bulkImportResults').classList.remove('show'); }
 function closeBulkImport() { document.getElementById('bulkImportModal').classList.remove('active'); }
@@ -1305,10 +1265,6 @@ function processBulkImport() {
     res.innerHTML=html; res.classList.add('show');
     if (found) setTimeout(()=>{ closeBulkImport(); showToast(`Bulk import: ${found} parts added`); }, 2000);
 }
-
-// ══════════════════════════════════════════
-// NOTIFICATIONS
-// ══════════════════════════════════════════
 
 function startNotificationPolling() {
     notificationCheckInterval = setInterval(async () => {
@@ -1340,10 +1296,6 @@ function showBrowserNotification(order) {
         new Notification('New Parts Order', { body:`${order.orderNumber} — ${order.partsCount||0} parts from ${order.serviceController||order.engineer}`, icon:'https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg', tag:order.orderNumber });
     }
 }
-
-// ══════════════════════════════════════════
-// NATURAL LANGUAGE SEARCH
-// ══════════════════════════════════════════
 
 const NL_SYNONYMS = {
     mast:['mast','vna','lift'], transmission:['transmission','trans','gearbox','gear','axle','drive','wheel','helical','intermediate'],
@@ -1382,10 +1334,6 @@ function isNaturalLanguage(term) {
 
 function nlSearch(term) { document.getElementById('searchInput').value=term; filterParts(); }
 
-// ══════════════════════════════════════════
-// ANOMALY DETECTION
-// ══════════════════════════════════════════
-
 function checkOrderAnomalies() {
     const banner=document.getElementById('anomalyBanner'), msgEl=document.getElementById('anomalyMsg');
     if (!cart.length) { banner.style.display='none'; return; }
@@ -1416,10 +1364,6 @@ function checkOrderAnomalies() {
 
 function dismissAnomaly() { document.getElementById('anomalyBanner').style.display='none'; }
 
-// ══════════════════════════════════════════
-// VOICE SEARCH
-// ══════════════════════════════════════════
-
 let recognition=null, isListening=false, voiceBadge=null;
 function initVoiceSearch() {
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -1434,10 +1378,6 @@ function toggleVoiceSearch() { if(!recognition){showToast('Voice search not supp
 function stopVoice() { isListening=false; document.getElementById('voiceBtn').classList.remove('listening'); hideVoiceBadge(); }
 function showVoiceBadge() { if(voiceBadge)return; voiceBadge=document.createElement('div'); voiceBadge.className='voice-listening-badge'; voiceBadge.innerHTML='<div class="voice-dot"></div><div class="voice-dot"></div><div class="voice-dot"></div><span>Listening...</span>'; document.body.appendChild(voiceBadge); }
 function hideVoiceBadge() { if(voiceBadge){voiceBadge.remove();voiceBadge=null;} }
-
-// ══════════════════════════════════════════
-// OFFLINE / PWA
-// ══════════════════════════════════════════
 
 let deferredInstallPrompt=null;
 function initOfflineSupport() {
@@ -1482,10 +1422,6 @@ function injectManifest() {
 }
 
 function haptic(type='light') { if(!navigator.vibrate)return; ({light:[10],medium:[20],success:[10,50,10],error:[50,30,50],heavy:[40]})[type]&&navigator.vibrate(({light:[10],medium:[20],success:[10,50,10],error:[50,30,50],heavy:[40]})[type]); }
-
-// ══════════════════════════════════════════
-// SERIAL MEMORY
-// ══════════════════════════════════════════
 
 function getSerialDB(){try{return JSON.parse(localStorage.getItem('flexi-serial-db')||'{}');}catch(e){return{};}}
 function saveSerialDB(db){localStorage.setItem('flexi-serial-db',JSON.stringify(db));}
@@ -1565,14 +1501,9 @@ function removePhoto(index){attachedPhotos.splice(index,1);renderPhotoPreviews()
 document.addEventListener('click', e=>{
     if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();
     if(e.target?.id==='orderModal')closeOrderModal();
-    if(e.target===document.getElementById('faultParserModal'))closeFaultParser();
 });
 
-// ══════════════════════════════════════════
-// AI FAULT PARSER  ← FIXED VERSION
-// ══════════════════════════════════════════
-
-// aiFoundParts stores [{part, checkboxIndex}] so index never mismatches
+// ══ AI FAULT PARSER ══
 let aiFoundParts = [];
 
 function openFaultParser() {
@@ -1580,7 +1511,12 @@ function openFaultParser() {
     document.getElementById('faultTextarea').value = '';
     document.getElementById('faultParserResults').innerHTML = '';
     document.getElementById('aiAddSelectedBtn').style.display = 'none';
-    aiFoundParts = [];
+    // Populate model dropdown
+    const sel = document.getElementById('faultModel');
+    if (sel.options.length <= 1) {
+        ['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other']
+            .forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
+    }
 }
 
 function closeFaultParser() {
@@ -1590,114 +1526,55 @@ function closeFaultParser() {
 async function runFaultParser() {
     const fault = document.getElementById('faultTextarea').value.trim();
     if (!fault) { showToast('Please enter a fault description'); return; }
-
-    const model     = document.getElementById('faultModel').value;
+    const model = document.getElementById('faultModel').value;
     const resultsEl = document.getElementById('faultParserResults');
-    const addBtn    = document.getElementById('aiAddSelectedBtn');
-    const analyseBtn = document.getElementById('analyseBtn');
+    const addBtn = document.getElementById('aiAddSelectedBtn');
 
-    // ── UI: loading state ──
-    resultsEl.innerHTML = `<div class="ai-thinking">
-        <div class="ai-thinking-dots">
-            <div class="ai-thinking-dot"></div>
-            <div class="ai-thinking-dot"></div>
-            <div class="ai-thinking-dot"></div>
-        </div>
-        <span>Analysing fault report with AI…</span>
-    </div>`;
+    resultsEl.innerHTML = `<div class="ai-thinking"><div class="ai-thinking-dots"><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div></div><span>Analysing fault report...</span></div>`;
     addBtn.style.display = 'none';
-    analyseBtn.disabled = true;
-    analyseBtn.textContent = '⏳ Analysing…';
 
-    // Build compact parts catalogue (part number + description)
-    // Use up to 600 parts to avoid hitting token limits
-    const catalogue = allParts
-        .slice(0, 600)
-        .map(p => `${(p['Part Number']||'').trim()}: ${(p['Description']||'').trim()}`)
-        .filter(line => line.length > 2)
-        .join('\n');
+    // Build a compact parts list for the AI (part number + description only)
+    const catalogue = allParts.slice(0, 800).map(p => `${p['Part Number']||''}: ${p['Description']||''}`).join('\n');
 
-    const prompt = `You are a specialist in Flexi narrow-aisle forklift parts and maintenance.
-
+    const prompt = `You are a forklift parts specialist for Flexi narrow aisle forklifts.
 A fault report has been submitted${model ? ` for a ${model}` : ''}.
 
 FAULT REPORT:
 ${fault}
 
-PARTS CATALOGUE (format: "part_number: description"):
+PARTS CATALOGUE (part number: description):
 ${catalogue}
 
-Task: Identify which parts from the catalogue are most likely needed to diagnose or fix the described fault.
-
-Rules:
-- Only suggest parts that genuinely match the fault description
-- Match part numbers EXACTLY as they appear in the catalogue (case-sensitive)
-- Maximum 8 "found" parts, 3 "suggested"
-- Be practical and specific
-
-Respond ONLY with valid JSON — no markdown, no explanation, no extra text:
+Your job: identify which parts from the catalogue are likely needed based on the fault report.
+Return ONLY valid JSON in this exact format, no other text:
 {
   "found": [
-    {"partNumber": "EXACT_PART_NUMBER_FROM_CATALOGUE", "reason": "Brief reason this part is relevant"}
+    {"partNumber": "XXXXX", "reason": "one short sentence why this part is needed"}
   ],
   "suggested": [
-    {"partNumber": "PART_OR_DESCRIPTION", "description": "What this part is", "reason": "Why it may be needed"}
+    {"partNumber": "XXXXX", "description": "description of part not in catalogue", "reason": "why it might be needed"}
   ]
-}`;
+}
+"found" = parts that exist in the catalogue above. "suggested" = parts you think are needed but aren't in the catalogue.
+Maximum 8 found parts, 3 suggested. Be specific and practical. Only include genuinely relevant parts.`;
 
     try {
-        const GROQ_API_KEY = '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';
-
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        // Routed via Apps Script backend — no CORS issues, API key stays safe
+        const response = await fetch(API_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${GROQ_API_KEY}`
-            },
-            body: JSON.stringify({
-                model: 'llama-3.3-70b-versatile',
-                max_tokens: 1000,
-                temperature: 0.2,
-                messages: [{ role: 'user', content: prompt }]
-            })
+            body: JSON.stringify({ action: 'callGrok', prompt: prompt })
         });
 
-        if (!response.ok) {
-            const errData = await response.json().catch(() => ({}));
-            throw new Error(errData.error?.message || `HTTP ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
         const data = await response.json();
+        if (!data.success) throw new Error(data.error || 'Apps Script error');
 
-        // Groq uses OpenAI-compatible response format
-        const rawText = data.choices?.[0]?.message?.content || '';
+        renderAIResults(data.result);
 
-        // Strip any accidental markdown fences
-        const clean = rawText.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-
-        let parsed;
-        try {
-            parsed = JSON.parse(clean);
-        } catch(parseErr) {
-            // Try to extract JSON object from response if there's extra text
-            const match = clean.match(/\{[\s\S]*\}/);
-            if (match) {
-                parsed = JSON.parse(match[0]);
-            } else {
-                throw new Error('Could not parse AI response as JSON');
-            }
-        }
-
-        renderAIResults(parsed);
-
-    } catch(err) {
-        console.error('AI Fault Parser error:', err);
-        resultsEl.innerHTML = `<div class="ai-error-msg">
-            <strong>⚠️ Analysis failed</strong>
-            ${err.message || 'An unexpected error occurred.'}
-            <br><br>
-            <span style="color:#555;font-size:.9em;">Check your connection and try again. If the problem persists, the parts catalogue may need to load first.</span>
-        </div>`;
+    } catch(e) {
+        console.error('AI Fault Parser error:', e);
+        resultsEl.innerHTML = `<div class="ai-error-msg"><strong>⚠️ Analysis failed</strong>${e.message || 'Unexpected error'}<br><br><span style="color:#555;font-size:.9em;">Check your connection and try again.</span></div>`;
     } finally {
         analyseBtn.disabled = false;
         analyseBtn.textContent = '🔍 Analyse Fault';
@@ -1706,130 +1583,64 @@ Respond ONLY with valid JSON — no markdown, no explanation, no extra text:
 
 function renderAIResults(parsed) {
     const resultsEl = document.getElementById('faultParserResults');
-    const addBtn    = document.getElementById('aiAddSelectedBtn');
-
-    // Reset the found parts array — populated fresh each render
+    const addBtn = document.getElementById('aiAddSelectedBtn');
     aiFoundParts = [];
+    let html = '';
 
-    const found     = Array.isArray(parsed.found)     ? parsed.found     : [];
-    const suggested = Array.isArray(parsed.suggested) ? parsed.suggested : [];
+    const found = parsed.found || [];
+    const suggested = parsed.suggested || [];
 
     if (!found.length && !suggested.length) {
-        resultsEl.innerHTML = `<div class="ai-error-msg">
-            <strong>🔍 No matching parts identified</strong>
-            Try adding more specific detail to the fault description — component names, symptoms, sounds, or location on the machine.
-        </div>`;
+        resultsEl.innerHTML = '<p style="color:#f59e0b;padding:16px;">No matching parts identified. Try adding more detail to the fault description.</p>';
         return;
     }
 
-    let html = '';
-    let checkboxIndex = 0;
-
     if (found.length) {
-        html += `<div class="ai-section-title">✅ Found in catalogue — ${found.length} part${found.length !== 1 ? 's' : ''}</div>`;
-
-        found.forEach(item => {
-            // Case-insensitive match against the catalogue
-            const partNum = (item.partNumber || '').trim();
-            const part = allParts.find(p =>
-                (p['Part Number'] || '').toLowerCase() === partNum.toLowerCase()
-            );
-
-            if (!part) {
-                // Part was hallucinated / not in catalogue — show as "not found"
-                html += `<div class="ai-result-notfound">
-                    <div class="ai-result-notfound-num">⚠ ${partNum} — not found in catalogue</div>
-                    <div class="ai-result-notfound-desc">${item.reason || ''}</div>
-                </div>`;
-                return;
-            }
-
-            const desc = part['Description'] || part.desc || 'No description';
-            const cbId = `aipart_${checkboxIndex}`;
-
-            // Store part WITH its checkbox index so we can match them precisely
-            aiFoundParts.push({ part, checkboxIndex });
-
-            html += `<div class="ai-result-part" onclick="toggleAICheck('${cbId}', this)">
-                <input type="checkbox" class="ai-result-check" id="${cbId}" checked>
+        html += `<div class="ai-section-title">✅ Found in catalogue (${found.length})</div>`;
+        found.forEach((item, i) => {
+            const part = allParts.find(p => (p['Part Number']||'').toLowerCase() === item.partNumber.toLowerCase());
+            if (!part) return;
+            aiFoundParts.push(part);
+            const desc = part['Description'] || 'No description';
+            html += `<div class="ai-result-part">
+                <input type="checkbox" class="ai-result-check" id="aipart_${i}" checked>
                 <div class="ai-result-info">
-                    <div class="ai-result-num">${part['Part Number'] || partNum}</div>
+                    <div class="ai-result-num">${item.partNumber}</div>
                     <div class="ai-result-desc">${desc}</div>
-                    <div class="ai-result-reason">💡 ${item.reason || ''}</div>
+                    <div class="ai-result-reason">${item.reason}</div>
                 </div>
             </div>`;
-
-            checkboxIndex++;
         });
     }
 
     if (suggested.length) {
-        html += `<div class="ai-section-title">💡 Also consider — not in catalogue</div>`;
+        html += `<div class="ai-section-title">💡 Also consider (not in catalogue)</div>`;
         suggested.forEach(item => {
             html += `<div class="ai-result-notfound">
-                <div class="ai-result-notfound-num">${item.partNumber || 'N/A'}${item.description ? ' — ' + item.description : ''}</div>
-                <div class="ai-result-notfound-desc">${item.reason || ''}</div>
+                <div class="ai-result-notfound-num">${item.partNumber || 'N/A'} — ${item.description}</div>
+                <div class="ai-result-notfound-desc">${item.reason}</div>
             </div>`;
         });
     }
 
     resultsEl.innerHTML = html;
-
-    // Only show "Add" button if there are actual catalogue matches
-    if (aiFoundParts.length > 0) {
-        addBtn.style.display = 'block';
-        addBtn.textContent = `✚ Add Selected Parts to Cart (${aiFoundParts.length} selected)`;
-    }
+    if (aiFoundParts.length) addBtn.style.display = 'block';
 }
-
-// Toggle checkbox + selected styling when clicking the whole row
-function toggleAICheck(cbId, rowEl) {
-    const cb = document.getElementById(cbId);
-    if (!cb) return;
-    // Avoid double-toggle if the actual checkbox was clicked
-    if (event.target === cb) return;
-    cb.checked = !cb.checked;
-    updateAIAddButton();
-}
-
-// Update the button label to reflect how many are checked
-function updateAIAddButton() {
-    const addBtn = document.getElementById('aiAddSelectedBtn');
-    const checked = aiFoundParts.filter(({ checkboxIndex }) => {
-        const cb = document.getElementById(`aipart_${checkboxIndex}`);
-        return cb && cb.checked;
-    }).length;
-
-    if (checked > 0) {
-        addBtn.style.display = 'block';
-        addBtn.textContent = `✚ Add Selected Parts to Cart (${checked} selected)`;
-        addBtn.disabled = false;
-    } else {
-        addBtn.textContent = `✚ Add Selected Parts to Cart (0 selected)`;
-        addBtn.disabled = true;
-    }
-}
-
-// Attach live listener to results container so dynamically added checkboxes fire updateAIAddButton
-document.addEventListener('change', e => {
-    if (e.target.classList.contains('ai-result-check')) updateAIAddButton();
-});
 
 function addSelectedAIParts() {
+    const checkboxes = document.querySelectorAll('.ai-result-check');
     let added = 0;
-    aiFoundParts.forEach(({ part, checkboxIndex }) => {
-        const cb = document.getElementById(`aipart_${checkboxIndex}`);
-        if (cb && cb.checked) {
-            addToCart(part);
+    checkboxes.forEach((cb, i) => {
+        if (cb.checked && aiFoundParts[i]) {
+            addToCart(aiFoundParts[i]);
             added++;
         }
     });
-
-    if (added > 0) {
-        showToast(`✅ ${added} part${added > 1 ? 's' : ''} added to cart`);
+    if (added) {
+        showToast(`✅ ${added} part${added>1?'s':''} added to cart`);
         closeFaultParser();
     } else {
-        showToast('No parts selected — tick the checkboxes first');
+        showToast('No parts selected');
     }
 }
 
