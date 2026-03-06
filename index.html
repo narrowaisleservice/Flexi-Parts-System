@@ -1536,9 +1536,31 @@ async function runFaultParser() {
     if (analyseBtn) { analyseBtn.disabled = true; analyseBtn.textContent = '⏳ Analysing…'; }
 
     // Build a compact parts list for the AI (part number + description only)
-    // Keep catalogue compact to stay within Groq token limits
-    const catalogue = allParts.slice(0, 300).map(p => {
-        const num = String(p['Part Number']||'').trim();
+    // Pre-filter catalogue using keywords from the fault description
+    // This keeps token usage low regardless of catalogue size
+    const faultWords = fault.toLowerCase()
+        .replace(/[^a-z0-9\s]/g, ' ')
+        .split(/\s+/)
+        .filter(w => w.length > 2 && !['the','and','for','with','has','are','was','not','but','this','that','from','have','been','also','some','when','what','they','will','can','its','one','all','into','out','there','which','new','old','got'].includes(w));
+
+    // Score each part by how many fault keywords appear in its description/system
+    const scored = allParts.map(p => {
+        const num  = String(p['Part Number']||'').toLowerCase();
+        const desc = String(p['Description']||'').toLowerCase();
+        const sys  = String(p['System']||'').toLowerCase();
+        const combined = `${num} ${desc} ${sys}`;
+        let score = 0;
+        faultWords.forEach(w => { if (combined.includes(w)) score++; });
+        return { p, score };
+    });
+
+    // Take top scoring parts first, then fill up to 150 with unscored parts
+    const relevant = scored.filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 100).map(x => x.p);
+    const filler   = scored.filter(x => x.score === 0).slice(0, 50).map(x => x.p);
+    const partsToSend = [...relevant, ...filler].slice(0, 150);
+
+    const catalogue = partsToSend.map(p => {
+        const num  = String(p['Part Number']||'').trim();
         const desc = String(p['Description']||'').trim().slice(0, 60);
         return `${num}: ${desc}`;
     }).filter(l => l.length > 2).join('\n');
