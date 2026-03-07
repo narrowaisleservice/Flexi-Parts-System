@@ -1223,7 +1223,7 @@ function renderParts() {
         const sys  = p['System']||p.system||'';
         const stk  = p['Stock Level']||p.stockLevel||'';
         const cost = p['Cost']||p.cost||p['Price']||p.price||'';
-        const safeJson = JSON.stringify(p).replace(/\/g,'\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        const safeJson = JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         const imgHtml  = partImageHtml(p, safeJson);
         return `<div class="part-card">
             ${imgHtml}
