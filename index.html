@@ -501,7 +501,7 @@
                         <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceSearch()" title="Voice Search">🎤</button>
                     </div>
                     <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
-                    <button class="bulk-import-btn ai-fault-btn" onclick="openFaultParser()" style="background:#7c3aed;" title="AI Job Sheet Reader">Ai Job Sheet Reader</button>
+
                 </div>
                 <div class="nl-hints" id="nlHints">
                     <span class="nl-hint-label">Try asking:</span>
@@ -754,40 +754,6 @@
                 <div class="modal-actions">
                     <button class="modal-btn modal-btn-secondary" onclick="closeBulkImport()">Cancel</button>
                     <button class="modal-btn modal-btn-primary" onclick="processBulkImport()">Add to Cart</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══ AI JOB SHEET READER MODAL ══ -->
-    <div class="modal-overlay" id="faultParserModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div style="flex:1;">
-                    <h2>Ai Job Sheet Reader</h2>
-                    <div class="ai-disclaimer" style="margin-top:12px;">
-                        <span class="ai-disclaimer-icon">⚠️</span>
-                        <span class="ai-disclaimer-text"><strong>AI-powered feature.</strong> Suggested parts may not be 100% accurate — always review and verify before adding to your order. Use your own judgement.</span>
-                    </div>
-                </div>
-                <button class="modal-close" onclick="closeFaultParser()" style="margin-left:16px;align-self:flex-start;flex-shrink:0;">✕</button>
-            </div>
-            <div class="modal-body">
-                <div class="bulk-import-instructions" style="border-color:#7c3aed;background:rgba(124,58,237,.1);">
-                    Paste in a job description, fault report, or engineer notes. The AI will read it and suggest matching parts from your catalogue.
-                </div>
-                <textarea class="ai-fault-textarea" id="faultTextarea" placeholder="e.g. Machine making grinding noise on drive side, wheel looks worn and there is play in the axle. Also the mast chain is slack and one of the fork pins is missing..."></textarea>
-                <div class="ai-model-hint">
-                    <label>Model (optional)</label>
-                    <select id="faultModel">
-                        <option value="">Any model</option>
-                    </select>
-                </div>
-                <div id="faultParserResults" style="margin-top:20px;"></div>
-                <button class="ai-add-selected-btn" id="aiAddSelectedBtn" onclick="addSelectedAIParts()" style="display:none;">Add Selected Parts to Cart</button>
-                <div class="modal-actions" style="margin-top:12px;">
-                    <button class="modal-btn modal-btn-secondary" onclick="closeFaultParser()">Close</button>
-                    <button class="modal-btn modal-btn-primary" style="background:#7c3aed;border-color:#7c3aed;" onclick="runFaultParser()">Analyse Job Sheet</button>
                 </div>
             </div>
         </div>
@@ -1808,132 +1774,7 @@ async function saveEditedOrder() {
     setTimeout(() => openOrderModal(savedIndex), 120);
 }
 
-// ══ AI JOB SHEET READER ══
-let aiFoundParts = [];
-
-function openFaultParser() {
-    document.getElementById('faultParserModal').classList.add('active');
-    document.getElementById('faultTextarea').value = '';
-    document.getElementById('faultParserResults').innerHTML = '';
-    document.getElementById('aiAddSelectedBtn').style.display = 'none';
-    const sel = document.getElementById('faultModel');
-    if (sel.options.length <= 1) {
-        ['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other']
-            .forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
-    }
-}
-
-function closeFaultParser() {
-    document.getElementById('faultParserModal').classList.remove('active');
-}
-
-async function runFaultParser() {
-    const fault = document.getElementById('faultTextarea').value.trim();
-    if (!fault) { showToast('Please enter a fault description'); return; }
-    const model = document.getElementById('faultModel').value;
-    const resultsEl = document.getElementById('faultParserResults');
-    const addBtn = document.getElementById('aiAddSelectedBtn');
-
-    resultsEl.innerHTML = `<div class="ai-thinking"><div class="ai-thinking-dots"><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div><div class="ai-thinking-dot"></div></div><span>Reading job sheet...</span></div>`;
-    addBtn.style.display = 'none';
-
-    const faultWords = fault.toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 2 && !['the','and','for','with','has','are','was','not','but','this','that','from','have','been','also','some','when','what','they','will','can','its','one','all','into','out','there','which','new','old','got'].includes(w));
-
-    const scored = allParts.map(p => {
-        const combined = `${String(p['Part Number']||'').toLowerCase()} ${String(p['Description']||'').toLowerCase()} ${String(p['System']||'').toLowerCase()}`;
-        let score = 0;
-        faultWords.forEach(w => { if (combined.includes(w)) score++; });
-        return { p, score };
-    });
-
-    const relevant = scored.filter(x => x.score > 0).sort((a,b) => b.score - a.score).slice(0, 100).map(x => x.p);
-    const filler   = scored.filter(x => x.score === 0).slice(0, 50).map(x => x.p);
-    const partsToSend = [...relevant, ...filler].slice(0, 150);
-
-    const catalogue = partsToSend.map(p => `${String(p['Part Number']||'').trim()}: ${String(p['Description']||'').trim().slice(0, 60)}`).filter(l => l.length > 2).join('\n');
-
-    const prompt = `You are a forklift parts specialist for Flexi narrow aisle forklifts.
-A job sheet has been submitted${model ? ` for a ${model}` : ''}.
-
-JOB SHEET:
-${fault}
-
-PARTS CATALOGUE (part number: description):
-${catalogue}
-
-Your job: identify which parts from the catalogue are likely needed based on the job sheet.
-Return ONLY valid JSON in this exact format, no other text:
-{
-  "found": [
-    {"partNumber": "XXXXX", "reason": "one short sentence why this part is needed"}
-  ],
-  "suggested": [
-    {"partNumber": "XXXXX", "description": "description of part not in catalogue", "reason": "why it might be needed"}
-  ]
-}
-"found" = parts that exist in the catalogue above. "suggested" = parts you think are needed but aren't in the catalogue.
-Maximum 8 found parts, 3 suggested. Be specific and practical. Only include genuinely relevant parts.`;
-
-    try {
-        const response = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'callGrok', prompt }) });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        if (!data.success) throw new Error(data.error || 'Apps Script error');
-        renderAIResults(data.result);
-    } catch(e) {
-        resultsEl.innerHTML = `<div style="padding:16px;background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:8px;color:#f87171;"><strong>⚠️ Analysis failed</strong><br>${e.message || 'Unexpected error'}<br><br><span style="color:#555;font-size:.9em;">Check your connection and try again.</span></div>`;
-    }
-}
-
-function renderAIResults(parsed) {
-    const resultsEl = document.getElementById('faultParserResults');
-    const addBtn = document.getElementById('aiAddSelectedBtn');
-    aiFoundParts = [];
-    let html = '';
-    const found = parsed.found || [];
-    const suggested = parsed.suggested || [];
-    if (!found.length && !suggested.length) {
-        resultsEl.innerHTML = '<p style="color:#f59e0b;padding:16px;">No matching parts identified. Try adding more detail to the job sheet.</p>';
-        return;
-    }
-    if (found.length) {
-        html += `<div class="ai-section-title">✅ Found in catalogue (${found.length})</div>`;
-        found.forEach((item, i) => {
-            const part = allParts.find(p => String(p['Part Number']||'').toLowerCase() === String(item.partNumber||'').toLowerCase());
-            if (!part) return;
-            aiFoundParts.push(part);
-            html += `<div class="ai-result-part">
-                <input type="checkbox" class="ai-result-check" id="aipart_${i}" checked>
-                <div class="ai-result-info">
-                    <div class="ai-result-num">${item.partNumber}</div>
-                    <div class="ai-result-desc">${part['Description']||'No description'}</div>
-                    <div class="ai-result-reason">${item.reason}</div>
-                </div>
-            </div>`;
-        });
-    }
-    if (suggested.length) {
-        html += `<div class="ai-section-title">💡 Also consider (not in catalogue)</div>`;
-        suggested.forEach(item => {
-            html += `<div class="ai-result-notfound">
-                <div class="ai-result-notfound-num">${item.partNumber || 'N/A'} — ${item.description}</div>
-                <div class="ai-result-notfound-desc">${item.reason}</div>
-            </div>`;
-        });
-    }
-    resultsEl.innerHTML = html;
-    if (aiFoundParts.length) addBtn.style.display = 'block';
-}
-
-function addSelectedAIParts() {
-    const checkboxes = document.querySelectorAll('.ai-result-check');
-    let added = 0;
-    checkboxes.forEach((cb, i) => {
-        if (cb.checked && aiFoundParts[i]) { addToCart(aiFoundParts[i]); added++; }
-    });
-    if (added) { showToast(`✅ ${added} part${added>1?'s':''} added to cart`); closeFaultParser(); }
-    else showToast('No parts selected');
-}
+// ══ AI JOB SHEET READER ══ (feature hidden — Claude API integration retained for future use)
 </script>
 </body>
 </html>
