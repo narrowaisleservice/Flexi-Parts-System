@@ -99,12 +99,40 @@
   .diag-close { background: transparent; border: none; color: #555; cursor: pointer; font-size: 18px; line-height: 1; padding: 0; transition: color .15s; }
   .diag-close:hover { color: #fff; }
   .diag-hint { padding: 6px 14px; font-size: 10px; color: #555; border-bottom: 1px solid #1a1a1a; font-family: var(--font-head); letter-spacing: 1px; flex-shrink: 0; }
-  .diag-body { flex: 1; overflow: auto; position: relative; }
-  .diag-wrap { position: relative; display: block; }
-  .diag-wrap img { display: block; width: 100%; height: auto; user-select: none; }
-  .diag-none { padding: 50px 20px; text-align: center; color: #444; }
+  .diag-body { flex: 1; overflow: hidden; position: relative; cursor: grab; }
+  .diag-body.panning { cursor: grabbing; }
+  .diag-viewport { width: 100%; height: 100%; overflow: hidden; position: relative; }
+  .diag-wrap { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+  .diag-wrap canvas { display: block; }
+  .diag-none { padding: 50px 20px; text-align: center; color: #444; position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .diag-none .icon { font-size: 48px; opacity: .3; }
   .diag-none p { font-size: 12px; margin-top: 8px; }
+
+  /* Zoom controls */
+  .diag-zoom-bar { position: absolute; bottom: 10px; right: 10px; display: flex; gap: 4px; z-index: 20; }
+  .diag-zoom-bar button { background: #1a1a1a; border: 1px solid #333; color: #aaa; width: 28px; height: 28px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .15s; font-family: var(--font-head); font-weight: 700; }
+  .diag-zoom-bar button:hover { border-color: var(--red); color: #fff; background: #2a2a2a; }
+  .diag-zoom-level { background: #1a1a1a; border: 1px solid #333; color: #888; height: 28px; padding: 0 8px; font-family: var(--font-head); font-size: 11px; display: flex; align-items: center; min-width: 44px; justify-content: center; }
+
+  /* Fullscreen modal */
+  .diag-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.92); z-index: 500; flex-direction: column; }
+  .diag-modal.open { display: flex; }
+  .diag-modal-header { background: #111; border-bottom: 1px solid #222; padding: 10px 16px; display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+  .diag-modal-title { font-family: var(--font-head); font-weight: 700; font-size: 14px; color: var(--red); flex: 1; }
+  .diag-modal-close { background: transparent; border: none; color: #777; font-size: 22px; cursor: pointer; padding: 0; line-height: 1; transition: color .15s; }
+  .diag-modal-close:hover { color: #fff; }
+  .diag-modal-body { flex: 1; overflow: hidden; position: relative; cursor: grab; }
+  .diag-modal-body.panning { cursor: grabbing; }
+  .diag-modal-viewport { width: 100%; height: 100%; overflow: hidden; position: relative; }
+  .diag-modal-wrap { position: absolute; top: 0; left: 0; transform-origin: 0 0; will-change: transform; }
+  .diag-modal-wrap canvas { display: block; }
+  .diag-modal-zoom-bar { position: absolute; bottom: 14px; right: 14px; display: flex; gap: 4px; z-index: 20; }
+  .diag-modal-zoom-bar button, .diag-modal-zoom-bar .diag-zoom-level { background: #1a1a1a; border: 1px solid #333; color: #aaa; height: 32px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all .15s; font-family: var(--font-head); font-weight: 700; }
+  .diag-modal-zoom-bar button { width: 32px; }
+  .diag-modal-zoom-bar button:hover { border-color: var(--red); color: #fff; background: #2a2a2a; }
+  .diag-modal-zoom-bar .diag-zoom-level { padding: 0 10px; font-size: 12px; min-width: 50px; color: #888; }
+  .diag-expand-btn { background: transparent; border: 1px solid #2a2a2a; color: #666; width: 26px; height: 26px; cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; }
+  .diag-expand-btn:hover { border-color: #888; color: #fff; }
 
   /* Toast & misc */
   .empty-state { padding: 60px 20px; text-align: center; color: var(--grey); }
@@ -211,11 +239,32 @@
     <div class="diag-header">
       <span class="diag-label">Diagram</span>
       <span class="diag-title" id="diagTitle">—</span>
+      <button class="diag-expand-btn" onclick="diagExpand()" title="Fullscreen">⛶</button>
       <button class="diag-close" onclick="diagClose()" title="Close">✕</button>
     </div>
-    <div class="diag-hint">Select a section to load its diagram · PDF loaded on demand</div>
+    <div class="diag-hint">Scroll to zoom · Drag to pan · ⛶ fullscreen</div>
     <div class="diag-body" id="diagBody">
       <div class="diag-none"><div class="icon">📐</div><p>Select a section to view its diagram</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Fullscreen diagram modal -->
+<div class="diag-modal" id="diagModal">
+  <div class="diag-modal-header">
+    <span class="diag-label">Diagram</span>
+    <span class="diag-modal-title" id="diagModalTitle">—</span>
+    <button class="diag-modal-close" onclick="diagModalClose()" title="Close fullscreen">✕</button>
+  </div>
+  <div class="diag-modal-body" id="diagModalBody">
+    <div class="diag-modal-viewport" id="diagModalViewport">
+      <div class="diag-modal-wrap" id="diagModalWrap"></div>
+    </div>
+    <div class="diag-modal-zoom-bar">
+      <button onclick="diagModalZoom(-0.25)" title="Zoom out">−</button>
+      <span class="diag-zoom-level" id="diagModalZoomLevel">100%</span>
+      <button onclick="diagModalZoom(+0.25)" title="Zoom in">+</button>
+      <button onclick="diagModalFit()" title="Fit to screen" style="font-size:11px;width:auto;padding:0 8px;">FIT</button>
     </div>
   </div>
 </div>
@@ -600,6 +649,130 @@ let _diagSection = null;
 let _pdfDoc = null;
 let _pdfLoading = false;
 
+// Per-context zoom/pan state
+const _zs = {
+  panel: { scale:1, ox:0, oy:0, dragging:false, startX:0, startY:0, startOX:0, startOY:0, baseScale:1 },
+  modal: { scale:1, ox:0, oy:0, dragging:false, startX:0, startY:0, startOX:0, startOY:0, baseScale:1 }
+};
+// Rendered canvas size (natural px) for each context
+const _canvSize = { panel:{w:0,h:0}, modal:{w:0,h:0} };
+
+function _applyTransform(ctx){
+  const s = _zs[ctx];
+  const wrap = ctx==='panel' ? document.getElementById('diagWrap') : document.getElementById('diagModalWrap');
+  if(!wrap) return;
+  wrap.style.transform = `translate(${s.ox}px,${s.oy}px) scale(${s.scale})`;
+  const lvl = ctx==='panel' ? null : document.getElementById('diagModalZoomLevel');
+  if(lvl) lvl.textContent = Math.round(s.scale/s.baseScale*100)+'%';
+}
+
+function _clampOffset(ctx){
+  const s = _zs[ctx];
+  const c = _canvSize[ctx];
+  const vp = ctx==='panel' ? document.getElementById('diagBody') : document.getElementById('diagModalViewport');
+  if(!vp||!c.w) return;
+  const vw=vp.clientWidth, vh=vp.clientHeight;
+  const scaledW=c.w*s.scale, scaledH=c.h*s.scale;
+  const minX = scaledW>vw ? -(scaledW-vw) : (vw-scaledW)/2;
+  const maxX = scaledW>vw ? 0 : (vw-scaledW)/2;
+  const minY = scaledH>vh ? -(scaledH-vh) : 0;
+  const maxY = 0;
+  s.ox = Math.max(minX, Math.min(maxX, s.ox));
+  s.oy = Math.max(minY, Math.min(maxY, s.oy));
+}
+
+function _setupPanZoom(ctx, vpEl, wrapEl){
+  // Scroll to zoom
+  vpEl.addEventListener('wheel', e=>{
+    e.preventDefault();
+    const s = _zs[ctx];
+    const rect = vpEl.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+    const delta = e.deltaY < 0 ? 0.12 : -0.12;
+    const newScale = Math.max(s.baseScale*0.5, Math.min(s.baseScale*8, s.scale*(1+delta)));
+    const ratio = newScale/s.scale;
+    s.ox = mx - ratio*(mx - s.ox);
+    s.oy = my - ratio*(my - s.oy);
+    s.scale = newScale;
+    _clampOffset(ctx);
+    _applyTransform(ctx);
+  }, {passive:false});
+
+  // Drag to pan
+  vpEl.addEventListener('mousedown', e=>{
+    if(e.button!==0) return;
+    const s = _zs[ctx];
+    s.dragging=true; s.startX=e.clientX; s.startY=e.clientY; s.startOX=s.ox; s.startOY=s.oy;
+    vpEl.classList.add('panning');
+  });
+  window.addEventListener('mousemove', e=>{
+    const s = _zs[ctx];
+    if(!s.dragging) return;
+    s.ox = s.startOX + (e.clientX - s.startX);
+    s.oy = s.startOY + (e.clientY - s.startY);
+    _clampOffset(ctx);
+    _applyTransform(ctx);
+  });
+  window.addEventListener('mouseup', ()=>{
+    _zs[ctx].dragging=false;
+    vpEl.classList.remove('panning');
+  });
+
+  // Touch pan/pinch
+  let lastTouchDist=0, lastTouchMid={x:0,y:0};
+  vpEl.addEventListener('touchstart', e=>{
+    if(e.touches.length===1){
+      const s=_zs[ctx]; const t=e.touches[0];
+      s.dragging=true; s.startX=t.clientX; s.startY=t.clientY; s.startOX=s.ox; s.startOY=s.oy;
+    } else if(e.touches.length===2){
+      lastTouchDist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      lastTouchMid={x:(e.touches[0].clientX+e.touches[1].clientX)/2, y:(e.touches[0].clientY+e.touches[1].clientY)/2};
+    }
+  },{passive:true});
+  vpEl.addEventListener('touchmove', e=>{
+    e.preventDefault();
+    const s=_zs[ctx];
+    if(e.touches.length===1 && s.dragging){
+      const t=e.touches[0];
+      s.ox=s.startOX+(t.clientX-s.startX); s.oy=s.startOY+(t.clientY-s.startY);
+      _clampOffset(ctx); _applyTransform(ctx);
+    } else if(e.touches.length===2){
+      const dist=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+      const mid={x:(e.touches[0].clientX+e.touches[1].clientX)/2, y:(e.touches[0].clientY+e.touches[1].clientY)/2};
+      const ratio=dist/lastTouchDist;
+      const rect=vpEl.getBoundingClientRect();
+      const mx=mid.x-rect.left, my=mid.y-rect.top;
+      const newScale=Math.max(s.baseScale*0.5, Math.min(s.baseScale*8, s.scale*ratio));
+      const r2=newScale/s.scale;
+      s.ox=mx-r2*(mx-s.ox); s.oy=my-r2*(my-s.oy);
+      s.scale=newScale; lastTouchDist=dist; lastTouchMid=mid;
+      _clampOffset(ctx); _applyTransform(ctx);
+    }
+  },{passive:false});
+  vpEl.addEventListener('touchend', ()=>{ _zs[ctx].dragging=false; },{passive:true});
+}
+
+// Zoom buttons (panel)
+function diagZoom(delta){
+  const s=_zs.panel;
+  s.scale=Math.max(s.baseScale*0.5, Math.min(s.baseScale*8, s.scale*(1+delta)));
+  _clampOffset('panel'); _applyTransform('panel');
+}
+function diagFit(){
+  const s=_zs.panel; s.scale=s.baseScale; s.ox=0; s.oy=0; _applyTransform('panel');
+}
+
+// Zoom buttons (modal)
+function diagModalZoom(delta){
+  const s=_zs.modal;
+  s.scale=Math.max(s.baseScale*0.5, Math.min(s.baseScale*8, s.scale*(1+delta)));
+  _clampOffset('modal'); _applyTransform('modal');
+}
+function diagModalFit(){
+  const s=_zs.modal; s.scale=s.baseScale; s.ox=0; s.oy=0; _applyTransform('modal');
+}
+
 function diagToggle(){
   if(!diagIsOpen){
     const s = currentSection!=='all' ? currentSection : Object.keys(SECTIONS)[0];
@@ -614,7 +787,7 @@ function _openDiag(sectionId){
   _diagSection = sectionId;
   document.body.classList.add('diag-open');
   document.getElementById('diagToggleBtn').classList.add('on');
-  _diagRender(sectionId);
+  _diagRender(sectionId, 'panel');
 }
 
 function diagClose(){
@@ -624,6 +797,20 @@ function diagClose(){
   document.getElementById('diagToggleBtn').classList.remove('on');
   document.querySelectorAll('.hl-row').forEach(r=>r.classList.remove('hl-row'));
 }
+
+// Fullscreen expand/close
+function diagExpand(){
+  const modal = document.getElementById('diagModal');
+  document.getElementById('diagModalTitle').textContent = document.getElementById('diagTitle').textContent;
+  modal.classList.add('open');
+  // Render at higher res into the modal
+  if(_diagSection) _diagRender(_diagSection, 'modal');
+}
+function diagModalClose(){
+  document.getElementById('diagModal').classList.remove('open');
+}
+// Close modal on Escape
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') diagModalClose(); });
 
 function _loadPdf(callback){
   if(_pdfDoc){ callback(_pdfDoc); return; }
@@ -647,32 +834,95 @@ function _loadPdf(callback){
   }
 }
 
-function _diagRender(sectionId){
+function _diagRender(sectionId, ctx){
+  ctx = ctx || 'panel';
   const pageNum = DIAGRAMS[sectionId];
   const sec = SECTIONS[sectionId];
-  document.getElementById('diagTitle').textContent =
-    sectionId + (sec ? ' · ' + sec.subtitle.replace(/\s*\(.*\)/,'') : '');
-  const body = document.getElementById('diagBody');
+  const titleEl = ctx==='panel' ? document.getElementById('diagTitle') : document.getElementById('diagModalTitle');
+  titleEl.textContent = sectionId + (sec ? ' · ' + sec.subtitle.replace(/\s*\(.*\)/,'') : '');
+
+  const isModal = ctx==='modal';
+  const body = isModal ? document.getElementById('diagModalBody') : document.getElementById('diagBody');
+  const wrapId = isModal ? 'diagModalWrap' : 'diagWrap';
+  const vpId   = isModal ? 'diagModalViewport' : 'diagViewport';
+
   if(!pageNum){
     body.innerHTML='<div class="diag-none"><div class="icon">📋</div><p>No diagram available for this section</p></div>';
     return;
   }
-  body.innerHTML='<div class="diag-none"><div class="icon">⏳</div><p>Loading diagram…</p></div>';
+
+  // Show spinner inside the viewport area
+  if(isModal){
+    document.getElementById('diagModalWrap').innerHTML='';
+    // spinner overlay
+    let sp=body.querySelector('.diag-spinner');
+    if(!sp){ sp=document.createElement('div'); sp.className='diag-none diag-spinner'; sp.innerHTML='<div class="icon">⏳</div><p>Loading…</p>'; sp.style.cssText='position:absolute;inset:0;z-index:5;background:#0d0d0d;'; body.appendChild(sp); }
+  } else {
+    body.innerHTML='<div class="diag-none"><div style="font-size:48px;opacity:.3">⏳</div><p style="font-size:12px;margin-top:8px">Loading diagram…</p></div>';
+    // Re-create viewport & wrap
+    const vp=document.createElement('div'); vp.className='diag-viewport'; vp.id='diagViewport';
+    const wrap=document.createElement('div'); wrap.className='diag-wrap'; wrap.id='diagWrap';
+    vp.appendChild(wrap); body.innerHTML=''; body.appendChild(vp);
+    body.innerHTML='<div class="diag-none"><div style="font-size:48px;opacity:.3">⏳</div><p style="font-size:12px;margin-top:8px">Loading diagram…</p></div>';
+  }
+
+  // Render scale: modal uses screen height, panel uses container width
+  const renderScale = isModal ? (window.devicePixelRatio||1)*2 : (window.devicePixelRatio||1)*1.5;
+
   _loadPdf(doc=>{
     doc.getPage(pageNum).then(page=>{
       const vp0 = page.getViewport({scale:1});
-      const scale = (body.clientWidth||340) / vp0.width;
-      const vp = page.getViewport({scale});
+
+      // Build viewport + wrap if panel (modal already has them in HTML)
+      let vpEl, wrapEl;
+      if(isModal){
+        vpEl = document.getElementById('diagModalViewport');
+        wrapEl = document.getElementById('diagModalWrap');
+        wrapEl.innerHTML='';
+        const sp=body.querySelector('.diag-spinner'); if(sp) sp.remove();
+      } else {
+        body.innerHTML='';
+        vpEl=document.createElement('div'); vpEl.className='diag-viewport'; vpEl.id='diagViewport';
+        wrapEl=document.createElement('div'); wrapEl.className='diag-wrap'; wrapEl.id='diagWrap';
+        vpEl.appendChild(wrapEl); body.appendChild(vpEl);
+        // zoom bar
+        const zb=document.createElement('div'); zb.className='diag-zoom-bar';
+        zb.innerHTML='<button onclick="diagZoom(-0.25)" title="Zoom out">−</button><span class="diag-zoom-level" id="diagZoomLevel">100%</span><button onclick="diagZoom(+0.25)" title="Zoom in">+</button><button onclick="diagFit()" title="Reset" style="font-size:10px;width:auto;padding:0 7px;">FIT</button>';
+        body.appendChild(zb);
+      }
+
+      // Render canvas at high res
+      const scale = renderScale;
+      const vp2 = page.getViewport({scale});
       const canvas = document.createElement('canvas');
-      canvas.width=vp.width; canvas.height=vp.height;
-      canvas.style.cssText='display:block;width:100%;';
-      const wrap = document.createElement('div');
-      wrap.className='diag-wrap'; wrap.id='diagWrap';
-      wrap.appendChild(canvas);
-      body.innerHTML=''; body.appendChild(wrap);
-      page.render({canvasContext:canvas.getContext('2d'), viewport:vp});
+      canvas.width=vp2.width; canvas.height=vp2.height;
+      // Display at 1x (CSS handles sizing)
+      const displayW = isModal ? Math.min(window.innerWidth-32, vp0.width*(window.innerHeight-80)/vp0.height) : (vpEl.clientWidth||340);
+      canvas.style.cssText=`display:block;width:${displayW}px;height:auto;`;
+      wrapEl.appendChild(canvas);
+
+      const displayH = displayW * (vp0.height/vp0.width);
+      _canvSize[ctx] = {w: displayW, h: displayH};
+
+      // Reset zoom state
+      const cs = _zs[ctx];
+      cs.scale = 1; cs.ox = 0; cs.oy = 0;
+      cs.baseScale = 1;
+      wrapEl.style.transform='translate(0,0) scale(1)';
+      const lvl = ctx==='panel' ? document.getElementById('diagZoomLevel') : document.getElementById('diagModalZoomLevel');
+      if(lvl) lvl.textContent='100%';
+
+      page.render({canvasContext:canvas.getContext('2d'), viewport:vp2}).promise.then(()=>{
+        // Wire up pan/zoom (only once per context per open)
+        vpEl._panZoomReady = vpEl._panZoomReady || false;
+        if(!vpEl._panZoomReady){
+          _setupPanZoom(ctx, vpEl, wrapEl);
+          vpEl._panZoomReady=true;
+        }
+      });
     }).catch(()=>{
-      body.innerHTML='<div class="diag-none"><div class="icon">⚠️</div><p>Could not render page. Check PDF is accessible at the GitHub URL.</p></div>';
+      const err='<div class="diag-none"><div class="icon">⚠️</div><p>Could not render page.</p></div>';
+      if(isModal){ document.getElementById('diagModalWrap').innerHTML=err; } else { body.innerHTML=err; }
     });
   });
 }
