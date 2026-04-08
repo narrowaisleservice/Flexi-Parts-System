@@ -485,6 +485,20 @@
 
         .vs-no-stock { text-align:center; padding:40px 20px; color:#555; font-size:1em; font-weight:600; }
 
+        /* Bulk load */
+        .vs-bulk-banner { background:rgba(99,102,241,.1); border:1px solid rgba(99,102,241,.3); border-radius:12px; padding:18px 22px; margin-bottom:24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+        .vs-bulk-banner-text { flex:1; min-width:200px; }
+        .vs-bulk-banner-title { font-size:1.05em; font-weight:800; color:#a78bfa; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+        .vs-bulk-banner-sub { font-size:.88em; color:var(--text-secondary); line-height:1.5; }
+        .vs-bulk-btn { padding:12px 24px; background:#7c3aed; border:none; border-radius:8px; color:white; font-family:inherit; font-size:.95em; font-weight:800; cursor:pointer; text-transform:uppercase; letter-spacing:1px; transition:all .2s; white-space:nowrap; }
+        .vs-bulk-btn:hover { background:#6d28d9; }
+        .vs-bulk-btn:disabled { opacity:.5; cursor:not-allowed; }
+        .vs-bulk-progress { width:100%; margin-top:12px; display:none; }
+        .vs-bulk-progress.show { display:block; }
+        .vs-bulk-progress-bar { height:6px; background:#333; border-radius:3px; overflow:hidden; margin-bottom:8px; }
+        .vs-bulk-progress-fill { height:100%; background:#7c3aed; border-radius:3px; transition:width .3s ease; width:0%; }
+        .vs-bulk-progress-label { font-size:.85em; color:#a78bfa; font-weight:600; text-align:center; }
+
         @media print {
             body { background:white !important; color:black !important; }
             .cart-toggle, .cart-section, .notification-bell, .header-actions, .orders-filter-bar, .orders-toolbar .export-group, .modal-actions, .nav-link { display:none !important; }
@@ -659,6 +673,19 @@
 
             <!-- Manager overview -->
             <div id="vanManagerView" style="display:none;">
+                <div class="vs-bulk-banner">
+                    <div class="vs-bulk-banner-text">
+                        <div class="vs-bulk-banner-title">🗂 Bulk Load Standard Stock — All Engineers</div>
+                        <div class="vs-bulk-banner-sub">Pre-populates all 13 engineers with the standard van stock list at qty 0. Only runs for engineers with no stock set up yet — existing stock is never overwritten. Engineers update quantities during their own audit.</div>
+                    </div>
+                    <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+                        <button class="vs-bulk-btn" id="vsBulkLoadBtn" onclick="bulkLoadAllEngineers()">⚡ Load Standard Stock</button>
+                        <div class="vs-bulk-progress" id="vsBulkProgress">
+                            <div class="vs-bulk-progress-bar"><div class="vs-bulk-progress-fill" id="vsBulkFill"></div></div>
+                            <div class="vs-bulk-progress-label" id="vsBulkLabel">Starting...</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="vs-overdue-banner" id="vsOverdueBanner">
                     <span>⚠</span>
                     <span id="vsOverdueText"></span>
@@ -1174,6 +1201,229 @@ async function saveVanStock() {
 /* ══════════════════════════════════════════
    VAN STOCK — ENGINEER NAMES
 ══════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   STANDARD VAN STOCK PARTS LIST
+   Used for bulk loading all engineers.
+   Descriptions are the canonical names —
+   qty is always 0 (engineers fill in during audit).
+══════════════════════════════════════════ */
+const STANDARD_VAN_PARTS = [
+    { partNumber:'2015.00.002', description:'Fork Pin Kit Round Head' },
+    { partNumber:'3526.03',     description:'Tilt Cylinder Mounting Shaft' },
+    { partNumber:'3729.61',     description:'Link Hose- spool valve flow control' },
+    { partNumber:'41282.02',    description:'Flexi 3 Oil Tank Cork Gasket' },
+    { partNumber:'41323.45',    description:'G4 battery tank cable 70mm' },
+    { partNumber:'41323.53',    description:'Battery Harness 50mm' },
+    { partNumber:'41348.06',    description:'Lift Lever ZP' },
+    { partNumber:'41348.07',    description:'Tilt Lever ZP' },
+    { partNumber:'41348.08',    description:'S/Shift Lever ZP' },
+    { partNumber:'41404.2',     description:'MainLift Cylinder Seal Kit (GKN)' },
+    { partNumber:'41404.3',     description:'Mainlift Cylinder Seal Kit (Tailift)' },
+    { partNumber:'41405.2',     description:'Freelift Cylinder Seal Kit (GKN)' },
+    { partNumber:'41405.3',     description:'FreeLift Cylinder Seal Kit (Tailift)' },
+    { partNumber:'41410.01',    description:'Freelift cylinder Clamp' },
+    { partNumber:'42646',       description:'Traction motor encoder harness ACE' },
+    { partNumber:'44030.04.002',description:'Tilt Cylinder Seal Kit - KH1206' },
+    { partNumber:'44030.14.001',description:'Tilt Cylinder Seal Kit - B350740' },
+    { partNumber:'4632.01.000', description:'Filter (Lift)' },
+    { partNumber:'4634.01.000', description:'Suction Filter' },
+    { partNumber:'4667.01.000', description:'SV-10-22-4B-N-48DS' },
+    { partNumber:'4959.01.000', description:'MPT100-2-C-A-G2/P25NBT Filter' },
+    { partNumber:'4959.02.000', description:'Filter Element (RTN)' },
+    { partNumber:'4959.03.000', description:'Breather Element' },
+    { partNumber:'4970.03.000', description:'Flow Regulator - M0302004' },
+    { partNumber:'4973.01.000', description:'Lock Valve' },
+    { partNumber:'4977.03.000', description:'Seal Kit - SD5/3 Bank Spool' },
+    { partNumber:'4978.12.014', description:'42 x 72 x 8mm R23 Seal double lipped' },
+    { partNumber:'4978.15.001', description:'Oil Seal-80x105x13 drive axle' },
+    { partNumber:'4978.15.005', description:'Wheel Nut - Front Axle' },
+    { partNumber:'4997.21.002', description:'Right Lwr Pad New S/S' },
+    { partNumber:'4997.21.003', description:'Left Lwr Pad New S/Shift' },
+    { partNumber:'4997.21.004', description:'Left Upr Pad New S/S' },
+    { partNumber:'4997.21.005', description:'Right Upr Pad New S/S' },
+    { partNumber:'4997.21.006', description:'Seal Kit (new S/S) (BOLZONI)' },
+    { partNumber:'4997.44.005', description:'Sideshift bearing (Inner plastic)' },
+    { partNumber:'4997.44.017', description:'Sideshift seal kit (KAUP)' },
+    { partNumber:'4997.44.022', description:'Sideshift seal housing' },
+    { partNumber:'4998.01.000', description:'Rotary Shaft Seal (75x105x13) wheel hub' },
+    { partNumber:'4998.06.000', description:'Lock Nut' },
+    { partNumber:'4998.07.000', description:'Lock Washer - TW30240' },
+    { partNumber:'5180.01.000', description:'CTR140-3.6B Cable Ties (priced/Hund)' },
+    { partNumber:'5181.01.000', description:'CTR300-4.8B Cable Ties' },
+    { partNumber:'5202.08.000', description:'Direction Lever (STANDARD)' },
+    { partNumber:'5277.01.000', description:'Burgess Microswitch' },
+    { partNumber:'5367.01.000', description:'Siba 100A Airfuse' },
+    { partNumber:'5454.02.007', description:'Brush' },
+    { partNumber:'55096.01.000',description:'Siba 400A Fuse 9005805' },
+    { partNumber:'55131.14.000',description:'Fan-48v-5watt 119x119' },
+    { partNumber:'55131.21.000',description:'48V Fan 120x120x25 front cover' },
+    { partNumber:'55201.01.000',description:'10amp Fuse MDA10 Bussmann' },
+    { partNumber:'55219.02.000',description:'Limit Switch Body c/w contact & cable' },
+    { partNumber:'55219.03.000',description:'Limit Switch Operating Head' },
+    { partNumber:'55262.01.000',description:'Moving Contact' },
+    { partNumber:'55262.24.000',description:'Fwd/Rev Contact Tip Kit - G.E.' },
+    { partNumber:'55262.25.000',description:'Contact Tip Kit - Steer/Lift' },
+    { partNumber:'55309.02.003',description:'Brush Assy - A97 1012' },
+    { partNumber:'55309.04.001',description:'Set of Carbon brushes (4) SCHAB STEER' },
+    { partNumber:'55385.12.000',description:'DIN 320A Batt.Plug - Male Pin/Fem.Hsg' },
+    { partNumber:'55385.13.000',description:'DIN 320A Batt.Skt - Fem.Pin/Male Hsg' },
+    { partNumber:'55385.14.000',description:'DIN 320A Battery Plug Handle' },
+    { partNumber:'55385.15.000',description:'Battery Plug Aux.Contact Set-75595-55' },
+    { partNumber:'55385.23.000',description:'Battery plug 95605.01 70mm acid res fm' },
+    { partNumber:'55421.15.000',description:'LED Worklamp-50V Polycarbonate Lens' },
+    { partNumber:'55481.01.001',description:'Accelerator Pedal Zapi' },
+    { partNumber:'55490.01.000',description:'Contactor SW80B-464 (STEER) ZAPI' },
+    { partNumber:'55490.01.100',description:'Steer Contact Kit' },
+    { partNumber:'55490.02.000',description:'Contactor SW200-1277 (Albright)' },
+    { partNumber:'55490.02.008',description:'Top Cover' },
+    { partNumber:'55490.02.100',description:'Pump Contact Kit' },
+    { partNumber:'55490.03.000',description:'Regen Contactor' },
+    { partNumber:'55490.04.100',description:'Fwd/Rev Contact Kit' },
+    { partNumber:'55490.06.000',description:'Contactor SW200A-261' },
+    { partNumber:'55492.08.001',description:'Encoder sensor' },
+    { partNumber:'55498.01.000',description:'Pushbutton 10A RED' },
+    { partNumber:'55520.02.000',description:'Illuminated push button body 24v blue' },
+    { partNumber:'55521.01.000',description:'Single N/O Contact Block' },
+    { partNumber:'55521.02.000',description:'Single N/C Contact Block' },
+    { partNumber:'55525.02.000',description:'Illuminated selector head blue' },
+    { partNumber:'55526.01.000',description:'Key switch operator 2 position 455 key' },
+    { partNumber:'55527.01.000',description:'Switch body 2 x N/O contact' },
+    { partNumber:'5608.01.000', description:'Ronis 455 Key' },
+    { partNumber:'5618.01.000', description:'2070-124 Auxiliary Contactor' },
+    { partNumber:'5676.10.000', description:'Husky Pup Beacon' },
+    { partNumber:'5849.02.000', description:'48v 11 Pin Relay' },
+    { partNumber:'5849.03.000', description:'24v 16A 11Pin Relay' },
+    { partNumber:'6517.02.000', description:'42mm dia. Plug' },
+    { partNumber:'6591.01.000', description:'A89 21-23 x3.3 Retaining Pin' },
+    { partNumber:'7404.02.000', description:'Plastimo 35648 Wide Ang. Mirror' },
+    { partNumber:'7624.01.000', description:'Taper Bearing' },
+    { partNumber:'7624.02.000', description:'Taper Bearing 50x80x20' },
+    { partNumber:'7629.03.000', description:'Rotation Buffer' },
+    { partNumber:'7629.04.000', description:'Buffer K/D-50/39-57deg Shore A' },
+    { partNumber:'7629.05.000', description:'Mast Buffer' },
+    { partNumber:'7633.19.001', description:'Seat Microswitch' },
+    { partNumber:'7638.05.000', description:'Spool Valve Knob - Lift' },
+    { partNumber:'7638.06.000', description:'Spool Valve Knob - Tilt' },
+    { partNumber:'7638.07.000', description:'Spool Valve Knob - S/Shift' },
+    { partNumber:'7646.06.000', description:'Steer column' },
+    { partNumber:'7659.01.000', description:'Gas Strut 450 Newtons Press' },
+    { partNumber:'7668.01.000', description:'Primary H/B Cable Ref.26930' },
+    { partNumber:'7671.01.000', description:'Roller Bearing' },
+    { partNumber:'7738.07.001', description:'Cyl.(25.4mm) Dot 4 LH/RH' },
+    { partNumber:'7738.08.000', description:'Brake Cable' },
+    { partNumber:'7738.12.000', description:'Manual Adjuster' },
+    { partNumber:'7773.02.000', description:'Combined Roller Bearing' },
+    { partNumber:'7804.01.001', description:'Sensor for G4 steering column' },
+    { partNumber:'7804.01.002', description:'Cond. module for G4 steer sensor' },
+    { partNumber:'7813.02.000', description:'Wheel Bolt M14X1.5 60 Degree Tap' },
+    { partNumber:'C01',         description:'Cord Rag (Bags)' },
+    { partNumber:'C04',         description:'WD40 - 400ml can' },
+    { partNumber:'C15',         description:'Safety Glasses' },
+    { partNumber:'C199',        description:'Spray Bottles' },
+    { partNumber:'C252',        description:'5ltrs General Purpose Cleaner' },
+    { partNumber:'C257',        description:'Autocare Brake Cleaner' },
+    { partNumber:'C272',        description:'Solent Workshop Wipes (Tub)' },
+    { partNumber:'C37',         description:'Lithoshield EP Cart GR (Grease Cartridge)' },
+    { partNumber:'C391',        description:'Original Retractable Blade Knife' },
+    { partNumber:'C392',        description:'Northwood HGB001N (Blueroll)' },
+    { partNumber:'D180416',     description:'Footswitch' },
+    { partNumber:'P48',         description:'Blackqad Spray Gloss P0412' },
+    { partNumber:'P59',         description:'Red Gloss P5909 Aerosols' }
+];
+
+/* Build a standard parts list, enriching descriptions from the live parts
+   database where possible so part numbers stay consistent. */
+function buildStandardStockList() {
+    return STANDARD_VAN_PARTS.map(sp => {
+        // Try to find a matching part in the loaded parts database
+        const clean = sp.partNumber.replace(/[\s\-.]/g,'').toLowerCase();
+        const match = allParts.find(p => {
+            const n = String(p['Part Number']||'').replace(/[\s\-.]/g,'').toLowerCase();
+            return n === clean;
+        });
+        return {
+            partNumber:  sp.partNumber,
+            description: match ? (match['Description'] || sp.description) : sp.description,
+            qty: 0
+        };
+    });
+}
+
+/* Bulk load standard stock for all 13 engineers.
+   Engineers who already have stock are skipped to avoid overwriting. */
+async function bulkLoadAllEngineers() {
+    const btn      = document.getElementById('vsBulkLoadBtn');
+    const progress = document.getElementById('vsBulkProgress');
+    const fill     = document.getElementById('vsBulkFill');
+    const label    = document.getElementById('vsBulkLabel');
+
+    // Check how many already have stock
+    const toLoad = VAN_ENGINEERS.filter(name => {
+        const existing = vanStockData[name];
+        return !existing || !existing.parts || existing.parts.length === 0;
+    });
+
+    if (toLoad.length === 0) {
+        showToast('All engineers already have stock set up — nothing to load.');
+        return;
+    }
+
+    const confirmed = confirm(
+        `This will load ${STANDARD_VAN_PARTS.length} standard parts (qty 0) for ${toLoad.length} engineer${toLoad.length !== 1 ? 's' : ''}:\n\n` +
+        toLoad.join(', ') +
+        `\n\nEngineers with existing stock will not be touched. Continue?`
+    );
+    if (!confirmed) return;
+
+    btn.disabled = true;
+    progress.classList.add('show');
+
+    const standardParts = buildStandardStockList();
+    const now = new Date().toISOString();
+    let done = 0;
+
+    for (const name of toLoad) {
+        label.textContent = `Loading ${name}… (${done + 1} of ${toLoad.length})`;
+        fill.style.width = Math.round((done / toLoad.length) * 100) + '%';
+
+        // Update local state immediately
+        vanStockData[name] = { parts: JSON.parse(JSON.stringify(standardParts)), lastUpdated: now };
+
+        // Save to Google Sheet
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                body: JSON.stringify({
+                    action:      'saveVanStock',
+                    engineer:    name,
+                    parts:       standardParts,
+                    lastUpdated: now
+                })
+            });
+        } catch(e) {
+            // Saved locally — will sync on next individual save
+        }
+
+        done++;
+        // Small delay so we don't hammer the Apps Script rate limits
+        await new Promise(r => setTimeout(r, 400));
+    }
+
+    fill.style.width = '100%';
+    label.textContent = `✅ Done — ${done} engineer${done !== 1 ? 's' : ''} loaded successfully`;
+    cacheVanStock(vanStockData);
+    setTimeout(() => {
+        progress.classList.remove('show');
+        fill.style.width = '0%';
+        btn.disabled = false;
+    }, 3000);
+
+    renderVanManagerCards();
+    populateEngineerSelects();
+    showToast(`✅ Standard stock loaded for ${done} engineer${done !== 1 ? 's' : ''}`);
+    haptic('success');
+}
+
 const VAN_ENGINEERS = [
     'Aaron Dyson',
     'Brett Stockton',
@@ -1314,16 +1564,30 @@ function vsSearchAdd(term) {
     const results = document.getElementById('vsAddResults');
     if (!term || term.length < 2) { results.classList.remove('show'); return; }
     const clean = term.replace(/[\s\-.]/g,'').toLowerCase();
-    const matches = allParts.filter(p => {
+
+    // Search live parts database first
+    const dbMatches = allParts.filter(p => {
         const num  = String(p['Part Number']||'').toLowerCase();
         const desc = String(p['Description']||'').toLowerCase();
         return num.replace(/[\s\-.]/g,'').includes(clean) || num.includes(term.toLowerCase()) || desc.includes(term.toLowerCase());
     }).slice(0,8);
-    if (!matches.length) { results.classList.remove('show'); return; }
-    results.innerHTML = matches.map(p => {
+
+    // Also search the standard van list for anything not in the DB (consumables etc.)
+    const dbNums = new Set(dbMatches.map(p => String(p['Part Number']||'').replace(/[\s\-.]/g,'').toLowerCase()));
+    const stdMatches = STANDARD_VAN_PARTS.filter(p => {
+        const n = p.partNumber.replace(/[\s\-.]/g,'').toLowerCase();
+        if (dbNums.has(n)) return false; // already covered by DB result
+        return n.includes(clean) || p.description.toLowerCase().includes(term.toLowerCase());
+    }).slice(0, 4).map(p => ({ 'Part Number': p.partNumber, 'Description': p.description }));
+
+    const combined = [...dbMatches, ...stdMatches].slice(0, 10);
+    if (!combined.length) { results.classList.remove('show'); return; }
+
+    results.innerHTML = combined.map(p => {
         const num  = p['Part Number'] || 'N/A';
-        const desc = (p['Description'] || 'No description').slice(0,60);
-        const safe = JSON.stringify({partNumber:num, description:desc, qty:1}).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        const desc = (p['Description'] || 'No description').slice(0, 65);
+        const safe = JSON.stringify({ partNumber: num, description: desc, qty: 1 })
+            .replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
         return `<div class="vs-add-result-item" onclick='vsAddPart(${safe})'>
             <div class="vs-add-result-num">${num}</div>
             <div class="vs-add-result-desc">${desc}</div>
