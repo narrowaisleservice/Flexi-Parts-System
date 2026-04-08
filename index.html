@@ -47,6 +47,7 @@
         .header-actions { display:flex; gap:15px; align-items:center; }
         .nav-link { padding:12px 24px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:1em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; text-decoration:none; display:inline-block; }
         .nav-link:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
+        .nav-link.active-nav { border-color:var(--primary-red); color:white; background:rgba(220,38,38,.1); }
 
         .page-section { display:none; }
         .page-section.active { display:block; }
@@ -357,37 +358,7 @@
         .part-cost { display:inline-block; background:rgba(74,222,128,.15); border:1px solid rgba(74,222,128,.25); color:#4ade80; padding:3px 10px; border-radius:6px; font-size:.85em; font-weight:700; margin-bottom:12px; }
         .order-type-badge { display:inline-block; padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:6px; background:rgba(99,102,241,.2); color:#818cf8; border:1px solid rgba(99,102,241,.3); }
 
-        .ai-fault-btn:hover { background:#6d28d9 !important; }
-        .ai-thinking { display:flex; align-items:center; gap:12px; padding:20px; color:var(--text-secondary); font-size:1em; font-weight:600; }
-        .ai-thinking-dots { display:flex; gap:5px; }
-        .ai-thinking-dot { width:8px; height:8px; background:#7c3aed; border-radius:50%; animation:aiDot .8s infinite alternate; }
-        .ai-thinking-dot:nth-child(2){animation-delay:.2s} .ai-thinking-dot:nth-child(3){animation-delay:.4s}
-        @keyframes aiDot { from{opacity:.2;transform:translateY(0)}to{opacity:1;transform:translateY(-4px)} }
-        .ai-result-part { background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:10px; display:flex; align-items:center; gap:12px; transition:all .2s; }
-        .ai-result-part:hover { border-color:#7c3aed; }
-        .ai-result-check { width:20px; height:20px; accent-color:#7c3aed; cursor:pointer; flex-shrink:0; }
-        .ai-result-info { flex:1; }
-        .ai-result-num { font-weight:800; color:#a78bfa; font-size:1.05em; margin-bottom:2px; }
-        .ai-result-desc { font-size:.88em; color:var(--text-secondary); }
-        .ai-result-reason { font-size:.8em; color:#555; margin-top:3px; font-style:italic; }
-        .ai-result-notfound { background:rgba(245,158,11,.08); border:1px solid rgba(245,158,11,.2); border-radius:8px; padding:12px 16px; margin-bottom:8px; }
-        .ai-result-notfound-num { font-weight:700; color:#f59e0b; font-size:.95em; }
-        .ai-result-notfound-desc { font-size:.82em; color:#888; margin-top:2px; }
-        .ai-section-title { font-size:.8em; font-weight:700; color:#555; text-transform:uppercase; letter-spacing:1px; margin:16px 0 10px; }
-        .ai-fault-textarea { width:100%; min-height:140px; padding:16px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; resize:vertical; line-height:1.6; }
-        .ai-fault-textarea:focus { outline:none; border-color:#7c3aed; }
-        .ai-model-hint { display:flex; align-items:center; gap:10px; margin-top:12px; }
-        .ai-model-hint label { font-size:.85em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
-        .ai-model-hint select { flex:1; padding:8px 12px; background:var(--dark-bg); border:1px solid var(--border); border-radius:6px; color:white; font-family:inherit; font-size:.9em; }
-        .ai-add-selected-btn { width:100%; padding:14px; background:#7c3aed; border:none; border-radius:8px; color:white; font-size:1em; font-weight:700; cursor:pointer; font-family:inherit; text-transform:uppercase; letter-spacing:1px; transition:all .2s; margin-top:16px; }
-        .ai-add-selected-btn:hover { background:#6d28d9; }
-        .ai-add-selected-btn:disabled { opacity:.4; cursor:not-allowed; }
-        .ai-disclaimer { display:flex; align-items:flex-start; gap:10px; background:rgba(124,58,237,.1); border:1px solid rgba(124,58,237,.3); border-radius:8px; padding:12px 16px; margin-top:14px; }
-        .ai-disclaimer-icon { font-size:1em; flex-shrink:0; margin-top:1px; }
-        .ai-disclaimer-text { font-size:.82em; color:#c4b5fd; line-height:1.5; font-weight:500; }
-        .ai-disclaimer-text strong { color:#a78bfa; font-weight:700; }
-
-        /* ── ORDER EDIT MODE ── */
+        /* ── EDIT ORDER PARTS ── */
         .edit-parts-btn { padding:10px 20px; background:transparent; border:1px solid #7c3aed; border-radius:8px; color:#a78bfa; font-family:inherit; font-size:.9em; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:.5px; transition:all .2s; }
         .edit-parts-btn:hover { background:rgba(124,58,237,.15); color:#c4b5fd; }
         .edit-parts-btn.active { background:rgba(124,58,237,.2); border-color:#a78bfa; color:white; }
@@ -421,6 +392,99 @@
         .edit-search-result-num { font-weight:700; color:#a78bfa; font-size:.9em; }
         .edit-search-result-desc { font-size:.82em; color:#888; margin-top:2px; }
 
+        /* ══ VAN STOCK STYLES ══ */
+        .vs-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start; }
+        @media(max-width:900px){ .vs-layout { grid-template-columns:1fr; } }
+
+        .vs-panel { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:28px; }
+        .vs-panel-title { font-size:1.6em; font-weight:800; text-transform:uppercase; letter-spacing:-1px; margin-bottom:6px; }
+        .vs-panel-sub { font-size:.9em; color:var(--text-secondary); margin-bottom:20px; font-weight:500; }
+
+        .vs-engineer-select { width:100%; padding:12px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:1em; font-weight:600; margin-bottom:20px; }
+        .vs-engineer-select:focus { outline:none; border-color:var(--primary-red); }
+        .vs-engineer-select option { background:var(--card-bg); }
+
+        .vs-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:20px; }
+        .vs-stat { background:var(--dark-bg); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+        .vs-stat-val { font-size:2.4em; font-weight:900; letter-spacing:-1px; line-height:1; margin-bottom:4px; }
+        .vs-stat-val.ok { color:#4ade80; }
+        .vs-stat-val.warn { color:#f59e0b; }
+        .vs-stat-val.danger { color:#f87171; }
+        .vs-stat-lbl { font-size:.75em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.5px; }
+
+        .vs-low-alert { background:rgba(245,158,11,.1); border:1px solid rgba(245,158,11,.3); border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:.9em; color:#f59e0b; font-weight:600; display:none; }
+        .vs-low-alert.show { display:block; }
+
+        .vs-part-list { max-height:460px; overflow-y:auto; }
+        .vs-part-row { background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; padding:14px 16px; margin-bottom:8px; display:flex; align-items:center; gap:12px; transition:all .2s; }
+        .vs-part-row:hover { border-color:var(--primary-red); }
+        .vs-part-info { flex:1; min-width:0; }
+        .vs-part-num { font-size:1.1em; font-weight:800; color:var(--primary-red); }
+        .vs-part-desc { font-size:.85em; color:var(--text-secondary); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .vs-stock-pill { font-size:.75em; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; flex-shrink:0; }
+        .vs-pill-ok { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+        .vs-pill-low { background:rgba(245,158,11,.15); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+        .vs-pill-out { background:rgba(239,68,68,.15); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+        .vs-qty-ctrl { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+        .vs-qty-btn { background:var(--card-bg); border:1px solid var(--border); color:white; width:30px; height:30px; border-radius:6px; cursor:pointer; font-size:1.1em; font-weight:700; display:flex; align-items:center; justify-content:center; transition:all .2s; }
+        .vs-qty-btn:hover { background:var(--hover-bg); border-color:var(--primary-red); }
+        .vs-qty-val { width:40px; text-align:center; font-size:1em; font-weight:700; color:white; padding:6px; background:var(--card-bg); border:1px solid var(--border); border-radius:6px; font-family:inherit; }
+        .vs-remove-btn { background:transparent; border:1px solid var(--border); color:#555; width:28px; height:28px; border-radius:6px; cursor:pointer; font-size:.9em; display:flex; align-items:center; justify-content:center; transition:all .2s; flex-shrink:0; }
+        .vs-remove-btn:hover { border-color:#f87171; color:#f87171; background:rgba(239,68,68,.1); }
+
+        .vs-add-row { display:flex; gap:10px; margin-top:16px; padding-top:16px; border-top:1px dashed #333; position:relative; }
+        .vs-add-input { flex:1; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; }
+        .vs-add-input:focus { outline:none; border-color:var(--primary-red); }
+        .vs-add-results { position:absolute; top:100%; left:0; right:60px; background:var(--card-bg); border:1px solid var(--border); border-radius:8px; max-height:200px; overflow-y:auto; z-index:100; display:none; margin-top:4px; }
+        .vs-add-results.show { display:block; }
+        .vs-add-result-item { padding:10px 14px; cursor:pointer; border-bottom:1px solid var(--border); transition:background .15s; }
+        .vs-add-result-item:last-child { border-bottom:none; }
+        .vs-add-result-item:hover { background:var(--hover-bg); }
+        .vs-add-result-num { font-weight:700; color:var(--primary-red); font-size:.9em; }
+        .vs-add-result-desc { font-size:.82em; color:#888; margin-top:2px; }
+
+        .vs-save-btn { width:100%; padding:16px; background:var(--primary-red); border:none; border-radius:8px; color:white; font-size:1.05em; font-weight:800; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1.5px; margin-top:16px; }
+        .vs-save-btn:hover { background:#ef4444; }
+        .vs-save-btn:disabled { opacity:.5; cursor:not-allowed; }
+        .vs-last-updated { text-align:center; font-size:.85em; color:#555; margin-top:10px; font-weight:600; }
+
+        /* Manager overview */
+        .vs-overview-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px; }
+        .vs-overview-title { font-size:1.6em; font-weight:800; text-transform:uppercase; letter-spacing:-1px; }
+        .vs-filter-chips { display:flex; gap:8px; flex-wrap:wrap; }
+        .vs-chip { padding:7px 16px; border:1px solid var(--border); border-radius:20px; font-family:inherit; font-size:.85em; font-weight:700; cursor:pointer; color:var(--text-secondary); background:transparent; text-transform:uppercase; letter-spacing:.5px; transition:all .2s; }
+        .vs-chip:hover { border-color:var(--primary-red); color:white; }
+        .vs-chip.active { background:var(--primary-red); border-color:var(--primary-red); color:white; }
+
+        .vs-overdue-banner { background:rgba(239,68,68,.1); border:1px solid rgba(239,68,68,.3); border-radius:10px; padding:14px 18px; margin-bottom:20px; font-size:.95em; color:#f87171; font-weight:700; display:none; }
+        .vs-overdue-banner.show { display:flex; align-items:center; gap:10px; }
+
+        .vs-van-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+        .vs-van-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:20px; transition:all .2s; cursor:pointer; }
+        .vs-van-card:hover { background:var(--hover-bg); transform:translateY(-2px); }
+        .vs-van-card.overdue { border-color:rgba(239,68,68,.4); }
+        .vs-van-card.stale { border-color:rgba(245,158,11,.3); }
+        .vs-van-header { display:flex; align-items:center; gap:12px; margin-bottom:14px; }
+        .vs-van-avatar { width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.9em; font-weight:800; flex-shrink:0; }
+        .vs-van-name { font-size:1.2em; font-weight:800; }
+        .vs-van-meta { font-size:.85em; color:var(--text-secondary); margin-top:2px; }
+        .vs-update-badge { display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:20px; font-size:.78em; font-weight:700; margin-left:auto; text-transform:uppercase; letter-spacing:.5px; flex-shrink:0; }
+        .badge-fresh { background:rgba(74,222,128,.15); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+        .badge-stale { background:rgba(245,158,11,.15); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+        .badge-overdue { background:rgba(239,68,68,.15); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+        .vs-van-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+        .vs-van-stat { background:var(--dark-bg); border-radius:6px; padding:8px; text-align:center; border:1px solid var(--border); }
+        .vs-van-stat-val { font-size:1.6em; font-weight:900; line-height:1; }
+        .vs-van-stat-lbl { font-size:.7em; color:var(--text-secondary); text-transform:uppercase; letter-spacing:.5px; font-weight:700; margin-top:3px; }
+
+        .vs-legend { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:16px; font-size:.85em; color:var(--text-secondary); font-weight:600; }
+        .vs-dot { width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:5px; }
+        .dot-fresh { background:#4ade80; }
+        .dot-stale { background:#f59e0b; }
+        .dot-overdue { background:#f87171; }
+
+        .vs-no-stock { text-align:center; padding:40px 20px; color:#555; font-size:1em; font-weight:600; }
+
         @media print {
             body { background:white !important; color:black !important; }
             .cart-toggle, .cart-section, .notification-bell, .header-actions, .orders-filter-bar, .orders-toolbar .export-group, .modal-actions, .nav-link { display:none !important; }
@@ -442,6 +506,7 @@
             .container { padding:20px; }
             .header { flex-direction:column; align-items:flex-start; gap:20px; }
             .header h1 { font-size:2em; }
+            .header-actions { flex-wrap:wrap; gap:10px; }
             .cart-section { width:100%; right:-100%; }
             .results-grid { grid-template-columns:1fr; }
             .stats-bar { grid-template-columns:1fr; }
@@ -483,6 +548,7 @@
                     </div>
                 </div>
                 <div class="header-actions">
+                    <button class="nav-link" onclick="showPage('vanstock')">🚐 Van Stock</button>
                     <button class="nav-link" onclick="showPage('orders')">View Orders</button>
                 </div>
             </div>
@@ -501,7 +567,6 @@
                         <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceSearch()" title="Voice Search">🎤</button>
                     </div>
                     <button class="bulk-import-btn" onclick="openBulkImport()">📋 Bulk Import</button>
-
                 </div>
                 <div class="nl-hints" id="nlHints">
                     <span class="nl-hint-label">Try asking:</span>
@@ -536,6 +601,91 @@
             </div>
         </div>
 
+        <!-- ══ VAN STOCK PAGE ══ -->
+        <div class="page-section" id="vanstockPage">
+            <div class="header">
+                <div class="header-content">
+                    <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                    <div class="header-text">
+                        <h1>VAN STOCK</h1>
+                        <p class="header-subtitle">ENGINEER STOCK CONTROL</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="nav-link" id="vanStockMgrBtn" onclick="toggleVanView('manager')">📊 Manager View</button>
+                    <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
+                </div>
+            </div>
+
+            <!-- Engineer view -->
+            <div id="vanEngineerView">
+                <div class="vs-panel" style="margin-bottom:24px;">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+                        <div>
+                            <div class="vs-panel-title">📦 My Van Stock</div>
+                            <div class="vs-panel-sub">Select your name, update quantities, then save. Your manager can see when you last updated.</div>
+                        </div>
+                        <select class="vs-engineer-select" id="vsEngineerSelect" onchange="loadEngineerStock()" style="width:auto;min-width:220px;margin-bottom:0;">
+                            <option value="">— Select your name —</option>
+                        </select>
+                    </div>
+
+                    <div class="vs-stats" id="vsStats" style="display:none;">
+                        <div class="vs-stat"><div class="vs-stat-val ok" id="vsStatOk">0</div><div class="vs-stat-lbl">In Stock</div></div>
+                        <div class="vs-stat"><div class="vs-stat-val warn" id="vsStatLow">0</div><div class="vs-stat-lbl">Running Low</div></div>
+                        <div class="vs-stat"><div class="vs-stat-val danger" id="vsStatOut">0</div><div class="vs-stat-lbl">Out of Stock</div></div>
+                    </div>
+
+                    <div class="vs-low-alert" id="vsLowAlert"></div>
+
+                    <div id="vsPartListContainer">
+                        <div class="vs-no-stock" id="vsNoStock">Select your name above to view and update your van stock.</div>
+                        <div class="vs-part-list" id="vsPartList"></div>
+                    </div>
+
+                    <div id="vsAddSection" style="display:none;">
+                        <div class="vs-add-row">
+                            <input class="vs-add-input" id="vsAddInput" placeholder="Search to add a part..." oninput="vsSearchAdd(this.value)" autocomplete="off">
+                            <div class="vs-add-results" id="vsAddResults"></div>
+                        </div>
+                    </div>
+
+                    <div id="vsSaveSection" style="display:none;">
+                        <button class="vs-save-btn" id="vsSaveBtn" onclick="saveVanStock()">💾 Save Stock Update</button>
+                        <div class="vs-last-updated" id="vsLastUpdated"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Manager overview -->
+            <div id="vanManagerView" style="display:none;">
+                <div class="vs-overdue-banner" id="vsOverdueBanner">
+                    <span>⚠</span>
+                    <span id="vsOverdueText"></span>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:12px;">
+                    <div>
+                        <div style="font-size:1.8em;font-weight:800;text-transform:uppercase;letter-spacing:-1px;">All Engineers</div>
+                        <div class="vs-legend" style="margin-top:8px;margin-bottom:0;">
+                            <span><span class="vs-dot dot-fresh"></span>Updated &lt;2 days</span>
+                            <span><span class="vs-dot dot-stale"></span>2–7 days</span>
+                            <span><span class="vs-dot dot-overdue"></span>7+ days — overdue</span>
+                        </div>
+                    </div>
+                    <div class="vs-filter-chips">
+                        <button class="vs-chip active" onclick="filterVanCards('all',this)">All Vans</button>
+                        <button class="vs-chip" onclick="filterVanCards('overdue',this)">Overdue Only</button>
+                        <button class="vs-chip" onclick="filterVanCards('low',this)">Has Low Stock</button>
+                    </div>
+                </div>
+
+                <div class="vs-van-grid" id="vsVanGrid">
+                    <div style="color:#555;padding:40px;text-align:center;grid-column:1/-1;">Loading engineer stock data...</div>
+                </div>
+            </div>
+        </div>
+
         <!-- ══ ORDERS DASHBOARD PAGE ══ -->
         <div class="page-section" id="ordersPage">
             <div id="printTitle">Flexi Parts — Orders Export</div>
@@ -552,6 +702,7 @@
                         🔔
                         <span class="notification-badge" id="notificationBadge" style="display:none;">0</span>
                     </button>
+                    <button class="nav-link" onclick="showPage('vanstock')">🚐 Van Stock</button>
                     <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
                 </div>
             </div>
@@ -778,6 +929,9 @@
 </div>
 
 <script>
+/* ══════════════════════════════════════════
+   UTILITY
+══════════════════════════════════════════ */
 function driveImageUrl(raw) {
     if (!raw || typeof raw !== 'string') return '';
     raw = raw.trim();
@@ -812,6 +966,7 @@ function partImageHtml(part, safeJson) {
     }
     return `<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;
 }
+
 let _lightboxPart = null;
 function openLightbox(url, part) {
     _lightboxPart = part;
@@ -849,6 +1004,18 @@ let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders =
 let lastOrderCount = 0, notificationCheckInterval = null, frequentParts = [], isUrgent = false;
 let sortField = 'date', sortDir = 'desc';
 
+/* ══════════════════════════════════════════
+   VAN STOCK STATE
+══════════════════════════════════════════ */
+let vanStockData = {};       // { engineerName: { parts:[{partNumber,description,qty,minQty}], lastUpdated:'' } }
+let currentVanView = 'engineer'; // 'engineer' | 'manager'
+let vsCurrentEngineer = '';
+let vsLocalStock = [];        // working copy of current engineer's parts
+const VS_LOW_THRESHOLD = 2;   // qty at or below this = "low"
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => { init(); });
 
 async function init() {
@@ -858,7 +1025,9 @@ async function init() {
     await loadParts();
     await loadOrders();
     await loadFrequentParts();
+    await loadVanStock();
     populateModels();
+    populateEngineerSelects();
     setupEventListeners();
     loadCartFromStorage();
     updateCart();
@@ -875,7 +1044,9 @@ function setGreeting() {
 function showPage(page) {
     document.getElementById('partsPage').classList.toggle('active', page === 'parts');
     document.getElementById('ordersPage').classList.toggle('active', page === 'orders');
+    document.getElementById('vanstockPage').classList.toggle('active', page === 'vanstock');
     if (page === 'orders') renderOrders();
+    if (page === 'vanstock') renderVanManagerCards();
 }
 
 function toggleCart() { document.getElementById('cartSection').classList.toggle('open'); }
@@ -886,6 +1057,9 @@ function populateModels() {
         .forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
 }
 
+/* ══════════════════════════════════════════
+   LOAD DATA
+══════════════════════════════════════════ */
 async function loadParts() {
     try {
         const res = await fetch(`${API_URL}?action=getAllParts`);
@@ -938,6 +1112,330 @@ async function loadFrequentParts() {
     } catch(e) {}
 }
 
+/* ══════════════════════════════════════════
+   VAN STOCK — LOAD & SAVE
+══════════════════════════════════════════ */
+async function loadVanStock() {
+    try {
+        const res = await fetch(`${API_URL}?action=getVanStock`);
+        const data = await res.json();
+        if (data.success && data.vanStock) {
+            vanStockData = data.vanStock;
+        } else {
+            vanStockData = loadVanStockFromCache();
+        }
+    } catch(e) {
+        vanStockData = loadVanStockFromCache();
+    }
+    cacheVanStock(vanStockData);
+}
+
+function loadVanStockFromCache() {
+    try { return JSON.parse(localStorage.getItem('flexi-van-stock') || '{}'); } catch(e) { return {}; }
+}
+
+function cacheVanStock(data) {
+    try { localStorage.setItem('flexi-van-stock', JSON.stringify(data)); } catch(e) {}
+}
+
+async function saveVanStock() {
+    if (!vsCurrentEngineer) { showToast('Please select your name first'); return; }
+    const btn = document.getElementById('vsSaveBtn');
+    btn.disabled = true; btn.textContent = '⏳ Saving...';
+
+    const now = new Date().toISOString();
+    if (!vanStockData[vsCurrentEngineer]) vanStockData[vsCurrentEngineer] = {};
+    vanStockData[vsCurrentEngineer].parts = vsLocalStock;
+    vanStockData[vsCurrentEngineer].lastUpdated = now;
+
+    cacheVanStock(vanStockData);
+
+    try {
+        await fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                action: 'saveVanStock',
+                engineer: vsCurrentEngineer,
+                parts: vsLocalStock,
+                lastUpdated: now
+            })
+        });
+    } catch(e) {
+        // saved locally, will sync next time
+    }
+
+    showToast(`✅ Van stock saved for ${vsCurrentEngineer}`);
+    haptic('success');
+    btn.disabled = false; btn.textContent = '💾 Save Stock Update';
+    renderVanEngineerStock();
+    renderVanManagerCards();
+}
+
+/* ══════════════════════════════════════════
+   VAN STOCK — ENGINEER NAMES
+══════════════════════════════════════════ */
+function getEngineerNames() {
+    // Collect from orders + existing van stock entries
+    const names = new Set();
+    orders.forEach(o => { const n = (o.serviceController || o.engineer || '').trim(); if (n) names.add(n); });
+    Object.keys(vanStockData).forEach(n => { if (n) names.add(n); });
+    return [...names].sort();
+}
+
+function populateEngineerSelects() {
+    const names = getEngineerNames();
+    const sel = document.getElementById('vsEngineerSelect');
+    // keep default option
+    sel.innerHTML = '<option value="">— Select your name —</option>';
+    names.forEach(n => {
+        const o = document.createElement('option'); o.value = o.textContent = n; sel.appendChild(o);
+    });
+}
+
+/* ══════════════════════════════════════════
+   VAN STOCK — ENGINEER VIEW
+══════════════════════════════════════════ */
+function toggleVanView(view) {
+    const btn = document.getElementById('vanStockMgrBtn');
+    if (view === 'manager') {
+        document.getElementById('vanEngineerView').style.display = 'none';
+        document.getElementById('vanManagerView').style.display = 'block';
+        btn.textContent = '👤 Engineer View';
+        btn.onclick = () => toggleVanView('engineer');
+        renderVanManagerCards();
+    } else {
+        document.getElementById('vanEngineerView').style.display = 'block';
+        document.getElementById('vanManagerView').style.display = 'none';
+        btn.textContent = '📊 Manager View';
+        btn.onclick = () => toggleVanView('manager');
+    }
+}
+
+function loadEngineerStock() {
+    vsCurrentEngineer = document.getElementById('vsEngineerSelect').value;
+    if (!vsCurrentEngineer) {
+        document.getElementById('vsStats').style.display = 'none';
+        document.getElementById('vsAddSection').style.display = 'none';
+        document.getElementById('vsSaveSection').style.display = 'none';
+        document.getElementById('vsNoStock').style.display = 'block';
+        document.getElementById('vsPartList').innerHTML = '';
+        return;
+    }
+    const data = vanStockData[vsCurrentEngineer];
+    vsLocalStock = data ? JSON.parse(JSON.stringify(data.parts || [])) : [];
+    document.getElementById('vsStats').style.display = 'grid';
+    document.getElementById('vsAddSection').style.display = 'block';
+    document.getElementById('vsSaveSection').style.display = 'block';
+    document.getElementById('vsNoStock').style.display = 'none';
+    renderVanEngineerStock();
+}
+
+function renderVanEngineerStock() {
+    const list = document.getElementById('vsPartList');
+    const lowAlert = document.getElementById('vsLowAlert');
+
+    // Stats
+    const inStock = vsLocalStock.filter(p => (p.qty||0) > VS_LOW_THRESHOLD).length;
+    const low     = vsLocalStock.filter(p => (p.qty||0) > 0 && (p.qty||0) <= VS_LOW_THRESHOLD).length;
+    const out     = vsLocalStock.filter(p => (p.qty||0) === 0).length;
+    document.getElementById('vsStatOk').textContent    = inStock;
+    document.getElementById('vsStatLow').textContent   = low;
+    document.getElementById('vsStatOut').textContent   = out;
+
+    // Low stock alert
+    const lowItems = vsLocalStock.filter(p => (p.qty||0) <= VS_LOW_THRESHOLD && (p.qty||0) > 0);
+    const outItems = vsLocalStock.filter(p => (p.qty||0) === 0);
+    if (lowItems.length || outItems.length) {
+        let msg = '';
+        if (outItems.length) msg += `⚠ Out of stock: ${outItems.map(p=>p.partNumber).join(', ')}. `;
+        if (lowItems.length) msg += `Running low: ${lowItems.map(p=>p.partNumber).join(', ')}.`;
+        msg += ' Add to your next order.';
+        lowAlert.textContent = msg;
+        lowAlert.classList.add('show');
+    } else {
+        lowAlert.classList.remove('show');
+    }
+
+    // Last updated
+    const data = vanStockData[vsCurrentEngineer];
+    const lu = data?.lastUpdated ? new Date(data.lastUpdated).toLocaleString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'Never';
+    document.getElementById('vsLastUpdated').textContent = `Last saved: ${lu} — your manager can see this`;
+
+    if (!vsLocalStock.length) {
+        list.innerHTML = '<div class="vs-no-stock">No parts added yet. Use the search below to add parts to your van stock.</div>';
+        return;
+    }
+
+    list.innerHTML = vsLocalStock.map((p, i) => {
+        const qty = p.qty || 0;
+        const pillClass = qty === 0 ? 'vs-pill-out' : qty <= VS_LOW_THRESHOLD ? 'vs-pill-low' : 'vs-pill-ok';
+        const pillLabel = qty === 0 ? 'Out' : qty <= VS_LOW_THRESHOLD ? 'Low' : 'OK';
+        return `<div class="vs-part-row">
+            <div class="vs-part-info">
+                <div class="vs-part-num">${p.partNumber}</div>
+                <div class="vs-part-desc">${p.description || ''}</div>
+            </div>
+            <span class="vs-stock-pill ${pillClass}">${pillLabel}</span>
+            <div class="vs-qty-ctrl">
+                <button class="vs-qty-btn" onclick="vsQtyChange(${i},-1)">−</button>
+                <input class="vs-qty-val" type="number" value="${qty}" min="0" onchange="vsQtySet(${i},this.value)" style="width:44px;">
+                <button class="vs-qty-btn" onclick="vsQtyChange(${i},1)">+</button>
+            </div>
+            <button class="vs-remove-btn" title="Remove from van stock" onclick="vsRemovePart(${i})">✕</button>
+        </div>`;
+    }).join('');
+}
+
+function vsQtyChange(i, delta) {
+    vsLocalStock[i].qty = Math.max(0, (vsLocalStock[i].qty || 0) + delta);
+    renderVanEngineerStock();
+}
+function vsQtySet(i, val) {
+    vsLocalStock[i].qty = Math.max(0, parseInt(val) || 0);
+    renderVanEngineerStock();
+}
+function vsRemovePart(i) {
+    vsLocalStock.splice(i, 1);
+    renderVanEngineerStock();
+    showToast('Part removed from van stock');
+}
+
+function vsSearchAdd(term) {
+    const results = document.getElementById('vsAddResults');
+    if (!term || term.length < 2) { results.classList.remove('show'); return; }
+    const clean = term.replace(/[\s\-.]/g,'').toLowerCase();
+    const matches = allParts.filter(p => {
+        const num  = String(p['Part Number']||'').toLowerCase();
+        const desc = String(p['Description']||'').toLowerCase();
+        return num.replace(/[\s\-.]/g,'').includes(clean) || num.includes(term.toLowerCase()) || desc.includes(term.toLowerCase());
+    }).slice(0,8);
+    if (!matches.length) { results.classList.remove('show'); return; }
+    results.innerHTML = matches.map(p => {
+        const num  = p['Part Number'] || 'N/A';
+        const desc = (p['Description'] || 'No description').slice(0,60);
+        const safe = JSON.stringify({partNumber:num, description:desc, qty:1}).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+        return `<div class="vs-add-result-item" onclick='vsAddPart(${safe})'>
+            <div class="vs-add-result-num">${num}</div>
+            <div class="vs-add-result-desc">${desc}</div>
+        </div>`;
+    }).join('');
+    results.classList.add('show');
+}
+
+function vsAddPart(part) {
+    const exists = vsLocalStock.findIndex(p => p.partNumber === part.partNumber);
+    if (exists >= 0) {
+        vsLocalStock[exists].qty = (vsLocalStock[exists].qty || 0) + 1;
+        showToast(`Qty increased for ${part.partNumber}`);
+    } else {
+        vsLocalStock.push({ partNumber: part.partNumber, description: part.description, qty: 1 });
+        showToast(`${part.partNumber} added to van stock`);
+    }
+    document.getElementById('vsAddInput').value = '';
+    document.getElementById('vsAddResults').classList.remove('show');
+    renderVanEngineerStock();
+    haptic('medium');
+}
+
+/* ══════════════════════════════════════════
+   VAN STOCK — MANAGER VIEW
+══════════════════════════════════════════ */
+let vsCurrentFilter = 'all';
+
+function filterVanCards(filter, btn) {
+    vsCurrentFilter = filter;
+    document.querySelectorAll('.vs-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    renderVanManagerCards();
+}
+
+function renderVanManagerCards() {
+    const grid = document.getElementById('vsVanGrid');
+    const overdueBanner = document.getElementById('vsOverdueBanner');
+    if (!grid) return;
+
+    const engineers = getEngineerNames();
+    const now = new Date();
+
+    // Build card data
+    let cards = engineers.map(name => {
+        const data = vanStockData[name];
+        const parts = data?.parts || [];
+        const lastUpdated = data?.lastUpdated || null;
+        const daysSince = lastUpdated ? Math.floor((now - new Date(lastUpdated)) / 86400000) : 999;
+        const inStock = parts.filter(p => (p.qty||0) > VS_LOW_THRESHOLD).length;
+        const low     = parts.filter(p => (p.qty||0) > 0 && (p.qty||0) <= VS_LOW_THRESHOLD).length;
+        const out     = parts.filter(p => (p.qty||0) === 0).length;
+        const freshness = daysSince < 2 ? 'fresh' : daysSince < 7 ? 'stale' : 'overdue';
+        return { name, parts, lastUpdated, daysSince, inStock, low, out, freshness };
+    });
+
+    // Show overdue banner
+    const overdueCount = cards.filter(c => c.freshness === 'overdue').length;
+    if (overdueCount > 0) {
+        overdueBanner.classList.add('show');
+        document.getElementById('vsOverdueText').textContent = `${overdueCount} engineer${overdueCount>1?'s have':' has'} not updated van stock in over 7 days.`;
+    } else {
+        overdueBanner.classList.remove('show');
+    }
+
+    // Apply filter
+    if (vsCurrentFilter === 'overdue') cards = cards.filter(c => c.freshness === 'overdue');
+    if (vsCurrentFilter === 'low') cards = cards.filter(c => c.low > 0 || c.out > 0);
+
+    if (!cards.length) {
+        grid.innerHTML = '<div style="color:#555;padding:40px;text-align:center;grid-column:1/-1;font-size:1em;font-weight:600;">No engineers match this filter.</div>';
+        return;
+    }
+
+    grid.innerHTML = cards.map(c => {
+        const initials = c.name.split(' ').map(w=>w[0]||'').join('').slice(0,2).toUpperCase();
+        const avatarColors = {
+            fresh:  'background:rgba(74,222,128,.2);color:#4ade80;',
+            stale:  'background:rgba(245,158,11,.2);color:#f59e0b;',
+            overdue:'background:rgba(239,68,68,.2);color:#f87171;'
+        };
+        const badgeClass = { fresh:'badge-fresh', stale:'badge-stale', overdue:'badge-overdue' }[c.freshness];
+        const badgeLabel = c.daysSince >= 999 ? 'Never updated' : c.daysSince === 0 ? 'Today' : c.daysSince === 1 ? 'Yesterday' : `${c.daysSince} days ago`;
+        const cardClass  = c.freshness === 'overdue' ? 'overdue' : c.freshness === 'stale' ? 'stale' : '';
+        const totalParts = c.parts.length;
+        return `<div class="vs-van-card ${cardClass}" onclick="viewEngineerStock('${c.name.replace(/'/g,"\\'")}')">
+            <div class="vs-van-header">
+                <div class="vs-van-avatar" style="${avatarColors[c.freshness]}">${initials}</div>
+                <div style="flex:1;min-width:0;">
+                    <div class="vs-van-name">${c.name}</div>
+                    <div class="vs-van-meta">${totalParts} part type${totalParts!==1?'s':''} tracked</div>
+                </div>
+                <span class="vs-update-badge ${badgeClass}">${badgeLabel}</span>
+            </div>
+            <div class="vs-van-stats">
+                <div class="vs-van-stat"><div class="vs-van-stat-val" style="color:#4ade80;">${c.inStock}</div><div class="vs-van-stat-lbl">OK</div></div>
+                <div class="vs-van-stat"><div class="vs-van-stat-val" style="color:#f59e0b;">${c.low}</div><div class="vs-van-stat-lbl">Low</div></div>
+                <div class="vs-van-stat"><div class="vs-van-stat-val" style="color:#f87171;">${c.out}</div><div class="vs-van-stat-lbl">Out</div></div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function viewEngineerStock(name) {
+    // Switch to engineer view and load that engineer's stock (read-only style)
+    toggleVanView('engineer');
+    const sel = document.getElementById('vsEngineerSelect');
+    // ensure name exists in select
+    let found = false;
+    for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].value === name) { sel.selectedIndex = i; found = true; break; }
+    }
+    if (!found) {
+        const o = document.createElement('option'); o.value = o.textContent = name; sel.appendChild(o); sel.value = name;
+    }
+    loadEngineerStock();
+    showToast(`Viewing stock for ${name}`);
+}
+
+/* ══════════════════════════════════════════
+   FREQUENT PARTS
+══════════════════════════════════════════ */
 function renderFrequentParts() {
     if (!frequentParts.length) return;
     document.getElementById('frequentPartsWidget').style.display = 'block';
@@ -954,6 +1452,9 @@ function renderFrequentParts() {
 
 function quickAddPart(part) { addToCart(part); }
 
+/* ══════════════════════════════════════════
+   ORDERS
+══════════════════════════════════════════ */
 function updateOrderStats() {
     document.getElementById('totalOrders').textContent    = orders.length;
     document.getElementById('pendingOrders').textContent  = orders.filter(o => o.status === 'Pending').length;
@@ -1067,7 +1568,6 @@ function buildTimeline(order) {
     }).join('')}</div>`;
 }
 
-// ── UPDATED openOrderModal with Edit Parts support ──
 function openOrderModal(index) {
     const order = orders[index];
     const urgentBadge = order.urgent ? '<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>' : '';
@@ -1106,9 +1606,7 @@ function openOrderModal(index) {
                 <div class="modal-field"><div class="modal-field-label">Machine Serial</div><div class="modal-field-value">${order.machineSerial||'N/A'}</div></div>
                 <div class="modal-field"><div class="modal-field-label">Model</div><div class="modal-field-value">${order.model||'N/A'}</div></div>
             </div>
-
             <div class="modal-section"><div class="modal-section-title">Order Status Timeline</div>${buildTimeline(order)}</div>
-
             <div class="modal-section">
                 <div class="modal-section-title">Update Status</div>
                 <div class="status-select-wrapper">
@@ -1120,7 +1618,6 @@ function openOrderModal(index) {
                     </select>
                 </div>
             </div>
-
             <div class="modal-section">
                 <div class="modal-section-title" style="justify-content:space-between;">
                     <span style="display:flex;align-items:center;gap:8px;">Parts (${order.parts?.length||0})<span style="content:'';flex:1;height:1px;background:var(--border);display:inline-block;width:60px;"></span></span>
@@ -1129,12 +1626,10 @@ function openOrderModal(index) {
                 <div class="modal-parts-list" id="staticPartsList">${staticPartsHtml}</div>
                 <div id="editPartsContainer" style="display:none;"></div>
             </div>
-
             <div class="modal-section">
                 <div class="modal-section-title">Notes</div>
                 <textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes about this order...">${order.comments||order.notes||''}</textarea>
             </div>
-
             <div class="modal-actions">
                 <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button>
                 <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button>
@@ -1171,8 +1666,17 @@ function setupEventListeners() {
     document.getElementById('searchInput').addEventListener('input', filterParts);
     document.getElementById('submitBtn').addEventListener('click', submitOrder);
     document.getElementById('machineSerial').addEventListener('input', loadOrderHistory);
+    // Close van stock add dropdown on outside click
+    document.addEventListener('click', e => {
+        if (!e.target?.closest('.vs-add-row')) {
+            document.getElementById('vsAddResults')?.classList.remove('show');
+        }
+    });
 }
 
+/* ══════════════════════════════════════════
+   PARTS SEARCH
+══════════════════════════════════════════ */
 function filterParts() {
     const raw = document.getElementById('searchInput').value;
     const term = raw.toLowerCase().trim();
@@ -1251,6 +1755,9 @@ function renderParts() {
     }
 }
 
+/* ══════════════════════════════════════════
+   CART
+══════════════════════════════════════════ */
 function addToCart(part) {
     const num = part['Part Number']||part.partNum||part.partNumber;
     const ex  = cart.find(i => (i['Part Number']||i.partNum||i.partNumber) === num);
@@ -1317,13 +1824,12 @@ function loadOrderParts(parts) {
 
 async function submitOrder() {
     const sc = document.getElementById('serviceController').value.trim();
-    const wo = document.getElementById('worksOrder').value.trim();
-    const ot = document.getElementById('orderType').value;
     if (!sc) { showToast('Please enter your name'); return; }
     if (!cart.length) { showToast('Cart is empty'); return; }
     const serial = document.getElementById('machineSerial').value.trim();
+    const ot = document.getElementById('orderType').value;
     const orderNumber = serial ? `${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}` : `ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;
-    const orderData = { action:'submitOrder', orderNumber, serviceController:sc, orderType:ot, worksOrder:wo, machineSerial:serial, model:document.getElementById('orderModel').value, comments:document.getElementById('comments').value, parts:cart, urgent:isUrgent };
+    const orderData = { action:'submitOrder', orderNumber, serviceController:sc, orderType:ot, worksOrder:document.getElementById('worksOrder').value, machineSerial:serial, model:document.getElementById('orderModel').value, comments:document.getElementById('comments').value, parts:cart, urgent:isUrgent };
     const btn = document.getElementById('submitBtn');
     btn.disabled=true; btn.textContent='Submitting...';
     try {
@@ -1332,7 +1838,7 @@ async function submitOrder() {
         if (result.success) {
             haptic('success'); showToast('Order submitted successfully! 🎉');
             saveSerialOnSubmit(serial, orderData.model, sc, new Date().toISOString().slice(0,16).replace('T',' '));
-            orders.unshift(normaliseOrder({ orderNumber, urgent:isUrgent, date:new Date().toISOString(), serviceController:sc, orderType:ot, worksOrder:wo, machineSerial:serial, model:orderData.model, parts:cart, partsCount:cart.length, status:'Pending', notes:orderData.comments }));
+            orders.unshift(normaliseOrder({ orderNumber, urgent:isUrgent, date:new Date().toISOString(), serviceController:sc, orderType:ot, worksOrder:orderData.worksOrder, machineSerial:serial, model:orderData.model, parts:cart, partsCount:cart.length, status:'Pending', notes:orderData.comments }));
             updateOrderStats(); applyFilters();
             cart=[]; isUrgent=false; attachedPhotos=[]; renderPhotoPreviews();
             document.getElementById('urgentToggle').classList.remove('active');
@@ -1407,6 +1913,9 @@ function showBrowserNotification(order) {
     }
 }
 
+/* ══════════════════════════════════════════
+   NATURAL LANGUAGE SEARCH
+══════════════════════════════════════════ */
 const NL_SYNONYMS = {
     mast:['mast','vna','lift'], transmission:['transmission','trans','gearbox','gear','axle','drive','wheel','helical','intermediate'],
     hydraulic:['hydraulic','hyd','pump','cylinder','valve','seal','oil','fluid'], electrical:['electrical','electric','motor','wiring','wire','cable','sensor','switch','solenoid','battery','charger'],
@@ -1444,6 +1953,9 @@ function isNaturalLanguage(term) {
 
 function nlSearch(term) { document.getElementById('searchInput').value=term; filterParts(); }
 
+/* ══════════════════════════════════════════
+   ORDER ANOMALY DETECTION
+══════════════════════════════════════════ */
 function checkOrderAnomalies() {
     const banner=document.getElementById('anomalyBanner'), msgEl=document.getElementById('anomalyMsg');
     if (!cart.length) { banner.style.display='none'; return; }
@@ -1474,6 +1986,9 @@ function checkOrderAnomalies() {
 
 function dismissAnomaly() { document.getElementById('anomalyBanner').style.display='none'; }
 
+/* ══════════════════════════════════════════
+   VOICE SEARCH
+══════════════════════════════════════════ */
 let recognition=null, isListening=false, voiceBadge=null;
 function initVoiceSearch() {
     const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
@@ -1489,6 +2004,9 @@ function stopVoice() { isListening=false; document.getElementById('voiceBtn').cl
 function showVoiceBadge() { if(voiceBadge)return; voiceBadge=document.createElement('div'); voiceBadge.className='voice-listening-badge'; voiceBadge.innerHTML='<div class="voice-dot"></div><div class="voice-dot"></div><div class="voice-dot"></div><span>Listening...</span>'; document.body.appendChild(voiceBadge); }
 function hideVoiceBadge() { if(voiceBadge){voiceBadge.remove();voiceBadge=null;} }
 
+/* ══════════════════════════════════════════
+   PWA / OFFLINE
+══════════════════════════════════════════ */
 let deferredInstallPrompt=null;
 function initOfflineSupport() {
     registerServiceWorker();
@@ -1533,6 +2051,9 @@ function injectManifest() {
 
 function haptic(type='light') { if(!navigator.vibrate)return; ({light:[10],medium:[20],success:[10,50,10],error:[50,30,50],heavy:[40]})[type]&&navigator.vibrate(({light:[10],medium:[20],success:[10,50,10],error:[50,30,50],heavy:[40]})[type]); }
 
+/* ══════════════════════════════════════════
+   SERIAL MEMORY
+══════════════════════════════════════════ */
 function getSerialDB(){try{return JSON.parse(localStorage.getItem('flexi-serial-db')||'{}');}catch(e){return{};}}
 function saveSerialDB(db){localStorage.setItem('flexi-serial-db',JSON.stringify(db));}
 
@@ -1567,6 +2088,9 @@ function applySerialMemory(){
 function forgetSerial(){const serial=document.getElementById('machineSerial').value.trim();if(!serial)return;const db=getSerialDB();delete db[serial.toLowerCase()];saveSerialDB(db);document.getElementById('serialMemoryCard').classList.remove('show');showToast('Machine forgotten');}
 function saveSerialOnSubmit(serial,model,engineer,date){if(!serial)return;const db=getSerialDB(),key=serial.toLowerCase();if(!db[key])db[key]={serial,model:'',lastEngineer:'',lastDate:'',orderCount:0};db[key].orderCount=(db[key].orderCount||0)+1;if(model)db[key].model=model;if(engineer)db[key].lastEngineer=engineer;if(date)db[key].lastDate=date;saveSerialDB(db);}
 
+/* ══════════════════════════════════════════
+   WEAR PATTERNS
+══════════════════════════════════════════ */
 function checkWearPatterns(serial){
     const alertEl=document.getElementById('wearAlert'),itemsEl=document.getElementById('wearAlertItems');
     if(!serial||serial.length<3){alertEl.classList.remove('show');return;}
@@ -1580,6 +2104,9 @@ function checkWearPatterns(serial){
     alertEl.classList.add('show');haptic('medium');
 }
 
+/* ══════════════════════════════════════════
+   COST ESTIMATE
+══════════════════════════════════════════ */
 function updateCostEstimate(){
     const bar=document.getElementById('costBar'),totalEl=document.getElementById('costTotal'),breakdownEl=document.getElementById('costBreakdown');
     const hasAnyPrice=cart.some(item=>parseFloat(item['Cost']||item.cost||item['Price']||item.price||0)>0);
@@ -1591,6 +2118,9 @@ function updateCostEstimate(){
     breakdownEl.textContent=unknown>0?`${known} priced, ${unknown} unpriced item${unknown>1?'s':''}`:`${cart.length} item${cart.length>1?'s':''}`;
 }
 
+/* ══════════════════════════════════════════
+   PHOTO ATTACH
+══════════════════════════════════════════ */
 let attachedPhotos=[];
 function handlePhotoAttach(input){
     Array.from(input.files).forEach(file=>{const r=new FileReader();r.onload=e=>{attachedPhotos.push({dataUrl:e.target.result,name:file.name});renderPhotoPreviews();};r.readAsDataURL(file);});
@@ -1608,12 +2138,9 @@ function renderPhotoPreviews(){
 
 function removePhoto(index){attachedPhotos.splice(index,1);renderPhotoPreviews();haptic('light');}
 
-document.addEventListener('click', e=>{
-    if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();
-    if(e.target?.id==='orderModal')closeOrderModal();
-});
-
-// ══ EDIT ORDER PARTS ══
+/* ══════════════════════════════════════════
+   EDIT ORDER PARTS
+══════════════════════════════════════════ */
 let editOrderIndex = null;
 let editOrderParts = [];
 
@@ -1626,7 +2153,6 @@ function openEditPartsMode(index) {
 function renderEditPartsUI() {
     const container = document.getElementById('editPartsContainer');
     if (!container) return;
-
     const partsHtml = editOrderParts.map((p, i) => {
         const num  = p['Part Number']||p.partNum||p.partNumber||'N/A';
         const desc = p['Description']||p.desc||p.description||'No description';
@@ -1643,16 +2169,12 @@ function renderEditPartsUI() {
             <button class="edit-remove-btn" onclick="editRemovePart(${i})">&#x2715;</button>
         </div>`;
     }).join('');
-
     container.innerHTML = `
-        <div class="edit-mode-banner">
-            <span class="edit-mode-banner-icon">✏️</span>
-            <span>Edit mode active — adjust quantities, remove or add parts below, then save.</span>
-        </div>
+        <div class="edit-mode-banner"><span class="edit-mode-banner-icon">✏️</span><span>Edit mode — adjust quantities, remove or add parts, then save.</span></div>
         <div id="editPartsList">${partsHtml}</div>
         <div class="edit-add-part-row">
             <div style="flex:1;position:relative;">
-                <input class="edit-add-input" id="editPartSearch" placeholder="Search to add a part by number or description..." oninput="editSearchParts(this.value)" autocomplete="off">
+                <input class="edit-add-input" id="editPartSearch" placeholder="Search to add a part..." oninput="editSearchParts(this.value)" autocomplete="off">
                 <div class="edit-search-results" id="editSearchResults"></div>
             </div>
         </div>
@@ -1660,7 +2182,6 @@ function renderEditPartsUI() {
             <button class="edit-cancel-btn" onclick="cancelEditParts()">Cancel</button>
             <button class="edit-save-btn" id="editSaveBtn" onclick="saveEditedOrder()">💾 Save Changes</button>
         </div>`;
-
     container.style.display = 'block';
     document.getElementById('staticPartsList').style.display = 'none';
     const btn = document.getElementById('editPartsToggleBtn');
@@ -1668,8 +2189,7 @@ function renderEditPartsUI() {
 }
 
 function cancelEditParts() {
-    editOrderIndex = null;
-    editOrderParts = [];
+    editOrderIndex = null; editOrderParts = [];
     const container = document.getElementById('editPartsContainer');
     if (container) { container.innerHTML = ''; container.style.display = 'none'; }
     const staticList = document.getElementById('staticPartsList');
@@ -1678,19 +2198,11 @@ function cancelEditParts() {
     if (btn) { btn.textContent = '✏️ Edit Parts'; btn.classList.remove('active'); }
 }
 
-function editQtyChange(i, delta) {
-    editOrderParts[i].qty = Math.max(1, (editOrderParts[i].qty || 1) + delta);
-    renderEditPartsUI();
-}
-
-function editQtySet(i, val) {
-    editOrderParts[i].qty = Math.max(1, parseInt(val) || 1);
-}
-
+function editQtyChange(i, delta) { editOrderParts[i].qty = Math.max(1, (editOrderParts[i].qty || 1) + delta); renderEditPartsUI(); }
+function editQtySet(i, val) { editOrderParts[i].qty = Math.max(1, parseInt(val) || 1); }
 function editRemovePart(i) {
     if (editOrderParts.length <= 1) { showToast('⚠ Order must have at least one part'); return; }
-    editOrderParts.splice(i, 1);
-    renderEditPartsUI();
+    editOrderParts.splice(i, 1); renderEditPartsUI();
 }
 
 function editSearchParts(term) {
@@ -1719,17 +2231,10 @@ function editSearchParts(term) {
 function editAddPart(part) {
     const num = part['Part Number']||part.partNum||'';
     const exists = editOrderParts.findIndex(p => (p['Part Number']||p.partNum||p.partNumber||'') === num);
-    if (exists >= 0) {
-        editOrderParts[exists].qty = (editOrderParts[exists].qty || 1) + 1;
-        showToast(`Qty increased for ${num}`);
-    } else {
-        editOrderParts.push({...part, qty: 1});
-        showToast(`${num} added`);
-    }
-    const input = document.getElementById('editPartSearch');
-    if (input) input.value = '';
-    const results = document.getElementById('editSearchResults');
-    if (results) results.classList.remove('show');
+    if (exists >= 0) { editOrderParts[exists].qty = (editOrderParts[exists].qty || 1) + 1; showToast(`Qty increased for ${num}`); }
+    else { editOrderParts.push({...part, qty: 1}); showToast(`${num} added`); }
+    const input = document.getElementById('editPartSearch'); if (input) input.value = '';
+    const results = document.getElementById('editSearchResults'); if (results) results.classList.remove('show');
     renderEditPartsUI();
 }
 
@@ -1739,45 +2244,26 @@ async function saveEditedOrder() {
     const order = orders[editOrderIndex];
     const btn = document.getElementById('editSaveBtn');
     if (btn) { btn.disabled = true; btn.textContent = '⏳ Saving...'; }
-
-    // Always update locally immediately
     const savedParts = JSON.parse(JSON.stringify(editOrderParts));
     const savedCount = savedParts.length;
     const savedIndex = editOrderIndex;
-
     try {
-        const res = await fetch(API_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                action: 'updateOrder',
-                orderNumber: order.orderNumber,
-                parts: savedParts,
-                partsCount: savedCount,
-                status: order.status || 'Pending',
-                notes: order.notes || order.comments || ''
-            })
-        });
-        await res.json(); // consume response
-    } catch(e) {
-        // Network error — still do the local update
-    }
-
-    // Apply update locally regardless
+        const res = await fetch(API_URL, { method:'POST', body:JSON.stringify({ action:'updateOrder', orderNumber:order.orderNumber, parts:savedParts, partsCount:savedCount, status:order.status||'Pending', notes:order.notes||order.comments||'' }) });
+        await res.json();
+    } catch(e) {}
     orders[savedIndex].parts = savedParts;
     orders[savedIndex].partsCount = savedCount;
-    updateOrderStats();
-    applyFilters();
+    updateOrderStats(); applyFilters();
     showToast(`✅ Order updated — ${savedCount} part${savedCount !== 1 ? 's' : ''}`);
     haptic('success');
-    cancelEditParts();
-    closeOrderModal();
+    cancelEditParts(); closeOrderModal();
     setTimeout(() => openOrderModal(savedIndex), 120);
 }
 
-// ══ AI JOB SHEET READER ══ (feature hidden — Claude API integration retained for future use)
+document.addEventListener('click', e=>{
+    if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();
+    if(e.target?.id==='orderModal')closeOrderModal();
+});
 </script>
 </body>
 </html>
-
-Sent with Proton Mail secure email. 
-[Caution: External Sender] 
