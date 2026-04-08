@@ -1174,20 +1174,30 @@ async function saveVanStock() {
 /* ══════════════════════════════════════════
    VAN STOCK — ENGINEER NAMES
 ══════════════════════════════════════════ */
+const VAN_ENGINEERS = [
+    'Aaron Dyson',
+    'Brett Stockton',
+    'David Williams',
+    'Graham Denman',
+    'Kevin Deakin',
+    'Lance Duncan',
+    'Lewis Lockwood',
+    'Mick Thornley',
+    'Mike Adams',
+    'Pete King',
+    'Rob Appleyard',
+    'Rob Lucas',
+    'Tom Barker'
+];
+
 function getEngineerNames() {
-    // Collect from orders + existing van stock entries
-    const names = new Set();
-    orders.forEach(o => { const n = (o.serviceController || o.engineer || '').trim(); if (n) names.add(n); });
-    Object.keys(vanStockData).forEach(n => { if (n) names.add(n); });
-    return [...names].sort();
+    return VAN_ENGINEERS;
 }
 
 function populateEngineerSelects() {
-    const names = getEngineerNames();
     const sel = document.getElementById('vsEngineerSelect');
-    // keep default option
     sel.innerHTML = '<option value="">— Select your name —</option>';
-    names.forEach(n => {
+    VAN_ENGINEERS.forEach(n => {
         const o = document.createElement('option'); o.value = o.textContent = n; sel.appendChild(o);
     });
 }
