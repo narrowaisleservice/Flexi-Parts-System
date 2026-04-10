@@ -789,7 +789,6 @@ function normaliseOrder(o) {
         }
     } catch(e) { displayDate = rawDate.slice(0,10); }
 }
-    }
     return { ...o, parts, machineSerial: String(o.machineSerial||'').trim(), worksOrder: String(o.worksOrder||'').trim(), date: displayDate, _rawDate: rawDate.slice(0,10), serviceController: o.serviceController||o.engineer||'', orderType: o.orderType||'' };
 }
 
