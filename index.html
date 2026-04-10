@@ -770,12 +770,16 @@ async function loadOrders() {
 }
 
 function normaliseOrder(o) {
+    // parts may arrive as a JSON string from the Google Sheet — parse it
+    let parts = o.parts || [];
+    if (typeof parts === 'string') { try { parts = JSON.parse(parts); } catch(e) { parts = []; } }
+    if (!Array.isArray(parts)) parts = [];
     const rawDate = o.date || o.orderDate || '';
     let displayDate = rawDate;
     if (rawDate && rawDate.includes('T')) {
         try { displayDate = new Date(rawDate).toLocaleString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}); } catch(e) { displayDate = rawDate.slice(0,10); }
     }
-    return { ...o, machineSerial: String(o.machineSerial||'').trim(), worksOrder: String(o.worksOrder||'').trim(), date: displayDate, _rawDate: rawDate.slice(0,10), serviceController: o.serviceController||o.engineer||'', orderType: o.orderType||'' };
+    return { ...o, parts, machineSerial: String(o.machineSerial||'').trim(), worksOrder: String(o.worksOrder||'').trim(), date: displayDate, _rawDate: rawDate.slice(0,10), serviceController: o.serviceController||o.engineer||'', orderType: o.orderType||'' };
 }
 
 /* ── VAN STOCK ── */
