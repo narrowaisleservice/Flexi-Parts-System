@@ -29,9 +29,7 @@
         }
 
         body { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; background: #000000; color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; letter-spacing: 0.3px; }
-
         .container { max-width:1600px; margin:0 auto; padding:30px; }
-
         .header { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:50px 40px; margin-bottom:30px; border-left:4px solid var(--primary-red); display:flex; justify-content:space-between; align-items:center; }
         .header-content { flex:1; display:flex; align-items:center; gap:30px; }
         .header-logo { height:80px; width:auto; object-fit:contain; }
@@ -41,7 +39,6 @@
         .header-actions { display:flex; gap:15px; align-items:center; }
         .nav-link { padding:12px 24px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:1em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; text-decoration:none; display:inline-block; }
         .nav-link:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
-
         .page-section { display:none; }
         .page-section.active { display:block; }
 
@@ -225,9 +222,6 @@
         .van-banner { background:rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.3); border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; }
         .van-banner-title { font-size:1.1em; font-weight:800; color:#3b82f6; text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
         .van-banner-sub { font-size:.88em; color:var(--text-secondary); }
-        .van-engineer-select { padding:10px 16px; background:var(--dark-bg); border:1px solid rgba(59,130,246,.4); border-radius:8px; color:white; font-family:inherit; font-size:.95em; font-weight:600; min-width:220px; }
-        .van-engineer-select:focus { outline:none; border-color:#3b82f6; }
-        .van-engineer-select option { background:var(--card-bg); }
         .van-stock-table { width:100%; border-collapse:collapse; background:var(--card-bg); border-radius:12px; overflow:hidden; border:1px solid var(--border); }
         .van-stock-table th { padding:14px 16px; text-align:left; background:var(--hover-bg); color:var(--text-secondary); font-size:.85em; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); }
         .van-stock-table td { padding:12px 16px; border-bottom:1px solid var(--border); font-size:.95em; }
@@ -239,8 +233,43 @@
         .van-ok { color:#4ade80; }
         .van-save-btn { padding:8px 16px; background:#3b82f6; border:none; border-radius:6px; color:white; font-family:inherit; font-size:.85em; font-weight:700; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; }
         .van-save-btn:hover { background:#2563eb; }
+        .van-lock-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3); color:#3b82f6; padding:4px 12px; border-radius:6px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:8px; cursor:pointer; vertical-align:middle; transition:all .2s; }
+        .van-lock-badge:hover { background:rgba(59,130,246,.3); }
 
-        /* MODAL — pointer-events:none when hidden is the key fix */
+        /* ── PIN OVERLAY ── */
+        .pin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(10px); z-index:4000; align-items:center; justify-content:center; pointer-events:none; }
+        .pin-overlay.active { display:flex; pointer-events:all; }
+        .pin-box { background:var(--card-bg); border:1px solid var(--border); border-left:4px solid #3b82f6; border-radius:16px; padding:40px 36px 32px; width:100%; max-width:420px; text-align:center; animation:pinSlideIn .25s ease; transition:transform .1s; }
+        @keyframes pinSlideIn { from{opacity:0;transform:translateY(-30px)} to{opacity:1;transform:translateY(0)} }
+
+        /* Step 1: Engineer grid */
+        .pin-step { display:none; }
+        .pin-step.active { display:block; }
+        .pin-box-icon { font-size:2.8em; margin-bottom:12px; }
+        .pin-box-title { font-size:2em; font-weight:900; letter-spacing:-1px; text-transform:uppercase; color:#3b82f6; margin-bottom:4px; }
+        .pin-box-sub { font-size:.95em; color:var(--text-secondary); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:24px; }
+        .engineer-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; max-height:360px; overflow-y:auto; }
+        .engineer-btn { padding:12px 10px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; font-weight:700; cursor:pointer; transition:all .15s; text-align:center; line-height:1.3; }
+        .engineer-btn:hover { background:var(--hover-bg); border-color:#3b82f6; color:#3b82f6; }
+
+        /* Step 2: PIN entry */
+        .pin-who { font-size:1.1em; font-weight:800; color:white; text-transform:uppercase; letter-spacing:.5px; margin-bottom:20px; padding:10px 16px; background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3); border-radius:8px; }
+        .pin-dots { display:flex; justify-content:center; gap:14px; margin-bottom:20px; }
+        .pin-dot { width:18px; height:18px; border-radius:50%; border:2px solid #3b82f6; background:transparent; transition:all .15s; }
+        .pin-dot.filled { background:#3b82f6; }
+        .pin-keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+        .pin-key { padding:16px; background:var(--dark-bg); border:1px solid var(--border); border-radius:10px; font-size:1.4em; font-weight:700; cursor:pointer; font-family:inherit; color:white; transition:all .15s; user-select:none; }
+        .pin-key:hover { background:var(--hover-bg); border-color:#3b82f6; color:#3b82f6; }
+        .pin-key:active { transform:scale(.93); }
+        .pin-key.clear { color:#f59e0b; border-color:rgba(245,158,11,.3); font-size:1.1em; }
+        .pin-key.clear:hover { background:rgba(245,158,11,.1); border-color:#f59e0b; color:#f59e0b; }
+        .pin-error { color:#f87171; font-size:.9em; font-weight:700; text-transform:uppercase; letter-spacing:1px; min-height:22px; margin-bottom:8px; }
+        .pin-back-btn { background:transparent; border:none; color:#555; font-family:inherit; font-size:.88em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding:6px 12px; transition:color .2s; }
+        .pin-back-btn:hover { color:var(--text-secondary); }
+        .pin-cancel-btn { background:transparent; border:none; color:#555; font-family:inherit; font-size:.88em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding:6px 12px; transition:color .2s; margin-left:8px; }
+        .pin-cancel-btn:hover { color:var(--text-secondary); }
+
+        /* MODAL */
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.8); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; pointer-events:none; }
         .modal-overlay.active { display:flex; pointer-events:all; }
         .modal { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; width:90%; max-width:760px; max-height:90vh; overflow-y:auto; animation:modalSlideIn .3s ease; }
@@ -280,7 +309,7 @@
         .timeline-dot.cancelled { border-color:#f87171; background:rgba(239,68,68,.15); }
         .timeline-content { flex:1; padding-top:8px; }
         .timeline-title { font-size:1.1em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
-        .timeline-title.done, .timeline-title.picked-title { color:#4ade80; }
+        .timeline-title.done,.timeline-title.picked-title { color:#4ade80; }
         .timeline-title.active { color:white; }
         .timeline-title.inactive { color:#555; }
         .timeline-title.stores-title { color:#f59e0b; }
@@ -350,7 +379,6 @@
             .orders-table th,.orders-table td { color:black !important; border-color:#ddd !important; }
             #printTitle { display:block !important; font-size:1.5em; font-weight:bold; margin-bottom:10px; color:black; }
         }
-
         @media (max-width:768px) {
             .container { padding:20px; }
             .header { flex-direction:column; align-items:flex-start; gap:20px; }
@@ -361,8 +389,8 @@
             .stats-bar { grid-template-columns:1fr; }
             .modal-grid { grid-template-columns:1fr; }
             .orders-filter-bar { flex-direction:column; }
+            .engineer-grid { grid-template-columns:1fr; }
         }
-
         ::-webkit-scrollbar { width:14px; height:14px; }
         ::-webkit-scrollbar-track { background:var(--dark-bg); border-left:1px solid var(--border); }
         ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,var(--primary-red) 0%,#ef4444 100%); border-radius:7px; border:2px solid var(--dark-bg); }
@@ -372,8 +400,56 @@
 </head>
 <body>
 <div id="printTitle">Flexi Parts — Orders Export</div>
-
 <button class="cart-toggle" id="cartToggle" onclick="toggleCart()">🛒<div class="cart-badge" id="cartBadge">0</div></button>
+
+<!-- ══════════════════════════════════════════
+     PER-ENGINEER PIN OVERLAY
+     Change PINs in the ENGINEER_PINS object below
+══════════════════════════════════════════ -->
+<div class="pin-overlay" id="pinOverlay">
+    <div class="pin-box" id="pinBox">
+
+        <!-- STEP 1: Choose engineer -->
+        <div class="pin-step active" id="pinStep1">
+            <div class="pin-box-icon">🚐</div>
+            <div class="pin-box-title">Van Stock</div>
+            <div class="pin-box-sub">Select your name</div>
+            <div class="engineer-grid" id="engineerGrid"></div>
+            <button class="pin-cancel-btn" onclick="closePinOverlay()">Cancel</button>
+        </div>
+
+        <!-- STEP 2: Enter PIN -->
+        <div class="pin-step" id="pinStep2">
+            <div class="pin-box-icon">🔐</div>
+            <div class="pin-box-title">Enter PIN</div>
+            <div class="pin-who" id="pinWho"></div>
+            <div class="pin-dots">
+                <div class="pin-dot" id="pd0"></div>
+                <div class="pin-dot" id="pd1"></div>
+                <div class="pin-dot" id="pd2"></div>
+                <div class="pin-dot" id="pd3"></div>
+            </div>
+            <div class="pin-error" id="pinError"></div>
+            <div class="pin-keypad">
+                <button class="pin-key" onclick="pinKey('1')">1</button>
+                <button class="pin-key" onclick="pinKey('2')">2</button>
+                <button class="pin-key" onclick="pinKey('3')">3</button>
+                <button class="pin-key" onclick="pinKey('4')">4</button>
+                <button class="pin-key" onclick="pinKey('5')">5</button>
+                <button class="pin-key" onclick="pinKey('6')">6</button>
+                <button class="pin-key" onclick="pinKey('7')">7</button>
+                <button class="pin-key" onclick="pinKey('8')">8</button>
+                <button class="pin-key" onclick="pinKey('9')">9</button>
+                <button class="pin-key clear" onclick="pinBackspace()">⌫</button>
+                <button class="pin-key" onclick="pinKey('0')">0</button>
+                <button class="pin-key" onclick="pinSubmit()">✓</button>
+            </div>
+            <button class="pin-back-btn" onclick="pinGoBack()">← Back</button>
+            <button class="pin-cancel-btn" onclick="closePinOverlay()">Cancel</button>
+        </div>
+
+    </div>
+</div>
 
 <div class="container">
 
@@ -388,7 +464,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="nav-link" onclick="showPage('vanstock')">🚐 Van Stock</button>
+                <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
                 <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
                 <button class="nav-link" onclick="showPage('orders')">View Orders</button>
             </div>
@@ -433,8 +509,8 @@
             <div class="header-content">
                 <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
                 <div class="header-text">
-                    <h1>VAN STOCK</h1>
-                    <p class="header-subtitle">ENGINEER STOCK CONTROL</p>
+                    <h1>VAN STOCK <span class="van-lock-badge" onclick="lockVanStock()">🔒 Lock</span></h1>
+                    <p class="header-subtitle" id="vanStockSubtitle">ENGINEER STOCK CONTROL</p>
                 </div>
             </div>
             <div class="header-actions">
@@ -444,35 +520,19 @@
             </div>
         </div>
         <div class="stats-bar">
-            <div class="stat-card"><div class="stat-value van-val" id="vanEngineerCount">0</div><div class="stat-label">Engineers</div></div>
+            <div class="stat-card"><div class="stat-value van-val" id="vanEngineerCount">1</div><div class="stat-label">Engineer</div></div>
             <div class="stat-card"><div class="stat-value van-val" id="vanLowStockCount">0</div><div class="stat-label">Low Stock Alerts</div></div>
             <div class="stat-card"><div class="stat-value" id="vanTotalLines">0</div><div class="stat-label">Total Lines</div></div>
         </div>
         <div class="van-banner">
             <span style="font-size:1.6em;">🚐</span>
             <div class="van-banner-text">
-                <div class="van-banner-title">Van Stock Control</div>
-                <div class="van-banner-sub">Select an engineer to view and update their van stock. Changes save automatically.</div>
+                <div class="van-banner-title" id="vanBannerTitle">Van Stock</div>
+                <div class="van-banner-sub" id="vanBannerSub">Viewing your personal van stock.</div>
             </div>
-            <select class="van-engineer-select" id="vanEngineerSelect" onchange="loadVanStock()">
-                <option value="">— Select Engineer —</option>
-                <option>Aaron Dyson</option>
-                <option>Brett Stockton</option>
-                <option>David Williams</option>
-                <option>Graham Denman</option>
-                <option>Kevin Deakin</option>
-                <option>Lance Duncan</option>
-                <option>Lewis Lockwood</option>
-                <option>Mick Thornley</option>
-                <option>Mike Adams</option>
-                <option>Pete King</option>
-                <option>Rob Appleyard</option>
-                <option>Rob Lucas</option>
-                <option>Tom Barker</option>
-            </select>
         </div>
         <div id="vanStockContent">
-            <div class="empty-state"><div class="empty-state-icon">🚐</div><p>Select an engineer to view their van stock</p></div>
+            <div class="empty-state"><div class="empty-state-icon">🚐</div><p>Loading your van stock...</p></div>
         </div>
     </div>
 
@@ -487,7 +547,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="nav-link" onclick="showPage('vanstock')">🚐 Van Stock</button>
+                <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
                 <button class="nav-link" onclick="showPage('orders')">View All Orders</button>
                 <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
             </div>
@@ -522,7 +582,7 @@
                 </div>
             </div>
             <div class="header-actions">
-                <button class="nav-link" onclick="showPage('vanstock')">🚐 Van Stock</button>
+                <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
                 <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
                 <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
             </div>
@@ -687,9 +747,152 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbzyqm5dVvIW8snsuO9WX8WB
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let sortField = 'date', sortDir = 'desc', isUrgent = false;
 
+// ═══════════════════════════════════════════════════════
+// ENGINEER PINS — edit these to change individual PINs
+// Format: 'Full Name As In Dropdown': 'PIN'
+// ═══════════════════════════════════════════════════════
+const ENGINEER_PINS = {
+    'Aaron Dyson':    '1111',
+    'Brett Stockton': '2222',
+    'David Williams': '3333',
+    'Graham Denman':  '4444',
+    'Kevin Deakin':   '5555',
+    'Lance Duncan':   '6666',
+    'Lewis Lockwood': '7777',
+    'Mick Thornley':  '8888',
+    'Mike Adams':     '9999',
+    'Pete King':      '1234',
+    'Rob Appleyard':  '2345',
+    'Rob Lucas':      '3456',
+    'Tom Barker':     '4567'
+};
+// ═══════════════════════════════════════════════════════
+
+const VAN_SESSION_KEY = 'flexi-van-engineer';
+let pinBuffer = '';
+let pinEngineer = '';
+
+/* ── BUILD ENGINEER GRID ── */
+function buildEngineerGrid() {
+    const grid = document.getElementById('engineerGrid');
+    grid.innerHTML = Object.keys(ENGINEER_PINS).map(name =>
+        `<button class="engineer-btn" onclick="pinSelectEngineer('${name}')">${name}</button>`
+    ).join('');
+}
+
+/* ── PIN FLOW ── */
+function requestVanStock() {
+    const saved = sessionStorage.getItem(VAN_SESSION_KEY);
+    if (saved && ENGINEER_PINS[saved]) {
+        openVanStockFor(saved);
+    } else {
+        openPinOverlay();
+    }
+}
+
+function openPinOverlay() {
+    pinBuffer = '';
+    pinEngineer = '';
+    document.getElementById('pinError').textContent = '';
+    updatePinDots();
+    document.getElementById('pinStep1').classList.add('active');
+    document.getElementById('pinStep2').classList.remove('active');
+    document.getElementById('pinOverlay').classList.add('active');
+}
+
+function closePinOverlay() {
+    document.getElementById('pinOverlay').classList.remove('active');
+    pinBuffer = '';
+    pinEngineer = '';
+}
+
+function pinSelectEngineer(name) {
+    pinEngineer = name;
+    pinBuffer = '';
+    document.getElementById('pinWho').textContent = name;
+    document.getElementById('pinError').textContent = '';
+    updatePinDots();
+    document.getElementById('pinStep1').classList.remove('active');
+    document.getElementById('pinStep2').classList.add('active');
+}
+
+function pinGoBack() {
+    pinBuffer = '';
+    pinEngineer = '';
+    document.getElementById('pinStep2').classList.remove('active');
+    document.getElementById('pinStep1').classList.add('active');
+}
+
+function pinKey(digit) {
+    if (pinBuffer.length >= 4) return;
+    pinBuffer += digit;
+    updatePinDots();
+    document.getElementById('pinError').textContent = '';
+    if (pinBuffer.length === 4) setTimeout(pinSubmit, 120);
+}
+
+function pinBackspace() {
+    pinBuffer = pinBuffer.slice(0, -1);
+    updatePinDots();
+}
+
+function pinSubmit() {
+    if (!pinEngineer) return;
+    if (pinBuffer === ENGINEER_PINS[pinEngineer]) {
+        sessionStorage.setItem(VAN_SESSION_KEY, pinEngineer);
+        document.getElementById('pinOverlay').classList.remove('active');
+        openVanStockFor(pinEngineer);
+        pinBuffer = '';
+        pinEngineer = '';
+    } else {
+        document.getElementById('pinError').textContent = 'Incorrect PIN — try again';
+        pinBuffer = '';
+        updatePinDots();
+        const box = document.getElementById('pinBox');
+        box.style.transform = 'translateX(-8px)';
+        setTimeout(() => box.style.transform = 'translateX(8px)', 80);
+        setTimeout(() => box.style.transform = 'translateX(-5px)', 160);
+        setTimeout(() => box.style.transform = 'translateX(0)', 240);
+    }
+}
+
+function updatePinDots() {
+    for (let i = 0; i < 4; i++) {
+        document.getElementById('pd' + i).classList.toggle('filled', i < pinBuffer.length);
+    }
+}
+
+function openVanStockFor(engineer) {
+    document.getElementById('vanBannerTitle').textContent = engineer + "'s Van Stock";
+    document.getElementById('vanBannerSub').textContent = 'Showing your personal van stock only.';
+    document.getElementById('vanStockSubtitle').textContent = engineer.toUpperCase();
+    showPage('vanstock');
+    loadVanStockFor(engineer);
+}
+
+function lockVanStock() {
+    sessionStorage.removeItem(VAN_SESSION_KEY);
+    showPage('parts');
+    showToast('🔒 Van Stock locked');
+}
+
+// Keyboard support for PIN entry
+document.addEventListener('keydown', e => {
+    if (!document.getElementById('pinOverlay').classList.contains('active')) return;
+    if (document.getElementById('pinStep2').classList.contains('active')) {
+        if (e.key >= '0' && e.key <= '9') pinKey(e.key);
+        else if (e.key === 'Backspace') pinBackspace();
+        else if (e.key === 'Enter') pinSubmit();
+        else if (e.key === 'Escape') closePinOverlay();
+    } else {
+        if (e.key === 'Escape') closePinOverlay();
+    }
+});
+
 /* ── INIT ── */
 document.addEventListener('DOMContentLoaded', () => {
     setGreeting();
+    buildEngineerGrid();
     loadParts();
     loadOrders();
     populateModels();
@@ -707,9 +910,8 @@ function showPage(page) {
     ['partsPage','ordersPage','storesPage','vanstockPage'].forEach(id => {
         document.getElementById(id).classList.toggle('active', id === page + 'Page');
     });
-    if (page === 'orders')   { renderOrders(); updateOrderStats(); }
+    if (page === 'orders')   { applyFilters(); updateOrderStats(); }
     if (page === 'stores')   renderStoresPage();
-    if (page === 'vanstock') renderVanStockPage();
 }
 
 function toggleCart() { document.getElementById('cartSection').classList.toggle('open'); }
@@ -765,41 +967,30 @@ async function loadOrders() {
 }
 
 function normaliseOrder(o) {
-    // parts may arrive as a JSON string from the Google Sheet — parse it
     let parts = o.parts || [];
     if (typeof parts === 'string') { try { parts = JSON.parse(parts); } catch(e) { parts = []; } }
     if (!Array.isArray(parts)) parts = [];
     const rawDate = o.date || o.orderDate || '';
-    let displayDate = rawDate;
+    let displayDate = rawDate, rawDateISO = '';
     if (rawDate) {
-    try {
-        const d = new Date(rawDate);
-        if (!isNaN(d)) {
-            const dd   = String(d.getDate()).padStart(2,'0');
-            const mm   = String(d.getMonth()+1).padStart(2,'0');
-            const yyyy = d.getFullYear();
-            const hh   = String(d.getHours()).padStart(2,'0');
-            const min  = String(d.getMinutes()).padStart(2,'0');
-            displayDate = `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-        }
-    } catch(e) { displayDate = rawDate.slice(0,10); }
-}
-    return { ...o, parts, machineSerial: String(o.machineSerial||'').trim(), worksOrder: String(o.worksOrder||'').trim(), date: displayDate, _rawDate: rawDate.slice(0,10), serviceController: o.serviceController||o.engineer||'', orderType: o.orderType||'' };
+        try {
+            let d = new Date(rawDate);
+            if (isNaN(d.getTime())) {
+                const m = String(rawDate).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+                if (m) d = new Date(`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`);
+            }
+            if (!isNaN(d.getTime())) {
+                const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear(),hh=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');
+                displayDate=`${dd}/${mm}/${yyyy} ${hh}:${min}`; rawDateISO=`${yyyy}-${mm}-${dd}`;
+            } else { rawDateISO = String(rawDate).slice(0,10); }
+        } catch(e) { rawDateISO = String(rawDate).slice(0,10); }
+    }
+    return { ...o, parts, machineSerial:String(o.machineSerial||'').trim(), worksOrder:String(o.worksOrder||'').trim(), date:displayDate, _rawDate:rawDateISO, serviceController:o.serviceController||o.engineer||'', orderType:o.orderType||'' };
 }
 
 /* ── VAN STOCK ── */
-function renderVanStockPage() {
-    document.getElementById('vanEngineerCount').textContent = 13;
-    loadVanStock();
-}
-
-async function loadVanStock() {
-    const engineer = document.getElementById('vanEngineerSelect').value;
+async function loadVanStockFor(engineer) {
     const content = document.getElementById('vanStockContent');
-    if (!engineer) {
-        content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🚐</div><p>Select an engineer to view their van stock</p></div>';
-        return;
-    }
     content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading van stock...</p></div>';
     try {
         const res = await fetch(`${API_URL}?action=getVanStock&engineer=${encodeURIComponent(engineer)}`);
@@ -813,7 +1004,7 @@ function renderVanStockTable(engineer, stock) {
     const content = document.getElementById('vanStockContent');
     let lowCount = 0;
     if (!stock.length) {
-        content.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><p>No van stock set up for ${engineer}</p></div>`;
+        content.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><p>No van stock set up for ${engineer} yet.</p></div>`;
         document.getElementById('vanLowStockCount').textContent = 0;
         document.getElementById('vanTotalLines').textContent = 0;
         return;
@@ -830,29 +1021,17 @@ function renderVanStockTable(engineer, stock) {
             <thead><tr><th>Part Number</th><th>Description</th><th>Min</th><th>Current</th><th>Status</th></tr></thead>
             <tbody>
                 ${stock.map((s,i) => {
-                    const curr = parseInt(s.current||0), min = parseInt(s.minimum||0);
-                    const low = curr <= min;
-                    return `<tr>
-                        <td style="font-weight:700;color:var(--primary-red);">${s.partNumber||'—'}</td>
-                        <td style="color:var(--text-secondary);">${s.description||'—'}</td>
-                        <td style="text-align:center;">${min}</td>
-                        <td style="text-align:center;"><input class="van-qty-input" type="number" min="0" value="${curr}" id="vanqty_${i}" onchange="markVanDirty()"></td>
-                        <td style="text-align:center;"><span class="${low?'van-low':'van-ok'}">${low?'⚠ Low':'✓ OK'}</span></td>
-                    </tr>`;
+                    const curr=parseInt(s.current||0),min=parseInt(s.minimum||0),low=curr<=min;
+                    return `<tr><td style="font-weight:700;color:var(--primary-red);">${s.partNumber||'—'}</td><td style="color:var(--text-secondary);">${s.description||'—'}</td><td style="text-align:center;">${min}</td><td style="text-align:center;"><input class="van-qty-input" type="number" min="0" value="${curr}" id="vanqty_${i}"></td><td style="text-align:center;"><span class="${low?'van-low':'van-ok'}">${low?'⚠ Low':'✓ OK'}</span></td></tr>`;
                 }).join('')}
             </tbody>
         </table>`;
     window._vanStockData = stock;
 }
 
-function markVanDirty() { /* changes tracked on save */ }
-
 async function saveVanStock(engineer) {
     const stock = window._vanStockData || [];
-    const updated = stock.map((s,i) => ({
-        ...s,
-        current: parseInt(document.getElementById(`vanqty_${i}`)?.value || s.current)
-    }));
+    const updated = stock.map((s,i) => ({ ...s, current: parseInt(document.getElementById(`vanqty_${i}`)?.value || s.current) }));
     try {
         await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'updateVanStock', engineer, stock: updated }) });
         showToast(`✅ Van stock saved for ${engineer}`);
@@ -872,366 +1051,121 @@ function renderStoresPage() {
         return;
     }
     container.innerHTML = sentOrders.map(order => {
-        const partsHtml = (order.parts||[]).map((p,i) => {
-            const num = p['Part Number']||p.partNum||'N/A';
-            const desc = p['Description']||p.desc||'No description';
-            const qty = p.qty||1;
-            return `<div class="stores-part-row">
-                <div class="stores-part-check" id="chk-${order.orderNumber}-${i}" onclick="togglePartCheck('${order.orderNumber}',${i})"></div>
-                <div class="stores-part-num">${num}</div>
-                <div class="stores-part-desc">${desc}</div>
-                <div class="stores-part-qty">×${qty}</div>
-            </div>`;
-        }).join('');
+        const partsHtml = (order.parts||[]).map((p,i) => `<div class="stores-part-row"><div class="stores-part-check" id="chk-${order.orderNumber}-${i}" onclick="togglePartCheck('${order.orderNumber}',${i})"></div><div class="stores-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="stores-part-desc">${p['Description']||p.desc||'No description'}</div><div class="stores-part-qty">×${p.qty||1}</div></div>`).join('');
         const urgentBadge = order.urgent ? '<span class="urgent-badge">⚑ Urgent</span>' : '';
         return `<div class="stores-order-card" id="storesCard-${order.orderNumber}">
-            <div class="stores-order-header">
-                <div><div class="stores-order-num">${order.orderNumber||'—'} ${urgentBadge}</div></div>
-                <div class="stores-order-meta">
-                    <span>👤 <strong>${order.serviceController||'—'}</strong></span>
-                    <span>🔧 <strong>${order.worksOrder||'—'}</strong></span>
-                    <span>🚜 <strong>${order.model||'—'}</strong></span>
-                    <span>📅 <strong>${order.date||'—'}</strong></span>
-                </div>
-            </div>
-            <div class="stores-parts-list">
-                <div class="stores-parts-title">${(order.parts||[]).length} Part${(order.parts||[]).length!==1?'s':''} to Pick</div>
-                ${partsHtml}
-            </div>
+            <div class="stores-order-header"><div><div class="stores-order-num">${order.orderNumber||'—'} ${urgentBadge}</div></div>
+            <div class="stores-order-meta"><span>👤 <strong>${order.serviceController||'—'}</strong></span><span>🔧 <strong>${order.worksOrder||'—'}</strong></span><span>🚜 <strong>${order.model||'—'}</strong></span><span>📅 <strong>${order.date||'—'}</strong></span></div></div>
+            <div class="stores-parts-list"><div class="stores-parts-title">${(order.parts||[]).length} Part${(order.parts||[]).length!==1?'s':''} to Pick</div>${partsHtml}</div>
             ${order.comments?`<div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:6px;font-size:.85em;color:#888;margin-bottom:14px;">💬 ${order.comments}</div>`:''}
-            <div class="stores-actions">
-                <button class="btn-mark-picked" id="pickBtn-${order.orderNumber}" onclick="markPickedReady('${order.orderNumber}')">✅ Mark as Picked &amp; Ready</button>
-                <button class="btn-print-slip" onclick="printPickSlip('${order.orderNumber}')">🖨 Print Slip</button>
-            </div>
+            <div class="stores-actions"><button class="btn-mark-picked" id="pickBtn-${order.orderNumber}" onclick="markPickedReady('${order.orderNumber}')">✅ Mark as Picked &amp; Ready</button><button class="btn-print-slip" onclick="printPickSlip('${order.orderNumber}')">🖨 Print Slip</button></div>
         </div>`;
     }).join('');
 }
 
 const checkedParts = {};
 function togglePartCheck(orderNumber, partIndex) {
-    const key = `${orderNumber}-${partIndex}`;
-    const el = document.getElementById(`chk-${orderNumber}-${partIndex}`);
-    checkedParts[key] = !checkedParts[key];
-    el.classList.toggle('checked', checkedParts[key]);
-    el.innerHTML = checkedParts[key] ? '✓' : '';
+    const key=`${orderNumber}-${partIndex}`, el=document.getElementById(`chk-${orderNumber}-${partIndex}`);
+    checkedParts[key]=!checkedParts[key]; el.classList.toggle('checked',checkedParts[key]); el.innerHTML=checkedParts[key]?'✓':'';
 }
 
 async function markPickedReady(orderNumber) {
     const picker = document.getElementById('storesPickerSelect').value;
     if (!picker) { showToast('⚠ Please select your name first'); return; }
     const btn = document.getElementById(`pickBtn-${orderNumber}`);
-    btn.disabled = true; btn.textContent = '⏳ Saving...';
-    const pickedAt = new Date().toLocaleString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    const idx = orders.findIndex(o => o.orderNumber === orderNumber);
-    if (idx >= 0) { orders[idx].status = 'Picked & Ready'; orders[idx].pickedBy = picker; orders[idx].pickedAt = pickedAt; }
-    try {
-        await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'updateOrder', orderNumber, status:'Picked & Ready', pickedBy:picker, pickedAt, notes:`Picked by ${picker} at ${pickedAt}` }) });
-    } catch(e) {}
+    btn.disabled=true; btn.textContent='⏳ Saving...';
+    const pickedAt=new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+    const idx=orders.findIndex(o=>o.orderNumber===orderNumber);
+    if(idx>=0){orders[idx].status='Picked & Ready';orders[idx].pickedBy=picker;orders[idx].pickedAt=pickedAt;}
+    try { await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber,status:'Picked & Ready',pickedBy:picker,pickedAt,notes:`Picked by ${picker} at ${pickedAt}`})}); } catch(e){}
     showToast(`✅ Order ${orderNumber} marked Picked & Ready by ${picker}`);
     updateOrderStats(); applyFilters(); renderStoresPage();
 }
 
 function printPickSlip(orderNumber) {
-    const order = orders.find(o => o.orderNumber === orderNumber);
-    if (!order) return;
-    const picker = document.getElementById('storesPickerSelect').value || '___________';
-    const win = window.open('', '_blank');
-    win.document.write(`<!DOCTYPE html><html><head><title>Pick Slip — ${order.orderNumber}</title>
-    <style>body{font-family:Arial,sans-serif;padding:30px;color:#000;max-width:600px}h1{font-size:1.4em;margin-bottom:4px}.sub{color:#666;font-size:.85em;margin-bottom:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#f0f0f0;padding:8px 10px;text-align:left;font-size:.8em;border:1px solid #ddd}td{padding:8px 10px;border:1px solid #ddd;font-size:.9em}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}.meta-item{background:#f9f9f9;padding:10px 12px;border:1px solid #e0e0e0;border-radius:4px}.meta-label{font-size:.72em;text-transform:uppercase;color:#888;margin-bottom:3px}.meta-value{font-size:.95em;font-weight:700}.sign-off{margin-top:30px;border-top:2px solid #000;padding-top:20px}.sign-row{display:flex;gap:40px;margin-top:30px}.sign-line{flex:1;border-bottom:1px solid #333;padding-bottom:4px;font-size:.8em;color:#666}</style></head><body>
+    const order=orders.find(o=>o.orderNumber===orderNumber); if(!order) return;
+    const picker=document.getElementById('storesPickerSelect').value||'___________';
+    const win=window.open('','_blank');
+    win.document.write(`<!DOCTYPE html><html><head><title>Pick Slip — ${order.orderNumber}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#000;max-width:600px}h1{font-size:1.4em;margin-bottom:4px}.sub{color:#666;font-size:.85em;margin-bottom:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#f0f0f0;padding:8px 10px;text-align:left;font-size:.8em;border:1px solid #ddd}td{padding:8px 10px;border:1px solid #ddd;font-size:.9em}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}.meta-item{background:#f9f9f9;padding:10px 12px;border:1px solid #e0e0e0;border-radius:4px}.meta-label{font-size:.72em;text-transform:uppercase;color:#888;margin-bottom:3px}.meta-value{font-size:.95em;font-weight:700}.sign-off{margin-top:30px;border-top:2px solid #000;padding-top:20px}.sign-row{display:flex;gap:40px;margin-top:30px}.sign-line{flex:1;border-bottom:1px solid #333;padding-bottom:4px;font-size:.8em;color:#666}</style></head><body>
     <h1>PICK SLIP${order.urgent?' <span style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24;padding:3px 10px;border-radius:4px;font-size:.8em">⚑ URGENT</span>':''}</h1>
     <div class="sub">Flexi Parts System — Print and place in locker box</div>
-    <div class="meta">
-        <div class="meta-item"><div class="meta-label">Order Number</div><div class="meta-value">${order.orderNumber}</div></div>
-        <div class="meta-item"><div class="meta-label">Engineer / Name</div><div class="meta-value">${order.serviceController||'—'}</div></div>
-        <div class="meta-item"><div class="meta-label">Works Order</div><div class="meta-value">${order.worksOrder||'—'}</div></div>
-        <div class="meta-item"><div class="meta-label">Machine Serial</div><div class="meta-value">${order.machineSerial||'—'}</div></div>
-        <div class="meta-item"><div class="meta-label">Model</div><div class="meta-value">${order.model||'—'}</div></div>
-        <div class="meta-item"><div class="meta-label">Order Date</div><div class="meta-value">${order.date||'—'}</div></div>
-    </div>
-    <table><thead><tr><th>#</th><th>Part Number</th><th>Description</th><th>Qty</th><th>✓</th></tr></thead>
-    <tbody>${(order.parts||[]).map((p,i)=>`<tr><td>${i+1}</td><td><strong>${p['Part Number']||p.partNum||'—'}</strong></td><td>${p['Description']||p.desc||'—'}</td><td>${p.qty||1}</td><td style="width:30px;"></td></tr>`).join('')}</tbody></table>
+    <div class="meta"><div class="meta-item"><div class="meta-label">Order Number</div><div class="meta-value">${order.orderNumber}</div></div><div class="meta-item"><div class="meta-label">Engineer / Name</div><div class="meta-value">${order.serviceController||'—'}</div></div><div class="meta-item"><div class="meta-label">Works Order</div><div class="meta-value">${order.worksOrder||'—'}</div></div><div class="meta-item"><div class="meta-label">Machine Serial</div><div class="meta-value">${order.machineSerial||'—'}</div></div><div class="meta-item"><div class="meta-label">Model</div><div class="meta-value">${order.model||'—'}</div></div><div class="meta-item"><div class="meta-label">Order Date</div><div class="meta-value">${order.date||'—'}</div></div></div>
+    <table><thead><tr><th>#</th><th>Part Number</th><th>Description</th><th>Qty</th><th>✓</th></tr></thead><tbody>${(order.parts||[]).map((p,i)=>`<tr><td>${i+1}</td><td><strong>${p['Part Number']||p.partNum||'—'}</strong></td><td>${p['Description']||p.desc||'—'}</td><td>${p.qty||1}</td><td style="width:30px;"></td></tr>`).join('')}</tbody></table>
     ${order.comments?`<p style="font-size:.88em;color:#555;padding:10px;background:#f9f9f9;border-radius:4px;margin-bottom:20px;">💬 <strong>Notes:</strong> ${order.comments}</p>`:''}
-    <div class="sign-off"><strong>Picked by:</strong> ${picker}
-    <div class="sign-row"><div class="sign-line">Picker signature</div><div class="sign-line">Date / Time picked</div><div class="sign-line">Locker number</div></div></div>
-    </body></html>`);
+    <div class="sign-off"><strong>Picked by:</strong> ${picker}<div class="sign-row"><div class="sign-line">Picker signature</div><div class="sign-line">Date / Time picked</div><div class="sign-line">Locker number</div></div></div></body></html>`);
     win.document.close(); win.print();
 }
 
 /* ── ORDERS ── */
 function updateOrderStats() {
-    document.getElementById('totalOrders').textContent     = orders.length;
-    document.getElementById('pendingOrders').textContent   = orders.filter(o=>o.status==='Pending').length;
-    document.getElementById('sentToStoresOrders').textContent = orders.filter(o=>o.status==='Sent to Stores').length;
-    document.getElementById('pickedOrders').textContent    = orders.filter(o=>o.status==='Picked & Ready').length;
-    document.getElementById('completedOrders').textContent = orders.filter(o=>o.status==='Completed').length;
+    document.getElementById('totalOrders').textContent=orders.length;
+    document.getElementById('pendingOrders').textContent=orders.filter(o=>o.status==='Pending').length;
+    document.getElementById('sentToStoresOrders').textContent=orders.filter(o=>o.status==='Sent to Stores').length;
+    document.getElementById('pickedOrders').textContent=orders.filter(o=>o.status==='Picked & Ready').length;
+    document.getElementById('completedOrders').textContent=orders.filter(o=>o.status==='Completed').length;
 }
 
 function applyFilters() {
-    const search    = (document.getElementById('filterSearch')?.value||'').toLowerCase();
-    const status    = document.getElementById('filterStatus')?.value||'';
-    const orderType = document.getElementById('filterOrderType')?.value||'';
-    const dateFrom  = document.getElementById('filterDateFrom')?.value||'';
-    const dateTo    = document.getElementById('filterDateTo')?.value||'';
-    displayedOrders = orders.filter(o => {
-        if (search) { const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model,o.orderType].map(v=>String(v??'')).join(' ').toLowerCase(); if(!hay.includes(search)) return false; }
-        if (status && (o.status||'Pending')!==status) return false;
-        if (orderType && (o.orderType||'')!==orderType) return false;
-        if (dateFrom||dateTo) { const d=o._rawDate||''; if(dateFrom&&d<dateFrom) return false; if(dateTo&&d>dateTo) return false; }
+    const search=(document.getElementById('filterSearch')?.value||'').toLowerCase(),status=document.getElementById('filterStatus')?.value||'',orderType=document.getElementById('filterOrderType')?.value||'',dateFrom=document.getElementById('filterDateFrom')?.value||'',dateTo=document.getElementById('filterDateTo')?.value||'';
+    displayedOrders=orders.filter(o=>{
+        if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model,o.orderType].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
+        if(status&&(o.status||'Pending')!==status)return false;
+        if(orderType&&(o.orderType||'')!==orderType)return false;
+        if(dateFrom||dateTo){const d=o._rawDate||'';if(dateFrom&&d<dateFrom)return false;if(dateTo&&d>dateTo)return false;}
         return true;
     });
-    displayedOrders.sort((a,b) => {
-        let va=fieldVal(a,sortField), vb=fieldVal(b,sortField);
-        if(va<vb) return sortDir==='asc'?-1:1;
-        if(va>vb) return sortDir==='asc'?1:-1;
-        return 0;
-    });
-    document.getElementById('filteredOrdersCount').textContent = displayedOrders.length;
+    displayedOrders.sort((a,b)=>{let va=fieldVal(a,sortField),vb=fieldVal(b,sortField);if(va<vb)return sortDir==='asc'?-1:1;if(va>vb)return sortDir==='asc'?1:-1;return 0;});
+    document.getElementById('filteredOrdersCount').textContent=displayedOrders.length;
     renderOrders();
 }
 
-function fieldVal(o,f) {
-    const s=v=>String(v??'');
-    return ({orderNumber:s(o.orderNumber),date:s(o.date||''),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';
-}
+function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),date:s(o.date||''),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
 
-function sortOrders(field) {
-    sortDir = sortField===field?(sortDir==='asc'?'desc':'asc'):'asc';
-    sortField = field;
-    document.querySelectorAll('.orders-table th').forEach(th=>th.classList.remove('sort-asc','sort-desc'));
-    const idx = {orderNumber:0,date:1,serviceController:2,worksOrder:4,status:6}[field];
-    if(idx!==undefined) document.querySelectorAll('.orders-table th')[idx]?.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');
-    applyFilters();
-}
+function sortOrders(field){sortDir=sortField===field?(sortDir==='asc'?'desc':'asc'):'asc';sortField=field;document.querySelectorAll('.orders-table th').forEach(th=>th.classList.remove('sort-asc','sort-desc'));const idx={orderNumber:0,date:1,serviceController:2,worksOrder:4,status:6}[field];if(idx!==undefined)document.querySelectorAll('.orders-table th')[idx]?.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');applyFilters();}
 
-function clearFilters() {
-    ['filterSearch','filterStatus','filterOrderType','filterDateFrom','filterDateTo'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-    applyFilters();
-}
+function clearFilters(){['filterSearch','filterStatus','filterOrderType','filterDateFrom','filterDateTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});applyFilters();}
 
-function getStatusClass(status) {
-    return ({'Pending':'status-pending','Completed':'status-completed','Cancelled':'status-cancelled','Backorder':'status-backorder','Sent to Stores':'status-sent-to-stores','Picked & Ready':'status-picked-ready'})[status]||'status-pending';
-}
+function getStatusClass(status){return({'Pending':'status-pending','Completed':'status-completed','Cancelled':'status-cancelled','Backorder':'status-backorder','Sent to Stores':'status-sent-to-stores','Picked & Ready':'status-picked-ready'})[status]||'status-pending';}
 
-function renderOrders() {
-    const tbody = document.getElementById('ordersTableBody');
-    if (!displayedOrders.length) { tbody.innerHTML=`<tr class="no-results-row"><td colspan="7">${orders.length?'No orders match your filters':'No orders found'}</td></tr>`; return; }
-    tbody.innerHTML = displayedOrders.map((order,i) => {
-        const urgentBadge = order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'';
-        const typeBadge = order.orderType?`<span class="order-type-badge">${order.orderType}</span>`:'';
-        const status = order.status||'Pending';
-        return `<tr onclick="openOrderModal(${orders.indexOf(order)})">
-            <td><span class="order-number">${order.orderNumber||'ORD-'+(i+1)}</span>${urgentBadge}</td>
-            <td>${order.date||'N/A'}</td>
-            <td>${order.serviceController||'N/A'}</td>
-            <td>${typeBadge||'<span style="color:#555;">—</span>'}</td>
-            <td>${order.worksOrder||'—'}</td>
-            <td>${order.partsCount||(order.parts?.length||0)} parts</td>
-            <td><span class="order-status ${getStatusClass(status)}">${status}</span></td>
-        </tr>`;
+function renderOrders(){
+    const tbody=document.getElementById('ordersTableBody');
+    if(!displayedOrders.length){tbody.innerHTML=`<tr class="no-results-row"><td colspan="7">${orders.length?'No orders match your filters':'No orders found'}</td></tr>`;return;}
+    tbody.innerHTML=displayedOrders.map((order,i)=>{
+        const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'',typeBadge=order.orderType?`<span class="order-type-badge">${order.orderType}</span>`:'',status=order.status||'Pending';
+        return `<tr onclick="openOrderModal(${orders.indexOf(order)})"><td><span class="order-number">${order.orderNumber||'ORD-'+(i+1)}</span>${urgentBadge}</td><td>${order.date||'N/A'}</td><td>${order.serviceController||'N/A'}</td><td>${typeBadge||'<span style="color:#555;">—</span>'}</td><td>${order.worksOrder||'—'}</td><td>${order.partsCount||(order.parts?.length||0)} parts</td><td><span class="order-status ${getStatusClass(status)}">${status}</span></td></tr>`;
     }).join('');
 }
 
-function buildTimeline(order) {
-    const status = order.status||'Pending';
-    const steps = [
-        {icon:'📋',title:'Order Placed',desc:`Submitted by ${order.serviceController||'Unknown'}`,timestamp:order.date||'',state:'done'},
-        {icon:'📦',title:'Sent to Stores',desc:'Order sent to stores for picking',timestamp:order.sentToStoresAt||'',state:['Sent to Stores','Picked & Ready','Completed'].includes(status)?'stores':'inactive'},
-        {icon:'✅',title:'Picked & Ready',desc:`${order.pickedBy?`Picked by ${order.pickedBy}`:'Awaiting pick'}`,timestamp:order.pickedAt||'',state:['Picked & Ready','Completed'].includes(status)?'picked':'inactive'},
-        {icon:status==='Cancelled'?'✕':'🎯',title:status==='Cancelled'?'Cancelled':'Completed',desc:status==='Cancelled'?'Order cancelled':'All parts fulfilled',timestamp:order.completedAt||order.cancelledAt||'',state:status==='Cancelled'?'cancelled':status==='Completed'?'done':'inactive'}
-    ];
-    return `<div class="timeline">${steps.map(s=>{
-        const dotClass={done:'done',stores:'stores',picked:'picked',cancelled:'cancelled',inactive:''}[s.state]||'';
-        const titleClass={done:'done',stores:'stores-title',picked:'picked-title',active:'active',cancelled:'cancelled-title',inactive:'inactive'}[s.state]||'inactive';
-        return `<div class="timeline-step"><div class="timeline-dot ${dotClass}">${s.icon}</div><div class="timeline-content"><div class="timeline-title ${titleClass}">${s.title}</div><div class="timeline-desc">${s.desc}</div>${s.timestamp?`<div class="timeline-timestamp">${s.timestamp}</div>`:''}</div></div>`;
-    }).join('')}</div>`;
-}
+function buildTimeline(order){const status=order.status||'Pending';const steps=[{icon:'📋',title:'Order Placed',desc:`Submitted by ${order.serviceController||'Unknown'}`,timestamp:order.date||'',state:'done'},{icon:'📦',title:'Sent to Stores',desc:'Order sent to stores for picking',timestamp:order.sentToStoresAt||'',state:['Sent to Stores','Picked & Ready','Completed'].includes(status)?'stores':'inactive'},{icon:'✅',title:'Picked & Ready',desc:`${order.pickedBy?`Picked by ${order.pickedBy}`:'Awaiting pick'}`,timestamp:order.pickedAt||'',state:['Picked & Ready','Completed'].includes(status)?'picked':'inactive'},{icon:status==='Cancelled'?'✕':'🎯',title:status==='Cancelled'?'Cancelled':'Completed',desc:status==='Cancelled'?'Order cancelled':'All parts fulfilled',timestamp:order.completedAt||order.cancelledAt||'',state:status==='Cancelled'?'cancelled':status==='Completed'?'done':'inactive'}];return `<div class="timeline">${steps.map(s=>{const dotClass={done:'done',stores:'stores',picked:'picked',cancelled:'cancelled',inactive:''}[s.state]||'';const titleClass={done:'done',stores:'stores-title',picked:'picked-title',active:'active',cancelled:'cancelled-title',inactive:'inactive'}[s.state]||'inactive';return `<div class="timeline-step"><div class="timeline-dot ${dotClass}">${s.icon}</div><div class="timeline-content"><div class="timeline-title ${titleClass}">${s.title}</div><div class="timeline-desc">${s.desc}</div>${s.timestamp?`<div class="timeline-timestamp">${s.timestamp}</div>`:''}</div></div>`;}).join('')}</div>`;}
 
-function openOrderModal(index) {
-    const order = orders[index];
-    const urgentBadge = order.urgent?'<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>':'';
-    const pickedInfo = order.pickedBy?`<div style="margin-top:8px;padding:8px 12px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:6px;font-size:.85em;color:#4ade80;">✅ Picked by <strong>${order.pickedBy}</strong> at ${order.pickedAt||'—'}</div>`:'';
-    const modal = document.createElement('div');
-    modal.className = 'modal-overlay active';
-    modal.id = 'orderModal';
-    modal.innerHTML = `<div class="modal">
-        <div class="modal-header">
-            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><h2>${order.orderNumber||'Order Details'}</h2>${urgentBadge}</div>
-            <button class="modal-close" onclick="closeOrderModal()">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="modal-grid">
-                <div class="modal-field"><div class="modal-field-label">Date</div><div class="modal-field-value">${order.date||'N/A'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Name</div><div class="modal-field-value">${order.serviceController||'N/A'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Order Type</div><div class="modal-field-value">${order.orderType||'—'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Works Order</div><div class="modal-field-value">${order.worksOrder||'—'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Machine Serial</div><div class="modal-field-value">${order.machineSerial||'N/A'}</div></div>
-                <div class="modal-field"><div class="modal-field-label">Model</div><div class="modal-field-value">${order.model||'N/A'}</div></div>
-            </div>
-            ${pickedInfo}
-            <div class="modal-section" style="margin-top:20px;"><div class="modal-section-title">Order Timeline</div>${buildTimeline(order)}</div>
-            <div class="modal-section">
-                <div class="modal-section-title">Update Status</div>
-                <div class="status-select-wrapper">
-                    <select id="modalOrderStatus">
-                        <option value="Pending" ${order.status==='Pending'?'selected':''}>Pending</option>
-                        <option value="Sent to Stores" ${order.status==='Sent to Stores'?'selected':''}>Sent to Stores</option>
-                        <option value="Picked &amp; Ready" ${order.status==='Picked & Ready'?'selected':''}>Picked &amp; Ready</option>
-                        <option value="Backorder" ${order.status==='Backorder'?'selected':''}>Backorder</option>
-                        <option value="Completed" ${order.status==='Completed'?'selected':''}>Completed</option>
-                        <option value="Cancelled" ${order.status==='Cancelled'?'selected':''}>Cancelled</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-section">
-                <div class="modal-section-title">Parts (${order.parts?.length||0})</div>
-                <div>${(order.parts||[]).map(p=>`<div class="modal-part-row"><div><div class="modal-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="modal-part-desc">${p['Description']||p.desc||'No description'}</div></div><div class="modal-part-qty">Qty: ${p.qty||1}</div></div>`).join('')||'<p style="color:#666;">No parts</p>'}</div>
-            </div>
-            <div class="modal-section">
-                <div class="modal-section-title">Notes</div>
-                <textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes...">${order.comments||order.notes||''}</textarea>
-            </div>
-            <div class="modal-actions">
-                <button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button>
-                <button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button>
-            </div>
-        </div>
-    </div>`;
-    document.body.appendChild(modal);
-}
+function openOrderModal(index){const order=orders[index];const urgentBadge=order.urgent?'<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>':'';const pickedInfo=order.pickedBy?`<div style="margin-top:8px;padding:8px 12px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:6px;font-size:.85em;color:#4ade80;">✅ Picked by <strong>${order.pickedBy}</strong> at ${order.pickedAt||'—'}</div>`:'';const modal=document.createElement('div');modal.className='modal-overlay active';modal.id='orderModal';modal.innerHTML=`<div class="modal"><div class="modal-header"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><h2>${order.orderNumber||'Order Details'}</h2>${urgentBadge}</div><button class="modal-close" onclick="closeOrderModal()">✕</button></div><div class="modal-body"><div class="modal-grid"><div class="modal-field"><div class="modal-field-label">Date</div><div class="modal-field-value">${order.date||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Name</div><div class="modal-field-value">${order.serviceController||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Order Type</div><div class="modal-field-value">${order.orderType||'—'}</div></div><div class="modal-field"><div class="modal-field-label">Works Order</div><div class="modal-field-value">${order.worksOrder||'—'}</div></div><div class="modal-field"><div class="modal-field-label">Machine Serial</div><div class="modal-field-value">${order.machineSerial||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Model</div><div class="modal-field-value">${order.model||'N/A'}</div></div></div>${pickedInfo}<div class="modal-section" style="margin-top:20px;"><div class="modal-section-title">Order Timeline</div>${buildTimeline(order)}</div><div class="modal-section"><div class="modal-section-title">Update Status</div><div class="status-select-wrapper"><select id="modalOrderStatus"><option value="Pending" ${order.status==='Pending'?'selected':''}>Pending</option><option value="Sent to Stores" ${order.status==='Sent to Stores'?'selected':''}>Sent to Stores</option><option value="Picked &amp; Ready" ${order.status==='Picked & Ready'?'selected':''}>Picked &amp; Ready</option><option value="Backorder" ${order.status==='Backorder'?'selected':''}>Backorder</option><option value="Completed" ${order.status==='Completed'?'selected':''}>Completed</option><option value="Cancelled" ${order.status==='Cancelled'?'selected':''}>Cancelled</option></select></div></div><div class="modal-section"><div class="modal-section-title">Parts (${order.parts?.length||0})</div><div>${(order.parts||[]).map(p=>`<div class="modal-part-row"><div><div class="modal-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="modal-part-desc">${p['Description']||p.desc||'No description'}</div></div><div class="modal-part-qty">Qty: ${p.qty||1}</div></div>`).join('')||'<p style="color:#666;">No parts</p>'}</div></div><div class="modal-section"><div class="modal-section-title">Notes</div><textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes...">${order.comments||order.notes||''}</textarea></div><div class="modal-actions"><button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button><button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button></div></div></div>`;document.body.appendChild(modal);}
 
-async function saveOrderChanges(index) {
-    const order = orders[index];
-    const newStatus = document.getElementById('modalOrderStatus').value;
-    const newNotes  = document.getElementById('modalOrderNotes').value;
-    const btn = event.target;
-    btn.disabled=true; btn.textContent='Saving...';
-    try {
-        const res = await fetch(API_URL, {method:'POST', body:JSON.stringify({action:'updateOrder',orderNumber:order.orderNumber,status:newStatus,notes:newNotes})});
-        const result = await res.json();
-        if (result.success) {
-            orders[index].status=newStatus; orders[index].notes=orders[index].comments=newNotes;
-            const ukNow = () => { const d=new Date(); return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`; };
-if(newStatus==='Sent to Stores') orders[index].sentToStoresAt=ukNow();
-if(newStatus==='Completed') orders[index].completedAt=ukNow();
-if(newStatus==='Cancelled') orders[index].cancelledAt=ukNow();
-            updateOrderStats(); applyFilters(); renderStoresPage();
-            closeOrderModal(); showToast('Order updated successfully!');
-        } else { showToast('Error updating order'); btn.disabled=false; btn.textContent='Save Changes'; }
-    } catch(e) { showToast('Error updating order'); btn.disabled=false; btn.textContent='Save Changes'; }
-}
+async function saveOrderChanges(index){const order=orders[index],newStatus=document.getElementById('modalOrderStatus').value,newNotes=document.getElementById('modalOrderNotes').value,btn=event.target;btn.disabled=true;btn.textContent='Saving...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber:order.orderNumber,status:newStatus,notes:newNotes})});const result=await res.json();if(result.success){orders[index].status=newStatus;orders[index].notes=orders[index].comments=newNotes;const ukNow=()=>{const d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};if(newStatus==='Sent to Stores')orders[index].sentToStoresAt=ukNow();if(newStatus==='Completed')orders[index].completedAt=ukNow();if(newStatus==='Cancelled')orders[index].cancelledAt=ukNow();updateOrderStats();applyFilters();renderStoresPage();closeOrderModal();showToast('Order updated successfully!');}else{showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}catch(e){showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}
 
-function closeOrderModal() { document.getElementById('orderModal')?.remove(); }
+function closeOrderModal(){document.getElementById('orderModal')?.remove();}
 
-function exportCSV() {
-    if(!displayedOrders.length){showToast('No orders to export');return;}
-    const headers=['Order Number','Date','Name','Order Type','Works Order','Machine Serial','Model','Parts Count','Status','Picked By','Picked At','Urgent','Notes'];
-    const rows=displayedOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.orderType||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.partsCount||(o.parts?.length||0),o.status||'Pending',o.pickedBy||'',o.pickedAt||'',o.urgent?'Yes':'No',(o.comments||o.notes||'').replace(/"/g,'""')].map(v=>`"${v}"`).join(','));
-    const csv=[headers.join(','),...rows].join('\n');
-    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'})); a.download=`flexi-orders-${new Date().toISOString().slice(0,10)}.csv`; a.click();
-    showToast(`Exported ${displayedOrders.length} orders`);
-}
+function exportCSV(){if(!displayedOrders.length){showToast('No orders to export');return;}const headers=['Order Number','Date','Name','Order Type','Works Order','Machine Serial','Model','Parts Count','Status','Picked By','Picked At','Urgent','Notes'];const rows=displayedOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.orderType||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.partsCount||(o.parts?.length||0),o.status||'Pending',o.pickedBy||'',o.pickedAt||'',o.urgent?'Yes':'No',(o.comments||o.notes||'').replace(/"/g,'""')].map(v=>`"${v}"`).join(','));const csv=[headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-orders-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Exported ${displayedOrders.length} orders`);}
 
-function exportPDF() {
-    document.getElementById('printTitle').textContent=`Flexi Parts — Orders Export (${displayedOrders.length} orders, ${new Date().toLocaleDateString('en-GB')})`;
-    window.print();
-}
+function exportPDF(){document.getElementById('printTitle').textContent=`Flexi Parts — Orders Export (${displayedOrders.length} orders, ${new Date().toLocaleDateString('en-GB')})`;window.print();}
 
 /* ── PARTS SEARCH ── */
-function filterParts() {
-    const raw = document.getElementById('searchInput').value;
-    const term = raw.toLowerCase().trim();
-    const hdr = document.getElementById('resultsHeader');
-    const nlBanner = document.getElementById('nlBanner');
-    if (!term) {
-        hdr.style.display='none'; nlBanner.style.display='none';
-        document.getElementById('filteredCount').textContent='0';
-        document.getElementById('resultsContainer').innerHTML=`<div class="search-prompt"><div class="search-prompt-icon">🔍</div><div class="search-prompt-title">Start Searching</div><div class="search-prompt-text">Enter a part number or description</div></div>`;
-        return;
-    }
-    hdr.style.display='block';
-    if (isNaturalLanguage(term)) {
-        const nlResult = parseNLQuery(term);
-        if (nlResult) {
-            nlBanner.style.display='flex';
-            document.getElementById('nlBannerText').textContent=nlResult.interpretation;
-            filteredParts=allParts.filter(p=>{const desc=String(p['Description']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase(),num=String(p['Part Number']||'').toLowerCase();return nlResult.keywords.some(kw=>desc.includes(kw)||sys.includes(kw)||num.includes(kw));});
-            renderParts(); return;
-        }
-    }
-    nlBanner.style.display='none';
-    const clean=term.replace(/[\s\-.]/g,'');
-    filteredParts=allParts.filter(p=>{const num=String(p['Part Number']||'').toLowerCase(),desc=String(p['Description']||'').toLowerCase(),sup=String(p['Supplier Code']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase();return num.replace(/[\s\-.]/g,'').includes(clean)||num.includes(term)||desc.includes(term)||sup.includes(term)||sys.includes(term);});
-    renderParts();
-}
+function filterParts(){const raw=document.getElementById('searchInput').value,term=raw.toLowerCase().trim(),hdr=document.getElementById('resultsHeader'),nlBanner=document.getElementById('nlBanner');if(!term){hdr.style.display='none';nlBanner.style.display='none';document.getElementById('filteredCount').textContent='0';document.getElementById('resultsContainer').innerHTML=`<div class="search-prompt"><div class="search-prompt-icon">🔍</div><div class="search-prompt-title">Start Searching</div><div class="search-prompt-text">Enter a part number or description</div></div>`;return;}hdr.style.display='block';if(isNaturalLanguage(term)){const nlResult=parseNLQuery(term);if(nlResult){nlBanner.style.display='flex';document.getElementById('nlBannerText').textContent=nlResult.interpretation;filteredParts=allParts.filter(p=>{const desc=String(p['Description']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase(),num=String(p['Part Number']||'').toLowerCase();return nlResult.keywords.some(kw=>desc.includes(kw)||sys.includes(kw)||num.includes(kw));});renderParts();return;}}nlBanner.style.display='none';const clean=term.replace(/[\s\-.]/g,'');filteredParts=allParts.filter(p=>{const num=String(p['Part Number']||'').toLowerCase(),desc=String(p['Description']||'').toLowerCase(),sup=String(p['Supplier Code']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase();return num.replace(/[\s\-.]/g,'').includes(clean)||num.includes(term)||desc.includes(term)||sup.includes(term)||sys.includes(term);});renderParts();}
 
-function renderParts() {
-    const container=document.getElementById('resultsContainer');
-    const count=filteredParts.length;
-    document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;
-    document.getElementById('filteredCount').textContent=count;
-    if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}
-    container.innerHTML=filteredParts.slice(0,100).map(p=>{
-        const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';
-        const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-        const imgUrl = driveImageUrl(p['Image URL']||'');
-        const imgHtml = imgUrl
-            ? `<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`
-            : `<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;
-        return `<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div><button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;
-    }).join('');
-}
+function renderParts(){const container=document.getElementById('resultsContainer'),count=filteredParts.length;document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;document.getElementById('filteredCount').textContent=count;if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}container.innerHTML=filteredParts.slice(0,100).map(p=>{const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const imgUrl=driveImageUrl(p['Image URL']||'');const imgHtml=imgUrl?`<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`:`<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;return `<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div><button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;}).join('');}
 
-function driveImageUrl(raw) {
-    if(!raw||typeof raw!=='string') return '';
-    raw=raw.trim(); if(!raw) return '';
-    if(raw.includes('drive.google.com/thumbnail')||raw.includes('drive.google.com/uc')) return raw;
-    let id=null;
-    const m1=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/); if(m1) id=m1[1];
-    if(!id){const m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/); if(m2) id=m2[1];}
-    if(!id) return raw;
-    return `https://drive.google.com/thumbnail?id=${id}&sz=w400`;
-}
+function driveImageUrl(raw){if(!raw||typeof raw!=='string')return '';raw=raw.trim();if(!raw)return '';if(raw.includes('drive.google.com/thumbnail')||raw.includes('drive.google.com/uc'))return raw;let id=null;const m1=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);if(m1)id=m1[1];if(!id){const m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)id=m2[1];}if(!id)return raw;return `https://drive.google.com/thumbnail?id=${id}&sz=w400`;}
 
-function placeholderHtml() {
-    return `<div class="part-image-placeholder"><svg class="placeholder-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="52" height="38" rx="4" stroke="white" stroke-width="2.5" fill="none"/><circle cx="21" cy="27" r="5" stroke="white" stroke-width="2" fill="none"/><path d="M6 40 L19 28 L30 39 L41 27 L58 42" stroke="white" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span class="placeholder-label">No Image</span></div>`;
-}
+function placeholderHtml(){return `<div class="part-image-placeholder"><svg class="placeholder-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="52" height="38" rx="4" stroke="white" stroke-width="2.5" fill="none"/><circle cx="21" cy="27" r="5" stroke="white" stroke-width="2" fill="none"/><path d="M6 40 L19 28 L30 39 L41 27 L58 42" stroke="white" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span class="placeholder-label">No Image</span></div>`;}
 
 /* ── LIGHTBOX ── */
-let _lightboxPart = null;
-function openLightbox(url, part) {
-    _lightboxPart = part;
-    document.getElementById('lightboxImg').src = url;
-    document.getElementById('lightboxPartNum').textContent = part['Part Number']||'N/A';
-    document.getElementById('lightboxPartDesc').textContent = part['Description']||'';
-    document.getElementById('lightboxAddBtn').onclick = () => { addToCart(_lightboxPart); closeLightboxDirect(); };
-    document.getElementById('lightboxOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-function closeLightboxDirect() { document.getElementById('lightboxOverlay').classList.remove('active'); document.body.style.overflow=''; }
-function closeLightbox(e) { if(!e||e.target===document.getElementById('lightboxOverlay')) closeLightboxDirect(); }
+let _lightboxPart=null;
+function openLightbox(url,part){_lightboxPart=part;document.getElementById('lightboxImg').src=url;document.getElementById('lightboxPartNum').textContent=part['Part Number']||'N/A';document.getElementById('lightboxPartDesc').textContent=part['Description']||'';document.getElementById('lightboxAddBtn').onclick=()=>{addToCart(_lightboxPart);closeLightboxDirect();};document.getElementById('lightboxOverlay').classList.add('active');document.body.style.overflow='hidden';}
+function closeLightboxDirect(){document.getElementById('lightboxOverlay').classList.remove('active');document.body.style.overflow='';}
+function closeLightbox(e){if(!e||e.target===document.getElementById('lightboxOverlay'))closeLightboxDirect();}
 
 /* ── CART ── */
-function addToCart(part) {
-    const num=part['Part Number']||part.partNum||part.partNumber;
-    const ex=cart.find(i=>(i['Part Number']||i.partNum||i.partNumber)===num);
-    if(ex) ex.qty++; else cart.push({...part,qty:1});
-    updateCart(); saveCartToStorage(); showToast(`${num} added to cart`);
-}
-
-function updateCart() {
-    const badge=document.getElementById('cartBadge'),empty=document.getElementById('emptyCart'),form=document.getElementById('orderForm'),items=document.getElementById('cartItems');
-    badge.textContent=cart.length;
-    document.getElementById('cartItemsCount').textContent=cart.length;
-    document.getElementById('cartItemsCountText').textContent=cart.length;
-    if(!cart.length){items.innerHTML='';empty.style.display='block';form.style.display='none';return;}
-    empty.style.display='none'; form.style.display='block';
-    setTimeout(checkOrderAnomalies,50); updateCostEstimate();
-    items.innerHTML=cart.map((item,i)=>{
-        const num=item['Part Number']||item.partNum||'N/A',desc=item['Description']||item.desc||'No description';
-        return `<div class="cart-item"><div class="cart-item-header"><div class="cart-item-number">${num}</div><button class="remove-item" onclick="removeFromCart(${i})">Remove</button></div><div class="cart-item-desc">${desc}</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(${i},-1)">−</button><input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1"><button class="qty-btn" onclick="updateQty(${i},1)">+</button></div></div>`;
-    }).join('');
-}
-
+function addToCart(part){const num=part['Part Number']||part.partNum||part.partNumber;const ex=cart.find(i=>(i['Part Number']||i.partNum||i.partNumber)===num);if(ex)ex.qty++;else cart.push({...part,qty:1});updateCart();saveCartToStorage();showToast(`${num} added to cart`);}
+function updateCart(){const badge=document.getElementById('cartBadge'),empty=document.getElementById('emptyCart'),form=document.getElementById('orderForm'),items=document.getElementById('cartItems');badge.textContent=cart.length;document.getElementById('cartItemsCount').textContent=cart.length;document.getElementById('cartItemsCountText').textContent=cart.length;if(!cart.length){items.innerHTML='';empty.style.display='block';form.style.display='none';return;}empty.style.display='none';form.style.display='block';setTimeout(checkOrderAnomalies,50);updateCostEstimate();items.innerHTML=cart.map((item,i)=>{const num=item['Part Number']||item.partNum||'N/A',desc=item['Description']||item.desc||'No description';return `<div class="cart-item"><div class="cart-item-header"><div class="cart-item-number">${num}</div><button class="remove-item" onclick="removeFromCart(${i})">Remove</button></div><div class="cart-item-desc">${desc}</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(${i},-1)">−</button><input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1"><button class="qty-btn" onclick="updateQty(${i},1)">+</button></div></div>`;}).join('');}
 function removeFromCart(i){cart.splice(i,1);updateCart();saveCartToStorage();}
 function updateQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);updateCart();saveCartToStorage();}
 function updateQtyDirect(i,v){cart[i].qty=Math.max(1,parseInt(v)||1);updateCart();saveCartToStorage();}
@@ -1239,31 +1173,7 @@ function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
 
-async function submitOrder() {
-    const sc=document.getElementById('serviceController').value.trim();
-    if(!sc){showToast('Please enter your name');return;}
-    if(!cart.length){showToast('Cart is empty');return;}
-    const serial=document.getElementById('machineSerial').value.trim();
-    const ot=document.getElementById('orderType').value;
-    const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;
-    const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};
-    const btn=document.getElementById('submitBtn');
-    btn.disabled=true; btn.textContent='Submitting...';
-    try {
-        const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});
-        const result=await res.json();
-        if(result.success){
-            showToast('Order submitted successfully! 🎉');
-            saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));
-            orders.unshift(normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments}));
-            updateOrderStats(); applyFilters();
-            cart=[]; isUrgent=false; document.getElementById('urgentToggle').classList.remove('active'); document.getElementById('urgentIndicator').textContent='⚑';
-            updateCart(); saveCartToStorage(); clearForm(); toggleCart();
-        } else showToast('Error submitting order');
-    } catch(e){ showToast('Error submitting order'); }
-    finally{ btn.disabled=false; btn.textContent='Submit Order'; }
-}
-
+async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));orders.unshift(normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments}));updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
 function clearForm(){['serviceController','worksOrder','machineSerial','comments'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('orderModel').value='';document.getElementById('orderType').value='';}
 
 /* ── NL SEARCH ── */
@@ -1274,7 +1184,7 @@ function isNaturalLanguage(term){if(/^[a-z0-9\-\.\/]{2,12}$/i.test(term.trim()))
 function nlSearch(term){document.getElementById('searchInput').value=term;filterParts();}
 
 /* ── ANOMALY + COST ── */
-function checkOrderAnomalies(){const banner=document.getElementById('anomalyBanner'),msgEl=document.getElementById('anomalyMsg');if(!cart.length){banner.style.display='none';return;}const issues=[];const totalQty=cart.reduce((s,i)=>s+(i.qty||1),0);if(totalQty>20)issues.push(`Large order: ${totalQty} total items.`);const nums=cart.map(i=>i['Part Number']||i.partNum||''),dupes=nums.filter((n,i)=>nums.indexOf(n)!==i);if(dupes.length)issues.push(`Possible duplicate parts: ${[...new Set(dupes)].join(', ')}`);cart.forEach(item=>{if((item.qty||1)>=10)issues.push(`High quantity (${item.qty}×) on ${item['Part Number']||item.partNum}`);});if(!issues.length){banner.style.display='none';return;}msgEl.innerHTML=`<ul>${issues.map(i=>`<li>${i}</li>`).join('')}</ul>`;banner.style.display='flex';}
+function checkOrderAnomalies(){const banner=document.getElementById('anomalyBanner'),msgEl=document.getElementById('anomalyMsg');if(!cart.length){banner.style.display='none';return;}const issues=[],totalQty=cart.reduce((s,i)=>s+(i.qty||1),0);if(totalQty>20)issues.push(`Large order: ${totalQty} total items.`);const nums=cart.map(i=>i['Part Number']||i.partNum||''),dupes=nums.filter((n,i)=>nums.indexOf(n)!==i);if(dupes.length)issues.push(`Possible duplicate parts: ${[...new Set(dupes)].join(', ')}`);cart.forEach(item=>{if((item.qty||1)>=10)issues.push(`High quantity (${item.qty}×) on ${item['Part Number']||item.partNum}`);});if(!issues.length){banner.style.display='none';return;}msgEl.innerHTML=`<ul>${issues.map(i=>`<li>${i}</li>`).join('')}</ul>`;banner.style.display='flex';}
 function dismissAnomaly(){document.getElementById('anomalyBanner').style.display='none';}
 function updateCostEstimate(){const bar=document.getElementById('costBar'),totalEl=document.getElementById('costTotal'),breakdownEl=document.getElementById('costBreakdown');const hasAnyPrice=cart.some(item=>parseFloat(item['Cost']||item.cost||0)>0);if(!hasAnyPrice||!cart.length){bar.classList.remove('show');return;}let total=0,known=0;cart.forEach(item=>{const cost=parseFloat(item['Cost']||item.cost||0);if(cost>0){total+=cost*(item.qty||1);known++;}});bar.classList.add('show');totalEl.textContent='£'+total.toFixed(2);const unknown=cart.length-known;breakdownEl.textContent=unknown>0?`${known} priced, ${unknown} unpriced`:`${cart.length} item${cart.length>1?'s':''}`;}
 
@@ -1291,17 +1201,7 @@ function saveSerialOnSubmit(serial,model,engineer,date){if(!serial)return;const 
 /* ── BULK IMPORT ── */
 function openBulkImport(){document.getElementById('bulkImportModal').classList.add('active');document.getElementById('bulkImportTextarea').value='';document.getElementById('bulkImportResults').classList.remove('show');}
 function closeBulkImport(){document.getElementById('bulkImportModal').classList.remove('active');}
-function processBulkImport(){
-    const lines=document.getElementById('bulkImportTextarea').value.split('\n').map(l=>l.trim()).filter(Boolean);
-    const res=document.getElementById('bulkImportResults');
-    if(!lines.length){res.innerHTML='<p style="color:#f87171;">No part numbers entered</p>';res.classList.add('show');return;}
-    let found=0,notFound=[];
-    lines.forEach(num=>{const clean=num.replace(/[\s\-.]/g,'').toLowerCase();const p=allParts.find(x=>{const n=String(x['Part Number']||'').toLowerCase();return n.replace(/[\s\-.]/g,'')===clean||n===num.toLowerCase();});if(p){addToCart(p);found++;}else notFound.push(num);});
-    let html=`<p style="color:#4ade80;margin-bottom:10px;">✓ Added ${found} parts</p>`;
-    if(notFound.length)html+=`<p style="color:#facc15;">⚠ Not found: ${notFound.join(', ')}</p>`;
-    res.innerHTML=html; res.classList.add('show');
-    if(found)setTimeout(()=>{closeBulkImport();showToast(`Bulk import: ${found} parts added`);},2000);
-}
+function processBulkImport(){const lines=document.getElementById('bulkImportTextarea').value.split('\n').map(l=>l.trim()).filter(Boolean);const res=document.getElementById('bulkImportResults');if(!lines.length){res.innerHTML='<p style="color:#f87171;">No part numbers entered</p>';res.classList.add('show');return;}let found=0,notFound=[];lines.forEach(num=>{const clean=num.replace(/[\s\-.]/g,'').toLowerCase();const p=allParts.find(x=>{const n=String(x['Part Number']||'').toLowerCase();return n.replace(/[\s\-.]/g,'')===clean||n===num.toLowerCase();});if(p){addToCart(p);found++;}else notFound.push(num);});let html=`<p style="color:#4ade80;margin-bottom:10px;">✓ Added ${found} parts</p>`;if(notFound.length)html+=`<p style="color:#facc15;">⚠ Not found: ${notFound.join(', ')}</p>`;res.innerHTML=html;res.classList.add('show');if(found)setTimeout(()=>{closeBulkImport();showToast(`Bulk import: ${found} parts added`);},2000);}
 
 /* ── CACHE ── */
 function cacheParts(parts){try{localStorage.setItem('flexi-parts-offline',JSON.stringify(parts.map(p=>({'Part Number':p['Part Number'],'Description':p['Description'],'Supplier Code':p['Supplier Code'],'System':p['System'],'Stock Level':p['Stock Level'],'Image URL':p['Image URL']||''}))));}catch(e){}}
@@ -1312,10 +1212,13 @@ function showToast(msg){const t=document.createElement('div');t.className='toast
 function setupEventListeners(){
     document.getElementById('searchInput').addEventListener('input',filterParts);
     document.getElementById('submitBtn').addEventListener('click',submitOrder);
-    document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();}});
+    document.addEventListener('keydown',e=>{
+        if(document.getElementById('pinOverlay').classList.contains('active')) return;
+        if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();}
+    });
     document.addEventListener('click',e=>{
-        if(e.target===document.getElementById('bulkImportModal')) closeBulkImport();
-        if(e.target?.id==='orderModal') closeOrderModal();
+        if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();
+        if(e.target?.id==='orderModal')closeOrderModal();
     });
 }
 </script>
