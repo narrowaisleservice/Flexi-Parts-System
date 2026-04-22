@@ -629,8 +629,11 @@
             </div>
             <button class="filter-btn" onclick="clearFilters()">✕ Clear</button>
         </div>
-        <div class="orders-toolbar">
-            <div class="orders-results-label">Showing <span id="filteredOrdersCount">0</span> orders</div>
+       <div class="orders-toolbar">
+            <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                <div class="orders-results-label">Showing <span id="filteredOrdersCount">0</span> orders</div>
+                <span id="autoRefreshBadge" onclick="manualRefresh()" title="Click to refresh now" style="font-size:.8em;font-weight:700;color:#555;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all .2s;font-family:inherit;letter-spacing:.5px;user-select:none;">⟳ Auto-refresh</span>
+            </div>
             <div class="export-group">
                 <button class="export-btn export-btn-csv" onclick="exportCSV()">⬇ Export CSV</button>
                 <button class="export-btn export-btn-pdf" onclick="exportPDF()">🖨 Print / PDF</button>
@@ -956,14 +959,76 @@ function loadDemoParts() {
     ];
 }
 
-async function loadOrders() {
+async function loadOrders(silent = false) {
     try {
         const res = await fetch(`${API_URL}?action=getOrders`);
         const data = await res.json();
         if (data.success && data.orders) { orders = data.orders.map(normaliseOrder); learnFromOrders(); }
-    } catch(e) { orders = []; }
+    } catch(e) { if (!silent) orders = []; }
     updateOrderStats();
     applyFilters();
+    if (!silent) startAutoRefresh();
+}
+
+let _autoRefreshTimer = null, _autoRefreshCountdown = null, _refreshSecondsLeft = 0;
+const AUTO_REFRESH_INTERVAL = 120; // seconds
+
+function startAutoRefresh() {
+    if (_autoRefreshTimer) return; // already running
+    scheduleNextRefresh();
+}
+
+function scheduleNextRefresh() {
+    clearInterval(_autoRefreshCountdown);
+    clearTimeout(_autoRefreshTimer);
+    _refreshSecondsLeft = AUTO_REFRESH_INTERVAL;
+    updateRefreshBadge();
+    _autoRefreshCountdown = setInterval(() => {
+        _refreshSecondsLeft--;
+        updateRefreshBadge();
+        if (_refreshSecondsLeft <= 0) {
+            clearInterval(_autoRefreshCountdown);
+            refreshOrdersSilently();
+        }
+    }, 1000);
+}
+
+async function refreshOrdersSilently() {
+    updateRefreshBadge('syncing');
+    try {
+        const res = await fetch(`${API_URL}?action=getOrders`);
+        const data = await res.json();
+        if (data.success && data.orders) {
+            orders = data.orders.map(normaliseOrder);
+            learnFromOrders();
+            updateOrderStats();
+            applyFilters();
+            renderStoresPage();
+        }
+    } catch(e) {}
+    scheduleNextRefresh();
+}
+
+function updateRefreshBadge(state) {
+    const badge = document.getElementById('autoRefreshBadge');
+    if (!badge) return;
+    if (state === 'syncing') {
+        badge.textContent = '⟳ Syncing...';
+        badge.style.color = '#f59e0b';
+        badge.style.borderColor = 'rgba(245,158,11,.4)';
+    } else {
+        badge.textContent = `⟳ Refresh in ${_refreshSecondsLeft}s`;
+        badge.style.color = _refreshSecondsLeft <= 20 ? '#f59e0b' : '#555';
+        badge.style.borderColor = _refreshSecondsLeft <= 20 ? 'rgba(245,158,11,.3)' : 'var(--border)';
+    }
+}
+
+function manualRefresh() {
+    clearInterval(_autoRefreshCountdown);
+    clearTimeout(_autoRefreshTimer);
+    _autoRefreshTimer = null;
+    refreshOrdersSilently();
+}
 }
 
 function normaliseOrder(o) {
@@ -1119,7 +1184,7 @@ function applyFilters() {
     renderOrders();
 }
 
-function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),date:s(o.date||''),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
+function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),date:s(o._rawDate||o.date||''),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
 
 function sortOrders(field){sortDir=sortField===field?(sortDir==='asc'?'desc':'asc'):'asc';sortField=field;document.querySelectorAll('.orders-table th').forEach(th=>th.classList.remove('sort-asc','sort-desc'));const idx={orderNumber:0,date:1,serviceController:2,worksOrder:4,status:6}[field];if(idx!==undefined)document.querySelectorAll('.orders-table th')[idx]?.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');applyFilters();}
 
