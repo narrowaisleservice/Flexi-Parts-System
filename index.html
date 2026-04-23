@@ -752,7 +752,6 @@ let sortField = 'date', sortDir = 'desc', isUrgent = false;
 
 // ═══════════════════════════════════════════════════════
 // ENGINEER PINS — edit these to change individual PINs
-// Format: 'Full Name As In Dropdown': 'PIN'
 // ═══════════════════════════════════════════════════════
 const ENGINEER_PINS = {
     'Aaron Dyson':    '1111',
@@ -971,10 +970,10 @@ async function loadOrders(silent = false) {
 }
 
 let _autoRefreshTimer = null, _autoRefreshCountdown = null, _refreshSecondsLeft = 0;
-const AUTO_REFRESH_INTERVAL = 30; // seconds
+const AUTO_REFRESH_INTERVAL = 30;
 
 function startAutoRefresh() {
-    if (_autoRefreshTimer) return; // already running
+    if (_autoRefreshTimer) return;
     scheduleNextRefresh();
 }
 
@@ -1030,26 +1029,73 @@ function manualRefresh() {
     refreshOrdersSilently();
 }
 
+/* ══════════════════════════════════════════════════════
+   normaliseOrder — fixed date parsing for reliable sort
+   Produces _sortKey: a zero-padded numeric timestamp
+   so that lexicographic sort == chronological sort.
+══════════════════════════════════════════════════════ */
 function normaliseOrder(o) {
     let parts = o.parts || [];
     if (typeof parts === 'string') { try { parts = JSON.parse(parts); } catch(e) { parts = []; } }
     if (!Array.isArray(parts)) parts = [];
+
     const rawDate = o.date || o.orderDate || '';
-    let displayDate = rawDate, rawDateISO = '';
+    let displayDate = rawDate;
+    let _sortKey = '';      // ← NEW: used for sorting instead of _rawDate
+    let _rawDate = '';      // kept for date-filter (YYYY-MM-DD)
+
     if (rawDate) {
-        try {
-            let d = new Date(rawDate);
-            if (isNaN(d.getTime())) {
-                const m = String(rawDate).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
-                if (m) d = new Date(`${m[3]}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`);
+        let d = null;
+
+        // Try ISO / standard JS parse first
+        const attempt = new Date(rawDate);
+        if (!isNaN(attempt.getTime())) {
+            d = attempt;
+        }
+
+        // Fallback: DD/MM/YYYY or DD/MM/YYYY HH:MM:SS
+        if (!d) {
+            const m = String(rawDate).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[\sT,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
+            if (m) {
+                d = new Date(
+                    parseInt(m[3]),
+                    parseInt(m[2]) - 1,
+                    parseInt(m[1]),
+                    parseInt(m[4] || 0),
+                    parseInt(m[5] || 0),
+                    parseInt(m[6] || 0)
+                );
             }
-            if (!isNaN(d.getTime())) {
-                const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear(),hh=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');
-                displayDate=`${dd}/${mm}/${yyyy} ${hh}:${min}`; rawDateISO=`${yyyy}-${mm}-${dd}`;
-            } else { rawDateISO = String(rawDate).slice(0,10); }
-        } catch(e) { rawDateISO = String(rawDate).slice(0,10); }
+        }
+
+        if (d && !isNaN(d.getTime())) {
+            const dd   = String(d.getDate()).padStart(2, '0');
+            const mm   = String(d.getMonth() + 1).padStart(2, '0');
+            const yyyy = d.getFullYear();
+            const hh   = String(d.getHours()).padStart(2, '0');
+            const min  = String(d.getMinutes()).padStart(2, '0');
+            displayDate = `${dd}/${mm}/${yyyy} ${hh}:${min}`;
+            _rawDate    = `${yyyy}-${mm}-${dd}`;
+            // Zero-padded numeric key — sorts correctly as a string
+            _sortKey    = `${yyyy}${mm}${dd}${hh}${min}`;
+        } else {
+            // Unparseable — put at top when sorting desc so it's visible
+            _rawDate = String(rawDate).slice(0, 10);
+            _sortKey = '999999999999';
+        }
     }
-    return { ...o, parts, machineSerial:String(o.machineSerial||'').trim(), worksOrder:String(o.worksOrder||'').trim(), date:displayDate, _rawDate:rawDateISO, serviceController:o.serviceController||o.engineer||'', orderType:o.orderType||'' };
+
+    return {
+        ...o,
+        parts,
+        machineSerial: String(o.machineSerial || '').trim(),
+        worksOrder:    String(o.worksOrder || '').trim(),
+        date:          displayDate,
+        _rawDate,
+        _sortKey,
+        serviceController: o.serviceController || o.engineer || '',
+        orderType:         o.orderType || ''
+    };
 }
 
 /* ── VAN STOCK ── */
@@ -1170,7 +1216,12 @@ function updateOrderStats() {
 }
 
 function applyFilters() {
-    const search=(document.getElementById('filterSearch')?.value||'').toLowerCase(),status=document.getElementById('filterStatus')?.value||'',orderType=document.getElementById('filterOrderType')?.value||'',dateFrom=document.getElementById('filterDateFrom')?.value||'',dateTo=document.getElementById('filterDateTo')?.value||'';
+    const search=(document.getElementById('filterSearch')?.value||'').toLowerCase(),
+          status=document.getElementById('filterStatus')?.value||'',
+          orderType=document.getElementById('filterOrderType')?.value||'',
+          dateFrom=document.getElementById('filterDateFrom')?.value||'',
+          dateTo=document.getElementById('filterDateTo')?.value||'';
+
     displayedOrders=orders.filter(o=>{
         if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model,o.orderType].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
         if(status&&(o.status||'Pending')!==status)return false;
@@ -1178,12 +1229,27 @@ function applyFilters() {
         if(dateFrom||dateTo){const d=o._rawDate||'';if(dateFrom&&d<dateFrom)return false;if(dateTo&&d>dateTo)return false;}
         return true;
     });
-    displayedOrders.sort((a,b)=>{let va=fieldVal(a,sortField),vb=fieldVal(b,sortField);if(va<vb)return sortDir==='asc'?-1:1;if(va>vb)return sortDir==='asc'?1:-1;return 0;});
+
+    // ── FIXED SORT: use _sortKey for date, plain string for others ──
+    displayedOrders.sort((a, b) => {
+        let va, vb;
+        if (sortField === 'date') {
+            va = a._sortKey || '';
+            vb = b._sortKey || '';
+        } else {
+            va = fieldVal(a, sortField);
+            vb = fieldVal(b, sortField);
+        }
+        if (va < vb) return sortDir === 'asc' ? -1 : 1;
+        if (va > vb) return sortDir === 'asc' ?  1 : -1;
+        return 0;
+    });
+
     document.getElementById('filteredOrdersCount').textContent=displayedOrders.length;
     renderOrders();
 }
 
-function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),date:s(o._rawDate||o.date||''),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
+function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
 
 function sortOrders(field){sortDir=sortField===field?(sortDir==='asc'?'desc':'asc'):'asc';sortField=field;document.querySelectorAll('.orders-table th').forEach(th=>th.classList.remove('sort-asc','sort-desc'));const idx={orderNumber:0,date:1,serviceController:2,worksOrder:4,status:6}[field];if(idx!==undefined)document.querySelectorAll('.orders-table th')[idx]?.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');applyFilters();}
 
