@@ -26,6 +26,9 @@
             --stores-color: #f59e0b;
             --picked-color: #4ade80;
             --van-color: #3b82f6;
+            --returns-color: #a78bfa;
+            --wo-color: #22d3ee;
+            --reports-color: #f97316;
         }
 
         body { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; background: #000000; color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; letter-spacing: 0.3px; }
@@ -36,7 +39,7 @@
         .header-text { flex:1; }
         .header h1 { font-size:4em; font-weight:400; letter-spacing:-2px; margin-bottom:8px; text-transform:uppercase; }
         .header-subtitle { font-size:1.3em; color:var(--text-secondary); font-weight:500; letter-spacing:1px; text-transform:uppercase; }
-        .header-actions { display:flex; gap:15px; align-items:center; }
+        .header-actions { display:flex; gap:15px; align-items:center; flex-wrap:wrap; }
         .nav-link { padding:12px 24px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-size:1em; font-weight:700; cursor:pointer; transition:all .2s; font-family:inherit; text-transform:uppercase; letter-spacing:1px; text-decoration:none; display:inline-block; }
         .nav-link:hover { background:var(--hover-bg); border-color:var(--primary-red); color:white; }
         .page-section { display:none; }
@@ -50,6 +53,9 @@
         .stat-value.stores-val { color:var(--stores-color); }
         .stat-value.picked-val { color:var(--picked-color); }
         .stat-value.van-val { color:var(--van-color); }
+        .stat-value.returns-val { color:var(--returns-color); }
+        .stat-value.wo-val { color:var(--wo-color); }
+        .stat-value.reports-val { color:var(--reports-color); }
         .stat-label { font-size:1em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; }
 
         /* SEARCH */
@@ -236,13 +242,11 @@
         .van-lock-badge { display:inline-flex; align-items:center; gap:6px; background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3); color:#3b82f6; padding:4px 12px; border-radius:6px; font-size:.75em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; margin-left:8px; cursor:pointer; vertical-align:middle; transition:all .2s; }
         .van-lock-badge:hover { background:rgba(59,130,246,.3); }
 
-        /* ── PIN OVERLAY ── */
+        /* PIN OVERLAY */
         .pin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); backdrop-filter:blur(10px); z-index:4000; align-items:center; justify-content:center; pointer-events:none; }
         .pin-overlay.active { display:flex; pointer-events:all; }
         .pin-box { background:var(--card-bg); border:1px solid var(--border); border-left:4px solid #3b82f6; border-radius:16px; padding:40px 36px 32px; width:100%; max-width:420px; text-align:center; animation:pinSlideIn .25s ease; transition:transform .1s; }
         @keyframes pinSlideIn { from{opacity:0;transform:translateY(-30px)} to{opacity:1;transform:translateY(0)} }
-
-        /* Step 1: Engineer grid */
         .pin-step { display:none; }
         .pin-step.active { display:block; }
         .pin-box-icon { font-size:2.8em; margin-bottom:12px; }
@@ -251,8 +255,6 @@
         .engineer-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px; max-height:360px; overflow-y:auto; }
         .engineer-btn { padding:12px 10px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; font-weight:700; cursor:pointer; transition:all .15s; text-align:center; line-height:1.3; }
         .engineer-btn:hover { background:var(--hover-bg); border-color:#3b82f6; color:#3b82f6; }
-
-        /* Step 2: PIN entry */
         .pin-who { font-size:1.1em; font-weight:800; color:white; text-transform:uppercase; letter-spacing:.5px; margin-bottom:20px; padding:10px 16px; background:rgba(59,130,246,.15); border:1px solid rgba(59,130,246,.3); border-radius:8px; }
         .pin-dots { display:flex; justify-content:center; gap:14px; margin-bottom:20px; }
         .pin-dot { width:18px; height:18px; border-radius:50%; border:2px solid #3b82f6; background:transparent; transition:all .15s; }
@@ -264,10 +266,8 @@
         .pin-key.clear { color:#f59e0b; border-color:rgba(245,158,11,.3); font-size:1.1em; }
         .pin-key.clear:hover { background:rgba(245,158,11,.1); border-color:#f59e0b; color:#f59e0b; }
         .pin-error { color:#f87171; font-size:.9em; font-weight:700; text-transform:uppercase; letter-spacing:1px; min-height:22px; margin-bottom:8px; }
-        .pin-back-btn { background:transparent; border:none; color:#555; font-family:inherit; font-size:.88em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding:6px 12px; transition:color .2s; }
-        .pin-back-btn:hover { color:var(--text-secondary); }
-        .pin-cancel-btn { background:transparent; border:none; color:#555; font-family:inherit; font-size:.88em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding:6px 12px; transition:color .2s; margin-left:8px; }
-        .pin-cancel-btn:hover { color:var(--text-secondary); }
+        .pin-back-btn, .pin-cancel-btn { background:transparent; border:none; color:#555; font-family:inherit; font-size:.88em; font-weight:700; text-transform:uppercase; letter-spacing:1px; cursor:pointer; padding:6px 12px; transition:color .2s; }
+        .pin-back-btn:hover, .pin-cancel-btn:hover { color:var(--text-secondary); }
 
         /* MODAL */
         .modal-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.8); backdrop-filter:blur(4px); z-index:2000; align-items:center; justify-content:center; pointer-events:none; }
@@ -326,6 +326,163 @@
         .bulk-import-instructions { background:rgba(220,38,38,.1); border-left:3px solid var(--primary-red); padding:15px 20px; border-radius:8px; margin-bottom:20px; color:var(--text-secondary); font-size:.95em; line-height:1.6; }
         .bulk-import-results { margin-top:20px; padding:15px 20px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; display:none; }
         .bulk-import-results.show { display:block; }
+
+        /* ═══════════════════════════════
+           REPORTS STYLES
+        ═══════════════════════════════ */
+        .reports-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:24px; margin-bottom:30px; }
+        .report-card { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:28px; }
+        .report-card-title { font-size:1em; font-weight:800; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+        .report-card-title-icon { font-size:1.2em; }
+
+        /* Bar chart */
+        .bar-chart { display:flex; align-items:flex-end; gap:8px; height:140px; padding-bottom:4px; }
+        .bar-wrap { flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; height:100%; justify-content:flex-end; }
+        .bar { width:100%; background:var(--primary-red); border-radius:4px 4px 0 0; min-height:4px; transition:height .4s ease; position:relative; }
+        .bar:hover { background:#ef4444; }
+        .bar-tooltip { position:absolute; top:-28px; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.9); color:white; padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; white-space:nowrap; opacity:0; transition:opacity .15s; pointer-events:none; }
+        .bar:hover .bar-tooltip { opacity:1; }
+        .bar-label { font-size:.7em; font-weight:700; color:#555; text-transform:uppercase; text-align:center; letter-spacing:.3px; }
+
+        /* Engineer breakdown */
+        .engineer-breakdown { display:grid; gap:10px; }
+        .eng-row { display:flex; align-items:center; gap:12px; }
+        .eng-name { font-size:.9em; font-weight:700; color:white; min-width:130px; }
+        .eng-bar-wrap { flex:1; background:var(--dark-bg); border-radius:4px; height:10px; overflow:hidden; }
+        .eng-bar { height:100%; background:var(--primary-red); border-radius:4px; transition:width .5s ease; }
+        .eng-count { font-size:.85em; font-weight:800; color:var(--primary-red); min-width:30px; text-align:right; }
+
+        /* Top parts table */
+        .top-parts-table { width:100%; border-collapse:collapse; }
+        .top-parts-table th { text-align:left; padding:10px 12px; border-bottom:1px solid var(--border); color:var(--text-secondary); font-size:.8em; font-weight:700; text-transform:uppercase; letter-spacing:.8px; }
+        .top-parts-table td { padding:10px 12px; border-bottom:1px solid var(--border); font-size:.9em; }
+        .top-parts-table tr:last-child td { border-bottom:none; }
+        .top-parts-table tr:hover td { background:var(--hover-bg); }
+        .rank-badge { display:inline-flex; align-items:center; justify-content:center; width:24px; height:24px; border-radius:50%; background:rgba(220,38,38,.2); color:var(--primary-red); font-size:.8em; font-weight:800; border:1px solid rgba(220,38,38,.3); }
+        .rank-badge.gold { background:rgba(251,191,36,.2); color:#fbbf24; border-color:rgba(251,191,36,.3); }
+        .rank-badge.silver { background:rgba(148,163,184,.2); color:#94a3b8; border-color:rgba(148,163,184,.3); }
+        .rank-badge.bronze { background:rgba(180,83,9,.2); color:#b45309; border-color:rgba(180,83,9,.3); }
+
+        /* Status donut */
+        .donut-wrap { display:flex; align-items:center; gap:24px; }
+        .donut-svg { flex-shrink:0; }
+        .donut-legend { display:grid; gap:8px; flex:1; }
+        .donut-legend-item { display:flex; align-items:center; gap:8px; font-size:.88em; }
+        .donut-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+        .donut-legend-label { color:var(--text-secondary); flex:1; }
+        .donut-legend-val { font-weight:800; color:white; }
+
+        /* Reports period selector */
+        .reports-period-bar { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:16px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+        .period-btn { padding:8px 18px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-family:inherit; font-size:.9em; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:.5px; transition:all .2s; }
+        .period-btn.active { background:rgba(220,38,38,.15); border-color:var(--primary-red); color:white; }
+        .period-btn:hover:not(.active) { background:var(--hover-bg); border-color:#555; color:white; }
+        .reports-export-btn { margin-left:auto; padding:8px 18px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-family:inherit; font-size:.9em; font-weight:700; cursor:pointer; text-transform:uppercase; letter-spacing:.5px; transition:all .2s; }
+        .reports-export-btn:hover { background:rgba(74,222,128,.1); border-color:#4ade80; color:#4ade80; }
+
+        /* Summary stat strip */
+        .report-summary-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+        .rss-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
+        .rss-val { font-size:2.6em; font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:4px; }
+        .rss-label { font-size:.82em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
+
+        /* ═══════════════════════════════
+           RETURNS STYLES
+        ═══════════════════════════════ */
+        .returns-banner { background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3); border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; }
+        .returns-banner-title { font-size:1.1em; font-weight:800; color:var(--returns-color); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+        .returns-banner-sub { font-size:.88em; color:var(--text-secondary); }
+        .returns-layout { display:grid; grid-template-columns:1fr 420px; gap:24px; align-items:start; }
+        .returns-list { display:grid; gap:14px; }
+        .return-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:22px; transition:all .2s; }
+        .return-card:hover { background:var(--hover-bg); }
+        .return-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
+        .return-ref { font-size:1.4em; font-weight:900; color:var(--returns-color); letter-spacing:-.5px; }
+        .return-meta { font-size:.85em; color:var(--text-secondary); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+        .return-meta strong { color:white; }
+        .return-parts-preview { background:var(--dark-bg); border-radius:6px; padding:10px 12px; font-size:.85em; color:var(--text-secondary); }
+        .return-part-line { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--border); }
+        .return-part-line:last-child { border-bottom:none; }
+        .return-part-pn { color:var(--returns-color); font-weight:700; }
+        .return-part-qty { color:white; font-weight:700; }
+
+        /* Return status badges */
+        .status-return-submitted { background:rgba(167,139,250,.2); color:#a78bfa; border:1px solid rgba(167,139,250,.3); }
+        .status-return-received { background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+        .status-return-credited { background:rgba(74,222,128,.2); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+        .status-return-rejected { background:rgba(239,68,68,.2); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+
+        /* Return form */
+        .return-form-card { background:var(--card-bg); border:1px solid rgba(167,139,250,.3); border-radius:16px; padding:28px; border-left:4px solid var(--returns-color); position:sticky; top:20px; }
+        .return-form-title { font-size:1.6em; font-weight:900; color:var(--returns-color); text-transform:uppercase; letter-spacing:-1px; margin-bottom:4px; }
+        .return-form-sub { font-size:.88em; color:var(--text-secondary); margin-bottom:24px; }
+        .return-form-input { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; margin-bottom:14px; transition:all .2s; }
+        .return-form-input:focus { outline:none; border-color:var(--returns-color); }
+        .return-form-input::placeholder { color:#555; }
+        .return-form-select { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; margin-bottom:14px; transition:all .2s; }
+        .return-form-select:focus { outline:none; border-color:var(--returns-color); }
+        .return-form-select option { background:var(--card-bg); }
+        .return-form-label { display:block; font-size:.8em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
+        .return-parts-editor { background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:14px; }
+        .return-part-editor-row { display:grid; grid-template-columns:1fr 1fr 60px auto; gap:8px; margin-bottom:8px; align-items:center; }
+        .return-part-editor-row:last-of-type { margin-bottom:0; }
+        .rpe-input { padding:8px 10px; background:var(--card-bg); border:1px solid var(--border); border-radius:6px; color:white; font-family:inherit; font-size:.88em; width:100%; }
+        .rpe-input:focus { outline:none; border-color:var(--returns-color); }
+        .rpe-remove { background:transparent; border:1px solid rgba(239,68,68,.3); color:#f87171; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:.85em; font-weight:700; transition:all .2s; }
+        .rpe-remove:hover { background:rgba(239,68,68,.15); }
+        .add-return-part-btn { width:100%; padding:9px; background:transparent; border:1px dashed rgba(167,139,250,.4); border-radius:6px; color:var(--returns-color); font-family:inherit; font-size:.88em; font-weight:700; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; margin-bottom:14px; }
+        .add-return-part-btn:hover { background:rgba(167,139,250,.1); border-color:var(--returns-color); }
+        .submit-return-btn { width:100%; padding:16px; background:var(--returns-color); border:none; border-radius:8px; color:#000; font-family:inherit; font-size:1em; font-weight:800; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:1px; }
+        .submit-return-btn:hover { background:#c4b5fd; }
+        .submit-return-btn:disabled { opacity:.5; cursor:not-allowed; }
+
+        /* ═══════════════════════════════
+           WORKS ORDERS STYLES
+        ═══════════════════════════════ */
+        .wo-banner { background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3); border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; }
+        .wo-banner-title { font-size:1.1em; font-weight:800; color:var(--wo-color); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
+        .wo-banner-sub { font-size:.88em; color:var(--text-secondary); }
+        .wo-toolbar { display:flex; gap:12px; align-items:center; margin-bottom:20px; flex-wrap:wrap; }
+        .wo-filter-input { flex:1; min-width:200px; padding:10px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; }
+        .wo-filter-input:focus { outline:none; border-color:var(--wo-color); }
+        .wo-filter-select { padding:10px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; min-width:160px; }
+        .wo-filter-select:focus { outline:none; border-color:var(--wo-color); }
+        .wo-filter-select option { background:var(--card-bg); }
+        .new-wo-btn { padding:10px 22px; background:var(--wo-color); border:none; border-radius:8px; color:#000; font-family:inherit; font-size:.95em; font-weight:800; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+        .new-wo-btn:hover { background:#67e8f9; }
+        .wo-table-wrap { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
+        .wo-table { width:100%; border-collapse:collapse; }
+        .wo-table th { padding:14px 16px; text-align:left; background:var(--hover-bg); color:var(--text-secondary); font-size:.85em; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); cursor:pointer; white-space:nowrap; }
+        .wo-table th:hover { color:white; }
+        .wo-table td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:.95em; color:white; }
+        .wo-table tr:last-child td { border-bottom:none; }
+        .wo-table tr:hover td { background:var(--hover-bg); cursor:pointer; }
+        .wo-number { color:var(--wo-color); font-weight:800; font-size:1.05em; }
+        .wo-status { display:inline-block; padding:5px 10px; border-radius:6px; font-size:.8em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
+        .wo-status-open { background:rgba(234,179,8,.2); color:#facc15; border:1px solid rgba(234,179,8,.3); }
+        .wo-status-parts-ordered { background:rgba(34,211,238,.2); color:#22d3ee; border:1px solid rgba(34,211,238,.3); }
+        .wo-status-awaiting-parts { background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
+        .wo-status-complete { background:rgba(74,222,128,.2); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
+        .wo-status-cancelled { background:rgba(239,68,68,.2); color:#f87171; border:1px solid rgba(239,68,68,.3); }
+        .wo-parts-link { display:inline-flex; align-items:center; gap:5px; background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.2); color:#22d3ee; padding:3px 10px; border-radius:4px; font-size:.8em; font-weight:700; }
+
+        /* WO Modal */
+        .wo-modal-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .wo-modal-input { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; transition:all .2s; }
+        .wo-modal-input:focus { outline:none; border-color:var(--wo-color); }
+        .wo-modal-input::placeholder { color:#555; }
+        .wo-modal-select { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; transition:all .2s; }
+        .wo-modal-select:focus { outline:none; border-color:var(--wo-color); }
+        .wo-modal-select option { background:var(--card-bg); }
+        .wo-form-label { display:block; font-size:.8em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; margin-top:14px; }
+        .wo-form-label:first-child { margin-top:0; }
+        .save-wo-btn { width:100%; padding:16px; background:var(--wo-color); border:none; border-radius:8px; color:#000; font-family:inherit; font-size:1em; font-weight:800; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:1px; margin-top:20px; }
+        .save-wo-btn:hover { background:#67e8f9; }
+        .linked-orders-section { background:var(--dark-bg); border-radius:8px; padding:14px; }
+        .linked-order-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); font-size:.88em; }
+        .linked-order-row:last-child { border-bottom:none; }
+        .linked-order-num { color:var(--primary-red); font-weight:700; }
+        .linked-order-info { color:var(--text-secondary); }
 
         /* MISC */
         .toast { position:fixed; bottom:110px; right:30px; background:var(--card-bg); border:1px solid var(--border); border-left:3px solid var(--primary-red); color:white; padding:16px 24px; border-radius:8px; animation:slideIn .3s ease; z-index:9999; font-weight:600; font-size:.95em; pointer-events:none; }
@@ -390,6 +547,8 @@
             .modal-grid { grid-template-columns:1fr; }
             .orders-filter-bar { flex-direction:column; }
             .engineer-grid { grid-template-columns:1fr; }
+            .returns-layout { grid-template-columns:1fr; }
+            .report-summary-strip { grid-template-columns:1fr 1fr; }
         }
         ::-webkit-scrollbar { width:14px; height:14px; }
         ::-webkit-scrollbar-track { background:var(--dark-bg); border-left:1px solid var(--border); }
@@ -402,14 +561,9 @@
 <div id="printTitle">Flexi Parts — Orders Export</div>
 <button class="cart-toggle" id="cartToggle" onclick="toggleCart()">🛒<div class="cart-badge" id="cartBadge">0</div></button>
 
-<!-- ══════════════════════════════════════════
-     PER-ENGINEER PIN OVERLAY
-     Change PINs in the ENGINEER_PINS object below
-══════════════════════════════════════════ -->
+<!-- PIN OVERLAY -->
 <div class="pin-overlay" id="pinOverlay">
     <div class="pin-box" id="pinBox">
-
-        <!-- STEP 1: Choose engineer -->
         <div class="pin-step active" id="pinStep1">
             <div class="pin-box-icon">🚐</div>
             <div class="pin-box-title">Van Stock</div>
@@ -417,43 +571,30 @@
             <div class="engineer-grid" id="engineerGrid"></div>
             <button class="pin-cancel-btn" onclick="closePinOverlay()">Cancel</button>
         </div>
-
-        <!-- STEP 2: Enter PIN -->
         <div class="pin-step" id="pinStep2">
             <div class="pin-box-icon">🔐</div>
             <div class="pin-box-title">Enter PIN</div>
             <div class="pin-who" id="pinWho"></div>
             <div class="pin-dots">
-                <div class="pin-dot" id="pd0"></div>
-                <div class="pin-dot" id="pd1"></div>
-                <div class="pin-dot" id="pd2"></div>
-                <div class="pin-dot" id="pd3"></div>
+                <div class="pin-dot" id="pd0"></div><div class="pin-dot" id="pd1"></div>
+                <div class="pin-dot" id="pd2"></div><div class="pin-dot" id="pd3"></div>
             </div>
             <div class="pin-error" id="pinError"></div>
             <div class="pin-keypad">
-                <button class="pin-key" onclick="pinKey('1')">1</button>
-                <button class="pin-key" onclick="pinKey('2')">2</button>
-                <button class="pin-key" onclick="pinKey('3')">3</button>
-                <button class="pin-key" onclick="pinKey('4')">4</button>
-                <button class="pin-key" onclick="pinKey('5')">5</button>
-                <button class="pin-key" onclick="pinKey('6')">6</button>
-                <button class="pin-key" onclick="pinKey('7')">7</button>
-                <button class="pin-key" onclick="pinKey('8')">8</button>
-                <button class="pin-key" onclick="pinKey('9')">9</button>
-                <button class="pin-key clear" onclick="pinBackspace()">⌫</button>
-                <button class="pin-key" onclick="pinKey('0')">0</button>
-                <button class="pin-key" onclick="pinSubmit()">✓</button>
+                <button class="pin-key" onclick="pinKey('1')">1</button><button class="pin-key" onclick="pinKey('2')">2</button><button class="pin-key" onclick="pinKey('3')">3</button>
+                <button class="pin-key" onclick="pinKey('4')">4</button><button class="pin-key" onclick="pinKey('5')">5</button><button class="pin-key" onclick="pinKey('6')">6</button>
+                <button class="pin-key" onclick="pinKey('7')">7</button><button class="pin-key" onclick="pinKey('8')">8</button><button class="pin-key" onclick="pinKey('9')">9</button>
+                <button class="pin-key clear" onclick="pinBackspace()">⌫</button><button class="pin-key" onclick="pinKey('0')">0</button><button class="pin-key" onclick="pinSubmit()">✓</button>
             </div>
             <button class="pin-back-btn" onclick="pinGoBack()">← Back</button>
             <button class="pin-cancel-btn" onclick="closePinOverlay()">Cancel</button>
         </div>
-
     </div>
 </div>
 
 <div class="container">
 
-    <!-- PARTS PAGE -->
+    <!-- ═══════ PARTS PAGE ═══════ -->
     <div class="page-section active" id="partsPage">
         <div class="header">
             <div class="header-content">
@@ -466,7 +607,10 @@
             <div class="header-actions">
                 <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
                 <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
-                <button class="nav-link" onclick="showPage('orders')">View Orders</button>
+                <button class="nav-link" onclick="showPage('orders')">Orders</button>
+                <button class="nav-link" onclick="showPage('returns')" style="border-color:rgba(167,139,250,.4);color:#a78bfa;">↩ Returns</button>
+                <button class="nav-link" onclick="showPage('workorders')" style="border-color:rgba(34,211,238,.4);color:#22d3ee;">🔧 Works Orders</button>
+                <button class="nav-link" onclick="showPage('reports')" style="border-color:rgba(249,115,22,.4);color:#f97316;">📊 Reports</button>
             </div>
         </div>
         <div class="stats-bar">
@@ -503,7 +647,7 @@
         </div>
     </div>
 
-    <!-- VAN STOCK PAGE -->
+    <!-- ═══════ VAN STOCK PAGE ═══════ -->
     <div class="page-section" id="vanstockPage">
         <div class="header">
             <div class="header-content">
@@ -515,8 +659,8 @@
             </div>
             <div class="header-actions">
                 <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
-                <button class="nav-link" onclick="showPage('orders')">View Orders</button>
-                <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
+                <button class="nav-link" onclick="showPage('orders')">Orders</button>
+                <button class="nav-link" onclick="showPage('parts')">← Parts</button>
             </div>
         </div>
         <div class="stats-bar">
@@ -531,12 +675,10 @@
                 <div class="van-banner-sub" id="vanBannerSub">Viewing your personal van stock.</div>
             </div>
         </div>
-        <div id="vanStockContent">
-            <div class="empty-state"><div class="empty-state-icon">🚐</div><p>Loading your van stock...</p></div>
-        </div>
+        <div id="vanStockContent"><div class="empty-state"><div class="empty-state-icon">🚐</div><p>Loading your van stock...</p></div></div>
     </div>
 
-    <!-- STORES PAGE -->
+    <!-- ═══════ STORES PAGE ═══════ -->
     <div class="page-section" id="storesPage">
         <div class="header">
             <div class="header-content">
@@ -548,8 +690,8 @@
             </div>
             <div class="header-actions">
                 <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
-                <button class="nav-link" onclick="showPage('orders')">View All Orders</button>
-                <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
+                <button class="nav-link" onclick="showPage('orders')">Orders</button>
+                <button class="nav-link" onclick="showPage('parts')">← Parts</button>
             </div>
         </div>
         <div class="stats-bar">
@@ -571,7 +713,7 @@
         <div id="storesOrdersList"></div>
     </div>
 
-    <!-- ORDERS PAGE -->
+    <!-- ═══════ ORDERS PAGE ═══════ -->
     <div class="page-section" id="ordersPage">
         <div class="header">
             <div class="header-content">
@@ -584,7 +726,7 @@
             <div class="header-actions">
                 <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
                 <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
-                <button class="nav-link" onclick="showPage('parts')">← Back to Parts</button>
+                <button class="nav-link" onclick="showPage('parts')">← Parts</button>
             </div>
         </div>
         <div class="stats-bar">
@@ -595,41 +737,24 @@
             <div class="stat-card"><div class="stat-value" id="completedOrders">0</div><div class="stat-label">Completed</div></div>
         </div>
         <div class="orders-filter-bar">
-            <div class="filter-group">
-                <span class="filter-label">Search Orders</span>
-                <input type="text" class="filter-input" id="filterSearch" placeholder="Order #, name, works order..." oninput="applyFilters()">
-            </div>
-            <div class="filter-group" style="max-width:180px;">
-                <span class="filter-label">Order Type</span>
+            <div class="filter-group"><span class="filter-label">Search Orders</span><input type="text" class="filter-input" id="filterSearch" placeholder="Order #, name, works order..." oninput="applyFilters()"></div>
+            <div class="filter-group" style="max-width:180px;"><span class="filter-label">Order Type</span>
                 <select class="filter-select" id="filterOrderType" onchange="applyFilters()">
-                    <option value="">All Types</option>
-                    <option value="Service Controller">Service Controller</option>
-                    <option value="Service Engineer">Service Engineer</option>
+                    <option value="">All Types</option><option value="Service Controller">Service Controller</option><option value="Service Engineer">Service Engineer</option>
                 </select>
             </div>
-            <div class="filter-group" style="max-width:180px;">
-                <span class="filter-label">Status</span>
+            <div class="filter-group" style="max-width:180px;"><span class="filter-label">Status</span>
                 <select class="filter-select" id="filterStatus" onchange="applyFilters()">
-                    <option value="">All Statuses</option>
-                    <option value="Pending">Pending</option>
-                    <option value="Sent to Stores">Sent to Stores</option>
-                    <option value="Picked &amp; Ready">Picked &amp; Ready</option>
-                    <option value="Backorder">Backorder</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
+                    <option value="">All Statuses</option><option value="Pending">Pending</option><option value="Sent to Stores">Sent to Stores</option>
+                    <option value="Picked &amp; Ready">Picked &amp; Ready</option><option value="Backorder">Backorder</option>
+                    <option value="Completed">Completed</option><option value="Cancelled">Cancelled</option>
                 </select>
             </div>
-            <div class="filter-group" style="max-width:140px;">
-                <span class="filter-label">Date From</span>
-                <input type="date" class="filter-input" id="filterDateFrom" onchange="applyFilters()">
-            </div>
-            <div class="filter-group" style="max-width:140px;">
-                <span class="filter-label">Date To</span>
-                <input type="date" class="filter-input" id="filterDateTo" onchange="applyFilters()">
-            </div>
+            <div class="filter-group" style="max-width:140px;"><span class="filter-label">Date From</span><input type="date" class="filter-input" id="filterDateFrom" onchange="applyFilters()"></div>
+            <div class="filter-group" style="max-width:140px;"><span class="filter-label">Date To</span><input type="date" class="filter-input" id="filterDateTo" onchange="applyFilters()"></div>
             <button class="filter-btn" onclick="clearFilters()">✕ Clear</button>
         </div>
-       <div class="orders-toolbar">
+        <div class="orders-toolbar">
             <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
                 <div class="orders-results-label">Showing <span id="filteredOrdersCount">0</span> orders</div>
                 <span id="autoRefreshBadge" onclick="manualRefresh()" title="Click to refresh now" style="font-size:.8em;font-weight:700;color:#555;border:1px solid var(--border);border-radius:6px;padding:4px 10px;cursor:pointer;transition:all .2s;font-family:inherit;letter-spacing:.5px;user-select:none;">⟳ Auto-refresh</span>
@@ -650,9 +775,234 @@
                     <th>Parts</th>
                     <th class="sortable" onclick="sortOrders('status')">Status</th>
                 </tr></thead>
-                <tbody id="ordersTableBody">
-                    <tr><td colspan="7" style="text-align:center;padding:60px;color:#666;">Loading orders...</td></tr>
-                </tbody>
+                <tbody id="ordersTableBody"><tr><td colspan="7" style="text-align:center;padding:60px;color:#666;">Loading orders...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         REPORTS PAGE
+    ═══════════════════════════════════════════ -->
+    <div class="page-section" id="reportsPage">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                <div class="header-text">
+                    <h1>REPORTS</h1>
+                    <p class="header-subtitle">ORDER ANALYTICS &amp; INSIGHTS</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="nav-link" onclick="showPage('orders')">Orders</button>
+                <button class="nav-link" onclick="showPage('parts')">← Parts</button>
+            </div>
+        </div>
+
+        <div class="reports-period-bar">
+            <span style="font-size:.85em;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">Period:</span>
+            <button class="period-btn active" onclick="setReportPeriod(30,this)">Last 30 Days</button>
+            <button class="period-btn" onclick="setReportPeriod(90,this)">Last 90 Days</button>
+            <button class="period-btn" onclick="setReportPeriod(180,this)">Last 6 Months</button>
+            <button class="period-btn" onclick="setReportPeriod(365,this)">This Year</button>
+            <button class="period-btn" onclick="setReportPeriod(0,this)">All Time</button>
+            <button class="reports-export-btn" onclick="exportReportCSV()">⬇ Export Report CSV</button>
+        </div>
+
+        <div class="report-summary-strip">
+            <div class="rss-card"><div class="rss-val reports-val" id="rpt-total-orders">0</div><div class="rss-label">Total Orders</div></div>
+            <div class="rss-card"><div class="rss-val picked-val" id="rpt-total-parts">0</div><div class="rss-label">Total Parts Ordered</div></div>
+            <div class="rss-card"><div class="rss-val stores-val" id="rpt-urgent">0</div><div class="rss-label">Urgent Orders</div></div>
+            <div class="rss-card"><div class="rss-val" id="rpt-avg-parts">0</div><div class="rss-label">Avg Parts / Order</div></div>
+        </div>
+
+        <div class="reports-grid">
+
+            <!-- Orders per week bar chart -->
+            <div class="report-card" style="grid-column:span 2;">
+                <div class="report-card-title"><span class="report-card-title-icon">📈</span>Orders Per Week (Last 8 Weeks)</div>
+                <div class="bar-chart" id="weeklyBarChart"></div>
+            </div>
+
+            <!-- Status breakdown donut -->
+            <div class="report-card">
+                <div class="report-card-title"><span class="report-card-title-icon">🥧</span>Orders by Status</div>
+                <div class="donut-wrap">
+                    <svg class="donut-svg" width="120" height="120" viewBox="0 0 120 120" id="donutSvg"></svg>
+                    <div class="donut-legend" id="donutLegend"></div>
+                </div>
+            </div>
+
+            <!-- Orders by engineer -->
+            <div class="report-card">
+                <div class="report-card-title"><span class="report-card-title-icon">👤</span>Orders by Engineer / Controller</div>
+                <div class="engineer-breakdown" id="engineerBreakdown"></div>
+            </div>
+
+            <!-- Top parts -->
+            <div class="report-card" style="grid-column:span 2;">
+                <div class="report-card-title"><span class="report-card-title-icon">🏆</span>Top 10 Most Ordered Parts</div>
+                <table class="top-parts-table">
+                    <thead><tr><th>#</th><th>Part Number</th><th>Description</th><th>Times Ordered</th><th>Total Qty</th></tr></thead>
+                    <tbody id="topPartsBody"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         RETURNS PAGE
+    ═══════════════════════════════════════════ -->
+    <div class="page-section" id="returnsPage">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                <div class="header-text">
+                    <h1>RETURNS</h1>
+                    <p class="header-subtitle">PARTS RETURNS MANAGEMENT</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="nav-link" onclick="showPage('orders')">Orders</button>
+                <button class="nav-link" onclick="showPage('parts')">← Parts</button>
+            </div>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-card"><div class="stat-value returns-val" id="returns-submitted-count">0</div><div class="stat-label">Submitted</div></div>
+            <div class="stat-card"><div class="stat-value stores-val" id="returns-received-count">0</div><div class="stat-label">Received</div></div>
+            <div class="stat-card"><div class="stat-value picked-val" id="returns-credited-count">0</div><div class="stat-label">Credited</div></div>
+            <div class="stat-card"><div class="stat-value" style="color:#f87171;" id="returns-rejected-count">0</div><div class="stat-label">Rejected</div></div>
+        </div>
+        <div class="returns-banner">
+            <span style="font-size:1.6em;">↩</span>
+            <div>
+                <div class="returns-banner-title">Parts Returns</div>
+                <div class="returns-banner-sub">Submit a return request below. All returns require a valid works order or order reference. Parts must be in original condition unless faulty.</div>
+            </div>
+        </div>
+        <div class="returns-layout">
+            <!-- Returns list -->
+            <div>
+                <div style="font-size:1em;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Return History</div>
+                <div class="returns-list" id="returnsList">
+                    <div class="empty-state"><div class="empty-state-icon">↩</div><p>No returns submitted yet.</p></div>
+                </div>
+            </div>
+            <!-- Return form -->
+            <div>
+                <div class="return-form-card">
+                    <div class="return-form-title">New Return</div>
+                    <div class="return-form-sub">Submit a parts return request</div>
+                    <label class="return-form-label">Raised By *</label>
+                    <select class="return-form-select" id="ret-raised-by">
+                        <option value="">— Select name —</option>
+                        <optgroup label="Controllers">
+                            <option>Karen Bell</option><option>Jane Robbins</option><option>Phil Grant</option><option>Lee Burt</option>
+                        </optgroup>
+                        <optgroup label="Engineers">
+                            <option>Aaron Dyson</option><option>Brett Stockton</option><option>David Williams</option><option>Graham Denman</option>
+                            <option>Kevin Deakin</option><option>Lance Duncan</option><option>Lewis Lockwood</option><option>Mick Thornley</option>
+                            <option>Mike Adams</option><option>Pete King</option><option>Rob Appleyard</option><option>Rob Lucas</option><option>Tom Barker</option>
+                        </optgroup>
+                    </select>
+                    <label class="return-form-label">Works Order / Order Ref</label>
+                    <input type="text" class="return-form-input" id="ret-works-order" placeholder="e.g. WO-12345 or ORD-0042">
+                    <label class="return-form-label">Machine Serial</label>
+                    <input type="text" class="return-form-input" id="ret-serial" placeholder="Machine serial number">
+                    <label class="return-form-label">Reason for Return *</label>
+                    <select class="return-form-select" id="ret-reason">
+                        <option value="">— Select reason —</option>
+                        <option>Wrong Part Supplied</option>
+                        <option>Ordered in Error</option>
+                        <option>Faulty / Damaged on Arrival</option>
+                        <option>Duplicate Order</option>
+                        <option>Job Cancelled</option>
+                        <option>Part Not Required</option>
+                        <option>Other</option>
+                    </select>
+                    <label class="return-form-label">Condition</label>
+                    <select class="return-form-select" id="ret-condition">
+                        <option>Unused / Original Packaging</option>
+                        <option>Unused / No Packaging</option>
+                        <option>Faulty — Not Installed</option>
+                        <option>Faulty — Installed &amp; Removed</option>
+                    </select>
+                    <label class="return-form-label">Parts to Return *</label>
+                    <div class="return-parts-editor" id="returnPartsEditor">
+                        <div class="return-part-editor-row" style="margin-bottom:6px;">
+                            <span style="font-size:.75em;color:#555;font-weight:700;text-transform:uppercase;">Part Number</span>
+                            <span style="font-size:.75em;color:#555;font-weight:700;text-transform:uppercase;">Description</span>
+                            <span style="font-size:.75em;color:#555;font-weight:700;text-transform:uppercase;">Qty</span>
+                            <span></span>
+                        </div>
+                    </div>
+                    <button class="add-return-part-btn" onclick="addReturnPartRow()">+ Add Part</button>
+                    <label class="return-form-label">Additional Notes</label>
+                    <textarea class="return-form-input" id="ret-notes" placeholder="Any additional information..." style="min-height:70px;resize:vertical;"></textarea>
+                    <button class="submit-return-btn" onclick="submitReturn()">↩ Submit Return Request</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         WORKS ORDERS PAGE
+    ═══════════════════════════════════════════ -->
+    <div class="page-section" id="workordersPage">
+        <div class="header">
+            <div class="header-content">
+                <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
+                <div class="header-text">
+                    <h1>WORKS ORDERS</h1>
+                    <p class="header-subtitle">JOB &amp; WORKS ORDER TRACKER</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="nav-link" onclick="showPage('orders')">Parts Orders</button>
+                <button class="nav-link" onclick="showPage('parts')">← Parts</button>
+            </div>
+        </div>
+        <div class="stats-bar">
+            <div class="stat-card"><div class="stat-value wo-val" id="wo-open-count">0</div><div class="stat-label">Open</div></div>
+            <div class="stat-card"><div class="stat-value stores-val" id="wo-awaiting-count">0</div><div class="stat-label">Awaiting Parts</div></div>
+            <div class="stat-card"><div class="stat-value picked-val" id="wo-complete-count">0</div><div class="stat-label">Completed</div></div>
+            <div class="stat-card"><div class="stat-value" id="wo-total-count">0</div><div class="stat-label">Total</div></div>
+        </div>
+        <div class="wo-banner">
+            <span style="font-size:1.6em;">🔧</span>
+            <div>
+                <div class="wo-banner-title">Works Order Register</div>
+                <div class="wo-banner-sub">Track jobs end-to-end. Works orders automatically link to any parts orders that share the same WO number.</div>
+            </div>
+        </div>
+        <div class="wo-toolbar">
+            <input type="text" class="wo-filter-input" id="woFilterSearch" placeholder="Search WO number, engineer, machine..." oninput="renderWOTable()">
+            <select class="wo-filter-select" id="woFilterStatus" onchange="renderWOTable()">
+                <option value="">All Statuses</option>
+                <option value="Open">Open</option>
+                <option value="Parts Ordered">Parts Ordered</option>
+                <option value="Awaiting Parts">Awaiting Parts</option>
+                <option value="Complete">Complete</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
+            <select class="wo-filter-select" id="woFilterEngineer" onchange="renderWOTable()">
+                <option value="">All Engineers</option>
+            </select>
+            <button class="new-wo-btn" onclick="openNewWOModal()">+ New Works Order</button>
+        </div>
+        <div class="wo-table-wrap">
+            <table class="wo-table">
+                <thead><tr>
+                    <th onclick="sortWO('woNumber')">WO Number</th>
+                    <th onclick="sortWO('dateRaised')">Date Raised</th>
+                    <th onclick="sortWO('engineer')">Engineer</th>
+                    <th>Machine Serial</th>
+                    <th>Model</th>
+                    <th>Customer</th>
+                    <th>Parts Orders</th>
+                    <th onclick="sortWO('status')">Status</th>
+                </tr></thead>
+                <tbody id="woTableBody"><tr><td colspan="8" style="text-align:center;padding:60px;color:#666;">No works orders yet. Click "+ New Works Order" to add one.</td></tr></tbody>
             </table>
         </div>
     </div>
@@ -662,10 +1012,7 @@
 <!-- CART PANEL -->
 <div class="cart-section" id="cartSection">
     <div class="cart-close" onclick="toggleCart()">✕</div>
-    <div class="cart-header">
-        <h2>Order Cart</h2>
-        <p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p>
-    </div>
+    <div class="cart-header"><h2>Order Cart</h2><p class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</p></div>
     <div id="cartItems"></div>
     <div class="order-form" id="orderForm" style="display:none;">
         <div class="form-group"><label>Your Name *</label><input type="text" id="serviceController" required placeholder="Enter your name"></div>
@@ -677,10 +1024,7 @@
             <label>Machine Serial</label>
             <input type="text" id="machineSerial" oninput="onSerialInput()" autocomplete="off">
             <div class="serial-memory-card" id="serialMemoryCard">
-                <div class="serial-memory-header">
-                    <div class="serial-memory-title">📟 Known Machine</div>
-                    <button class="serial-memory-forget" onclick="forgetSerial()">Forget</button>
-                </div>
+                <div class="serial-memory-header"><div class="serial-memory-title">📟 Known Machine</div><button class="serial-memory-forget" onclick="forgetSerial()">Forget</button></div>
                 <div class="serial-memory-grid">
                     <div><div class="serial-memory-label">Model</div><div class="serial-memory-value" id="smModel">—</div></div>
                     <div><div class="serial-memory-label">Last Ordered</div><div class="serial-memory-value" id="smLastOrder">—</div></div>
@@ -690,9 +1034,7 @@
                 <button class="serial-memory-apply" onclick="applySerialMemory()">↙ Auto-fill Model &amp; Engineer</button>
             </div>
         </div>
-        <div class="form-group"><label>Model</label>
-            <select id="orderModel"><option value="">Select model</option></select>
-        </div>
+        <div class="form-group"><label>Model</label><select id="orderModel"><option value="">Select model</option></select></div>
         <div class="form-group"><label>Comments</label><textarea id="comments" placeholder="Additional notes..."></textarea></div>
         <div class="cost-bar" id="costBar">
             <div><div class="cost-bar-label">Estimated Order Cost</div><div class="cost-bar-breakdown" id="costBreakdown"></div></div>
@@ -710,11 +1052,7 @@
         </label>
         <button class="submit-order" id="submitBtn">Submit Order</button>
     </div>
-    <div class="empty-state" id="emptyCart">
-        <div class="empty-state-icon">🛒</div>
-        <p>Your cart is empty</p>
-        <p style="font-size:.9em;margin-top:8px;">Add parts to get started</p>
-    </div>
+    <div class="empty-state" id="emptyCart"><div class="empty-state-icon">🛒</div><p>Your cart is empty</p><p style="font-size:.9em;margin-top:8px;">Add parts to get started</p></div>
 </div>
 
 <!-- BULK IMPORT MODAL -->
@@ -745,154 +1083,121 @@
     </div>
 </div>
 
+<!-- WO MODAL -->
+<div class="modal-overlay" id="woModal">
+    <div class="modal" style="border-left:4px solid var(--wo-color);">
+        <div class="modal-header">
+            <h2 id="woModalTitle" style="color:var(--wo-color);">New Works Order</h2>
+            <button class="modal-close" onclick="closeWOModal()">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="wo-modal-form">
+                <div class="wo-form-label">WO Number *</div>
+                <input type="text" class="wo-modal-input" id="wo-number" placeholder="e.g. WO-2025-001">
+                <div class="wo-form-label">Date Raised</div>
+                <input type="date" class="wo-modal-input" id="wo-date">
+                <div class="wo-form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div>
+                        <div class="wo-form-label">Engineer *</div>
+                        <select class="wo-modal-select" id="wo-engineer">
+                            <option value="">— Select engineer —</option>
+                            <optgroup label="Engineers">
+                                <option>Aaron Dyson</option><option>Brett Stockton</option><option>David Williams</option><option>Graham Denman</option>
+                                <option>Kevin Deakin</option><option>Lance Duncan</option><option>Lewis Lockwood</option><option>Mick Thornley</option>
+                                <option>Mike Adams</option><option>Pete King</option><option>Rob Appleyard</option><option>Rob Lucas</option><option>Tom Barker</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div>
+                        <div class="wo-form-label">Status *</div>
+                        <select class="wo-modal-select" id="wo-status">
+                            <option value="Open">Open</option>
+                            <option value="Parts Ordered">Parts Ordered</option>
+                            <option value="Awaiting Parts">Awaiting Parts</option>
+                            <option value="Complete">Complete</option>
+                            <option value="Cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;">
+                    <div>
+                        <div class="wo-form-label">Machine Serial</div>
+                        <input type="text" class="wo-modal-input" id="wo-serial" placeholder="Serial number">
+                    </div>
+                    <div>
+                        <div class="wo-form-label">Model</div>
+                        <select class="wo-modal-select" id="wo-model">
+                            <option value="">Select model</option>
+                            <option>Flexi G3</option><option>Flexi G4</option><option>15VN/VNA</option><option>17N/1000</option>
+                            <option>17N+/1100</option><option>20S/1200</option><option>22S+/1250</option><option>25W+/1350</option>
+                            <option>MAX 22S+/1250</option><option>MAX 25W/1350</option><option>MAX 25EW/1400</option><option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="wo-form-label">Customer / Site</div>
+                <input type="text" class="wo-modal-input" id="wo-customer" placeholder="Customer name or site">
+                <div class="wo-form-label">Fault Description</div>
+                <textarea class="wo-modal-input" id="wo-fault" placeholder="Describe the fault or job..." style="min-height:80px;resize:vertical;"></textarea>
+                <div class="wo-form-label">Notes</div>
+                <textarea class="wo-modal-input" id="wo-notes" placeholder="Additional notes..." style="min-height:60px;resize:vertical;"></textarea>
+                <div id="wo-linked-orders-section" style="display:none;">
+                    <div class="wo-form-label" style="color:var(--wo-color);">Linked Parts Orders</div>
+                    <div class="linked-orders-section" id="woLinkedOrders"></div>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn modal-btn-secondary" onclick="closeWOModal()">Cancel</button>
+                <button class="modal-btn" style="background:var(--wo-color);color:#000;font-weight:800;" onclick="saveWO()">Save Works Order</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbzyqm5dVvIW8snsuO9WX8WBy3xrIywGyT9-05QQZGX04e48hv5v2wsm6pPnbP8g9Rng/exec';
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let sortField = 'date', sortDir = 'desc', isUrgent = false;
+let returns = [], workOrders = [];
+let reportPeriodDays = 30;
+let woSortField = 'dateRaised', woSortDir = 'desc';
+let editingWOIndex = -1;
 
-// ═══════════════════════════════════════════════════════
-// ENGINEER PINS — edit these to change individual PINs
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 const ENGINEER_PINS = {
-    'Aaron Dyson':    '1111',
-    'Brett Stockton': '2222',
-    'David Williams': '3333',
-    'Graham Denman':  '4444',
-    'Kevin Deakin':   '5555',
-    'Lance Duncan':   '6666',
-    'Lewis Lockwood': '7777',
-    'Mick Thornley':  '8888',
-    'Mike Adams':     '9999',
-    'Pete King':      '1234',
-    'Rob Appleyard':  '2345',
-    'Rob Lucas':      '3456',
-    'Tom Barker':     '4567'
+    'Aaron Dyson':    '1111','Brett Stockton': '2222','David Williams': '3333','Graham Denman':  '4444',
+    'Kevin Deakin':   '5555','Lance Duncan':   '6666','Lewis Lockwood': '7777','Mick Thornley':  '8888',
+    'Mike Adams':     '9999','Pete King':      '1234','Rob Appleyard':  '2345','Rob Lucas':      '3456','Tom Barker':      '4567'
 };
-// ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════
 
 const VAN_SESSION_KEY = 'flexi-van-engineer';
-let pinBuffer = '';
-let pinEngineer = '';
+let pinBuffer = '', pinEngineer = '';
 
-/* ── BUILD ENGINEER GRID ── */
-function buildEngineerGrid() {
-    const grid = document.getElementById('engineerGrid');
-    grid.innerHTML = Object.keys(ENGINEER_PINS).map(name =>
-        `<button class="engineer-btn" onclick="pinSelectEngineer('${name}')">${name}</button>`
-    ).join('');
-}
+function buildEngineerGrid(){const grid=document.getElementById('engineerGrid');grid.innerHTML=Object.keys(ENGINEER_PINS).map(name=>`<button class="engineer-btn" onclick="pinSelectEngineer('${name}')">${name}</button>`).join('');}
+function requestVanStock(){const saved=sessionStorage.getItem(VAN_SESSION_KEY);if(saved&&ENGINEER_PINS[saved]){openVanStockFor(saved);}else{openPinOverlay();}}
+function openPinOverlay(){pinBuffer='';pinEngineer='';document.getElementById('pinError').textContent='';updatePinDots();document.getElementById('pinStep1').classList.add('active');document.getElementById('pinStep2').classList.remove('active');document.getElementById('pinOverlay').classList.add('active');}
+function closePinOverlay(){document.getElementById('pinOverlay').classList.remove('active');pinBuffer='';pinEngineer='';}
+function pinSelectEngineer(name){pinEngineer=name;pinBuffer='';document.getElementById('pinWho').textContent=name;document.getElementById('pinError').textContent='';updatePinDots();document.getElementById('pinStep1').classList.remove('active');document.getElementById('pinStep2').classList.add('active');}
+function pinGoBack(){pinBuffer='';pinEngineer='';document.getElementById('pinStep2').classList.remove('active');document.getElementById('pinStep1').classList.add('active');}
+function pinKey(digit){if(pinBuffer.length>=4)return;pinBuffer+=digit;updatePinDots();document.getElementById('pinError').textContent='';if(pinBuffer.length===4)setTimeout(pinSubmit,120);}
+function pinBackspace(){pinBuffer=pinBuffer.slice(0,-1);updatePinDots();}
+function pinSubmit(){if(!pinEngineer)return;if(pinBuffer===ENGINEER_PINS[pinEngineer]){sessionStorage.setItem(VAN_SESSION_KEY,pinEngineer);document.getElementById('pinOverlay').classList.remove('active');openVanStockFor(pinEngineer);pinBuffer='';pinEngineer='';}else{document.getElementById('pinError').textContent='Incorrect PIN — try again';pinBuffer='';updatePinDots();const box=document.getElementById('pinBox');box.style.transform='translateX(-8px)';setTimeout(()=>box.style.transform='translateX(8px)',80);setTimeout(()=>box.style.transform='translateX(-5px)',160);setTimeout(()=>box.style.transform='translateX(0)',240);}}
+function updatePinDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinBuffer.length);}
+function openVanStockFor(engineer){document.getElementById('vanBannerTitle').textContent=engineer+"'s Van Stock";document.getElementById('vanBannerSub').textContent='Showing your personal van stock only.';document.getElementById('vanStockSubtitle').textContent=engineer.toUpperCase();showPage('vanstock');loadVanStockFor(engineer);}
+function lockVanStock(){sessionStorage.removeItem(VAN_SESSION_KEY);showPage('parts');showToast('🔒 Van Stock locked');}
 
-/* ── PIN FLOW ── */
-function requestVanStock() {
-    const saved = sessionStorage.getItem(VAN_SESSION_KEY);
-    if (saved && ENGINEER_PINS[saved]) {
-        openVanStockFor(saved);
-    } else {
-        openPinOverlay();
-    }
-}
-
-function openPinOverlay() {
-    pinBuffer = '';
-    pinEngineer = '';
-    document.getElementById('pinError').textContent = '';
-    updatePinDots();
-    document.getElementById('pinStep1').classList.add('active');
-    document.getElementById('pinStep2').classList.remove('active');
-    document.getElementById('pinOverlay').classList.add('active');
-}
-
-function closePinOverlay() {
-    document.getElementById('pinOverlay').classList.remove('active');
-    pinBuffer = '';
-    pinEngineer = '';
-}
-
-function pinSelectEngineer(name) {
-    pinEngineer = name;
-    pinBuffer = '';
-    document.getElementById('pinWho').textContent = name;
-    document.getElementById('pinError').textContent = '';
-    updatePinDots();
-    document.getElementById('pinStep1').classList.remove('active');
-    document.getElementById('pinStep2').classList.add('active');
-}
-
-function pinGoBack() {
-    pinBuffer = '';
-    pinEngineer = '';
-    document.getElementById('pinStep2').classList.remove('active');
-    document.getElementById('pinStep1').classList.add('active');
-}
-
-function pinKey(digit) {
-    if (pinBuffer.length >= 4) return;
-    pinBuffer += digit;
-    updatePinDots();
-    document.getElementById('pinError').textContent = '';
-    if (pinBuffer.length === 4) setTimeout(pinSubmit, 120);
-}
-
-function pinBackspace() {
-    pinBuffer = pinBuffer.slice(0, -1);
-    updatePinDots();
-}
-
-function pinSubmit() {
-    if (!pinEngineer) return;
-    if (pinBuffer === ENGINEER_PINS[pinEngineer]) {
-        sessionStorage.setItem(VAN_SESSION_KEY, pinEngineer);
-        document.getElementById('pinOverlay').classList.remove('active');
-        openVanStockFor(pinEngineer);
-        pinBuffer = '';
-        pinEngineer = '';
-    } else {
-        document.getElementById('pinError').textContent = 'Incorrect PIN — try again';
-        pinBuffer = '';
-        updatePinDots();
-        const box = document.getElementById('pinBox');
-        box.style.transform = 'translateX(-8px)';
-        setTimeout(() => box.style.transform = 'translateX(8px)', 80);
-        setTimeout(() => box.style.transform = 'translateX(-5px)', 160);
-        setTimeout(() => box.style.transform = 'translateX(0)', 240);
-    }
-}
-
-function updatePinDots() {
-    for (let i = 0; i < 4; i++) {
-        document.getElementById('pd' + i).classList.toggle('filled', i < pinBuffer.length);
-    }
-}
-
-function openVanStockFor(engineer) {
-    document.getElementById('vanBannerTitle').textContent = engineer + "'s Van Stock";
-    document.getElementById('vanBannerSub').textContent = 'Showing your personal van stock only.';
-    document.getElementById('vanStockSubtitle').textContent = engineer.toUpperCase();
-    showPage('vanstock');
-    loadVanStockFor(engineer);
-}
-
-function lockVanStock() {
-    sessionStorage.removeItem(VAN_SESSION_KEY);
-    showPage('parts');
-    showToast('🔒 Van Stock locked');
-}
-
-// Keyboard support for PIN entry
-document.addEventListener('keydown', e => {
-    if (!document.getElementById('pinOverlay').classList.contains('active')) return;
-    if (document.getElementById('pinStep2').classList.contains('active')) {
-        if (e.key >= '0' && e.key <= '9') pinKey(e.key);
-        else if (e.key === 'Backspace') pinBackspace();
-        else if (e.key === 'Enter') pinSubmit();
-        else if (e.key === 'Escape') closePinOverlay();
-    } else {
-        if (e.key === 'Escape') closePinOverlay();
-    }
+document.addEventListener('keydown',e=>{
+    if(!document.getElementById('pinOverlay').classList.contains('active'))return;
+    if(document.getElementById('pinStep2').classList.contains('active')){
+        if(e.key>='0'&&e.key<='9')pinKey(e.key);
+        else if(e.key==='Backspace')pinBackspace();
+        else if(e.key==='Enter')pinSubmit();
+        else if(e.key==='Escape')closePinOverlay();
+    }else{if(e.key==='Escape')closePinOverlay();}
 });
 
 /* ── INIT ── */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded',()=>{
     setGreeting();
     buildEngineerGrid();
     loadParts();
@@ -901,391 +1206,382 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     loadCartFromStorage();
     updateCart();
+    loadReturnsFromStorage();
+    loadWOFromStorage();
+    initReturnPartsEditor();
+    populateWOEngineerFilter();
+    setTodayDateOnWOForm();
 });
 
-function setGreeting() {
-    const h = new Date().getHours();
-    document.getElementById('greeting').textContent = h < 12 ? 'GOOD MORNING' : h < 18 ? 'GOOD AFTERNOON' : 'GOOD EVENING';
-}
+function setGreeting(){const h=new Date().getHours();document.getElementById('greeting').textContent=h<12?'GOOD MORNING':h<18?'GOOD AFTERNOON':'GOOD EVENING';}
 
-function showPage(page) {
-    ['partsPage','ordersPage','storesPage','vanstockPage'].forEach(id => {
-        document.getElementById(id).classList.toggle('active', id === page + 'Page');
+function showPage(page){
+    ['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','returnsPage','workordersPage'].forEach(id=>{
+        document.getElementById(id).classList.toggle('active',id===page+'Page');
     });
-    if (page === 'orders')   { applyFilters(); updateOrderStats(); }
-    if (page === 'stores')   renderStoresPage();
+    if(page==='orders'){applyFilters();updateOrderStats();}
+    if(page==='stores')renderStoresPage();
+    if(page==='reports')renderReports();
+    if(page==='returns')renderReturnsList();
+    if(page==='workorders'){renderWOTable();updateWOStats();}
 }
 
-function toggleCart() { document.getElementById('cartSection').classList.toggle('open'); }
+function toggleCart(){document.getElementById('cartSection').classList.toggle('open');}
 
-function populateModels() {
-    const sel = document.getElementById('orderModel');
-    ['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other']
-        .forEach(m => { const o = document.createElement('option'); o.value = o.textContent = m; sel.appendChild(o); });
-}
+function populateModels(){const sel=document.getElementById('orderModel');['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other'].forEach(m=>{const o=document.createElement('option');o.value=o.textContent=m;sel.appendChild(o);});}
 
 /* ── LOAD DATA ── */
-async function loadParts() {
-    try {
-        const res = await fetch(`${API_URL}?action=getAllParts`);
-        const data = await res.json();
-        if (data.success && data.parts?.length) { allParts = data.parts.map(normalisePart); cacheParts(allParts); }
-        else loadDemoParts();
-    } catch(e) { loadDemoParts(); }
-    document.getElementById('totalPartsCount').textContent = allParts.length;
-    showToast(`✅ ${allParts.length} parts loaded`);
-}
+async function loadParts(){try{const res=await fetch(`${API_URL}?action=getAllParts`);const data=await res.json();if(data.success&&data.parts?.length){allParts=data.parts.map(normalisePart);cacheParts(allParts);}else loadDemoParts();}catch(e){loadDemoParts();}document.getElementById('totalPartsCount').textContent=allParts.length;showToast(`✅ ${allParts.length} parts loaded`);}
 
-function normalisePart(p) {
-    return {
-        'Part Number': p['Part Number']||p.partNum||p.partNumber||p['part number']||'',
-        'Description': p['Description']||p.desc||p.description||'',
-        'Supplier Code': p['Supplier Code']||p.supplier||p.supplierCode||'',
-        'System': p['System']||p.system||'',
-        'Stock Level': p['Stock Level']||p.stockLevel||'',
-        'Cost': p['Cost']||p.cost||p['Price']||p.price||'',
-        'Image URL': p['Image URL']||p['image url']||p['imageUrl']||p['Image']||'',
-        _raw: p
-    };
-}
+function normalisePart(p){return{'Part Number':p['Part Number']||p.partNum||p.partNumber||p['part number']||'','Description':p['Description']||p.desc||p.description||'','Supplier Code':p['Supplier Code']||p.supplier||p.supplierCode||'','System':p['System']||p.system||'','Stock Level':p['Stock Level']||p.stockLevel||'','Cost':p['Cost']||p.cost||p['Price']||p.price||'','Image URL':p['Image URL']||p['image url']||p['imageUrl']||p['Image']||'',_raw:p};}
 
-function loadDemoParts() {
-    allParts = [
-        {'Part Number':'2015.00.002','Description':'Fork Pin Kit round head','System':'MAST','Supplier Code':'SUP-001'},
-        {'Part Number':'30071','Description':'Spacer (drive axle)','System':'TRANSMISSION','Supplier Code':'SUP-003'},
-        {'Part Number':'30073A','Description':'Wheel Helical','System':'TRANSMISSION','Supplier Code':'SUP-004'},
-        {'Part Number':'30074','Description':'Intermediate gear','System':'TRANSMISSION','Supplier Code':'SUP-005'},
-    ];
-}
+function loadDemoParts(){allParts=[{'Part Number':'2015.00.002','Description':'Fork Pin Kit round head','System':'MAST','Supplier Code':'SUP-001'},{'Part Number':'30071','Description':'Spacer (drive axle)','System':'TRANSMISSION','Supplier Code':'SUP-003'},{'Part Number':'30073A','Description':'Wheel Helical','System':'TRANSMISSION','Supplier Code':'SUP-004'},{'Part Number':'30074','Description':'Intermediate gear','System':'TRANSMISSION','Supplier Code':'SUP-005'}];}
 
-async function loadOrders(silent = false) {
-    try {
-        const res = await fetch(`${API_URL}?action=getOrders`);
-        const data = await res.json();
-        if (data.success && data.orders) { orders = data.orders.map(normaliseOrder); learnFromOrders(); }
-    } catch(e) { if (!silent) orders = []; }
-    updateOrderStats();
-    applyFilters();
-    if (!silent) startAutoRefresh();
-}
+async function loadOrders(silent=false){try{const res=await fetch(`${API_URL}?action=getOrders`);const data=await res.json();if(data.success&&data.orders){orders=data.orders.map(normaliseOrder);learnFromOrders();}}catch(e){if(!silent)orders=[];}updateOrderStats();applyFilters();if(!silent)startAutoRefresh();}
 
-let _autoRefreshTimer = null, _autoRefreshCountdown = null, _refreshSecondsLeft = 0;
-const AUTO_REFRESH_INTERVAL = 30;
+let _autoRefreshTimer=null,_autoRefreshCountdown=null,_refreshSecondsLeft=0;
+const AUTO_REFRESH_INTERVAL=30;
+function startAutoRefresh(){if(_autoRefreshTimer)return;scheduleNextRefresh();}
+function scheduleNextRefresh(){clearInterval(_autoRefreshCountdown);clearTimeout(_autoRefreshTimer);_refreshSecondsLeft=AUTO_REFRESH_INTERVAL;updateRefreshBadge();_autoRefreshCountdown=setInterval(()=>{_refreshSecondsLeft--;updateRefreshBadge();if(_refreshSecondsLeft<=0){clearInterval(_autoRefreshCountdown);refreshOrdersSilently();}},1000);}
+async function refreshOrdersSilently(){updateRefreshBadge('syncing');try{const res=await fetch(`${API_URL}?action=getOrders`);const data=await res.json();if(data.success&&data.orders){orders=data.orders.map(normaliseOrder);learnFromOrders();updateOrderStats();applyFilters();renderStoresPage();}}catch(e){}scheduleNextRefresh();}
+function updateRefreshBadge(state){const badge=document.getElementById('autoRefreshBadge');if(!badge)return;if(state==='syncing'){badge.textContent='⟳ Syncing...';badge.style.color='#f59e0b';badge.style.borderColor='rgba(245,158,11,.4)';}else{badge.textContent=`⟳ Refresh in ${_refreshSecondsLeft}s`;badge.style.color=_refreshSecondsLeft<=20?'#f59e0b':'#555';badge.style.borderColor=_refreshSecondsLeft<=20?'rgba(245,158,11,.3)':'var(--border)';}}
+function manualRefresh(){clearInterval(_autoRefreshCountdown);clearTimeout(_autoRefreshTimer);_autoRefreshTimer=null;refreshOrdersSilently();}
 
-function startAutoRefresh() {
-    if (_autoRefreshTimer) return;
-    scheduleNextRefresh();
-}
-
-function scheduleNextRefresh() {
-    clearInterval(_autoRefreshCountdown);
-    clearTimeout(_autoRefreshTimer);
-    _refreshSecondsLeft = AUTO_REFRESH_INTERVAL;
-    updateRefreshBadge();
-    _autoRefreshCountdown = setInterval(() => {
-        _refreshSecondsLeft--;
-        updateRefreshBadge();
-        if (_refreshSecondsLeft <= 0) {
-            clearInterval(_autoRefreshCountdown);
-            refreshOrdersSilently();
-        }
-    }, 1000);
-}
-
-async function refreshOrdersSilently() {
-    updateRefreshBadge('syncing');
-    try {
-        const res = await fetch(`${API_URL}?action=getOrders`);
-        const data = await res.json();
-        if (data.success && data.orders) {
-            orders = data.orders.map(normaliseOrder);
-            learnFromOrders();
-            updateOrderStats();
-            applyFilters();
-            renderStoresPage();
-        }
-    } catch(e) {}
-    scheduleNextRefresh();
-}
-
-function updateRefreshBadge(state) {
-    const badge = document.getElementById('autoRefreshBadge');
-    if (!badge) return;
-    if (state === 'syncing') {
-        badge.textContent = '⟳ Syncing...';
-        badge.style.color = '#f59e0b';
-        badge.style.borderColor = 'rgba(245,158,11,.4)';
-    } else {
-        badge.textContent = `⟳ Refresh in ${_refreshSecondsLeft}s`;
-        badge.style.color = _refreshSecondsLeft <= 20 ? '#f59e0b' : '#555';
-        badge.style.borderColor = _refreshSecondsLeft <= 20 ? 'rgba(245,158,11,.3)' : 'var(--border)';
-    }
-}
-
-function manualRefresh() {
-    clearInterval(_autoRefreshCountdown);
-    clearTimeout(_autoRefreshTimer);
-    _autoRefreshTimer = null;
-    refreshOrdersSilently();
-}
-
-/* ══════════════════════════════════════════════════════
-   normaliseOrder — fixed date parsing for reliable sort
-   Produces _sortKey: a zero-padded numeric timestamp
-   so that lexicographic sort == chronological sort.
-══════════════════════════════════════════════════════ */
-function normaliseOrder(o) {
-    let parts = o.parts || [];
-    if (typeof parts === 'string') { try { parts = JSON.parse(parts); } catch(e) { parts = []; } }
-    if (!Array.isArray(parts)) parts = [];
-
-    const rawDate = o.date || o.orderDate || '';
-    let displayDate = rawDate;
-    let _sortKey = '';      // ← NEW: used for sorting instead of _rawDate
-    let _rawDate = '';      // kept for date-filter (YYYY-MM-DD)
-
-    if (rawDate) {
-        let d = null;
-
-        // Try ISO / standard JS parse first
-        const attempt = new Date(rawDate);
-        if (!isNaN(attempt.getTime())) {
-            d = attempt;
-        }
-
-        // Fallback: DD/MM/YYYY or DD/MM/YYYY HH:MM:SS
-        if (!d) {
-            const m = String(rawDate).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[\sT,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);
-            if (m) {
-                d = new Date(
-                    parseInt(m[3]),
-                    parseInt(m[2]) - 1,
-                    parseInt(m[1]),
-                    parseInt(m[4] || 0),
-                    parseInt(m[5] || 0),
-                    parseInt(m[6] || 0)
-                );
-            }
-        }
-
-        if (d && !isNaN(d.getTime())) {
-            const dd   = String(d.getDate()).padStart(2, '0');
-            const mm   = String(d.getMonth() + 1).padStart(2, '0');
-            const yyyy = d.getFullYear();
-            const hh   = String(d.getHours()).padStart(2, '0');
-            const min  = String(d.getMinutes()).padStart(2, '0');
-            displayDate = `${dd}/${mm}/${yyyy} ${hh}:${min}`;
-            _rawDate    = `${yyyy}-${mm}-${dd}`;
-            // Zero-padded numeric key — sorts correctly as a string
-            _sortKey    = `${yyyy}${mm}${dd}${hh}${min}`;
-        } else {
-            // Unparseable — put at top when sorting desc so it's visible
-            _rawDate = String(rawDate).slice(0, 10);
-            _sortKey = '999999999999';
-        }
-    }
-
-    return {
-        ...o,
-        parts,
-        machineSerial: String(o.machineSerial || '').trim(),
-        worksOrder:    String(o.worksOrder || '').trim(),
-        date:          displayDate,
-        _rawDate,
-        _sortKey,
-        serviceController: o.serviceController || o.engineer || '',
-        orderType:         o.orderType || ''
-    };
-}
+function normaliseOrder(o){let parts=o.parts||[];if(typeof parts==='string'){try{parts=JSON.parse(parts);}catch(e){parts=[];}}if(!Array.isArray(parts))parts=[];const rawDate=o.date||o.orderDate||'';let displayDate=rawDate,_sortKey='',_rawDate='';if(rawDate){let d=null;const attempt=new Date(rawDate);if(!isNaN(attempt.getTime())){d=attempt;}if(!d){const m=String(rawDate).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[\sT,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);if(m){d=new Date(parseInt(m[3]),parseInt(m[2])-1,parseInt(m[1]),parseInt(m[4]||0),parseInt(m[5]||0),parseInt(m[6]||0));}}if(d&&!isNaN(d.getTime())){const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear(),hh=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');displayDate=`${dd}/${mm}/${yyyy} ${hh}:${min}`;_rawDate=`${yyyy}-${mm}-${dd}`;_sortKey=`${yyyy}${mm}${dd}${hh}${min}`;}else{_rawDate=String(rawDate).slice(0,10);_sortKey='999999999999';}}return{...o,parts,machineSerial:String(o.machineSerial||'').trim(),worksOrder:String(o.worksOrder||'').trim(),date:displayDate,_rawDate,_sortKey,serviceController:o.serviceController||o.engineer||'',orderType:o.orderType||''};}
 
 /* ── VAN STOCK ── */
-async function loadVanStockFor(engineer) {
-    const content = document.getElementById('vanStockContent');
-    content.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading van stock...</p></div>';
-    try {
-        const res = await fetch(`${API_URL}?action=getVanStock&engineer=${encodeURIComponent(engineer)}`);
-        const data = await res.json();
-        if (data.success && data.stock?.length) renderVanStockTable(engineer, data.stock);
-        else renderVanStockTable(engineer, []);
-    } catch(e) { renderVanStockTable(engineer, []); }
-}
+async function loadVanStockFor(engineer){const content=document.getElementById('vanStockContent');content.innerHTML='<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading van stock...</p></div>';try{const res=await fetch(`${API_URL}?action=getVanStock&engineer=${encodeURIComponent(engineer)}`);const data=await res.json();if(data.success&&data.stock?.length)renderVanStockTable(engineer,data.stock);else renderVanStockTable(engineer,[]);}catch(e){renderVanStockTable(engineer,[]);}}
 
-function renderVanStockTable(engineer, stock) {
-    const content = document.getElementById('vanStockContent');
-    let lowCount = 0;
-    if (!stock.length) {
-        content.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><p>No van stock set up for ${engineer} yet.</p></div>`;
-        document.getElementById('vanLowStockCount').textContent = 0;
-        document.getElementById('vanTotalLines').textContent = 0;
-        return;
-    }
-    stock.forEach(s => { if (parseInt(s.current||0) <= parseInt(s.minimum||0)) lowCount++; });
-    document.getElementById('vanLowStockCount').textContent = lowCount;
-    document.getElementById('vanTotalLines').textContent = stock.length;
-    content.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-            <div style="font-size:1.1em;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">${engineer} — ${stock.length} lines</div>
-            <button class="van-save-btn" onclick="saveVanStock('${engineer}')">💾 Save Changes</button>
-        </div>
-        <table class="van-stock-table">
-            <thead><tr><th>Part Number</th><th>Description</th><th>Min</th><th>Current</th><th>Status</th></tr></thead>
-            <tbody>
-                ${stock.map((s,i) => {
-                    const curr=parseInt(s.current||0),min=parseInt(s.minimum||0),low=curr<=min;
-                    return `<tr><td style="font-weight:700;color:var(--primary-red);">${s.partNumber||'—'}</td><td style="color:var(--text-secondary);">${s.description||'—'}</td><td style="text-align:center;">${min}</td><td style="text-align:center;"><input class="van-qty-input" type="number" min="0" value="${curr}" id="vanqty_${i}"></td><td style="text-align:center;"><span class="${low?'van-low':'van-ok'}">${low?'⚠ Low':'✓ OK'}</span></td></tr>`;
-                }).join('')}
-            </tbody>
-        </table>`;
-    window._vanStockData = stock;
-}
+function renderVanStockTable(engineer,stock){const content=document.getElementById('vanStockContent');let lowCount=0;if(!stock.length){content.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📦</div><p>No van stock set up for ${engineer} yet.</p></div>`;document.getElementById('vanLowStockCount').textContent=0;document.getElementById('vanTotalLines').textContent=0;return;}stock.forEach(s=>{if(parseInt(s.current||0)<=parseInt(s.minimum||0))lowCount++;});document.getElementById('vanLowStockCount').textContent=lowCount;document.getElementById('vanTotalLines').textContent=stock.length;content.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><div style="font-size:1.1em;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">${engineer} — ${stock.length} lines</div><button class="van-save-btn" onclick="saveVanStock('${engineer}')">💾 Save Changes</button></div><table class="van-stock-table"><thead><tr><th>Part Number</th><th>Description</th><th>Min</th><th>Current</th><th>Status</th></tr></thead><tbody>${stock.map((s,i)=>{const curr=parseInt(s.current||0),min=parseInt(s.minimum||0),low=curr<=min;return`<tr><td style="font-weight:700;color:var(--primary-red);">${s.partNumber||'—'}</td><td style="color:var(--text-secondary);">${s.description||'—'}</td><td style="text-align:center;">${min}</td><td style="text-align:center;"><input class="van-qty-input" type="number" min="0" value="${curr}" id="vanqty_${i}"></td><td style="text-align:center;"><span class="${low?'van-low':'van-ok'}">${low?'⚠ Low':'✓ OK'}</span></td></tr>`;}).join('')}</tbody></table>`;window._vanStockData=stock;}
 
-async function saveVanStock(engineer) {
-    const stock = window._vanStockData || [];
-    const updated = stock.map((s,i) => ({ ...s, current: parseInt(document.getElementById(`vanqty_${i}`)?.value || s.current) }));
-    try {
-        await fetch(API_URL, { method:'POST', body: JSON.stringify({ action:'updateVanStock', engineer, stock: updated }) });
-        showToast(`✅ Van stock saved for ${engineer}`);
-    } catch(e) { showToast('⚠ Saved locally — sync when online'); }
-}
+async function saveVanStock(engineer){const stock=window._vanStockData||[];const updated=stock.map((s,i)=>({...s,current:parseInt(document.getElementById(`vanqty_${i}`)?.value||s.current)}));try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateVanStock',engineer,stock:updated})});showToast(`✅ Van stock saved for ${engineer}`);}catch(e){showToast('⚠ Saved locally — sync when online');}}
 
 /* ── STORES ── */
-function renderStoresPage() {
-    const sentOrders = orders.filter(o => o.status === 'Sent to Stores');
-    const pickedToday = orders.filter(o => o.status === 'Picked & Ready' && (o.pickedAt||'').slice(0,10) === new Date().toISOString().slice(0,10));
-    document.getElementById('storesPendingCount').textContent = sentOrders.length;
-    document.getElementById('storesPickedCount').textContent = orders.filter(o => o.status === 'Picked & Ready').length;
-    document.getElementById('storesTodayCount').textContent = pickedToday.length;
-    const container = document.getElementById('storesOrdersList');
-    if (!sentOrders.length) {
-        container.innerHTML = `<div class="stores-empty"><div class="stores-empty-icon">📭</div><div class="stores-empty-title">No Orders Awaiting Pick</div><p style="color:#555;font-size:.95em;">Orders marked "Sent to Stores" will appear here.</p></div>`;
-        return;
-    }
-    container.innerHTML = sentOrders.map(order => {
-        const partsHtml = (order.parts||[]).map((p,i) => `<div class="stores-part-row"><div class="stores-part-check" id="chk-${order.orderNumber}-${i}" onclick="togglePartCheck('${order.orderNumber}',${i})"></div><div class="stores-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="stores-part-desc">${p['Description']||p.desc||'No description'}</div><div class="stores-part-qty">×${p.qty||1}</div></div>`).join('');
-        const urgentBadge = order.urgent ? '<span class="urgent-badge">⚑ Urgent</span>' : '';
-        return `<div class="stores-order-card" id="storesCard-${order.orderNumber}">
-            <div class="stores-order-header"><div><div class="stores-order-num">${order.orderNumber||'—'} ${urgentBadge}</div></div>
-            <div class="stores-order-meta"><span>👤 <strong>${order.serviceController||'—'}</strong></span><span>🔧 <strong>${order.worksOrder||'—'}</strong></span><span>🚜 <strong>${order.model||'—'}</strong></span><span>📅 <strong>${order.date||'—'}</strong></span></div></div>
-            <div class="stores-parts-list"><div class="stores-parts-title">${(order.parts||[]).length} Part${(order.parts||[]).length!==1?'s':''} to Pick</div>${partsHtml}</div>
-            ${order.comments?`<div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:6px;font-size:.85em;color:#888;margin-bottom:14px;">💬 ${order.comments}</div>`:''}
-            <div class="stores-actions"><button class="btn-mark-picked" id="pickBtn-${order.orderNumber}" onclick="markPickedReady('${order.orderNumber}')">✅ Mark as Picked &amp; Ready</button><button class="btn-print-slip" onclick="printPickSlip('${order.orderNumber}')">🖨 Print Slip</button></div>
-        </div>`;
-    }).join('');
-}
+function renderStoresPage(){const sentOrders=orders.filter(o=>o.status==='Sent to Stores');const pickedToday=orders.filter(o=>o.status==='Picked & Ready'&&(o.pickedAt||'').slice(0,10)===new Date().toISOString().slice(0,10));document.getElementById('storesPendingCount').textContent=sentOrders.length;document.getElementById('storesPickedCount').textContent=orders.filter(o=>o.status==='Picked & Ready').length;document.getElementById('storesTodayCount').textContent=pickedToday.length;const container=document.getElementById('storesOrdersList');if(!sentOrders.length){container.innerHTML=`<div class="stores-empty"><div class="stores-empty-icon">📭</div><div class="stores-empty-title">No Orders Awaiting Pick</div><p style="color:#555;font-size:.95em;">Orders marked "Sent to Stores" will appear here.</p></div>`;return;}container.innerHTML=sentOrders.map(order=>{const partsHtml=(order.parts||[]).map((p,i)=>`<div class="stores-part-row"><div class="stores-part-check" id="chk-${order.orderNumber}-${i}" onclick="togglePartCheck('${order.orderNumber}',${i})"></div><div class="stores-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="stores-part-desc">${p['Description']||p.desc||'No description'}</div><div class="stores-part-qty">×${p.qty||1}</div></div>`).join('');const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'';return`<div class="stores-order-card" id="storesCard-${order.orderNumber}"><div class="stores-order-header"><div><div class="stores-order-num">${order.orderNumber||'—'} ${urgentBadge}</div></div><div class="stores-order-meta"><span>👤 <strong>${order.serviceController||'—'}</strong></span><span>🔧 <strong>${order.worksOrder||'—'}</strong></span><span>🚜 <strong>${order.model||'—'}</strong></span><span>📅 <strong>${order.date||'—'}</strong></span></div></div><div class="stores-parts-list"><div class="stores-parts-title">${(order.parts||[]).length} Part${(order.parts||[]).length!==1?'s':''} to Pick</div>${partsHtml}</div>${order.comments?`<div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:6px;font-size:.85em;color:#888;margin-bottom:14px;">💬 ${order.comments}</div>`:''}<div class="stores-actions"><button class="btn-mark-picked" id="pickBtn-${order.orderNumber}" onclick="markPickedReady('${order.orderNumber}')">✅ Mark as Picked &amp; Ready</button><button class="btn-print-slip" onclick="printPickSlip('${order.orderNumber}')">🖨 Print Slip</button></div></div>`;}).join('');}
 
-const checkedParts = {};
-function togglePartCheck(orderNumber, partIndex) {
-    const key=`${orderNumber}-${partIndex}`, el=document.getElementById(`chk-${orderNumber}-${partIndex}`);
-    checkedParts[key]=!checkedParts[key]; el.classList.toggle('checked',checkedParts[key]); el.innerHTML=checkedParts[key]?'✓':'';
-}
+const checkedParts={};
+function togglePartCheck(orderNumber,partIndex){const key=`${orderNumber}-${partIndex}`,el=document.getElementById(`chk-${orderNumber}-${partIndex}`);checkedParts[key]=!checkedParts[key];el.classList.toggle('checked',checkedParts[key]);el.innerHTML=checkedParts[key]?'✓':'';}
 
-async function markPickedReady(orderNumber) {
-    const picker = document.getElementById('storesPickerSelect').value;
-    if (!picker) { showToast('⚠ Please select your name first'); return; }
-    const btn = document.getElementById(`pickBtn-${orderNumber}`);
-    btn.disabled=true; btn.textContent='⏳ Saving...';
-    const pickedAt=new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
-    const idx=orders.findIndex(o=>o.orderNumber===orderNumber);
-    if(idx>=0){orders[idx].status='Picked & Ready';orders[idx].pickedBy=picker;orders[idx].pickedAt=pickedAt;}
-    try { await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber,status:'Picked & Ready',pickedBy:picker,pickedAt,notes:`Picked by ${picker} at ${pickedAt}`})}); } catch(e){}
-    showToast(`✅ Order ${orderNumber} marked Picked & Ready by ${picker}`);
-    updateOrderStats(); applyFilters(); renderStoresPage();
-}
+async function markPickedReady(orderNumber){const picker=document.getElementById('storesPickerSelect').value;if(!picker){showToast('⚠ Please select your name first');return;}const btn=document.getElementById(`pickBtn-${orderNumber}`);btn.disabled=true;btn.textContent='⏳ Saving...';const pickedAt=new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});const idx=orders.findIndex(o=>o.orderNumber===orderNumber);if(idx>=0){orders[idx].status='Picked & Ready';orders[idx].pickedBy=picker;orders[idx].pickedAt=pickedAt;}try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber,status:'Picked & Ready',pickedBy:picker,pickedAt,notes:`Picked by ${picker} at ${pickedAt}`})});}catch(e){}showToast(`✅ Order ${orderNumber} marked Picked & Ready by ${picker}`);updateOrderStats();applyFilters();renderStoresPage();}
 
-function printPickSlip(orderNumber) {
-    const order=orders.find(o=>o.orderNumber===orderNumber); if(!order) return;
-    const picker=document.getElementById('storesPickerSelect').value||'___________';
-    const win=window.open('','_blank');
-    win.document.write(`<!DOCTYPE html><html><head><title>Pick Slip — ${order.orderNumber}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#000;max-width:600px}h1{font-size:1.4em;margin-bottom:4px}.sub{color:#666;font-size:.85em;margin-bottom:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#f0f0f0;padding:8px 10px;text-align:left;font-size:.8em;border:1px solid #ddd}td{padding:8px 10px;border:1px solid #ddd;font-size:.9em}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}.meta-item{background:#f9f9f9;padding:10px 12px;border:1px solid #e0e0e0;border-radius:4px}.meta-label{font-size:.72em;text-transform:uppercase;color:#888;margin-bottom:3px}.meta-value{font-size:.95em;font-weight:700}.sign-off{margin-top:30px;border-top:2px solid #000;padding-top:20px}.sign-row{display:flex;gap:40px;margin-top:30px}.sign-line{flex:1;border-bottom:1px solid #333;padding-bottom:4px;font-size:.8em;color:#666}</style></head><body>
-    <h1>PICK SLIP${order.urgent?' <span style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24;padding:3px 10px;border-radius:4px;font-size:.8em">⚑ URGENT</span>':''}</h1>
-    <div class="sub">Flexi Parts System — Print and place in locker box</div>
-    <div class="meta"><div class="meta-item"><div class="meta-label">Order Number</div><div class="meta-value">${order.orderNumber}</div></div><div class="meta-item"><div class="meta-label">Engineer / Name</div><div class="meta-value">${order.serviceController||'—'}</div></div><div class="meta-item"><div class="meta-label">Works Order</div><div class="meta-value">${order.worksOrder||'—'}</div></div><div class="meta-item"><div class="meta-label">Machine Serial</div><div class="meta-value">${order.machineSerial||'—'}</div></div><div class="meta-item"><div class="meta-label">Model</div><div class="meta-value">${order.model||'—'}</div></div><div class="meta-item"><div class="meta-label">Order Date</div><div class="meta-value">${order.date||'—'}</div></div></div>
-    <table><thead><tr><th>#</th><th>Part Number</th><th>Description</th><th>Qty</th><th>✓</th></tr></thead><tbody>${(order.parts||[]).map((p,i)=>`<tr><td>${i+1}</td><td><strong>${p['Part Number']||p.partNum||'—'}</strong></td><td>${p['Description']||p.desc||'—'}</td><td>${p.qty||1}</td><td style="width:30px;"></td></tr>`).join('')}</tbody></table>
-    ${order.comments?`<p style="font-size:.88em;color:#555;padding:10px;background:#f9f9f9;border-radius:4px;margin-bottom:20px;">💬 <strong>Notes:</strong> ${order.comments}</p>`:''}
-    <div class="sign-off"><strong>Picked by:</strong> ${picker}<div class="sign-row"><div class="sign-line">Picker signature</div><div class="sign-line">Date / Time picked</div><div class="sign-line">Locker number</div></div></div></body></html>`);
-    win.document.close(); win.print();
-}
+function printPickSlip(orderNumber){const order=orders.find(o=>o.orderNumber===orderNumber);if(!order)return;const picker=document.getElementById('storesPickerSelect').value||'___________';const win=window.open('','_blank');win.document.write(`<!DOCTYPE html><html><head><title>Pick Slip — ${order.orderNumber}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#000;max-width:600px}h1{font-size:1.4em;margin-bottom:4px}.sub{color:#666;font-size:.85em;margin-bottom:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#f0f0f0;padding:8px 10px;text-align:left;font-size:.8em;border:1px solid #ddd}td{padding:8px 10px;border:1px solid #ddd;font-size:.9em}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}.meta-item{background:#f9f9f9;padding:10px 12px;border:1px solid #e0e0e0;border-radius:4px}.meta-label{font-size:.72em;text-transform:uppercase;color:#888;margin-bottom:3px}.meta-value{font-size:.95em;font-weight:700}.sign-off{margin-top:30px;border-top:2px solid #000;padding-top:20px}.sign-row{display:flex;gap:40px;margin-top:30px}.sign-line{flex:1;border-bottom:1px solid #333;padding-bottom:4px;font-size:.8em;color:#666}</style></head><body><h1>PICK SLIP${order.urgent?' <span style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24;padding:3px 10px;border-radius:4px;font-size:.8em">⚑ URGENT</span>':''}</h1><div class="sub">Flexi Parts System — Print and place in locker box</div><div class="meta"><div class="meta-item"><div class="meta-label">Order Number</div><div class="meta-value">${order.orderNumber}</div></div><div class="meta-item"><div class="meta-label">Engineer / Name</div><div class="meta-value">${order.serviceController||'—'}</div></div><div class="meta-item"><div class="meta-label">Works Order</div><div class="meta-value">${order.worksOrder||'—'}</div></div><div class="meta-item"><div class="meta-label">Machine Serial</div><div class="meta-value">${order.machineSerial||'—'}</div></div><div class="meta-item"><div class="meta-label">Model</div><div class="meta-value">${order.model||'—'}</div></div><div class="meta-item"><div class="meta-label">Order Date</div><div class="meta-value">${order.date||'—'}</div></div></div><table><thead><tr><th>#</th><th>Part Number</th><th>Description</th><th>Qty</th><th>✓</th></tr></thead><tbody>${(order.parts||[]).map((p,i)=>`<tr><td>${i+1}</td><td><strong>${p['Part Number']||p.partNum||'—'}</strong></td><td>${p['Description']||p.desc||'—'}</td><td>${p.qty||1}</td><td style="width:30px;"></td></tr>`).join('')}</tbody></table>${order.comments?`<p style="font-size:.88em;color:#555;padding:10px;background:#f9f9f9;border-radius:4px;margin-bottom:20px;">💬 <strong>Notes:</strong> ${order.comments}</p>`:''}<div class="sign-off"><strong>Picked by:</strong> ${picker}<div class="sign-row"><div class="sign-line">Picker signature</div><div class="sign-line">Date / Time picked</div><div class="sign-line">Locker number</div></div></div></body></html>`);win.document.close();win.print();}
 
 /* ── ORDERS ── */
-function updateOrderStats() {
-    document.getElementById('totalOrders').textContent=orders.length;
-    document.getElementById('pendingOrders').textContent=orders.filter(o=>o.status==='Pending').length;
-    document.getElementById('sentToStoresOrders').textContent=orders.filter(o=>o.status==='Sent to Stores').length;
-    document.getElementById('pickedOrders').textContent=orders.filter(o=>o.status==='Picked & Ready').length;
-    document.getElementById('completedOrders').textContent=orders.filter(o=>o.status==='Completed').length;
-}
+function updateOrderStats(){document.getElementById('totalOrders').textContent=orders.length;document.getElementById('pendingOrders').textContent=orders.filter(o=>o.status==='Pending').length;document.getElementById('sentToStoresOrders').textContent=orders.filter(o=>o.status==='Sent to Stores').length;document.getElementById('pickedOrders').textContent=orders.filter(o=>o.status==='Picked & Ready').length;document.getElementById('completedOrders').textContent=orders.filter(o=>o.status==='Completed').length;}
 
-function applyFilters() {
-    const search=(document.getElementById('filterSearch')?.value||'').toLowerCase(),
-          status=document.getElementById('filterStatus')?.value||'',
-          orderType=document.getElementById('filterOrderType')?.value||'',
-          dateFrom=document.getElementById('filterDateFrom')?.value||'',
-          dateTo=document.getElementById('filterDateTo')?.value||'';
-
-    displayedOrders=orders.filter(o=>{
-        if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model,o.orderType].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
-        if(status&&(o.status||'Pending')!==status)return false;
-        if(orderType&&(o.orderType||'')!==orderType)return false;
-        if(dateFrom||dateTo){const d=o._rawDate||'';if(dateFrom&&d<dateFrom)return false;if(dateTo&&d>dateTo)return false;}
-        return true;
-    });
-
-    // ── FIXED SORT: use _sortKey for date, plain string for others ──
-    displayedOrders.sort((a, b) => {
-        let va, vb;
-        if (sortField === 'date') {
-            va = a._sortKey || '';
-            vb = b._sortKey || '';
-        } else {
-            va = fieldVal(a, sortField);
-            vb = fieldVal(b, sortField);
-        }
-        if (va < vb) return sortDir === 'asc' ? -1 : 1;
-        if (va > vb) return sortDir === 'asc' ?  1 : -1;
-        return 0;
-    });
-
-    document.getElementById('filteredOrdersCount').textContent=displayedOrders.length;
-    renderOrders();
-}
+function applyFilters(){const search=(document.getElementById('filterSearch')?.value||'').toLowerCase(),status=document.getElementById('filterStatus')?.value||'',orderType=document.getElementById('filterOrderType')?.value||'',dateFrom=document.getElementById('filterDateFrom')?.value||'',dateTo=document.getElementById('filterDateTo')?.value||'';displayedOrders=orders.filter(o=>{if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model,o.orderType].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}if(status&&(o.status||'Pending')!==status)return false;if(orderType&&(o.orderType||'')!==orderType)return false;if(dateFrom||dateTo){const d=o._rawDate||'';if(dateFrom&&d<dateFrom)return false;if(dateTo&&d>dateTo)return false;}return true;});displayedOrders.sort((a,b)=>{let va,vb;if(sortField==='date'){va=a._sortKey||'';vb=b._sortKey||'';}else{va=fieldVal(a,sortField);vb=fieldVal(b,sortField);}if(va<vb)return sortDir==='asc'?-1:1;if(va>vb)return sortDir==='asc'?1:-1;return 0;});document.getElementById('filteredOrdersCount').textContent=displayedOrders.length;renderOrders();}
 
 function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
-
 function sortOrders(field){sortDir=sortField===field?(sortDir==='asc'?'desc':'asc'):'asc';sortField=field;document.querySelectorAll('.orders-table th').forEach(th=>th.classList.remove('sort-asc','sort-desc'));const idx={orderNumber:0,date:1,serviceController:2,worksOrder:4,status:6}[field];if(idx!==undefined)document.querySelectorAll('.orders-table th')[idx]?.classList.add(sortDir==='asc'?'sort-asc':'sort-desc');applyFilters();}
-
 function clearFilters(){['filterSearch','filterStatus','filterOrderType','filterDateFrom','filterDateTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});applyFilters();}
-
 function getStatusClass(status){return({'Pending':'status-pending','Completed':'status-completed','Cancelled':'status-cancelled','Backorder':'status-backorder','Sent to Stores':'status-sent-to-stores','Picked & Ready':'status-picked-ready'})[status]||'status-pending';}
 
-function renderOrders(){
-    const tbody=document.getElementById('ordersTableBody');
-    if(!displayedOrders.length){tbody.innerHTML=`<tr class="no-results-row"><td colspan="7">${orders.length?'No orders match your filters':'No orders found'}</td></tr>`;return;}
-    tbody.innerHTML=displayedOrders.map((order,i)=>{
-        const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'',typeBadge=order.orderType?`<span class="order-type-badge">${order.orderType}</span>`:'',status=order.status||'Pending';
-        return `<tr onclick="openOrderModal(${orders.indexOf(order)})"><td><span class="order-number">${order.orderNumber||'ORD-'+(i+1)}</span>${urgentBadge}</td><td>${order.date||'N/A'}</td><td>${order.serviceController||'N/A'}</td><td>${typeBadge||'<span style="color:#555;">—</span>'}</td><td>${order.worksOrder||'—'}</td><td>${order.partsCount||(order.parts?.length||0)} parts</td><td><span class="order-status ${getStatusClass(status)}">${status}</span></td></tr>`;
-    }).join('');
-}
+function renderOrders(){const tbody=document.getElementById('ordersTableBody');if(!displayedOrders.length){tbody.innerHTML=`<tr class="no-results-row"><td colspan="7">${orders.length?'No orders match your filters':'No orders found'}</td></tr>`;return;}tbody.innerHTML=displayedOrders.map((order,i)=>{const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'',typeBadge=order.orderType?`<span class="order-type-badge">${order.orderType}</span>`:'',status=order.status||'Pending';return`<tr onclick="openOrderModal(${orders.indexOf(order)})"><td><span class="order-number">${order.orderNumber||'ORD-'+(i+1)}</span>${urgentBadge}</td><td>${order.date||'N/A'}</td><td>${order.serviceController||'N/A'}</td><td>${typeBadge||'<span style="color:#555;">—</span>'}</td><td>${order.worksOrder||'—'}</td><td>${order.partsCount||(order.parts?.length||0)} parts</td><td><span class="order-status ${getStatusClass(status)}">${status}</span></td></tr>`;}).join('');}
 
-function buildTimeline(order){const status=order.status||'Pending';const steps=[{icon:'📋',title:'Order Placed',desc:`Submitted by ${order.serviceController||'Unknown'}`,timestamp:order.date||'',state:'done'},{icon:'📦',title:'Sent to Stores',desc:'Order sent to stores for picking',timestamp:order.sentToStoresAt||'',state:['Sent to Stores','Picked & Ready','Completed'].includes(status)?'stores':'inactive'},{icon:'✅',title:'Picked & Ready',desc:`${order.pickedBy?`Picked by ${order.pickedBy}`:'Awaiting pick'}`,timestamp:order.pickedAt||'',state:['Picked & Ready','Completed'].includes(status)?'picked':'inactive'},{icon:status==='Cancelled'?'✕':'🎯',title:status==='Cancelled'?'Cancelled':'Completed',desc:status==='Cancelled'?'Order cancelled':'All parts fulfilled',timestamp:order.completedAt||order.cancelledAt||'',state:status==='Cancelled'?'cancelled':status==='Completed'?'done':'inactive'}];return `<div class="timeline">${steps.map(s=>{const dotClass={done:'done',stores:'stores',picked:'picked',cancelled:'cancelled',inactive:''}[s.state]||'';const titleClass={done:'done',stores:'stores-title',picked:'picked-title',active:'active',cancelled:'cancelled-title',inactive:'inactive'}[s.state]||'inactive';return `<div class="timeline-step"><div class="timeline-dot ${dotClass}">${s.icon}</div><div class="timeline-content"><div class="timeline-title ${titleClass}">${s.title}</div><div class="timeline-desc">${s.desc}</div>${s.timestamp?`<div class="timeline-timestamp">${s.timestamp}</div>`:''}</div></div>`;}).join('')}</div>`;}
+function buildTimeline(order){const status=order.status||'Pending';const steps=[{icon:'📋',title:'Order Placed',desc:`Submitted by ${order.serviceController||'Unknown'}`,timestamp:order.date||'',state:'done'},{icon:'📦',title:'Sent to Stores',desc:'Order sent to stores for picking',timestamp:order.sentToStoresAt||'',state:['Sent to Stores','Picked & Ready','Completed'].includes(status)?'stores':'inactive'},{icon:'✅',title:'Picked & Ready',desc:`${order.pickedBy?`Picked by ${order.pickedBy}`:'Awaiting pick'}`,timestamp:order.pickedAt||'',state:['Picked & Ready','Completed'].includes(status)?'picked':'inactive'},{icon:status==='Cancelled'?'✕':'🎯',title:status==='Cancelled'?'Cancelled':'Completed',desc:status==='Cancelled'?'Order cancelled':'All parts fulfilled',timestamp:order.completedAt||order.cancelledAt||'',state:status==='Cancelled'?'cancelled':status==='Completed'?'done':'inactive'}];return`<div class="timeline">${steps.map(s=>{const dotClass={done:'done',stores:'stores',picked:'picked',cancelled:'cancelled',inactive:''}[s.state]||'';const titleClass={done:'done',stores:'stores-title',picked:'picked-title',active:'active',cancelled:'cancelled-title',inactive:'inactive'}[s.state]||'inactive';return`<div class="timeline-step"><div class="timeline-dot ${dotClass}">${s.icon}</div><div class="timeline-content"><div class="timeline-title ${titleClass}">${s.title}</div><div class="timeline-desc">${s.desc}</div>${s.timestamp?`<div class="timeline-timestamp">${s.timestamp}</div>`:''}</div></div>`;}).join('')}</div>`;}
 
 function openOrderModal(index){const order=orders[index];const urgentBadge=order.urgent?'<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>':'';const pickedInfo=order.pickedBy?`<div style="margin-top:8px;padding:8px 12px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:6px;font-size:.85em;color:#4ade80;">✅ Picked by <strong>${order.pickedBy}</strong> at ${order.pickedAt||'—'}</div>`:'';const modal=document.createElement('div');modal.className='modal-overlay active';modal.id='orderModal';modal.innerHTML=`<div class="modal"><div class="modal-header"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><h2>${order.orderNumber||'Order Details'}</h2>${urgentBadge}</div><button class="modal-close" onclick="closeOrderModal()">✕</button></div><div class="modal-body"><div class="modal-grid"><div class="modal-field"><div class="modal-field-label">Date</div><div class="modal-field-value">${order.date||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Name</div><div class="modal-field-value">${order.serviceController||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Order Type</div><div class="modal-field-value">${order.orderType||'—'}</div></div><div class="modal-field"><div class="modal-field-label">Works Order</div><div class="modal-field-value">${order.worksOrder||'—'}</div></div><div class="modal-field"><div class="modal-field-label">Machine Serial</div><div class="modal-field-value">${order.machineSerial||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Model</div><div class="modal-field-value">${order.model||'N/A'}</div></div></div>${pickedInfo}<div class="modal-section" style="margin-top:20px;"><div class="modal-section-title">Order Timeline</div>${buildTimeline(order)}</div><div class="modal-section"><div class="modal-section-title">Update Status</div><div class="status-select-wrapper"><select id="modalOrderStatus"><option value="Pending" ${order.status==='Pending'?'selected':''}>Pending</option><option value="Sent to Stores" ${order.status==='Sent to Stores'?'selected':''}>Sent to Stores</option><option value="Picked &amp; Ready" ${order.status==='Picked & Ready'?'selected':''}>Picked &amp; Ready</option><option value="Backorder" ${order.status==='Backorder'?'selected':''}>Backorder</option><option value="Completed" ${order.status==='Completed'?'selected':''}>Completed</option><option value="Cancelled" ${order.status==='Cancelled'?'selected':''}>Cancelled</option></select></div></div><div class="modal-section"><div class="modal-section-title">Parts (${order.parts?.length||0})</div><div>${(order.parts||[]).map(p=>`<div class="modal-part-row"><div><div class="modal-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="modal-part-desc">${p['Description']||p.desc||'No description'}</div></div><div class="modal-part-qty">Qty: ${p.qty||1}</div></div>`).join('')||'<p style="color:#666;">No parts</p>'}</div></div><div class="modal-section"><div class="modal-section-title">Notes</div><textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes...">${order.comments||order.notes||''}</textarea></div><div class="modal-actions"><button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button><button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button></div></div></div>`;document.body.appendChild(modal);}
 
-async function saveOrderChanges(index){const order=orders[index],newStatus=document.getElementById('modalOrderStatus').value,newNotes=document.getElementById('modalOrderNotes').value,btn=event.target;btn.disabled=true;btn.textContent='Saving...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber:order.orderNumber,status:newStatus,notes:newNotes})});const result=await res.json();if(result.success){orders[index].status=newStatus;orders[index].notes=orders[index].comments=newNotes;const ukNow=()=>{const d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};if(newStatus==='Sent to Stores')orders[index].sentToStoresAt=ukNow();if(newStatus==='Completed')orders[index].completedAt=ukNow();if(newStatus==='Cancelled')orders[index].cancelledAt=ukNow();updateOrderStats();applyFilters();renderStoresPage();closeOrderModal();showToast('Order updated successfully!');}else{showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}catch(e){showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}
+async function saveOrderChanges(index){const order=orders[index],newStatus=document.getElementById('modalOrderStatus').value,newNotes=document.getElementById('modalOrderNotes').value,btn=event.target;btn.disabled=true;btn.textContent='Saving...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber:order.orderNumber,status:newStatus,notes:newNotes})});const result=await res.json();if(result.success){orders[index].status=newStatus;orders[index].notes=orders[index].comments=newNotes;const ukNow=()=>{const d=new Date();return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};if(newStatus==='Sent to Stores')orders[index].sentToStoresAt=ukNow();if(newStatus==='Completed')orders[index].completedAt=ukNow();if(newStatus==='Cancelled')orders[index].cancelledAt=ukNow();updateOrderStats();applyFilters();renderStoresPage();closeOrderModal();showToast('Order updated successfully!');}else{showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}catch(e){showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}
 
 function closeOrderModal(){document.getElementById('orderModal')?.remove();}
 
 function exportCSV(){if(!displayedOrders.length){showToast('No orders to export');return;}const headers=['Order Number','Date','Name','Order Type','Works Order','Machine Serial','Model','Parts Count','Status','Picked By','Picked At','Urgent','Notes'];const rows=displayedOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.orderType||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.partsCount||(o.parts?.length||0),o.status||'Pending',o.pickedBy||'',o.pickedAt||'',o.urgent?'Yes':'No',(o.comments||o.notes||'').replace(/"/g,'""')].map(v=>`"${v}"`).join(','));const csv=[headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-orders-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Exported ${displayedOrders.length} orders`);}
-
 function exportPDF(){document.getElementById('printTitle').textContent=`Flexi Parts — Orders Export (${displayedOrders.length} orders, ${new Date().toLocaleDateString('en-GB')})`;window.print();}
+
+/* ══════════════════════════════════════════════════
+   REPORTS
+══════════════════════════════════════════════════ */
+function setReportPeriod(days,btn){reportPeriodDays=days;document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderReports();}
+
+function getFilteredOrdersForPeriod(){if(!reportPeriodDays)return orders;const cutoff=new Date();cutoff.setDate(cutoff.getDate()-reportPeriodDays);return orders.filter(o=>{if(!o._rawDate)return true;return new Date(o._rawDate)>=cutoff;});}
+
+function renderReports(){
+    const periodOrders=getFilteredOrdersForPeriod();
+
+    // Summary strip
+    const totalParts=periodOrders.reduce((s,o)=>s+(o.parts?.length||0),0);
+    const urgentCount=periodOrders.filter(o=>o.urgent).length;
+    const avgParts=periodOrders.length?Math.round(totalParts/periodOrders.length*10)/10:0;
+    document.getElementById('rpt-total-orders').textContent=periodOrders.length;
+    document.getElementById('rpt-total-parts').textContent=totalParts;
+    document.getElementById('rpt-urgent').textContent=urgentCount;
+    document.getElementById('rpt-avg-parts').textContent=avgParts;
+
+    renderWeeklyBarChart(periodOrders);
+    renderStatusDonut(periodOrders);
+    renderEngineerBreakdown(periodOrders);
+    renderTopParts(periodOrders);
+}
+
+function renderWeeklyBarChart(periodOrders){
+    const chart=document.getElementById('weeklyBarChart');
+    // Build 8 week buckets
+    const weeks=[];
+    for(let i=7;i>=0;i--){
+        const d=new Date();
+        d.setDate(d.getDate()-i*7);
+        const weekStart=new Date(d);
+        weekStart.setDate(d.getDate()-d.getDay());
+        weeks.push({label:weekStart.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit'}),start:weekStart,count:0});
+    }
+    periodOrders.forEach(o=>{
+        if(!o._rawDate)return;
+        const d=new Date(o._rawDate);
+        for(let i=weeks.length-1;i>=0;i--){
+            if(d>=weeks[i].start){weeks[i].count++;break;}
+        }
+    });
+    const maxCount=Math.max(...weeks.map(w=>w.count),1);
+    chart.innerHTML=weeks.map(w=>{
+        const pct=Math.round((w.count/maxCount)*100);
+        return`<div class="bar-wrap"><div class="bar" style="height:${Math.max(pct,4)}%;"><div class="bar-tooltip">${w.count}</div></div><div class="bar-label">${w.label}</div></div>`;
+    }).join('');
+}
+
+function renderStatusDonut(periodOrders){
+    const statusGroups={};
+    periodOrders.forEach(o=>{const s=o.status||'Pending';statusGroups[s]=(statusGroups[s]||0)+1;});
+    const colors={'Pending':'#facc15','Sent to Stores':'#f59e0b','Picked & Ready':'#4ade80','Completed':'#22d3ee','Backorder':'#a78bfa','Cancelled':'#f87171'};
+    const total=periodOrders.length||1;
+    const entries=Object.entries(statusGroups).sort((a,b)=>b[1]-a[1]);
+    const svg=document.getElementById('donutSvg');
+    const legend=document.getElementById('donutLegend');
+    // Draw donut
+    const cx=60,cy=60,r=45,innerR=28;
+    let currentAngle=-Math.PI/2;
+    const paths=entries.map(([status,count])=>{
+        const angle=(count/total)*Math.PI*2;
+        const x1=cx+r*Math.cos(currentAngle),y1=cy+r*Math.sin(currentAngle);
+        currentAngle+=angle;
+        const x2=cx+r*Math.cos(currentAngle),y2=cy+r*Math.sin(currentAngle);
+        const ix1=cx+innerR*Math.cos(currentAngle-angle),iy1=cy+innerR*Math.sin(currentAngle-angle);
+        const ix2=cx+innerR*Math.cos(currentAngle),iy2=cy+innerR*Math.sin(currentAngle);
+        const large=angle>Math.PI?1:0;
+        const color=colors[status]||'#555';
+        return`<path d="M${x1},${y1} A${r},${r} 0 ${large},1 ${x2},${y2} L${ix2},${iy2} A${innerR},${innerR} 0 ${large},0 ${ix1},${iy1} Z" fill="${color}" opacity="0.85"/>`;
+    });
+    svg.innerHTML=paths.join('')+`<text x="${cx}" y="${cy+4}" text-anchor="middle" fill="white" font-size="13" font-weight="900" font-family="Barlow Condensed">${total}</text><text x="${cx}" y="${cy+16}" text-anchor="middle" fill="#666" font-size="8" font-family="Barlow Condensed">ORDERS</text>`;
+    legend.innerHTML=entries.map(([status,count])=>`<div class="donut-legend-item"><div class="donut-dot" style="background:${colors[status]||'#555'}"></div><div class="donut-legend-label">${status}</div><div class="donut-legend-val">${count}</div></div>`).join('');
+}
+
+function renderEngineerBreakdown(periodOrders){
+    const engCounts={};
+    periodOrders.forEach(o=>{const e=o.serviceController||'Unknown';engCounts[e]=(engCounts[e]||0)+1;});
+    const sorted=Object.entries(engCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const max=sorted[0]?.[1]||1;
+    const container=document.getElementById('engineerBreakdown');
+    container.innerHTML=sorted.map(([name,count])=>`<div class="eng-row"><div class="eng-name">${name}</div><div class="eng-bar-wrap"><div class="eng-bar" style="width:${Math.round(count/max*100)}%"></div></div><div class="eng-count">${count}</div></div>`).join('')||'<p style="color:#555;font-size:.9em;">No data for this period</p>';
+}
+
+function renderTopParts(periodOrders){
+    const partCounts={};
+    periodOrders.forEach(o=>{(o.parts||[]).forEach(p=>{const num=p['Part Number']||p.partNum||'Unknown';if(!partCounts[num])partCounts[num]={count:0,totalQty:0,desc:p['Description']||p.desc||''};partCounts[num].count++;partCounts[num].totalQty+=(p.qty||1);});});
+    const sorted=Object.entries(partCounts).sort((a,b)=>b[1].count-a[1].count).slice(0,10);
+    const rankClass=i=>i===0?'rank-badge gold':i===1?'rank-badge silver':i===2?'rank-badge bronze':'rank-badge';
+    document.getElementById('topPartsBody').innerHTML=sorted.map(([num,data],i)=>`<tr><td><span class="${rankClass(i)}">${i+1}</span></td><td style="color:var(--primary-red);font-weight:700;">${num}</td><td style="color:var(--text-secondary);font-size:.88em;">${data.desc||'—'}</td><td style="font-weight:700;">${data.count}</td><td style="color:#4ade80;font-weight:700;">${data.totalQty}</td></tr>`).join('')||`<tr><td colspan="5" style="text-align:center;padding:30px;color:#555;">No data for this period</td></tr>`;}
+
+function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDays} Days`:'All Time';const periodOrders=getFilteredOrdersForPeriod();if(!periodOrders.length){showToast('No data to export');return;}const headers=['Order Number','Date','Name','Works Order','Machine','Model','Parts Count','Status','Urgent'];const rows=periodOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.parts?.length||0,o.status||'Pending',o.urgent?'Yes':'No'].map(v=>`"${v}"`).join(','));const csv=[`"Flexi Parts Report — ${period} — ${new Date().toLocaleDateString('en-GB')}"`,headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-report-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Report exported (${periodOrders.length} orders)`);}
+
+/* ══════════════════════════════════════════════════
+   RETURNS
+══════════════════════════════════════════════════ */
+function loadReturnsFromStorage(){try{returns=JSON.parse(localStorage.getItem('flexi-returns')||'[]');}catch(e){returns=[];}}
+function saveReturnsToStorage(){localStorage.setItem('flexi-returns',JSON.stringify(returns));}
+
+function initReturnPartsEditor(){addReturnPartRow();}
+
+function addReturnPartRow(){
+    const editor=document.getElementById('returnPartsEditor');
+    const row=document.createElement('div');
+    row.className='return-part-editor-row';
+    const id=Date.now();
+    row.innerHTML=`<input type="text" class="rpe-input" placeholder="Part number" id="rpe-pn-${id}"><input type="text" class="rpe-input" placeholder="Description" id="rpe-desc-${id}"><input type="number" class="rpe-input" placeholder="1" min="1" value="1" id="rpe-qty-${id}" style="width:60px;"><button class="rpe-remove" onclick="this.parentElement.remove()">✕</button>`;
+    editor.appendChild(row);
+}
+
+function getReturnParts(){
+    const rows=document.querySelectorAll('#returnPartsEditor .return-part-editor-row');
+    const parts=[];
+    rows.forEach(row=>{
+        const inputs=row.querySelectorAll('input');
+        if(inputs.length<3)return;
+        const pn=inputs[0].value.trim(),desc=inputs[1].value.trim(),qty=parseInt(inputs[2].value)||1;
+        if(pn)parts.push({partNumber:pn,description:desc,qty});
+    });
+    return parts;
+}
+
+async function submitReturn(){
+    const raisedBy=document.getElementById('ret-raised-by').value;
+    const reason=document.getElementById('ret-reason').value;
+    if(!raisedBy){showToast('⚠ Please select who raised this return');return;}
+    if(!reason){showToast('⚠ Please select a reason');return;}
+    const parts=getReturnParts();
+    if(!parts.length){showToast('⚠ Please add at least one part to return');return;}
+    const btn=document.querySelector('.submit-return-btn');
+    btn.disabled=true;btn.textContent='Submitting...';
+    const ref='RET-'+String(Math.floor(Math.random()*10000)).padStart(4,'0');
+    const returnData={ref,raisedBy,worksOrder:document.getElementById('ret-works-order').value.trim(),machineSerial:document.getElementById('ret-serial').value.trim(),reason,condition:document.getElementById('ret-condition').value,notes:document.getElementById('ret-notes').value,parts,status:'Submitted',submittedAt:new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
+    try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'submitReturn',...returnData})});}catch(e){}
+    returns.unshift(returnData);
+    saveReturnsToStorage();
+    updateReturnStats();
+    renderReturnsList();
+    clearReturnForm();
+    showToast(`✅ Return ${ref} submitted`);
+    btn.disabled=false;btn.textContent='↩ Submit Return Request';
+}
+
+function clearReturnForm(){['ret-raised-by','ret-reason','ret-condition'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['ret-works-order','ret-serial','ret-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const editor=document.getElementById('returnPartsEditor');const rows=editor.querySelectorAll('.return-part-editor-row');rows.forEach(r=>r.remove());addReturnPartRow();}
+
+function updateReturnStats(){document.getElementById('returns-submitted-count').textContent=returns.filter(r=>r.status==='Submitted').length;document.getElementById('returns-received-count').textContent=returns.filter(r=>r.status==='Received').length;document.getElementById('returns-credited-count').textContent=returns.filter(r=>r.status==='Credited').length;document.getElementById('returns-rejected-count').textContent=returns.filter(r=>r.status==='Rejected').length;}
+
+function getReturnStatusClass(status){return({'Submitted':'status-return-submitted','Received':'status-return-received','Credited':'status-return-credited','Rejected':'status-return-rejected'})[status]||'status-return-submitted';}
+
+function renderReturnsList(){
+    updateReturnStats();
+    const container=document.getElementById('returnsList');
+    if(!returns.length){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">↩</div><p>No returns submitted yet.</p></div>';return;}
+    container.innerHTML=returns.map((ret,i)=>`
+        <div class="return-card">
+            <div class="return-card-header">
+                <div class="return-ref">${ret.ref}</div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <span class="order-status ${getReturnStatusClass(ret.status)}">${ret.status}</span>
+                    <select onchange="updateReturnStatus(${i},this.value)" style="padding:5px 8px;background:var(--dark-bg);border:1px solid var(--border);border-radius:6px;color:var(--text-secondary);font-family:inherit;font-size:.8em;cursor:pointer;">
+                        <option value="Submitted" ${ret.status==='Submitted'?'selected':''}>Submitted</option>
+                        <option value="Received" ${ret.status==='Received'?'selected':''}>Received</option>
+                        <option value="Credited" ${ret.status==='Credited'?'selected':''}>Credited</option>
+                        <option value="Rejected" ${ret.status==='Rejected'?'selected':''}>Rejected</option>
+                    </select>
+                </div>
+            </div>
+            <div class="return-meta">
+                <span>👤 <strong>${ret.raisedBy||'—'}</strong></span>
+                <span>🔧 <strong>${ret.worksOrder||'—'}</strong></span>
+                <span>📅 <strong>${ret.submittedAt||'—'}</strong></span>
+                <span>⚠ <strong>${ret.reason||'—'}</strong></span>
+            </div>
+            ${ret.machineSerial?`<div style="font-size:.83em;color:#555;margin-bottom:8px;">Machine: ${ret.machineSerial}</div>`:''}
+            <div class="return-parts-preview">
+                ${ret.parts.map(p=>`<div class="return-part-line"><span class="return-part-pn">${p.partNumber}</span><span style="color:var(--text-secondary);font-size:.85em;flex:1;padding:0 8px;">${p.description||'—'}</span><span class="return-part-qty">×${p.qty}</span></div>`).join('')}
+            </div>
+            ${ret.notes?`<div style="font-size:.82em;color:#666;margin-top:8px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:4px;">💬 ${ret.notes}</div>`:''}
+        </div>
+    `).join('');
+}
+
+function updateReturnStatus(index,newStatus){returns[index].status=newStatus;saveReturnsToStorage();updateReturnStats();renderReturnsList();showToast(`Return ${returns[index].ref} updated to ${newStatus}`);}
+
+/* ══════════════════════════════════════════════════
+   WORKS ORDERS
+══════════════════════════════════════════════════ */
+function loadWOFromStorage(){try{workOrders=JSON.parse(localStorage.getItem('flexi-work-orders')||'[]');}catch(e){workOrders=[];}}
+function saveWOToStorage(){localStorage.setItem('flexi-work-orders',JSON.stringify(workOrders));}
+
+function setTodayDateOnWOForm(){const el=document.getElementById('wo-date');if(el)el.value=new Date().toISOString().slice(0,10);}
+
+function populateWOEngineerFilter(){const sel=document.getElementById('woFilterEngineer');Object.keys(ENGINEER_PINS).forEach(name=>{const o=document.createElement('option');o.value=o.textContent=name;sel.appendChild(o);});}
+
+function updateWOStats(){document.getElementById('wo-open-count').textContent=workOrders.filter(w=>w.status==='Open').length;document.getElementById('wo-awaiting-count').textContent=workOrders.filter(w=>w.status==='Awaiting Parts').length;document.getElementById('wo-complete-count').textContent=workOrders.filter(w=>w.status==='Complete').length;document.getElementById('wo-total-count').textContent=workOrders.length;}
+
+function getWOStatusClass(status){return({'Open':'wo-status-open','Parts Ordered':'wo-status-parts-ordered','Awaiting Parts':'wo-status-awaiting-parts','Complete':'wo-status-complete','Cancelled':'wo-status-cancelled'})[status]||'wo-status-open';}
+
+function renderWOTable(){
+    const search=(document.getElementById('woFilterSearch')?.value||'').toLowerCase();
+    const statusFilter=document.getElementById('woFilterStatus')?.value||'';
+    const engFilter=document.getElementById('woFilterEngineer')?.value||'';
+    let filtered=workOrders.filter(w=>{
+        if(search){const hay=[w.woNumber,w.engineer,w.machineSerial,w.customer,w.model].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
+        if(statusFilter&&w.status!==statusFilter)return false;
+        if(engFilter&&w.engineer!==engFilter)return false;
+        return true;
+    });
+    // Sort
+    filtered.sort((a,b)=>{const va=String(a[woSortField]||'').toLowerCase(),vb=String(b[woSortField]||'').toLowerCase();if(va<vb)return woSortDir==='asc'?-1:1;if(va>vb)return woSortDir==='asc'?1:-1;return 0;});
+    const tbody=document.getElementById('woTableBody');
+    if(!filtered.length){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:60px;color:#666;">${workOrders.length?'No works orders match your filters':'No works orders yet. Click "+ New Works Order" to add one.'}</td></tr>`;return;}
+    // Count linked parts orders per WO
+    tbody.innerHTML=filtered.map((wo,i)=>{
+        const idx=workOrders.indexOf(wo);
+        const linkedOrders=orders.filter(o=>o.worksOrder&&o.worksOrder.trim()===wo.woNumber.trim());
+        const linkedBadge=linkedOrders.length?`<span class="wo-parts-link">🔩 ${linkedOrders.length} order${linkedOrders.length>1?'s':''}</span>`:`<span style="color:#444;font-size:.85em;">—</span>`;
+        return`<tr onclick="openEditWOModal(${idx})">
+            <td><span class="wo-number">${wo.woNumber}</span></td>
+            <td>${wo.dateRaised||'—'}</td>
+            <td>${wo.engineer||'—'}</td>
+            <td style="color:var(--text-secondary);font-size:.9em;">${wo.machineSerial||'—'}</td>
+            <td style="color:var(--text-secondary);font-size:.9em;">${wo.model||'—'}</td>
+            <td style="color:var(--text-secondary);font-size:.9em;">${wo.customer||'—'}</td>
+            <td>${linkedBadge}</td>
+            <td><span class="wo-status ${getWOStatusClass(wo.status)}">${wo.status}</span></td>
+        </tr>`;
+    }).join('');
+}
+
+function sortWO(field){woSortDir=woSortField===field?(woSortDir==='asc'?'desc':'asc'):'asc';woSortField=field;renderWOTable();}
+
+function openNewWOModal(){
+    editingWOIndex=-1;
+    document.getElementById('woModalTitle').textContent='New Works Order';
+    clearWOForm();
+    setTodayDateOnWOForm();
+    document.getElementById('wo-linked-orders-section').style.display='none';
+    document.getElementById('woModal').classList.add('active');
+}
+
+function openEditWOModal(index){
+    editingWOIndex=index;
+    const wo=workOrders[index];
+    document.getElementById('woModalTitle').textContent=`Edit — ${wo.woNumber}`;
+    document.getElementById('wo-number').value=wo.woNumber||'';
+    document.getElementById('wo-date').value=wo.dateRaised||'';
+    document.getElementById('wo-engineer').value=wo.engineer||'';
+    document.getElementById('wo-status').value=wo.status||'Open';
+    document.getElementById('wo-serial').value=wo.machineSerial||'';
+    document.getElementById('wo-model').value=wo.model||'';
+    document.getElementById('wo-customer').value=wo.customer||'';
+    document.getElementById('wo-fault').value=wo.fault||'';
+    document.getElementById('wo-notes').value=wo.notes||'';
+    // Show linked orders
+    const linked=orders.filter(o=>o.worksOrder&&o.worksOrder.trim()===wo.woNumber.trim());
+    const section=document.getElementById('wo-linked-orders-section');
+    const container=document.getElementById('woLinkedOrders');
+    if(linked.length){
+        section.style.display='block';
+        container.innerHTML=linked.map(o=>`<div class="linked-order-row"><span class="linked-order-num">${o.orderNumber}</span><span class="linked-order-info">${o.serviceController||'—'} · ${o.date||'—'}</span><span class="order-status ${getStatusClass(o.status||'Pending')}" style="font-size:.75em;padding:3px 8px;">${o.status||'Pending'}</span></div>`).join('');
+    }else{section.style.display='none';}
+    document.getElementById('woModal').classList.add('active');
+}
+
+function clearWOForm(){['wo-number','wo-serial','wo-customer','wo-fault','wo-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['wo-engineer','wo-model'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wo-status').value='Open';}
+
+function closeWOModal(){document.getElementById('woModal').classList.remove('active');}
+
+function saveWO(){
+    const woNumber=document.getElementById('wo-number').value.trim();
+    const engineer=document.getElementById('wo-engineer').value;
+    if(!woNumber){showToast('⚠ WO Number is required');return;}
+    if(!engineer){showToast('⚠ Please select an engineer');return;}
+    const woData={woNumber,dateRaised:document.getElementById('wo-date').value,engineer,status:document.getElementById('wo-status').value,machineSerial:document.getElementById('wo-serial').value.trim(),model:document.getElementById('wo-model').value,customer:document.getElementById('wo-customer').value.trim(),fault:document.getElementById('wo-fault').value,notes:document.getElementById('wo-notes').value,updatedAt:new Date().toISOString()};
+    if(editingWOIndex>=0){workOrders[editingWOIndex]={...workOrders[editingWOIndex],...woData};}
+    else{workOrders.unshift({...woData,createdAt:new Date().toISOString()});}
+    saveWOToStorage();
+    updateWOStats();
+    renderWOTable();
+    closeWOModal();
+    showToast(editingWOIndex>=0?`Works Order ${woNumber} updated`:`Works Order ${woNumber} created`);
+    editingWOIndex=-1;
+}
 
 /* ── PARTS SEARCH ── */
 function filterParts(){const raw=document.getElementById('searchInput').value,term=raw.toLowerCase().trim(),hdr=document.getElementById('resultsHeader'),nlBanner=document.getElementById('nlBanner');if(!term){hdr.style.display='none';nlBanner.style.display='none';document.getElementById('filteredCount').textContent='0';document.getElementById('resultsContainer').innerHTML=`<div class="search-prompt"><div class="search-prompt-icon">🔍</div><div class="search-prompt-title">Start Searching</div><div class="search-prompt-text">Enter a part number or description</div></div>`;return;}hdr.style.display='block';if(isNaturalLanguage(term)){const nlResult=parseNLQuery(term);if(nlResult){nlBanner.style.display='flex';document.getElementById('nlBannerText').textContent=nlResult.interpretation;filteredParts=allParts.filter(p=>{const desc=String(p['Description']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase(),num=String(p['Part Number']||'').toLowerCase();return nlResult.keywords.some(kw=>desc.includes(kw)||sys.includes(kw)||num.includes(kw));});renderParts();return;}}nlBanner.style.display='none';const clean=term.replace(/[\s\-.]/g,'');filteredParts=allParts.filter(p=>{const num=String(p['Part Number']||'').toLowerCase(),desc=String(p['Description']||'').toLowerCase(),sup=String(p['Supplier Code']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase();return num.replace(/[\s\-.]/g,'').includes(clean)||num.includes(term)||desc.includes(term)||sup.includes(term)||sys.includes(term);});renderParts();}
 
-function renderParts(){const container=document.getElementById('resultsContainer'),count=filteredParts.length;document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;document.getElementById('filteredCount').textContent=count;if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}container.innerHTML=filteredParts.slice(0,100).map(p=>{const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const imgUrl=driveImageUrl(p['Image URL']||'');const imgHtml=imgUrl?`<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`:`<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;return `<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div><button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;}).join('');}
+function renderParts(){const container=document.getElementById('resultsContainer'),count=filteredParts.length;document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;document.getElementById('filteredCount').textContent=count;if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}container.innerHTML=filteredParts.slice(0,100).map(p=>{const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const imgUrl=driveImageUrl(p['Image URL']||'');const imgHtml=imgUrl?`<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`:`<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;return`<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div><button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;}).join('');}
 
-function driveImageUrl(raw){if(!raw||typeof raw!=='string')return '';raw=raw.trim();if(!raw)return '';if(raw.includes('drive.google.com/thumbnail')||raw.includes('drive.google.com/uc'))return raw;let id=null;const m1=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);if(m1)id=m1[1];if(!id){const m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)id=m2[1];}if(!id)return raw;return `https://drive.google.com/thumbnail?id=${id}&sz=w400`;}
-
-function placeholderHtml(){return `<div class="part-image-placeholder"><svg class="placeholder-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="52" height="38" rx="4" stroke="white" stroke-width="2.5" fill="none"/><circle cx="21" cy="27" r="5" stroke="white" stroke-width="2" fill="none"/><path d="M6 40 L19 28 L30 39 L41 27 L58 42" stroke="white" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span class="placeholder-label">No Image</span></div>`;}
+function driveImageUrl(raw){if(!raw||typeof raw!=='string')return'';raw=raw.trim();if(!raw)return'';if(raw.includes('drive.google.com/thumbnail')||raw.includes('drive.google.com/uc'))return raw;let id=null;const m1=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);if(m1)id=m1[1];if(!id){const m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)id=m2[1];}if(!id)return raw;return`https://drive.google.com/thumbnail?id=${id}&sz=w400`;}
+function placeholderHtml(){return`<div class="part-image-placeholder"><svg class="placeholder-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="52" height="38" rx="4" stroke="white" stroke-width="2.5" fill="none"/><circle cx="21" cy="27" r="5" stroke="white" stroke-width="2" fill="none"/><path d="M6 40 L19 28 L30 39 L41 27 L58 42" stroke="white" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span class="placeholder-label">No Image</span></div>`;}
 
 /* ── LIGHTBOX ── */
 let _lightboxPart=null;
@@ -1295,7 +1591,7 @@ function closeLightbox(e){if(!e||e.target===document.getElementById('lightboxOve
 
 /* ── CART ── */
 function addToCart(part){const num=part['Part Number']||part.partNum||part.partNumber;const ex=cart.find(i=>(i['Part Number']||i.partNum||i.partNumber)===num);if(ex)ex.qty++;else cart.push({...part,qty:1});updateCart();saveCartToStorage();showToast(`${num} added to cart`);}
-function updateCart(){const badge=document.getElementById('cartBadge'),empty=document.getElementById('emptyCart'),form=document.getElementById('orderForm'),items=document.getElementById('cartItems');badge.textContent=cart.length;document.getElementById('cartItemsCount').textContent=cart.length;document.getElementById('cartItemsCountText').textContent=cart.length;if(!cart.length){items.innerHTML='';empty.style.display='block';form.style.display='none';return;}empty.style.display='none';form.style.display='block';setTimeout(checkOrderAnomalies,50);updateCostEstimate();items.innerHTML=cart.map((item,i)=>{const num=item['Part Number']||item.partNum||'N/A',desc=item['Description']||item.desc||'No description';return `<div class="cart-item"><div class="cart-item-header"><div class="cart-item-number">${num}</div><button class="remove-item" onclick="removeFromCart(${i})">Remove</button></div><div class="cart-item-desc">${desc}</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(${i},-1)">−</button><input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1"><button class="qty-btn" onclick="updateQty(${i},1)">+</button></div></div>`;}).join('');}
+function updateCart(){const badge=document.getElementById('cartBadge'),empty=document.getElementById('emptyCart'),form=document.getElementById('orderForm'),items=document.getElementById('cartItems');badge.textContent=cart.length;document.getElementById('cartItemsCount').textContent=cart.length;document.getElementById('cartItemsCountText').textContent=cart.length;if(!cart.length){items.innerHTML='';empty.style.display='block';form.style.display='none';return;}empty.style.display='none';form.style.display='block';setTimeout(checkOrderAnomalies,50);updateCostEstimate();items.innerHTML=cart.map((item,i)=>{const num=item['Part Number']||item.partNum||'N/A',desc=item['Description']||item.desc||'No description';return`<div class="cart-item"><div class="cart-item-header"><div class="cart-item-number">${num}</div><button class="remove-item" onclick="removeFromCart(${i})">Remove</button></div><div class="cart-item-desc">${desc}</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(${i},-1)">−</button><input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1"><button class="qty-btn" onclick="updateQty(${i},1)">+</button></div></div>`;}).join('');}
 function removeFromCart(i){cart.splice(i,1);updateCart();saveCartToStorage();}
 function updateQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);updateCart();saveCartToStorage();}
 function updateQtyDirect(i,v){cart[i].qty=Math.max(1,parseInt(v)||1);updateCart();saveCartToStorage();}
@@ -1303,7 +1599,9 @@ function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
 
-async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));orders.unshift(normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments}));updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
+async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);// Auto-update linked WO status
+const wo=workOrders.find(w=>w.woNumber&&w.woNumber.trim()===orderData.worksOrder.trim());if(wo&&wo.status==='Open'){wo.status='Parts Ordered';saveWOToStorage();updateWOStats();}updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
+
 function clearForm(){['serviceController','worksOrder','machineSerial','comments'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('orderModel').value='';document.getElementById('orderType').value='';}
 
 /* ── NL SEARCH ── */
@@ -1343,12 +1641,13 @@ function setupEventListeners(){
     document.getElementById('searchInput').addEventListener('input',filterParts);
     document.getElementById('submitBtn').addEventListener('click',submitOrder);
     document.addEventListener('keydown',e=>{
-        if(document.getElementById('pinOverlay').classList.contains('active')) return;
-        if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();}
+        if(document.getElementById('pinOverlay').classList.contains('active'))return;
+        if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();closeWOModal();}
     });
     document.addEventListener('click',e=>{
         if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();
         if(e.target?.id==='orderModal')closeOrderModal();
+        if(e.target?.id==='woModal')closeWOModal();
     });
 }
 </script>
