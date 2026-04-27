@@ -17,7 +17,7 @@
         :root {
             --primary-red: #DC2626; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border: #2a2a2a;
             --text-primary: #ffffff; --text-secondary: #a0a0a0; --hover-bg: #252525;
-            --stores-color: #f59e0b; --picked-color: #4ade80; --van-color: #3b82f6; --wo-color: #22d3ee; --reports-color: #f97316;
+            --stores-color: #f59e0b; --picked-color: #4ade80; --van-color: #3b82f6; --reports-color: #f97316;
         }
         body { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; background: #000000; color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; letter-spacing: 0.3px; }
         .container { max-width:1600px; margin:0 auto; padding:30px; }
@@ -37,8 +37,7 @@
         .stat-card:hover { background:var(--hover-bg); border-color:var(--primary-red); }
         .stat-value { font-size:3.5em; font-weight:900; color:var(--primary-red); margin-bottom:4px; letter-spacing:-2px; line-height:1; }
         .stat-value.stores-val { color:var(--stores-color); } .stat-value.picked-val { color:var(--picked-color); }
-        .stat-value.van-val { color:var(--van-color); }
-        .stat-value.wo-val { color:var(--wo-color); } .stat-value.reports-val { color:var(--reports-color); }
+        .stat-value.van-val { color:var(--van-color); } .stat-value.reports-val { color:var(--reports-color); } .stat-value.jh-val { color:#22d3ee; }
         .stat-label { font-size:1em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; }
         .search-section { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:30px; }
         .search-actions { display:flex; gap:15px; margin-bottom:20px; }
@@ -369,48 +368,48 @@
         
         .submit-return-btn:hover { background:#c4b5fd; }
         .submit-return-btn:disabled { opacity:.5; cursor:not-allowed; }
-        .wo-banner { background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3); border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; }
-        .wo-banner-title { font-size:1.1em; font-weight:800; color:var(--wo-color); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
-        .wo-banner-sub { font-size:.88em; color:var(--text-secondary); }
-        .wo-toolbar { display:flex; gap:12px; align-items:center; margin-bottom:20px; flex-wrap:wrap; }
-        .wo-filter-input { flex:1; min-width:200px; padding:10px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; }
-        .wo-filter-input:focus { outline:none; border-color:var(--wo-color); }
-        .wo-filter-select { padding:10px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; min-width:160px; }
-        .wo-filter-select:focus { outline:none; border-color:var(--wo-color); }
-        .wo-filter-select option { background:var(--card-bg); }
-        .new-wo-btn { padding:10px 22px; background:var(--wo-color); border:none; border-radius:8px; color:#000; font-family:inherit; font-size:.95em; font-weight:800; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
-        .new-wo-btn:hover { background:#67e8f9; }
-        .wo-table-wrap { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; overflow:hidden; }
-        .wo-table { width:100%; border-collapse:collapse; }
-        .wo-table th { padding:14px 16px; text-align:left; background:var(--hover-bg); color:var(--text-secondary); font-size:.85em; font-weight:700; text-transform:uppercase; letter-spacing:1px; border-bottom:1px solid var(--border); cursor:pointer; white-space:nowrap; }
-        .wo-table th:hover { color:white; }
-        .wo-table td { padding:14px 16px; border-bottom:1px solid var(--border); font-size:.95em; color:white; }
-        .wo-table tr:last-child td { border-bottom:none; }
-        .wo-table tr:hover td { background:var(--hover-bg); cursor:pointer; }
-        .wo-number { color:var(--wo-color); font-weight:800; font-size:1.05em; }
-        .wo-status { display:inline-block; padding:5px 10px; border-radius:6px; font-size:.8em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; }
-        .wo-status-open { background:rgba(234,179,8,.2); color:#facc15; border:1px solid rgba(234,179,8,.3); }
-        .wo-status-parts-ordered { background:rgba(34,211,238,.2); color:#22d3ee; border:1px solid rgba(34,211,238,.3); }
-        .wo-status-awaiting-parts { background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
-        .wo-status-complete { background:rgba(74,222,128,.2); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
-        .wo-status-cancelled { background:rgba(239,68,68,.2); color:#f87171; border:1px solid rgba(239,68,68,.3); }
-        .wo-parts-link { display:inline-flex; align-items:center; gap:5px; background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.2); color:#22d3ee; padding:3px 10px; border-radius:4px; font-size:.8em; font-weight:700; }
-        .wo-modal-form .form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-        .wo-modal-input { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; transition:all .2s; }
-        .wo-modal-input:focus { outline:none; border-color:var(--wo-color); }
-        .wo-modal-input::placeholder { color:#555; }
-        .wo-modal-select { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; transition:all .2s; }
-        .wo-modal-select:focus { outline:none; border-color:var(--wo-color); }
-        .wo-modal-select option { background:var(--card-bg); }
-        .wo-form-label { display:block; font-size:.8em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; margin-top:14px; }
-        .wo-form-label:first-child { margin-top:0; }
-        .save-wo-btn { width:100%; padding:16px; background:var(--wo-color); border:none; border-radius:8px; color:#000; font-family:inherit; font-size:1em; font-weight:800; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:1px; margin-top:20px; }
-        .save-wo-btn:hover { background:#67e8f9; }
-        .linked-orders-section { background:var(--dark-bg); border-radius:8px; padding:14px; }
-        .linked-order-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); font-size:.88em; }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         .linked-order-row:last-child { border-bottom:none; }
-        .linked-order-num { color:var(--primary-red); font-weight:700; }
-        .linked-order-info { color:var(--text-secondary); }
+        
+        
         .toast { position:fixed; bottom:110px; right:30px; background:var(--card-bg); border:1px solid var(--border); border-left:3px solid var(--primary-red); color:white; padding:16px 24px; border-radius:8px; animation:slideIn .3s ease; z-index:9999; font-weight:600; font-size:.95em; pointer-events:none; }
         @keyframes slideIn { from{transform:translateX(400px);opacity:0} to{transform:translateX(0);opacity:1} }
         .search-prompt { text-align:center; padding:80px 40px; color:var(--text-secondary); }
@@ -475,6 +474,79 @@
             
             .report-summary-strip { grid-template-columns:1fr 1fr; }
         }
+
+        .jh-val { color:#22d3ee; }
+        .jh-toolbar { display:flex; gap:12px; align-items:center; margin-bottom:24px; flex-wrap:wrap; }
+        .jh-search-box { position:relative; flex:1; min-width:220px; }
+        .jh-search-box input { width:100%; padding:11px 40px 11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; }
+        .jh-search-box input:focus { outline:none; border-color:#22d3ee; }
+        .jh-search-box .search-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none; color:#555; }
+        .jh-view-toggle { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+        .jh-view-btn { padding:10px 18px; background:var(--dark-bg); border:none; color:var(--text-secondary); font-family:inherit; font-size:.9em; font-weight:700; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+        .jh-view-btn.active { background:rgba(34,211,238,.15); color:#22d3ee; }
+        .jh-view-btn:hover:not(.active) { background:var(--hover-bg); color:white; }
+        .jh-filter-select { padding:10px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; min-width:160px; }
+        .jh-filter-select:focus { outline:none; border-color:#22d3ee; }
+        .jh-filter-select option { background:var(--card-bg); }
+        .jh-group { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; margin-bottom:20px; overflow:hidden; }
+        .jh-group-header { padding:20px 24px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; transition:background .2s; gap:16px; flex-wrap:wrap; }
+        .jh-group-header:hover { background:var(--hover-bg); }
+        .jh-group-title { font-size:1.5em; font-weight:900; color:#22d3ee; letter-spacing:-1px; }
+        .jh-group-meta { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+        .jh-group-badge { background:rgba(34,211,238,.15); border:1px solid rgba(34,211,238,.3); color:#22d3ee; padding:4px 12px; border-radius:6px; font-size:.8em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+        .jh-group-badge.parts { background:rgba(74,222,128,.1); border-color:rgba(74,222,128,.3); color:#4ade80; }
+        .jh-group-chevron { color:#555; font-size:1.1em; transition:transform .2s; flex-shrink:0; }
+        .jh-group-chevron.open { transform:rotate(180deg); }
+        .jh-group-body { display:none; border-top:1px solid var(--border); }
+        .jh-group-body.open { display:block; }
+        .jh-order-row { display:flex; align-items:center; gap:16px; padding:14px 24px; border-bottom:1px solid var(--border); transition:background .15s; cursor:pointer; flex-wrap:wrap; }
+        .jh-order-row:last-child { border-bottom:none; }
+        .jh-order-row:hover { background:var(--hover-bg); }
+        .jh-order-num { font-weight:800; color:var(--primary-red); font-size:1em; min-width:130px; }
+        .jh-order-date { color:var(--text-secondary); font-size:.88em; min-width:120px; }
+        .jh-order-wo { color:#a0a0a0; font-size:.88em; min-width:100px; }
+        .jh-order-serial { color:#888; font-size:.88em; flex:1; }
+        .jh-order-parts { background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.2); color:#4ade80; padding:3px 10px; border-radius:4px; font-size:.8em; font-weight:700; white-space:nowrap; }
+        .jh-order-urgent { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.3); color:#f59e0b; padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; }
+        .jh-last-seen { font-size:.82em; color:#555; font-weight:600; }
+        .jh-empty { text-align:center; padding:80px 20px; color:#555; }
+        .jh-empty-icon { font-size:3.5em; margin-bottom:16px; opacity:.3; }
+        .jh-val { color:#22d3ee; }
+        .jh-toolbar { display:flex; gap:12px; align-items:center; margin-bottom:24px; flex-wrap:wrap; }
+        .jh-search-box { position:relative; flex:1; min-width:220px; }
+        .jh-search-box input { width:100%; padding:11px 40px 11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; }
+        .jh-search-box input:focus { outline:none; border-color:#22d3ee; }
+        .jh-search-box .search-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); pointer-events:none; color:#555; }
+        .jh-view-toggle { display:flex; border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+        .jh-view-btn { padding:10px 18px; background:var(--dark-bg); border:none; color:var(--text-secondary); font-family:inherit; font-size:.9em; font-weight:700; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+        .jh-view-btn.active { background:rgba(34,211,238,.15); color:#22d3ee; }
+        .jh-view-btn:hover:not(.active) { background:var(--hover-bg); color:white; }
+        .jh-filter-select { padding:10px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; min-width:160px; }
+        .jh-filter-select:focus { outline:none; border-color:#22d3ee; }
+        .jh-filter-select option { background:var(--card-bg); }
+        .jh-group { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; margin-bottom:20px; overflow:hidden; }
+        .jh-group-header { padding:20px 24px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; transition:background .2s; gap:16px; flex-wrap:wrap; }
+        .jh-group-header:hover { background:var(--hover-bg); }
+        .jh-group-title { font-size:1.5em; font-weight:900; color:#22d3ee; letter-spacing:-1px; }
+        .jh-group-meta { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+        .jh-group-badge { background:rgba(34,211,238,.15); border:1px solid rgba(34,211,238,.3); color:#22d3ee; padding:4px 12px; border-radius:6px; font-size:.8em; font-weight:700; text-transform:uppercase; letter-spacing:.5px; white-space:nowrap; }
+        .jh-group-badge.parts { background:rgba(74,222,128,.1); border-color:rgba(74,222,128,.3); color:#4ade80; }
+        .jh-group-chevron { color:#555; font-size:1.1em; transition:transform .25s; flex-shrink:0; }
+        .jh-group-chevron.open { transform:rotate(180deg); }
+        .jh-group-body { display:none; border-top:1px solid var(--border); }
+        .jh-group-body.open { display:block; }
+        .jh-order-row { display:flex; align-items:center; gap:16px; padding:14px 24px; border-bottom:1px solid var(--border); transition:background .15s; cursor:pointer; flex-wrap:wrap; }
+        .jh-order-row:last-child { border-bottom:none; }
+        .jh-order-row:hover { background:var(--hover-bg); }
+        .jh-order-num { font-weight:800; color:var(--primary-red); font-size:1em; min-width:130px; }
+        .jh-order-date { color:var(--text-secondary); font-size:.88em; min-width:120px; }
+        .jh-order-wo { color:#888; font-size:.88em; min-width:100px; }
+        .jh-order-serial { color:#666; font-size:.88em; flex:1; }
+        .jh-order-parts { background:rgba(74,222,128,.1); border:1px solid rgba(74,222,128,.2); color:#4ade80; padding:3px 10px; border-radius:4px; font-size:.8em; font-weight:700; white-space:nowrap; }
+        .jh-order-urgent { background:rgba(245,158,11,.15); border:1px solid rgba(245,158,11,.3); color:#f59e0b; padding:3px 8px; border-radius:4px; font-size:.75em; font-weight:700; }
+        .jh-last-seen { font-size:.82em; color:#555; font-weight:600; }
+        .jh-empty { text-align:center; padding:80px 20px; color:#555; }
+        .jh-empty-icon { font-size:3.5em; margin-bottom:16px; opacity:.3; }
         ::-webkit-scrollbar { width:14px; height:14px; }
         ::-webkit-scrollbar-track { background:var(--dark-bg); border-left:1px solid var(--border); }
         ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,var(--primary-red) 0%,#ef4444 100%); border-radius:7px; border:2px solid var(--dark-bg); }
@@ -533,8 +605,9 @@
             <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
             <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
             <button class="nav-link" onclick="showPage('orders')">Orders</button>
-            <button class="nav-link" onclick="showPage('workorders')" style="border-color:rgba(34,211,238,.4);color:#22d3ee;">📋 WO</button>
             <button class="nav-link" onclick="showPage('reports')" style="border-color:rgba(249,115,22,.4);color:#f97316;">📊 Reports</button>
+            <button class="nav-link" onclick="showPage('jobhistory')" style="border-color:rgba(34,211,238,.4);color:#22d3ee;">🕘 Job History</button>
+            <button class="nav-link" onclick="showPage('jobhistory')" style="border-color:rgba(34,211,238,.4);color:#22d3ee;">🕘 Job History</button>
         </div>
     </div>
     <div class="stats-bar">
@@ -758,14 +831,16 @@
             </table>
         </div>
     </div>
-</div><!-- ═══════ WORKS ORDERS PAGE ═══════ -->
-<div class="page-section" id="workordersPage">
+</div>
+
+<!-- ═══════ JOB HISTORY PAGE ═══════ -->
+<div class="page-section" id="jobhistoryPage">
     <div class="header">
         <div class="header-content">
             <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
             <div class="header-text">
-                <h1>WORKS ORDERS</h1>
-                <p class="header-subtitle">JOB MANAGEMENT</p>
+                <h1>JOB HISTORY</h1>
+                <p class="header-subtitle">ORDERS BY ENGINEER &amp; MACHINE</p>
             </div>
         </div>
         <div class="header-actions">
@@ -774,222 +849,34 @@
         </div>
     </div>
     <div class="stats-bar">
-        <div class="stat-card"><div class="stat-value wo-val" id="wo-open-count">0</div><div class="stat-label">Open</div></div>
-        <div class="stat-card"><div class="stat-value stores-val" id="wo-awaiting-count">0</div><div class="stat-label">Awaiting Parts</div></div>
-        <div class="stat-card"><div class="stat-value picked-val" id="wo-complete-count">0</div><div class="stat-label">Complete</div></div>
-        <div class="stat-card"><div class="stat-value" id="wo-total-count">0</div><div class="stat-label">Total</div></div>
+        <div class="stat-card"><div class="stat-value jh-val" id="jh-engineers-count">0</div><div class="stat-label">Engineers</div></div>
+        <div class="stat-card"><div class="stat-value jh-val" id="jh-machines-count">0</div><div class="stat-label">Machines</div></div>
+        <div class="stat-card"><div class="stat-value" id="jh-orders-count">0</div><div class="stat-label">Total Orders</div></div>
+        <div class="stat-card"><div class="stat-value" id="jh-parts-count">0</div><div class="stat-label">Total Parts</div></div>
     </div>
-    <div class="wo-banner">
-        <span style="font-size:1.6em;">📋</span>
-        <div class="van-banner-text">
-            <div class="wo-banner-title">Works Orders</div>
-            <div class="wo-banner-sub">Track jobs, link parts orders, and monitor progress.</div>
+    <div class="jh-toolbar">
+        <div class="jh-search-box">
+            <input type="text" id="jhSearch" placeholder="Search engineer, machine serial, works order..." oninput="renderJobHistory()">
+            <span class="search-icon">🔍</span>
         </div>
-    </div>
-    <div class="wo-toolbar">
-        <input type="text" class="wo-filter-input" id="woFilterSearch" placeholder="Search WO number, engineer, serial..." oninput="renderWOTable()">
-        <select class="wo-filter-select" id="woFilterStatus" onchange="renderWOTable()">
-            <option value="">All Statuses</option>
-            <option>Open</option><option>Parts Ordered</option><option>Awaiting Parts</option><option>Complete</option><option>Cancelled</option>
-        </select>
-        <select class="wo-filter-select" id="woFilterEngineer" onchange="renderWOTable()">
+        <div class="jh-view-toggle">
+            <button class="jh-view-btn active" id="jhViewEngineer" onclick="setJHView('engineer')">👤 By Engineer</button>
+            <button class="jh-view-btn" id="jhViewMachine" onclick="setJHView('machine')">🚜 By Machine</button>
+        </div>
+        <select class="jh-filter-select" id="jhFilterEngineer" onchange="renderJobHistory()">
             <option value="">All Engineers</option>
         </select>
-        <button class="new-wo-btn" onclick="openNewWOModal()">+ New Works Order</button>
+        <select class="jh-filter-select" id="jhFilterStatus" onchange="renderJobHistory()">
+            <option value="">All Statuses</option>
+            <option>Pending</option>
+            <option>Sent to Stores</option>
+            <option>Picked &amp; Ready</option>
+            <option>Completed</option>
+            <option>Backorder</option>
+            <option>Cancelled</option>
+        </select>
     </div>
-    <div class="wo-table-wrap">
-        <table class="wo-table">
-            <thead><tr>
-                <th onclick="sortWO('woNumber')">WO Number</th>
-                <th onclick="sortWO('dateRaised')">Date</th>
-                <th onclick="sortWO('engineer')">Engineer</th>
-                <th>Serial</th><th>Model</th><th>Customer</th>
-                <th>Parts Orders</th>
-                <th onclick="sortWO('status')">Status</th>
-            </tr></thead>
-            <tbody id="woTableBody"><tr><td colspan="8" style="text-align:center;padding:60px;color:#666;">No works orders yet.</td></tr></tbody>
-        </table>
-    </div>
-</div>
-
-</div><!-- end .container -->
-
-<!-- ═══════ CART SIDEBAR ═══════ -->
-<div class="cart-section" id="cartSection">
-    <button class="cart-close" onclick="toggleCart()">✕</button>
-    <div class="cart-header">
-        <h2>YOUR CART</h2>
-        <div class="cart-subtitle"><span id="cartItemsCountText">0</span> ITEMS</div>
-    </div>
-    <div id="emptyCart" class="empty-state">
-        <div class="empty-state-icon">🛒</div>
-        <p>Your cart is empty</p>
-    </div>
-    <div id="cartItems"></div>
-    <div id="orderForm" style="display:none;">
-        <div id="anomalyBanner" class="anomaly-banner" style="display:none;">
-            <span class="anomaly-icon">⚠</span>
-            <div class="anomaly-content">
-                <div class="anomaly-title">Order Check</div>
-                <div class="anomaly-msg" id="anomalyMsg"></div>
-            </div>
-            <button class="anomaly-dismiss" onclick="dismissAnomaly()">✕</button>
-        </div>
-        <div id="costBar" class="cost-bar">
-            <div>
-                <div class="cost-bar-label">Estimated Cost</div>
-                <div class="cost-bar-breakdown" id="costBreakdown"></div>
-            </div>
-            <div class="cost-bar-total" id="costTotal">£0.00</div>
-        </div>
-        <div class="order-form">
-            <label class="urgent-toggle" id="urgentToggle" onclick="toggleUrgent()">
-                <input type="checkbox">
-                <div class="urgent-indicator" id="urgentIndicator">⚑</div>
-                <span class="urgent-label">Mark as Urgent</span>
-            </label>
-            <div class="form-group">
-                <label>Your Name</label>
-                <input type="text" id="serviceController" placeholder="Enter your name...">
-            </div>
-            <div class="form-group">
-                <label>Order Type</label>
-                <select id="orderType">
-                    <option value="">— Select type —</option>
-                    <option value="Service Controller">Service Controller</option>
-                    <option value="Service Engineer">Service Engineer</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Works Order</label>
-                <input type="text" id="worksOrder" placeholder="WO number...">
-            </div>
-            <div class="form-group">
-                <label>Machine Serial</label>
-                <input type="text" id="machineSerial" placeholder="Serial number..." oninput="onSerialInput()">
-                <div class="serial-memory-card" id="serialMemoryCard">
-                    <div class="serial-memory-header">
-                        <div class="serial-memory-title">📋 Known Machine</div>
-                        <button class="serial-memory-forget" onclick="forgetSerial()">Forget</button>
-                    </div>
-                    <div class="serial-memory-grid">
-                        <div><div class="serial-memory-label">Model</div><div class="serial-memory-value" id="smModel">—</div></div>
-                        <div><div class="serial-memory-label">Last Order</div><div class="serial-memory-value" id="smLastOrder">—</div></div>
-                        <div><div class="serial-memory-label">Total Orders</div><div class="serial-memory-value" id="smTotalOrders">—</div></div>
-                        <div><div class="serial-memory-label">Last Engineer</div><div class="serial-memory-value" id="smEngineer">—</div></div>
-                    </div>
-                    <button class="serial-memory-apply" onclick="applySerialMemory()">Auto-fill details ↗</button>
-                </div>
-            </div>
-            <div class="form-group">
-                <label>Model</label>
-                <select id="orderModel"><option value="">— Select model —</option></select>
-            </div>
-            <div class="form-group">
-                <label>Notes / Comments</label>
-                <textarea id="comments" placeholder="Any special instructions..."></textarea>
-            </div>
-            <button class="submit-order" id="submitBtn">Submit Order</button>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════ BULK IMPORT MODAL ═══════ -->
-<div class="modal-overlay" id="bulkImportModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h2>Bulk Import Parts</h2>
-            <button class="modal-close" onclick="closeBulkImport()">✕</button>
-        </div>
-        <div class="modal-body">
-            <div class="bulk-import-instructions">
-                Enter one part number per line. Parts will be searched and added to your cart automatically.
-            </div>
-            <textarea class="bulk-import-textarea" id="bulkImportTextarea" placeholder="2015.00.002&#10;30071&#10;30073A"></textarea>
-            <div class="bulk-import-results" id="bulkImportResults"></div>
-            <div class="modal-actions">
-                <button class="modal-btn modal-btn-secondary" onclick="closeBulkImport()">Cancel</button>
-                <button class="modal-btn modal-btn-primary" onclick="processBulkImport()">Import Parts</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════ LIGHTBOX ═══════ -->
-<div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
-    <div class="lightbox-inner">
-        <button class="lightbox-close" onclick="closeLightboxDirect()">✕</button>
-        <div class="lightbox-img-wrap">
-            <img class="lightbox-img" id="lightboxImg" src="" alt="Part image">
-        </div>
-        <div class="lightbox-info">
-            <div>
-                <div class="lightbox-part-num" id="lightboxPartNum"></div>
-                <div class="lightbox-part-desc" id="lightboxPartDesc"></div>
-            </div>
-            <button class="lightbox-add" id="lightboxAddBtn">Add to Cart</button>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════ WORKS ORDER MODAL ═══════ -->
-<div class="modal-overlay" id="woModal">
-    <div class="modal">
-        <div class="modal-header">
-            <h2 id="woModalTitle">New Works Order</h2>
-            <button class="modal-close" onclick="closeWOModal()">✕</button>
-        </div>
-        <div class="modal-body wo-modal-form">
-            <div class="form-row">
-                <div>
-                    <label class="wo-form-label">WO Number *</label>
-                    <input type="text" class="wo-modal-input" id="wo-number" placeholder="e.g. 143326">
-                </div>
-                <div>
-                    <label class="wo-form-label">Date Raised</label>
-                    <input type="date" class="wo-modal-input" id="wo-date">
-                </div>
-            </div>
-            <label class="wo-form-label">Assigned Engineer *</label>
-            <select class="wo-modal-select" id="wo-engineer">
-                <option value="">— Select engineer —</option>
-                <option>Aaron Dyson</option><option>Brett Stockton</option><option>David Williams</option><option>Graham Denman</option>
-                <option>Kevin Deakin</option><option>Lance Duncan</option><option>Lewis Lockwood</option><option>Mick Thornley</option>
-                <option>Mike Adams</option><option>Pete King</option><option>Rob Appleyard</option><option>Rob Lucas</option><option>Tom Barker</option>
-            </select>
-            <label class="wo-form-label">Status</label>
-            <select class="wo-modal-select" id="wo-status">
-                <option value="Open">Open</option><option value="Parts Ordered">Parts Ordered</option>
-                <option value="Awaiting Parts">Awaiting Parts</option><option value="Complete">Complete</option><option value="Cancelled">Cancelled</option>
-            </select>
-            <div class="form-row">
-                <div>
-                    <label class="wo-form-label">Machine Serial</label>
-                    <input type="text" class="wo-modal-input" id="wo-serial" placeholder="Serial number...">
-                </div>
-                <div>
-                    <label class="wo-form-label">Model</label>
-                    <select class="wo-modal-select" id="wo-model">
-                        <option value="">— Select model —</option>
-                        <option>Flexi G3</option><option>Flexi G4</option><option>15VN/VNA</option><option>17N/1000</option>
-                        <option>17N+/1100</option><option>20S/1200</option><option>22S+/1250</option><option>25W+/1350</option>
-                        <option>MAX 22S+/1250</option><option>MAX 25W/1350</option><option>MAX 25EW/1400</option><option>Other</option>
-                    </select>
-                </div>
-            </div>
-            <label class="wo-form-label">Customer / Site</label>
-            <input type="text" class="wo-modal-input" id="wo-customer" placeholder="Customer name or site...">
-            <label class="wo-form-label">Fault Description</label>
-            <textarea class="wo-modal-input" id="wo-fault" placeholder="Describe the fault or job..." style="min-height:80px;resize:vertical;"></textarea>
-            <label class="wo-form-label">Notes</label>
-            <textarea class="wo-modal-input" id="wo-notes" placeholder="Additional notes..." style="min-height:60px;resize:vertical;"></textarea>
-            <div id="wo-linked-orders-section" style="display:none;">
-                <label class="wo-form-label">Linked Parts Orders</label>
-                <div class="linked-orders-section" id="woLinkedOrders"></div>
-            </div>
-            <button class="save-wo-btn" onclick="saveWO()">Save Works Order</button>
-        </div>
-    </div>
+    <div id="jhContent"></div>
 </div>
 
 <script>
@@ -998,8 +885,6 @@ let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders =
 let sortField = 'date', sortDir = 'desc', isUrgent = false;
 let returns = [], workOrders = [];
 let reportPeriodDays = 30;
-let woSortField = 'dateRaised', woSortDir = 'desc';
-let editingWOIndex = -1;
 
 const ENGINEER_PINS = {
     'Aaron Dyson':'1111','Brett Stockton':'2222','David Williams':'3333','Graham Denman':'4444',
@@ -1042,21 +927,19 @@ document.addEventListener('DOMContentLoaded',()=>{
     setupEventListeners();
     loadCartFromStorage();
     updateCart();
-    loadWOFromStorage();
-    populateWOEngineerFilter();
-    setTodayDateOnWOForm();
 });
 
 function setGreeting(){const h=new Date().getHours();document.getElementById('greeting').textContent=h<12?'GOOD MORNING':h<18?'GOOD AFTERNOON':'GOOD EVENING';}
 
 function showPage(page){
-    ['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','workordersPage'].forEach(id=>{
+    ['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','jobhistoryPage',].forEach(id=>{
         document.getElementById(id).classList.toggle('active',id===page+'Page');
     });
     if(page==='orders'){applyFilters();updateOrderStats();}
     if(page==='stores')renderStoresPage();
     if(page==='reports')renderReports();
-    if(page==='workorders'){renderWOTable();updateWOStats();}
+    if(page==='jobhistory')renderJobHistory();
+    if(page==='jobhistory')renderJobHistory();
 }
 
 function toggleCart(){document.getElementById('cartSection').classList.toggle('open');}
@@ -1175,6 +1058,155 @@ function renderTopParts(periodOrders){
     const rankClass=i=>i===0?'rank-badge gold':i===1?'rank-badge silver':i===2?'rank-badge bronze':'rank-badge';
     document.getElementById('topPartsBody').innerHTML=sorted.map(([num,data],i)=>`<tr><td><span class="${rankClass(i)}">${i+1}</span></td><td style="color:var(--primary-red);font-weight:700;">${num}</td><td style="color:var(--text-secondary);font-size:.88em;">${data.desc||'—'}</td><td style="font-weight:700;">${data.count}</td><td style="color:#4ade80;font-weight:700;">${data.totalQty}</td></tr>`).join('')||`<tr><td colspan="5" style="text-align:center;padding:30px;color:#555;">No data for this period</td></tr>`;}
 
+
+let jhView = 'engineer';
+function setJHView(view){
+    jhView=view;
+    document.getElementById('jhViewEngineer').classList.toggle('active',view==='engineer');
+    document.getElementById('jhViewMachine').classList.toggle('active',view==='machine');
+    renderJobHistory();
+}
+function populateJHFilters(){
+    const sel=document.getElementById('jhFilterEngineer');
+    const engineers=[...new Set(orders.map(o=>o.serviceController||'Unknown').filter(Boolean))].sort();
+    sel.innerHTML='<option value="">All Engineers</option>'+engineers.map(e=>`<option>${e}</option>`).join('');
+}
+function renderJobHistory(){
+    populateJHFilters();
+    const search=(document.getElementById('jhSearch')?.value||'').toLowerCase();
+    const engFilter=document.getElementById('jhFilterEngineer')?.value||'';
+    const statusFilter=document.getElementById('jhFilterStatus')?.value||'';
+    let filtered=orders.filter(o=>{
+        if(engFilter&&(o.serviceController||'')!==engFilter)return false;
+        if(statusFilter&&(o.status||'Pending')!==statusFilter)return false;
+        if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
+        return true;
+    });
+    // Stats
+    const engineers=new Set(filtered.map(o=>o.serviceController||'Unknown'));
+    const machines=new Set(filtered.map(o=>o.machineSerial||'').filter(Boolean));
+    const totalParts=filtered.reduce((s,o)=>s+(o.parts?.length||0),0);
+    document.getElementById('jh-engineers-count').textContent=engineers.size;
+    document.getElementById('jh-machines-count').textContent=machines.size;
+    document.getElementById('jh-orders-count').textContent=filtered.length;
+    document.getElementById('jh-parts-count').textContent=totalParts;
+    const container=document.getElementById('jhContent');
+    if(!filtered.length){container.innerHTML=`<div class="jh-empty"><div class="jh-empty-icon">🕘</div><p style="font-size:1.1em;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);">No orders found</p></div>`;return;}
+    if(jhView==='engineer')renderJHByEngineer(filtered,container);
+    else renderJHByMachine(filtered,container);
+}
+function renderJHByEngineer(filtered,container){
+    const groups={};
+    filtered.forEach(o=>{const key=o.serviceController||'Unknown';if(!groups[key])groups[key]=[];groups[key].push(o);});
+    const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
+    container.innerHTML=sorted.map(([engineer,ords])=>{
+        const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);
+        const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));
+        const id='jh-eng-'+engineer.replace(/\s+/g,'-');
+        const rows=ords.sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');
+        return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div class="jh-group-title">👤 ${engineer}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;
+    }).join('');
+}
+function renderJHByMachine(filtered,container){
+    const groups={};
+    filtered.forEach(o=>{const key=(o.machineSerial||'').trim()||'No Serial';if(!groups[key])groups[key]=[];groups[key].push(o);});
+    const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
+    container.innerHTML=sorted.map(([serial,ords])=>{
+        const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);
+        const model=ords.find(o=>o.model)?.model||'';
+        const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));
+        const engineers=[...new Set(ords.map(o=>o.serviceController||'Unknown'))];
+        const id='jh-mac-'+serial.replace(/[^a-zA-Z0-9]/g,'-');
+        const rows=ords.sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');
+        return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div><div class="jh-group-title">🚜 ${serial}</div>${model?`<div style="font-size:.85em;color:var(--text-secondary);margin-top:2px;">${model}</div>`:''}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">${engineers.slice(0,2).join(', ')}${engineers.length>2?' +'+( engineers.length-2):''}</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;
+    }).join('');
+}
+function jhOrderRow(o){
+    const status=o.status||'Pending';
+    return`<div class="jh-order-row" onclick="openOrderModal(${orders.indexOf(o)})"><span class="jh-order-num">${o.orderNumber||'—'}</span><span class="jh-order-date">📅 ${o.date||'—'}</span><span class="jh-order-wo">🔧 ${o.worksOrder||'—'}</span><span class="jh-order-serial">🏷 ${o.machineSerial||'—'}</span><span class="jh-order-parts">🔩 ${o.parts?.length||0} parts</span>${o.urgent?'<span class="jh-order-urgent">⚑ Urgent</span>':''}<span class="order-status ${getStatusClass(status)}" style="font-size:.78em;padding:3px 8px;">${status}</span></div>`;
+}
+function toggleJHGroup(id){
+    const body=document.getElementById(id);
+    const chev=document.getElementById(id+'-chev');
+    if(!body)return;
+    body.classList.toggle('open');
+    if(chev)chev.classList.toggle('open');
+}
+
+let jhView = 'engineer';
+function setJHView(view){
+    jhView=view;
+    document.getElementById('jhViewEngineer').classList.toggle('active',view==='engineer');
+    document.getElementById('jhViewMachine').classList.toggle('active',view==='machine');
+    renderJobHistory();
+}
+function populateJHFilters(){
+    const sel=document.getElementById('jhFilterEngineer');
+    const current=sel.value;
+    const engineers=[...new Set(orders.map(o=>o.serviceController||'Unknown').filter(Boolean))].sort();
+    sel.innerHTML='<option value="">All Engineers</option>'+engineers.map(e=>`<option${e===current?' selected':''}>${e}</option>`).join('');
+}
+function renderJobHistory(){
+    populateJHFilters();
+    const search=(document.getElementById('jhSearch')?.value||'').toLowerCase();
+    const engFilter=document.getElementById('jhFilterEngineer')?.value||'';
+    const statusFilter=document.getElementById('jhFilterStatus')?.value||'';
+    let filtered=orders.filter(o=>{
+        if(engFilter&&(o.serviceController||'')!==engFilter)return false;
+        if(statusFilter&&(o.status||'Pending')!==statusFilter)return false;
+        if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
+        return true;
+    });
+    const engineers=new Set(filtered.map(o=>o.serviceController||'Unknown'));
+    const machines=new Set(filtered.map(o=>(o.machineSerial||'').trim()).filter(Boolean));
+    const totalParts=filtered.reduce((s,o)=>s+(o.parts?.length||0),0);
+    document.getElementById('jh-engineers-count').textContent=engineers.size;
+    document.getElementById('jh-machines-count').textContent=machines.size;
+    document.getElementById('jh-orders-count').textContent=filtered.length;
+    document.getElementById('jh-parts-count').textContent=totalParts;
+    const container=document.getElementById('jhContent');
+    if(!filtered.length){container.innerHTML=`<div class="jh-empty"><div class="jh-empty-icon">🕘</div><p style="font-size:1.1em;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);">${orders.length?'No orders match your filters':'No orders loaded yet'}</p></div>`;return;}
+    if(jhView==='engineer')renderJHByEngineer(filtered,container);
+    else renderJHByMachine(filtered,container);
+}
+function renderJHByEngineer(filtered,container){
+    const groups={};
+    filtered.forEach(o=>{const key=o.serviceController||'Unknown';if(!groups[key])groups[key]=[];groups[key].push(o);});
+    const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
+    container.innerHTML=sorted.map(([engineer,ords])=>{
+        const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);
+        const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));
+        const id='jh-eng-'+engineer.replace(/[^a-zA-Z0-9]/g,'-');
+        const rows=ords.slice().sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');
+        return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div class="jh-group-title">👤 ${engineer}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;
+    }).join('');
+}
+function renderJHByMachine(filtered,container){
+    const groups={};
+    filtered.forEach(o=>{const key=(o.machineSerial||'').trim()||'No Serial';if(!groups[key])groups[key]=[];groups[key].push(o);});
+    const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
+    container.innerHTML=sorted.map(([serial,ords])=>{
+        const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);
+        const model=ords.find(o=>o.model)?.model||'';
+        const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));
+        const engineers=[...new Set(ords.map(o=>o.serviceController||'Unknown'))];
+        const id='jh-mac-'+serial.replace(/[^a-zA-Z0-9]/g,'-');
+        const rows=ords.slice().sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');
+        return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div><div class="jh-group-title">🚜 ${serial}</div>${model?`<div style="font-size:.85em;color:var(--text-secondary);margin-top:2px;">${model}</div>`:''}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">${engineers.slice(0,2).join(', ')}${engineers.length>2?' +'+(engineers.length-2):''}</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;
+    }).join('');
+}
+function jhOrderRow(o){
+    const status=o.status||'Pending';
+    const idx=orders.indexOf(o);
+    return`<div class="jh-order-row" onclick="openOrderModal(${idx})"><span class="jh-order-num">${o.orderNumber||'—'}</span><span class="jh-order-date">📅 ${o.date||'—'}</span><span class="jh-order-wo">🔧 ${o.worksOrder||'—'}</span><span class="jh-order-serial">🏷 ${o.machineSerial||'—'}</span><span class="jh-order-parts">🔩 ${o.parts?.length||0} parts</span>${o.urgent?'<span class="jh-order-urgent">⚑ Urgent</span>':''}<span class="order-status ${getStatusClass(status)}" style="font-size:.78em;padding:3px 8px;">${status}</span></div>`;
+}
+function toggleJHGroup(id){
+    const body=document.getElementById(id);
+    const chev=document.getElementById(id+'-chev');
+    if(!body)return;
+    const isOpen=body.classList.toggle('open');
+    if(chev)chev.classList.toggle('open',isOpen);
+}
 function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDays} Days`:'All Time';const periodOrders=getFilteredOrdersForPeriod();if(!periodOrders.length){showToast('No data to export');return;}const headers=['Order Number','Date','Name','Works Order','Machine','Model','Parts Count','Status','Urgent'];const rows=periodOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.parts?.length||0,o.status||'Pending',o.urgent?'Yes':'No'].map(v=>`"${v}"`).join(','));const csv=[`"Flexi Parts Report — ${period} — ${new Date().toLocaleDateString('en-GB')}"`,headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-report-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Report exported (${periodOrders.length} orders)`);}
 
 catch(e){returns=[];}}
@@ -1195,65 +1227,25 @@ catch(e){returns=[];}}
 
  updated to ${newStatus}`);}
 
-function loadWOFromStorage(){try{workOrders=JSON.parse(localStorage.getItem('flexi-work-orders')||'[]');}catch(e){workOrders=[];}}
-function saveWOToStorage(){localStorage.setItem('flexi-work-orders',JSON.stringify(workOrders));}
-function setTodayDateOnWOForm(){const el=document.getElementById('wo-date');if(el)el.value=new Date().toISOString().slice(0,10);}
-function populateWOEngineerFilter(){const sel=document.getElementById('woFilterEngineer');Object.keys(ENGINEER_PINS).forEach(name=>{const o=document.createElement('option');o.value=o.textContent=name;sel.appendChild(o);});}
-function updateWOStats(){document.getElementById('wo-open-count').textContent=workOrders.filter(w=>w.status==='Open').length;document.getElementById('wo-awaiting-count').textContent=workOrders.filter(w=>w.status==='Awaiting Parts').length;document.getElementById('wo-complete-count').textContent=workOrders.filter(w=>w.status==='Complete').length;document.getElementById('wo-total-count').textContent=workOrders.length;}
-function getWOStatusClass(status){return({'Open':'wo-status-open','Parts Ordered':'wo-status-parts-ordered','Awaiting Parts':'wo-status-awaiting-parts','Complete':'wo-status-complete','Cancelled':'wo-status-cancelled'})[status]||'wo-status-open';}
+catch(e){workOrders=[];}}
 
-function renderWOTable(){
-    const search=(document.getElementById('woFilterSearch')?.value||'').toLowerCase();
-    const statusFilter=document.getElementById('woFilterStatus')?.value||'';
-    const engFilter=document.getElementById('woFilterEngineer')?.value||'';
-    let filtered=workOrders.filter(w=>{
-        if(search){const hay=[w.woNumber,w.engineer,w.machineSerial,w.customer,w.model].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
-        if(statusFilter&&w.status!==statusFilter)return false;
-        if(engFilter&&w.engineer!==engFilter)return false;
-        return true;
-    });
-    filtered.sort((a,b)=>{const va=String(a[woSortField]||'').toLowerCase(),vb=String(b[woSortField]||'').toLowerCase();if(va<vb)return woSortDir==='asc'?-1:1;if(va>vb)return woSortDir==='asc'?1:-1;return 0;});
-    const tbody=document.getElementById('woTableBody');
-    if(!filtered.length){tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;padding:60px;color:#666;">${workOrders.length?'No works orders match your filters':'No works orders yet. Click "+ New Works Order" to add one.'}</td></tr>`;return;}
-    tbody.innerHTML=filtered.map(wo=>{
-        const idx=workOrders.indexOf(wo);
-        const linkedOrders=orders.filter(o=>o.worksOrder&&o.worksOrder.trim()===wo.woNumber.trim());
-        const linkedBadge=linkedOrders.length?`<span class="wo-parts-link">🔩 ${linkedOrders.length} order${linkedOrders.length>1?'s':''}</span>`:`<span style="color:#444;font-size:.85em;">—</span>`;
-        return`<tr onclick="openEditWOModal(${idx})"><td><span class="wo-number">${wo.woNumber}</span></td><td>${wo.dateRaised||'—'}</td><td>${wo.engineer||'—'}</td><td style="color:var(--text-secondary);font-size:.9em;">${wo.machineSerial||'—'}</td><td style="color:var(--text-secondary);font-size:.9em;">${wo.model||'—'}</td><td style="color:var(--text-secondary);font-size:.9em;">${wo.customer||'—'}</td><td>${linkedBadge}</td><td><span class="wo-status ${getWOStatusClass(wo.status)}">${wo.status}</span></td></tr>`;
-    }).join('');
-}
 
-function sortWO(field){woSortDir=woSortField===field?(woSortDir==='asc'?'desc':'asc'):'asc';woSortField=field;renderWOTable();}
+);}
 
-function openNewWOModal(){editingWOIndex=-1;document.getElementById('woModalTitle').textContent='New Works Order';clearWOForm();setTodayDateOnWOForm();document.getElementById('wo-linked-orders-section').style.display='none';document.getElementById('woModal').classList.add('active');}
+)[status]||'wo-status-open';}
 
-function openEditWOModal(index){
-    editingWOIndex=index;const wo=workOrders[index];
-    document.getElementById('woModalTitle').textContent=`Edit — ${wo.woNumber}`;
-    document.getElementById('wo-number').value=wo.woNumber||'';document.getElementById('wo-date').value=wo.dateRaised||'';
-    document.getElementById('wo-engineer').value=wo.engineer||'';document.getElementById('wo-status').value=wo.status||'Open';
-    document.getElementById('wo-serial').value=wo.machineSerial||'';document.getElementById('wo-model').value=wo.model||'';
-    document.getElementById('wo-customer').value=wo.customer||'';document.getElementById('wo-fault').value=wo.fault||'';document.getElementById('wo-notes').value=wo.notes||'';
-    const linked=orders.filter(o=>o.worksOrder&&o.worksOrder.trim()===wo.woNumber.trim());
-    const section=document.getElementById('wo-linked-orders-section');
-    if(linked.length){section.style.display='block';document.getElementById('woLinkedOrders').innerHTML=linked.map(o=>`<div class="linked-order-row"><span class="linked-order-num">${o.orderNumber}</span><span class="linked-order-info">${o.serviceController||'—'} · ${o.date||'—'}</span><span class="order-status ${getStatusClass(o.status||'Pending')}" style="font-size:.75em;padding:3px 8px;">${o.status||'Pending'}</span></div>`).join('');}
-    else{section.style.display='none';}
-    document.getElementById('woModal').classList.add('active');
-}
 
-function clearWOForm(){['wo-number','wo-serial','wo-customer','wo-fault','wo-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['wo-engineer','wo-model'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wo-status').value='Open';}
-function closeWOModal(){document.getElementById('woModal').classList.remove('active');}
 
-function saveWO(){
-    const woNumber=document.getElementById('wo-number').value.trim();
-    const engineer=document.getElementById('wo-engineer').value;
-    if(!woNumber){showToast('⚠ WO Number is required');return;}
-    if(!engineer){showToast('⚠ Please select an engineer');return;}
-    const woData={woNumber,dateRaised:document.getElementById('wo-date').value,engineer,status:document.getElementById('wo-status').value,machineSerial:document.getElementById('wo-serial').value.trim(),model:document.getElementById('wo-model').value,customer:document.getElementById('wo-customer').value.trim(),fault:document.getElementById('wo-fault').value,notes:document.getElementById('wo-notes').value,updatedAt:new Date().toISOString()};
-    if(editingWOIndex>=0){workOrders[editingWOIndex]={...workOrders[editingWOIndex],...woData};}
-    else{workOrders.unshift({...woData,createdAt:new Date().toISOString()});}
-    saveWOToStorage();updateWOStats();renderWOTable();closeWOModal();showToast(editingWOIndex>=0?`Works Order ${woNumber} updated`:`Works Order ${woNumber} created`);editingWOIndex=-1;
-}
+
+
+
+
+
+
+);['wo-engineer','wo-model'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wo-status').value='Open';}
+
+
+
 
 function filterParts(){const raw=document.getElementById('searchInput').value,term=raw.toLowerCase().trim(),hdr=document.getElementById('resultsHeader'),nlBanner=document.getElementById('nlBanner');if(!term){hdr.style.display='none';nlBanner.style.display='none';document.getElementById('filteredCount').textContent='0';document.getElementById('resultsContainer').innerHTML=`<div class="search-prompt"><div class="search-prompt-icon">🔍</div><div class="search-prompt-title">Start Searching</div><div class="search-prompt-text">Enter a part number or description</div></div>`;return;}hdr.style.display='block';if(isNaturalLanguage(term)){const nlResult=parseNLQuery(term);if(nlResult){nlBanner.style.display='flex';document.getElementById('nlBannerText').textContent=nlResult.interpretation;filteredParts=allParts.filter(p=>{const desc=String(p['Description']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase(),num=String(p['Part Number']||'').toLowerCase();return nlResult.keywords.some(kw=>desc.includes(kw)||sys.includes(kw)||num.includes(kw));});renderParts();return;}}nlBanner.style.display='none';const clean=term.replace(/[\s\-.]/g,'');filteredParts=allParts.filter(p=>{const num=String(p['Part Number']||'').toLowerCase(),desc=String(p['Description']||'').toLowerCase(),sup=String(p['Supplier Code']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase();return num.replace(/[\s\-.]/g,'').includes(clean)||num.includes(term)||desc.includes(term)||sup.includes(term)||sys.includes(term);});renderParts();}
 
@@ -1276,7 +1268,7 @@ function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
 
-async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);const wo=workOrders.find(w=>w.woNumber&&w.woNumber.trim()===orderData.worksOrder.trim());if(wo&&wo.status==='Open'){wo.status='Parts Ordered';saveWOToStorage();updateWOStats();}updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
+async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);const wo=workOrders.find(w=>w.woNumber&&w.woNumber.trim()===orderData.worksOrder.trim());if(wo&&wo.status==='Open'){wo.status='Parts Ordered';saveWOToStorage();}updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
 
 function clearForm(){['serviceController','worksOrder','machineSerial','comments'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('orderModel').value='';document.getElementById('orderType').value='';}
 
