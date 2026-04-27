@@ -1133,83 +1133,8 @@ function toggleJHGroup(id){
     if(chev)chev.classList.toggle('open');
 }
 
-let jhView = 'engineer';
-function setJHView(view){
-    jhView=view;
-    document.getElementById('jhViewEngineer').classList.toggle('active',view==='engineer');
-    document.getElementById('jhViewMachine').classList.toggle('active',view==='machine');
-    renderJobHistory();
-}
-function populateJHFilters(){
-    const sel=document.getElementById('jhFilterEngineer');
-    const current=sel.value;
-    const engineers=[...new Set(orders.map(o=>o.serviceController||'Unknown').filter(Boolean))].sort();
-    sel.innerHTML='<option value="">All Engineers</option>'+engineers.map(e=>`<option${e===current?' selected':''}>${e}</option>`).join('');
-}
-function renderJobHistory(){
-    populateJHFilters();
-    const search=(document.getElementById('jhSearch')?.value||'').toLowerCase();
-    const engFilter=document.getElementById('jhFilterEngineer')?.value||'';
-    const statusFilter=document.getElementById('jhFilterStatus')?.value||'';
-    let filtered=orders.filter(o=>{
-        if(engFilter&&(o.serviceController||'')!==engFilter)return false;
-        if(statusFilter&&(o.status||'Pending')!==statusFilter)return false;
-        if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}
-        return true;
-    });
-    const engineers=new Set(filtered.map(o=>o.serviceController||'Unknown'));
-    const machines=new Set(filtered.map(o=>(o.machineSerial||'').trim()).filter(Boolean));
-    const totalParts=filtered.reduce((s,o)=>s+(o.parts?.length||0),0);
-    document.getElementById('jh-engineers-count').textContent=engineers.size;
-    document.getElementById('jh-machines-count').textContent=machines.size;
-    document.getElementById('jh-orders-count').textContent=filtered.length;
-    document.getElementById('jh-parts-count').textContent=totalParts;
-    const container=document.getElementById('jhContent');
-    if(!filtered.length){container.innerHTML=`<div class="jh-empty"><div class="jh-empty-icon">🕘</div><p style="font-size:1.1em;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-secondary);">${orders.length?'No orders match your filters':'No orders loaded yet'}</p></div>`;return;}
-    if(jhView==='engineer')renderJHByEngineer(filtered,container);
-    else renderJHByMachine(filtered,container);
-}
-function renderJHByEngineer(filtered,container){
-    const groups={};
-    filtered.forEach(o=>{const key=o.serviceController||'Unknown';if(!groups[key])groups[key]=[];groups[key].push(o);});
-    const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
-    container.innerHTML=sorted.map(([engineer,ords])=>{
-        const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);
-        const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));
-        const id='jh-eng-'+engineer.replace(/[^a-zA-Z0-9]/g,'-');
-        const rows=ords.slice().sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');
-        return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div class="jh-group-title">👤 ${engineer}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;
-    }).join('');
-}
-function renderJHByMachine(filtered,container){
-    const groups={};
-    filtered.forEach(o=>{const key=(o.machineSerial||'').trim()||'No Serial';if(!groups[key])groups[key]=[];groups[key].push(o);});
-    const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);
-    container.innerHTML=sorted.map(([serial,ords])=>{
-        const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);
-        const model=ords.find(o=>o.model)?.model||'';
-        const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));
-        const engineers=[...new Set(ords.map(o=>o.serviceController||'Unknown'))];
-        const id='jh-mac-'+serial.replace(/[^a-zA-Z0-9]/g,'-');
-        const rows=ords.slice().sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');
-        return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div><div class="jh-group-title">🚜 ${serial}</div>${model?`<div style="font-size:.85em;color:var(--text-secondary);margin-top:2px;">${model}</div>`:''}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">${engineers.slice(0,2).join(', ')}${engineers.length>2?' +'+(engineers.length-2):''}</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;
-    }).join('');
-}
-function jhOrderRow(o){
-    const status=o.status||'Pending';
-    const idx=orders.indexOf(o);
-    return`<div class="jh-order-row" onclick="openOrderModal(${idx})"><span class="jh-order-num">${o.orderNumber||'—'}</span><span class="jh-order-date">📅 ${o.date||'—'}</span><span class="jh-order-wo">🔧 ${o.worksOrder||'—'}</span><span class="jh-order-serial">🏷 ${o.machineSerial||'—'}</span><span class="jh-order-parts">🔩 ${o.parts?.length||0} parts</span>${o.urgent?'<span class="jh-order-urgent">⚑ Urgent</span>':''}<span class="order-status ${getStatusClass(status)}" style="font-size:.78em;padding:3px 8px;">${status}</span></div>`;
-}
-function toggleJHGroup(id){
-    const body=document.getElementById(id);
-    const chev=document.getElementById(id+'-chev');
-    if(!body)return;
-    const isOpen=body.classList.toggle('open');
-    if(chev)chev.classList.toggle('open',isOpen);
-}
 function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDays} Days`:'All Time';const periodOrders=getFilteredOrdersForPeriod();if(!periodOrders.length){showToast('No data to export');return;}const headers=['Order Number','Date','Name','Works Order','Machine','Model','Parts Count','Status','Urgent'];const rows=periodOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.parts?.length||0,o.status||'Pending',o.urgent?'Yes':'No'].map(v=>`"${v}"`).join(','));const csv=[`"Flexi Parts Report — ${period} — ${new Date().toLocaleDateString('en-GB')}"`,headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-report-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Report exported (${periodOrders.length} orders)`);}
 
-catch(e){returns=[];}}
 
 
 
@@ -1217,17 +1142,14 @@ catch(e){returns=[];}}
 
 
 
-);['ret-works-order','ret-serial','ret-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const editor=document.getElementById('returnPartsEditor');editor.querySelectorAll('.return-part-editor-row').forEach(r=>r.remove());addReturnPartRow();}
 
 
 
-)[status]||'status-return-submitted';}
 
 
 
  updated to ${newStatus}`);}
 
-catch(e){workOrders=[];}}
 
 
 );}
