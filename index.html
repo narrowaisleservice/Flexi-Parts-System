@@ -547,6 +547,12 @@
         .jh-last-seen { font-size:.82em; color:#555; font-weight:600; }
         .jh-empty { text-align:center; padding:80px 20px; color:#555; }
         .jh-empty-icon { font-size:3.5em; margin-bottom:16px; opacity:.3; }
+        .required-star { color:var(--primary-red); }
+        .purpose-toggle-group { display:flex; gap:10px; }
+        .purpose-btn { flex:1; padding:12px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-family:inherit; font-size:.95em; font-weight:700; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; }
+        .purpose-btn.active { background:rgba(220,38,38,.15); border-color:var(--primary-red); color:white; }
+        .purpose-btn:hover:not(.active) { background:var(--hover-bg); border-color:#555; color:white; }
+        .van-stock-order-note { background:rgba(59,130,246,.1); border:1px solid rgba(59,130,246,.3); border-radius:8px; padding:12px 16px; font-size:.9em; color:#93c5fd; font-weight:600; }
         ::-webkit-scrollbar { width:14px; height:14px; }
         ::-webkit-scrollbar-track { background:var(--dark-bg); border-left:1px solid var(--border); }
         ::-webkit-scrollbar-thumb { background:linear-gradient(180deg,var(--primary-red) 0%,#ef4444 100%); border-radius:7px; border:2px solid var(--dark-bg); }
@@ -913,22 +919,47 @@
                 <span class="urgent-label">Mark as Urgent</span>
             </label>
             <div class="form-group">
-                <label>Your Name</label>
-                <input type="text" id="serviceController" placeholder="Enter your name...">
+                <label>Your Name <span class="required-star">*</span></label>
+                <select id="serviceController" onchange="onNameChange()">
+                    <option value="">— Select your name —</option>
+                    <optgroup label="Controllers">
+                        <option>Karen Bell</option>
+                        <option>Jane Robbins</option>
+                        <option>Phil Grant</option>
+                        <option>Lee Burt</option>
+                        <option>Alex Coley</option>
+                    </optgroup>
+                    <optgroup label="Engineers">
+                        <option>Brett Stockton</option>
+                        <option>David Williams</option>
+                        <option>Graham Denman</option>
+                        <option>Kevin Deakin</option>
+                        <option>Lance Duncan</option>
+                        <option>Lewis Lockwood</option>
+                        <option>Mick Thornley</option>
+                        <option>Mike Adams</option>
+                        <option>Pete King</option>
+                        <option>Rob Lucas</option>
+                        <option>Tom Barker</option>
+                    </optgroup>
+                </select>
             </div>
             <div class="form-group">
-                <label>Order Type</label>
+                <label>Order Type <span class="required-star">*</span></label>
                 <select id="orderType">
                     <option value="">— Select type —</option>
                     <option value="Service Controller">Service Controller</option>
                     <option value="Service Engineer">Service Engineer</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label>Works Order</label>
-                <input type="text" id="worksOrder" placeholder="WO number...">
+            <div class="form-group" id="orderPurposeGroup" style="display:none;">
+                <label>Parts For</label>
+                <div class="purpose-toggle-group">
+                    <button type="button" class="purpose-btn active" id="purposeJob" onclick="setPurpose('job')">🔧 Specific Job</button>
+                    <button type="button" class="purpose-btn" id="purposeVan" onclick="setPurpose('van')">🚐 Van Stock</button>
+                </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="jobFieldsGroup">
                 <label>Machine Serial</label>
                 <input type="text" id="machineSerial" placeholder="Serial number..." oninput="onSerialInput()">
                 <div class="serial-memory-card" id="serialMemoryCard">
@@ -945,10 +976,14 @@
                     <button class="serial-memory-apply" onclick="applySerialMemory()">Auto-fill details ↗</button>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="form-group" id="modelFieldGroup">
                 <label>Model</label>
                 <select id="orderModel"><option value="">— Select model —</option></select>
             </div>
+            <div class="form-group" id="vanStockNoteGroup" style="display:none;">
+                <div class="van-stock-order-note">🚐 These parts will be added to <strong id="vanStockEngineerName">your</strong> van stock</div>
+            </div>
+            <input type="hidden" id="worksOrder" value="">
             <div class="form-group">
                 <label>Notes / Comments</label>
                 <textarea id="comments" placeholder="Any special instructions..."></textarea>
@@ -1301,9 +1336,55 @@ function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
 
-async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
+async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('⚠ Please select your name');return;}const ot=document.getElementById('orderType').value;if(!ot){showToast('⚠ Please select an order type');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim();const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,orderPurpose,machineSerial:orderPurpose==='job'?serial:'',model:orderPurpose==='job'?document.getElementById('orderModel').value:'Van Stock',comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(orderData.machineSerial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,machineSerial:orderData.machineSerial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
 
-function clearForm(){['serviceController','worksOrder','machineSerial','comments'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('orderModel').value='';document.getElementById('orderType').value='';}
+let orderPurpose = 'job';
+const CONTROLLERS = ['Karen Bell','Jane Robbins','Phil Grant','Lee Burt','Alex Coley'];
+function onNameChange(){
+    const name = document.getElementById('serviceController').value;
+    const purposeGroup = document.getElementById('orderPurposeGroup');
+    const isEngineer = name && !CONTROLLERS.includes(name);
+    // Show "Parts For" toggle only for engineers
+    purposeGroup.style.display = isEngineer ? 'block' : 'none';
+    if(!isEngineer){ setPurpose('job'); }
+    // Auto-set order type
+    const typeSelect = document.getElementById('orderType');
+    if(name && CONTROLLERS.includes(name)) typeSelect.value = 'Service Controller';
+    else if(name) typeSelect.value = 'Service Engineer';
+    else typeSelect.value = '';
+    updateVanNote();
+}
+function setPurpose(purpose){
+    orderPurpose = purpose;
+    document.getElementById('purposeJob').classList.toggle('active', purpose==='job');
+    document.getElementById('purposeVan').classList.toggle('active', purpose==='van');
+    const jobFields = document.getElementById('jobFieldsGroup');
+    const modelField = document.getElementById('modelFieldGroup');
+    const vanNote = document.getElementById('vanStockNoteGroup');
+    jobFields.style.display = purpose==='job' ? 'block' : 'none';
+    modelField.style.display = purpose==='job' ? 'block' : 'none';
+    vanNote.style.display = purpose==='van' ? 'block' : 'none';
+    updateVanNote();
+}
+function updateVanNote(){
+    const name = document.getElementById('serviceController').value;
+    const el = document.getElementById('vanStockEngineerName');
+    if(el) el.textContent = name || 'your';
+}
+function clearForm(){
+    document.getElementById('serviceController').value='';
+    document.getElementById('orderType').value='';
+    document.getElementById('machineSerial').value='';
+    document.getElementById('comments').value='';
+    document.getElementById('orderModel').value='';
+    document.getElementById('orderPurposeGroup').style.display='none';
+    document.getElementById('jobFieldsGroup').style.display='block';
+    document.getElementById('modelFieldGroup').style.display='block';
+    document.getElementById('vanStockNoteGroup').style.display='none';
+    orderPurpose='job';
+    document.getElementById('purposeJob').classList.add('active');
+    document.getElementById('purposeVan').classList.remove('active');
+}
 
 const NL_SYNONYMS={mast:['mast','vna','lift'],transmission:['transmission','trans','gearbox','gear','axle','drive','wheel','helical'],hydraulic:['hydraulic','hyd','pump','cylinder','valve','seal','oil'],electrical:['electrical','motor','wiring','cable','sensor','switch','battery'],brake:['brake','friction','pad'],steering:['steering','steer','tiller'],fork:['fork','pin','attachment','carriage'],wheel:['wheel','tyre','bearing','hub'],'drive axle':['axle','drive','spacer','wheel','transmission'],'pin kit':['pin','kit'],pipe:['pipe','tube','hose'],seal:['seal','o-ring','gasket','ring']};
 const STOPWORDS=new Set(['something','for','the','a','an','of','to','in','on','with','and','or','part','parts','i','need','want','get','find','show','me']);
