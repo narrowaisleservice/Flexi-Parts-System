@@ -883,7 +883,7 @@
 const API_URL = 'https://script.google.com/macros/s/AKfycbzyqm5dVvIW8snsuO9WX8WBy3xrIywGyT9-05QQZGX04e48hv5v2wsm6pPnbP8g9Rng/exec';
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let sortField = 'date', sortDir = 'desc', isUrgent = false;
-let returns = [], workOrders = [];
+
 let reportPeriodDays = 30;
 
 const ENGINEER_PINS = {
@@ -1148,13 +1148,6 @@ function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDay
 
 
 
- updated to ${newStatus}`);}
-
-
-
-);}
-
-)[status]||'wo-status-open';}
 
 
 
@@ -1164,7 +1157,11 @@ function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDay
 
 
 
-);['wo-engineer','wo-model'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('wo-status').value='Open';}
+
+
+
+
+
 
 
 
@@ -1190,7 +1187,7 @@ function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
 
-async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);const wo=workOrders.find(w=>w.woNumber&&w.woNumber.trim()===orderData.worksOrder.trim());if(wo&&wo.status==='Open'){wo.status='Parts Ordered';saveWOToStorage();}updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
+async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('Please enter your name');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim(),ot=document.getElementById('orderType').value;const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,worksOrder:document.getElementById('worksOrder').value,machineSerial:serial,model:document.getElementById('orderModel').value,comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(serial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,worksOrder:orderData.worksOrder,machineSerial:serial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
 
 function clearForm(){['serviceController','worksOrder','machineSerial','comments'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});document.getElementById('orderModel').value='';document.getElementById('orderType').value='';}
 
@@ -1226,12 +1223,12 @@ function setupEventListeners(){
     document.getElementById('submitBtn').addEventListener('click',submitOrder);
     document.addEventListener('keydown',e=>{
         if(document.getElementById('pinOverlay').classList.contains('active'))return;
-        if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();closeWOModal();}
+        if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();}
     });
     document.addEventListener('click',e=>{
         if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();
         if(e.target?.id==='orderModal')closeOrderModal();
-        if(e.target?.id==='woModal')closeWOModal();
+        if(e.target?.id==='orderModal')closeOrderModal();
     });
 }
 </script>
