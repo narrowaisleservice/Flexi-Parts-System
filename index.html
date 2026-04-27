@@ -17,8 +17,7 @@
         :root {
             --primary-red: #DC2626; --dark-bg: #0a0a0a; --card-bg: #1a1a1a; --border: #2a2a2a;
             --text-primary: #ffffff; --text-secondary: #a0a0a0; --hover-bg: #252525;
-            --stores-color: #f59e0b; --picked-color: #4ade80; --van-color: #3b82f6;
-            --returns-color: #a78bfa; --wo-color: #22d3ee; --reports-color: #f97316;
+            --stores-color: #f59e0b; --picked-color: #4ade80; --van-color: #3b82f6; --wo-color: #22d3ee; --reports-color: #f97316;
         }
         body { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; background: #000000; color: var(--text-primary); min-height: 100vh; -webkit-font-smoothing: antialiased; letter-spacing: 0.3px; }
         .container { max-width:1600px; margin:0 auto; padding:30px; }
@@ -38,7 +37,7 @@
         .stat-card:hover { background:var(--hover-bg); border-color:var(--primary-red); }
         .stat-value { font-size:3.5em; font-weight:900; color:var(--primary-red); margin-bottom:4px; letter-spacing:-2px; line-height:1; }
         .stat-value.stores-val { color:var(--stores-color); } .stat-value.picked-val { color:var(--picked-color); }
-        .stat-value.van-val { color:var(--van-color); } .stat-value.returns-val { color:var(--returns-color); }
+        .stat-value.van-val { color:var(--van-color); }
         .stat-value.wo-val { color:var(--wo-color); } .stat-value.reports-val { color:var(--reports-color); }
         .stat-label { font-size:1em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1.5px; }
         .search-section { background:var(--card-bg); border:1px solid var(--border); border-radius:16px; padding:30px; margin-bottom:30px; }
@@ -328,46 +327,46 @@
         .rss-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:18px 20px; }
         .rss-val { font-size:2.6em; font-weight:900; letter-spacing:-2px; line-height:1; margin-bottom:4px; }
         .rss-label { font-size:.82em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; }
-        .returns-banner { background:rgba(167,139,250,.1); border:1px solid rgba(167,139,250,.3); border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; }
-        .returns-banner-title { font-size:1.1em; font-weight:800; color:var(--returns-color); text-transform:uppercase; letter-spacing:.5px; margin-bottom:3px; }
-        .returns-banner-sub { font-size:.88em; color:var(--text-secondary); }
-        .returns-layout { display:grid; grid-template-columns:1fr 420px; gap:24px; align-items:start; }
-        .returns-list { display:grid; gap:14px; }
-        .return-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:22px; transition:all .2s; }
+        
+        
+        
+        
+        
+        
         .return-card:hover { background:var(--hover-bg); }
-        .return-card-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:8px; }
-        .return-ref { font-size:1.4em; font-weight:900; color:var(--returns-color); letter-spacing:-.5px; }
-        .return-meta { font-size:.85em; color:var(--text-secondary); display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px; }
+        
+        
+        
         .return-meta strong { color:white; }
-        .return-parts-preview { background:var(--dark-bg); border-radius:6px; padding:10px 12px; font-size:.85em; color:var(--text-secondary); }
-        .return-part-line { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px solid var(--border); }
+        
+        
         .return-part-line:last-child { border-bottom:none; }
-        .return-part-pn { color:var(--returns-color); font-weight:700; }
-        .return-part-qty { color:white; font-weight:700; }
-        .status-return-submitted { background:rgba(167,139,250,.2); color:#a78bfa; border:1px solid rgba(167,139,250,.3); }
-        .status-return-received { background:rgba(245,158,11,.2); color:#f59e0b; border:1px solid rgba(245,158,11,.3); }
-        .status-return-credited { background:rgba(74,222,128,.2); color:#4ade80; border:1px solid rgba(74,222,128,.3); }
-        .status-return-rejected { background:rgba(239,68,68,.2); color:#f87171; border:1px solid rgba(239,68,68,.3); }
-        .return-form-card { background:var(--card-bg); border:1px solid rgba(167,139,250,.3); border-radius:16px; padding:28px; border-left:4px solid var(--returns-color); position:sticky; top:20px; }
-        .return-form-title { font-size:1.6em; font-weight:900; color:var(--returns-color); text-transform:uppercase; letter-spacing:-1px; margin-bottom:4px; }
-        .return-form-sub { font-size:.88em; color:var(--text-secondary); margin-bottom:24px; }
-        .return-form-input { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; margin-bottom:14px; transition:all .2s; }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         .return-form-input:focus { outline:none; border-color:var(--returns-color); }
         .return-form-input::placeholder { color:#555; }
-        .return-form-select { width:100%; padding:11px 14px; background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; color:white; font-family:inherit; font-size:.95em; margin-bottom:14px; transition:all .2s; }
+        
         .return-form-select:focus { outline:none; border-color:var(--returns-color); }
         .return-form-select option { background:var(--card-bg); }
-        .return-form-label { display:block; font-size:.8em; font-weight:700; color:var(--text-secondary); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; }
-        .return-parts-editor { background:var(--dark-bg); border:1px solid var(--border); border-radius:8px; padding:14px; margin-bottom:14px; }
-        .return-part-editor-row { display:grid; grid-template-columns:1fr 1fr 60px auto; gap:8px; margin-bottom:8px; align-items:center; }
+        
+        
+        
         .return-part-editor-row:last-of-type { margin-bottom:0; }
-        .rpe-input { padding:8px 10px; background:var(--card-bg); border:1px solid var(--border); border-radius:6px; color:white; font-family:inherit; font-size:.88em; width:100%; }
+        
         .rpe-input:focus { outline:none; border-color:var(--returns-color); }
-        .rpe-remove { background:transparent; border:1px solid rgba(239,68,68,.3); color:#f87171; border-radius:6px; padding:6px 10px; cursor:pointer; font-size:.85em; font-weight:700; transition:all .2s; }
+        
         .rpe-remove:hover { background:rgba(239,68,68,.15); }
-        .add-return-part-btn { width:100%; padding:9px; background:transparent; border:1px dashed rgba(167,139,250,.4); border-radius:6px; color:var(--returns-color); font-family:inherit; font-size:.88em; font-weight:700; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:.5px; margin-bottom:14px; }
+        
         .add-return-part-btn:hover { background:rgba(167,139,250,.1); border-color:var(--returns-color); }
-        .submit-return-btn { width:100%; padding:16px; background:var(--returns-color); border:none; border-radius:8px; color:#000; font-family:inherit; font-size:1em; font-weight:800; cursor:pointer; transition:all .2s; text-transform:uppercase; letter-spacing:1px; }
+        
         .submit-return-btn:hover { background:#c4b5fd; }
         .submit-return-btn:disabled { opacity:.5; cursor:not-allowed; }
         .wo-banner { background:rgba(34,211,238,.1); border:1px solid rgba(34,211,238,.3); border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; gap:16px; }
@@ -473,7 +472,7 @@
             .modal-grid { grid-template-columns:1fr; }
             .orders-filter-bar { flex-direction:column; }
             .engineer-grid { grid-template-columns:1fr; }
-            .returns-layout { grid-template-columns:1fr; }
+            
             .report-summary-strip { grid-template-columns:1fr 1fr; }
         }
         ::-webkit-scrollbar { width:14px; height:14px; }
@@ -534,7 +533,6 @@
             <button class="nav-link" onclick="requestVanStock()">🚐 Van Stock</button>
             <button class="nav-link" onclick="showPage('stores')">📦 Stores</button>
             <button class="nav-link" onclick="showPage('orders')">Orders</button>
-            <button class="nav-link" onclick="showPage('returns')" style="border-color:rgba(167,139,250,.4);color:#a78bfa;">↩ Returns</button>
             <button class="nav-link" onclick="showPage('workorders')" style="border-color:rgba(34,211,238,.4);color:#22d3ee;">📋 WO</button>
             <button class="nav-link" onclick="showPage('reports')" style="border-color:rgba(249,115,22,.4);color:#f97316;">📊 Reports</button>
         </div>
@@ -760,80 +758,7 @@
             </table>
         </div>
     </div>
-</div>
-
-<!-- ═══════ RETURNS PAGE ═══════ -->
-<div class="page-section" id="returnsPage">
-    <div class="header">
-        <div class="header-content">
-            <img src="https://narrowaisleservice.github.io/Flexi-Parts-System/flexi-logo-white.svg" alt="Flexi Logo" class="header-logo">
-            <div class="header-text">
-                <h1>RETURNS</h1>
-                <p class="header-subtitle">PARTS RETURN REQUESTS</p>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="nav-link" onclick="showPage('orders')">Orders</button>
-            <button class="nav-link" onclick="showPage('parts')">← Parts</button>
-        </div>
-    </div>
-    <div class="stats-bar">
-        <div class="stat-card"><div class="stat-value returns-val" id="returns-submitted-count">0</div><div class="stat-label">Submitted</div></div>
-        <div class="stat-card"><div class="stat-value stores-val" id="returns-received-count">0</div><div class="stat-label">Received</div></div>
-        <div class="stat-card"><div class="stat-value picked-val" id="returns-credited-count">0</div><div class="stat-label">Credited</div></div>
-        <div class="stat-card"><div class="stat-value" id="returns-rejected-count">0</div><div class="stat-label">Rejected</div></div>
-    </div>
-    <div class="returns-banner">
-        <span style="font-size:1.6em;">↩</span>
-        <div class="returns-banner-text" style="flex:1;">
-            <div class="returns-banner-title">Parts Returns</div>
-            <div class="returns-banner-sub">Submit a return request for incorrect, faulty, or surplus parts. Track credit status here.</div>
-        </div>
-    </div>
-    <div class="returns-layout">
-        <div class="returns-list" id="returnsList"></div>
-        <div class="return-form-card">
-            <div class="return-form-title">New Return</div>
-            <div class="return-form-sub">Complete the form below to raise a parts return request.</div>
-            <label class="return-form-label">Raised By</label>
-            <select class="return-form-select" id="ret-raised-by">
-                <option value="">— Select name —</option>
-                <optgroup label="Controllers">
-                    <option>Karen Bell</option><option>Jane Robbins</option><option>Phil Grant</option><option>Lee Burt</option>
-                </optgroup>
-                <optgroup label="Engineers">
-                    <option>Aaron Dyson</option><option>Brett Stockton</option><option>David Williams</option><option>Graham Denman</option>
-                    <option>Kevin Deakin</option><option>Lance Duncan</option><option>Lewis Lockwood</option><option>Mick Thornley</option>
-                    <option>Mike Adams</option><option>Pete King</option><option>Rob Appleyard</option><option>Rob Lucas</option><option>Tom Barker</option>
-                </optgroup>
-            </select>
-            <label class="return-form-label">Works Order (optional)</label>
-            <input type="text" class="return-form-input" id="ret-works-order" placeholder="WO number...">
-            <label class="return-form-label">Machine Serial (optional)</label>
-            <input type="text" class="return-form-input" id="ret-serial" placeholder="Serial number...">
-            <label class="return-form-label">Reason for Return</label>
-            <select class="return-form-select" id="ret-reason">
-                <option value="">— Select reason —</option>
-                <option>Wrong part supplied</option><option>Faulty / damaged part</option>
-                <option>Surplus / no longer required</option><option>Duplicate order</option><option>Other</option>
-            </select>
-            <label class="return-form-label">Part Condition</label>
-            <select class="return-form-select" id="ret-condition">
-                <option value="Unopened">Unopened</option>
-                <option value="Opened – unused">Opened – unused</option>
-                <option value="Used – faulty">Used – faulty</option>
-            </select>
-            <label class="return-form-label">Parts to Return</label>
-            <div class="return-parts-editor" id="returnPartsEditor"></div>
-            <button class="add-return-part-btn" onclick="addReturnPartRow()">+ Add Part</button>
-            <label class="return-form-label">Additional Notes</label>
-            <textarea class="return-form-input" id="ret-notes" placeholder="Any additional information..." style="min-height:70px;resize:vertical;"></textarea>
-            <button class="submit-return-btn" onclick="submitReturn()">↩ Submit Return Request</button>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════ WORKS ORDERS PAGE ═══════ -->
+</div><!-- ═══════ WORKS ORDERS PAGE ═══════ -->
 <div class="page-section" id="workordersPage">
     <div class="header">
         <div class="header-content">
@@ -1117,9 +1042,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     setupEventListeners();
     loadCartFromStorage();
     updateCart();
-    loadReturnsFromStorage();
     loadWOFromStorage();
-    initReturnPartsEditor();
     populateWOEngineerFilter();
     setTodayDateOnWOForm();
 });
@@ -1127,13 +1050,12 @@ document.addEventListener('DOMContentLoaded',()=>{
 function setGreeting(){const h=new Date().getHours();document.getElementById('greeting').textContent=h<12?'GOOD MORNING':h<18?'GOOD AFTERNOON':'GOOD EVENING';}
 
 function showPage(page){
-    ['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','returnsPage','workordersPage'].forEach(id=>{
+    ['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','workordersPage'].forEach(id=>{
         document.getElementById(id).classList.toggle('active',id===page+'Page');
     });
     if(page==='orders'){applyFilters();updateOrderStats();}
     if(page==='stores')renderStoresPage();
     if(page==='reports')renderReports();
-    if(page==='returns')renderReturnsList();
     if(page==='workorders'){renderWOTable();updateWOStats();}
 }
 
@@ -1255,50 +1177,23 @@ function renderTopParts(periodOrders){
 
 function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDays} Days`:'All Time';const periodOrders=getFilteredOrdersForPeriod();if(!periodOrders.length){showToast('No data to export');return;}const headers=['Order Number','Date','Name','Works Order','Machine','Model','Parts Count','Status','Urgent'];const rows=periodOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.parts?.length||0,o.status||'Pending',o.urgent?'Yes':'No'].map(v=>`"${v}"`).join(','));const csv=[`"Flexi Parts Report — ${period} — ${new Date().toLocaleDateString('en-GB')}"`,headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-report-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Report exported (${periodOrders.length} orders)`);}
 
-function loadReturnsFromStorage(){try{returns=JSON.parse(localStorage.getItem('flexi-returns')||'[]');}catch(e){returns=[];}}
-function saveReturnsToStorage(){localStorage.setItem('flexi-returns',JSON.stringify(returns));}
-function initReturnPartsEditor(){addReturnPartRow();}
+catch(e){returns=[];}}
 
-function addReturnPartRow(){
-    const editor=document.getElementById('returnPartsEditor');
-    const row=document.createElement('div');
-    row.className='return-part-editor-row';
-    const id=Date.now();
-    row.innerHTML=`<input type="text" class="rpe-input" placeholder="Part number" id="rpe-pn-${id}"><input type="text" class="rpe-input" placeholder="Description" id="rpe-desc-${id}"><input type="number" class="rpe-input" placeholder="1" min="1" value="1" id="rpe-qty-${id}" style="width:60px;"><button class="rpe-remove" onclick="this.parentElement.remove()">✕</button>`;
-    editor.appendChild(row);
-}
 
-function getReturnParts(){const rows=document.querySelectorAll('#returnPartsEditor .return-part-editor-row');const parts=[];rows.forEach(row=>{const inputs=row.querySelectorAll('input');if(inputs.length<3)return;const pn=inputs[0].value.trim(),desc=inputs[1].value.trim(),qty=parseInt(inputs[2].value)||1;if(pn)parts.push({partNumber:pn,description:desc,qty});});return parts;}
 
-async function submitReturn(){
-    const raisedBy=document.getElementById('ret-raised-by').value;
-    const reason=document.getElementById('ret-reason').value;
-    if(!raisedBy){showToast('⚠ Please select who raised this return');return;}
-    if(!reason){showToast('⚠ Please select a reason');return;}
-    const parts=getReturnParts();
-    if(!parts.length){showToast('⚠ Please add at least one part to return');return;}
-    const btn=document.querySelector('.submit-return-btn');
-    btn.disabled=true;btn.textContent='Submitting...';
-    const ref='RET-'+String(Math.floor(Math.random()*10000)).padStart(4,'0');
-    const returnData={ref,raisedBy,worksOrder:document.getElementById('ret-works-order').value.trim(),machineSerial:document.getElementById('ret-serial').value.trim(),reason,condition:document.getElementById('ret-condition').value,notes:document.getElementById('ret-notes').value,parts,status:'Submitted',submittedAt:new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
-    try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'submitReturn',...returnData})});}catch(e){}
-    returns.unshift(returnData);saveReturnsToStorage();updateReturnStats();renderReturnsList();clearReturnForm();showToast(`✅ Return ${ref} submitted`);btn.disabled=false;btn.textContent='↩ Submit Return Request';
-}
 
-function clearReturnForm(){['ret-raised-by','ret-reason','ret-condition'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});['ret-works-order','ret-serial','ret-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const editor=document.getElementById('returnPartsEditor');editor.querySelectorAll('.return-part-editor-row').forEach(r=>r.remove());addReturnPartRow();}
 
-function updateReturnStats(){document.getElementById('returns-submitted-count').textContent=returns.filter(r=>r.status==='Submitted').length;document.getElementById('returns-received-count').textContent=returns.filter(r=>r.status==='Received').length;document.getElementById('returns-credited-count').textContent=returns.filter(r=>r.status==='Credited').length;document.getElementById('returns-rejected-count').textContent=returns.filter(r=>r.status==='Rejected').length;}
 
-function getReturnStatusClass(status){return({'Submitted':'status-return-submitted','Received':'status-return-received','Credited':'status-return-credited','Rejected':'status-return-rejected'})[status]||'status-return-submitted';}
 
-function renderReturnsList(){
-    updateReturnStats();
-    const container=document.getElementById('returnsList');
-    if(!returns.length){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">↩</div><p>No returns submitted yet.</p></div>';return;}
-    container.innerHTML=returns.map((ret,i)=>`<div class="return-card"><div class="return-card-header"><div class="return-ref">${ret.ref}</div><div style="display:flex;gap:8px;align-items:center;"><span class="order-status ${getReturnStatusClass(ret.status)}">${ret.status}</span><select onchange="updateReturnStatus(${i},this.value)" style="padding:5px 8px;background:var(--dark-bg);border:1px solid var(--border);border-radius:6px;color:var(--text-secondary);font-family:inherit;font-size:.8em;cursor:pointer;"><option value="Submitted" ${ret.status==='Submitted'?'selected':''}>Submitted</option><option value="Received" ${ret.status==='Received'?'selected':''}>Received</option><option value="Credited" ${ret.status==='Credited'?'selected':''}>Credited</option><option value="Rejected" ${ret.status==='Rejected'?'selected':''}>Rejected</option></select></div></div><div class="return-meta"><span>👤 <strong>${ret.raisedBy||'—'}</strong></span><span>🔧 <strong>${ret.worksOrder||'—'}</strong></span><span>📅 <strong>${ret.submittedAt||'—'}</strong></span><span>⚠ <strong>${ret.reason||'—'}</strong></span></div>${ret.machineSerial?`<div style="font-size:.83em;color:#555;margin-bottom:8px;">Machine: ${ret.machineSerial}</div>`:''}<div class="return-parts-preview">${ret.parts.map(p=>`<div class="return-part-line"><span class="return-part-pn">${p.partNumber}</span><span style="color:var(--text-secondary);font-size:.85em;flex:1;padding:0 8px;">${p.description||'—'}</span><span class="return-part-qty">×${p.qty}</span></div>`).join('')}</div>${ret.notes?`<div style="font-size:.82em;color:#666;margin-top:8px;padding:6px 10px;background:rgba(255,255,255,.03);border-radius:4px;">💬 ${ret.notes}</div>`:''}</div>`).join('');
-}
+);['ret-works-order','ret-serial','ret-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});const editor=document.getElementById('returnPartsEditor');editor.querySelectorAll('.return-part-editor-row').forEach(r=>r.remove());addReturnPartRow();}
 
-function updateReturnStatus(index,newStatus){returns[index].status=newStatus;saveReturnsToStorage();updateReturnStats();renderReturnsList();showToast(`Return ${returns[index].ref} updated to ${newStatus}`);}
+
+
+)[status]||'status-return-submitted';}
+
+
+
+ updated to ${newStatus}`);}
 
 function loadWOFromStorage(){try{workOrders=JSON.parse(localStorage.getItem('flexi-work-orders')||'[]');}catch(e){workOrders=[];}}
 function saveWOToStorage(){localStorage.setItem('flexi-work-orders',JSON.stringify(workOrders));}
