@@ -1039,9 +1039,7 @@
 
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbzyqm5dVvIW8snsuO9WX8WBy3xrIywGyT9-05QQZGX04e48hv5v2wsm6pPnbP8g9Rng/exec';
-const GROQ_API_KEY = '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';
-const GROQ_MODEL = 'llama-3.3-70b-versatile';
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
+// AI routed via GAS proxy (callGrok) — key lives in Apps Script, not here
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let sortField = 'date', sortDir = 'desc', isUrgent = false, reportPeriodDays = 30;
 
@@ -1110,16 +1108,15 @@ async function sendAIMessage(){
         const partsCtx=allParts.length?allParts.map(p=>`${p['Part Number']}|${p['Description']}|${p['System']||''}`).join('\n'):'(Parts catalogue loading)';
         const ordersCtx=orders.slice(0,15).map(o=>`${o.orderNumber}|${o.serviceController}|${o.machineSerial||'—'}|${o.model||'—'}|${(o.parts||[]).map(p=>p['Part Number']||p.partNum).join(',')}|${o.date}`).join('\n');
         const systemPrompt=`You are the Flexi Parts AI Assistant embedded in the Narrow Aisle Ltd parts ordering system for Flexi VNA forklifts.\n\nPARTS CATALOGUE:\n${partsCtx}\n\nRECENT ORDER HISTORY (last 15):\n${ordersCtx}\n\nRULES:\n- Suggest specific part numbers from the catalogue above when relevant\n- Wrap every part number in [PART:XXXXX] tags so the UI highlights them\n- Be concise and practical — engineers are busy\n- If a fault matches multiple parts, list all of them\n- Reference order history if a machine has recurring faults\n- If you don't know a part number, say so — never invent one\n- Tone: direct, experienced parts specialist`;
-        const groqMessages=[{role:'system',content:systemPrompt},...chatHistory];
-        const res=await fetch(GROQ_URL,{
+        const fullPrompt=systemPrompt+'\n\nUser: '+text+'\n\nRespond as the Flexi Parts AI Assistant.';
+        const res=await fetch(API_URL,{
             method:'POST',
-            headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`},
-            body:JSON.stringify({model:GROQ_MODEL,max_tokens:1000,messages:groqMessages})
+            body:JSON.stringify({action:'callGrok',prompt:fullPrompt})
         });
         removeTyping(typingId);
         const data=await res.json();
-        if(data.error)throw new Error(data.error.message);
-        const aiText=data.choices?.[0]?.message?.content||'Sorry, no response received.';
+        if(!data.success)throw new Error(data.error||'GAS proxy error');
+        const aiText=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result)||'No response received.');
         chatHistory.push({role:'assistant',content:aiText});
         appendAIMessage(aiText);
     }catch(err){
@@ -1190,13 +1187,12 @@ async function explainAnomaly(id,title,context){
     txt.innerHTML=`<div class="ai-shimmer" style="width:90%"></div><div class="ai-shimmer" style="width:70%"></div><div class="ai-shimmer" style="width:80%"></div>`;
     const cartSnap=JSON.stringify(cart.map(i=>({num:i['Part Number']||i.partNum,desc:i['Description']||i.desc,qty:i.qty||1})));
     try{
-        const res=await fetch(GROQ_URL,{
-            method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${GROQ_API_KEY}`},
-            body:JSON.stringify({model:GROQ_MODEL,max_tokens:600,messages:[{role:'system',content:'You are a smart parts ordering assistant for Flexi forklift engineers at Narrow Aisle Ltd. Be direct and practical.'},{role:'user',content:`Flagged issue: ${title}\nContext: ${context}\nFull cart: ${cartSnap}\n\nIn 2-3 sentences explain in plain English: why this might be a problem (or might be fine) and what to check before submitting. Be direct, no bullet points.`}]})
-        });
+        const prompt=`You are a smart parts ordering assistant for Flexi forklift engineers at Narrow Aisle Ltd.\n\nFlagged issue: ${title}\nContext: ${context}\nFull cart: ${cartSnap}\n\nIn 2-3 sentences explain in plain English: why this might be a problem (or might be fine) and what to check before submitting. Be direct, no bullet points. Return plain text only.`;
+        const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'callGrok',prompt})});
         const data=await res.json();
-        if(data.error)throw new Error(data.error.message);
-        txt.innerHTML=(data.choices?.[0]?.message?.content||'No analysis available.').replace(/\n/g,'<br>');
+        if(!data.success)throw new Error(data.error||'GAS proxy error');
+        const aiReply=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result));
+        txt.innerHTML=aiReply.replace(/\n/g,'<br>');
         btn.textContent='✦ Analysis Complete';
     }catch(e){
         txt.innerHTML='⚠ Could not reach AI. Check your connection.';
