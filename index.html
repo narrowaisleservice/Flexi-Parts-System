@@ -1111,7 +1111,7 @@ async function sendAIMessage(){
         const fullPrompt=systemPrompt+'\n\nUser: '+text+'\n\nRespond as the Flexi Parts AI Assistant.';
         const res=await fetch(API_URL,{
             method:'POST',
-            body:JSON.stringify({action:'callGrok',prompt:fullPrompt})
+            headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'callGrok',prompt:fullPrompt})
         });
         removeTyping(typingId);
         const data=await res.json();
@@ -1188,7 +1188,7 @@ async function explainAnomaly(id,title,context){
     const cartSnap=JSON.stringify(cart.map(i=>({num:i['Part Number']||i.partNum,desc:i['Description']||i.desc,qty:i.qty||1})));
     try{
         const prompt=`You are a smart parts ordering assistant for Flexi forklift engineers at Narrow Aisle Ltd.\n\nFlagged issue: ${title}\nContext: ${context}\nFull cart: ${cartSnap}\n\nIn 2-3 sentences explain in plain English: why this might be a problem (or might be fine) and what to check before submitting. Be direct, no bullet points. Return plain text only.`;
-        const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'callGrok',prompt})});
+        const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'callGrok',prompt})});
         const data=await res.json();
         if(!data.success)throw new Error(data.error||'GAS proxy error');
         const aiReply=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result));
