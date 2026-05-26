@@ -1143,3 +1143,397 @@
     </script>
 </body>
 </html>
+<div id="lightboxDetails"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pin-overlay" id="pinOverlay">
+        <div class="pin-box">
+            <h3>Enter Secure Profile PIN</h3>
+            <div class="pin-display" id="pinDisplay">••••</div>
+            <div class="pin-grid">
+                <button class="pin-btn" onclick="pressPin(1)">1</button>
+                <button class="pin-btn" onclick="pressPin(2)">2</button>
+                <button class="pin-btn" onclick="pressPin(3)">3</button>
+                <button class="pin-btn" onclick="pressPin(4)">4</button>
+                <button class="pin-btn" onclick="pressPin(5)">5</button>
+                <button class="pin-btn" onclick="pressPin(6)">6</button>
+                <button class="pin-btn" onclick="pressPin(7)">7</button>
+                <button class="pin-btn" onclick="pressPin(8)">8</button>
+                <button class="pin-btn" onclick="pressPin(9)">9</button>
+                <button class="pin-btn" onclick="clearPin()">C</button>
+                <button class="pin-btn" onclick="pressPin(0)">0</button>
+                <button class="pin-btn" onclick="submitPin()">✓</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox-overlay" id="bulkModalOverlay" onclick="closeBulkModal()">
+        <div class="bulk-modal-inner" onclick="event.stopPropagation()">
+            <button class="panel-close" onclick="closeBulkModal()">✕</button>
+            <h3 style="font-size: 1.8em; margin-bottom: 15px; text-transform: uppercase;">Bulk Component Import</h3>
+            <div class="form-group">
+                <label>Paste Part Numbers (One Per Line)</label>
+                <textarea id="bulkInputArea" rows="8" placeholder="2015.00.002&#10;30071&#10;10024"></textarea>
+            </div>
+            <button class="bulk-import-btn" style="width: 100%;" onclick="executeBulkImport()">Process Bulk List</button>
+        </div>
+    </div>
+
+    <script>
+        // 1. YOUR GOOGLE SHEETS CONNECTION URL GOES HERE:
+        const API_URL = 'https://script.google.com/macros/s/AKfycbzyqm5dVvIW8snsuO9WX8WBy3xrIywGyT9-05QQZGX04e48hv5v2wsm6pPnbP8g9Rng/exec';
+
+        // Global Variables
+        let allParts = [], filteredParts = [], cart = [], orders = [];
+        let currentPin = '', activeEngineer = null;
+        let isUrgentRoute = false;
+
+        // Initialize application on load
+        window.addEventListener('DOMContentLoaded', () => {
+            setupEventListeners();
+            fetchInventoryData();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', (e) => {
+                setQuickSearch(e.target.value);
+            });
+        }
+
+        // Navigation Switcher
+        function switchPage(pageId, buttonElement) {
+            // Update active navigation link styling
+            document.querySelectorAll('.nav-link').forEach(btn => btn.classList.remove('active'));
+            if (buttonElement) buttonElement.classList.add('active');
+
+            // Toggle target page panels
+            document.querySelectorAll('.page-section').forEach(section => section.classList.remove('active'));
+            
+            const targetPage = document.getElementById(`${pageId}Page`);
+            if (targetPage) targetPage.classList.add('active');
+
+            // Update Dynamic Headings
+            const titles = {
+                'parts': 'Parts Catalog',
+                'orders': 'Live Order Ledger',
+                'stores': 'Stores Dispatch Hub',
+                'van': 'Mobile Van Depot',
+                'history': 'Execution History',
+                'reports': 'Logistics Analytics'
+            };
+            document.getElementById('pageTitle').textContent = titles[pageId] || 'System Management';
+        }
+
+        // Sidebar Panel Toggles
+        function toggleCartPanel() {
+            document.getElementById('cartPanel').classList.toggle('open');
+        }
+
+        function toggleChatbot() {
+            document.getElementById('chatbotPanel').classList.toggle('open');
+        }
+
+        // Search Filters
+        function setQuickSearch(value) {
+            const input = document.getElementById('searchInput');
+            input.value = value;
+            
+            if (!value) {
+                filteredParts = [...allParts];
+            } else {
+                const query = value.toLowerCase();
+                filteredParts = allParts.filter(p => 
+                    (p['Part Number'] && p['Part Number'].toLowerCase().includes(query)) ||
+                    (p['Description'] && p['Description'].toLowerCase().includes(query)) ||
+                    (p['System'] && p['System'].toLowerCase().includes(query))
+                );
+            }
+            renderPartsGrid();
+        }
+
+        // Load Live Spreadsheet Data
+        async function fetchInventoryData() {
+            showToast("Connecting to live database...");
+            try {
+                const response = await fetch(`${API_URL}?action=getAllParts`);
+                const data = await response.json();
+                if (data.success && data.parts) {
+                    allParts = data.parts;
+                    filteredParts = [...allParts];
+                    renderPartsGrid();
+                    updateDashboardCounters();
+                    showToast("✅ Inventory synchronization complete");
+                }
+            } catch (error) {
+                console.error("Database connection failed:", error);
+                showToast("⚠️ Operating in offline demo mode");
+                loadDemoStock();
+            }
+        }
+
+        function loadDemoStock() {
+            allParts = [
+                { 'Part Number': '2015.00.002', 'Description': 'Fork Pin Kit round head', 'System': 'Mast', 'Stock Level': 12, 'Supplier Code': 'SUP-01' },
+                { 'Part Number': '30071', 'Description': 'Transmission Filter Element', 'System': 'Transmission', 'Stock Level': 5, 'Supplier Code': 'SUP-02' },
+                { 'Part Number': '10024', 'Description': 'Mast Bearing Assembly', 'System': 'Mast', 'Stock Level': 8, 'Supplier Code': 'SUP-01' },
+                { 'Part Number': 'KIT-901', 'Description': 'Chain Overhaul Kit VNA', 'System': 'Kit', 'Stock Level': 3, 'Supplier Code': 'SUP-04' }
+            ];
+            filteredParts = [...allParts];
+            renderPartsGrid();
+            updateDashboardCounters();
+        }
+
+        function renderPartsGrid() {
+            const grid = document.getElementById('partsGrid');
+            grid.innerHTML = '';
+            
+            document.getElementById('resultsCountText').textContent = `Showing ${filteredParts.length} Components`;
+
+            filteredParts.forEach(part => {
+                const card = document.createElement('div');
+                card.className = 'part-card';
+                card.innerHTML = `
+                    <div class="part-image-wrap" onclick="viewPartDetails('${part['Part Number']}')">
+                        <span style="font-size:3em; opacity:0.15;">📦</span>
+                    </div>
+                    <div class="part-card-body">
+                        <div class="part-number">${part['Part Number']}</div>
+                        <div class="part-desc">${part['Description']}</div>
+                        <div class="part-details">
+                            <div class="part-detail"><span class="part-detail-label">System:</span><span class="part-detail-value">${part['System']}</span></div>
+                            <div class="part-detail"><span class="part-detail-label">Available Stock:</span><span class="part-detail-value">${part['Stock Level']}</span></div>
+                        </div>
+                        <button class="add-to-cart" onclick="addToCart('${part['Part Number']}')">Add To Basket</button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function updateDashboardCounters() {
+            document.getElementById('statTotalParts').textContent = allParts.length;
+            document.getElementById('statFilteredParts').textContent = filteredParts.length;
+        }
+
+        // Cart Actions
+        function addToCart(partNumber) {
+            const part = allParts.find(p => p['Part Number'] === partNumber);
+            if (!part) return;
+
+            const existing = cart.find(item => item.partNumber === partNumber);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ partNumber, description: part['Description'], qty: 1 });
+            }
+            
+            updateCartUI();
+            showToast(`Added ${partNumber} to basket`);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            container.innerHTML = '';
+            
+            let totalItems = 0;
+            cart.forEach((item, index) => {
+                totalItems += item.qty;
+                const div = document.createElement('div');
+                div.className = 'cart-item';
+                div.innerHTML = `
+                    <div class="cart-item-header">
+                        <span class="cart-item-number">${item.partNumber}</span>
+                        <button style="background:none; border:none; color:#ef4444; cursor:pointer;" onclick="removeFromCart(${index})">✕</button>
+                    </div>
+                    <div style="font-size:0.9em; color:var(--text-secondary);">${item.description}</div>
+                    <div class="qty-control">
+                        <button class="qty-btn" onclick="adjustQty(${index}, -1)">-</button>
+                        <input type="text" class="qty-input" value="${item.qty}" readonly>
+                        <button class="qty-btn" onclick="adjustQty(${index}, 1)">+</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+
+            document.getElementById('statCartCount').textContent = totalItems;
+            document.getElementById('floatingCartBadge').textContent = totalItems;
+        }
+
+        function adjustQty(index, change) {
+            cart[index].qty += change;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // Form Profile Management
+        function evaluateFormProfile() {
+            const select = document.getElementById('formController');
+            const purposeSelect = document.getElementById('formPurpose');
+            
+            if (select.value === "") {
+                purposeSelect.disabled = true;
+            } else {
+                purposeSelect.disabled = false;
+            }
+        }
+
+        function handleUrgentToggle() {
+            isUrgentRoute = !isUrgentRoute;
+            document.getElementById('formUrgentToggle').classList.toggle('active', isUrgentRoute);
+        }
+
+        // Order Checkout Submission
+        async function executeCheckoutSubmit() {
+            const controller = document.getElementById('formController').value;
+            if (!controller) {
+                alert("Please select a Requester Profile first.");
+                return;
+            }
+            if (cart.length === 0) {
+                alert("Your basket is empty.");
+                return;
+            }
+
+            const orderPayload = {
+                action: 'submitOrder',
+                controller: controller,
+                purpose: document.getElementById('formPurpose').value,
+                serial: document.getElementById('formSerial').value,
+                model: document.getElementById('formModel').value,
+                comments: document.getElementById('formComments').value,
+                urgent: isUrgentRoute,
+                items: cart
+            };
+
+            showToast("Transmitting request to Google Sheets...");
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    mode: 'no-cors', // standard workaround for Google Web App redirection configurations
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(orderPayload)
+                });
+                
+                showToast("🚀 Requisition logged successfully!");
+                cart = [];
+                updateCartUI();
+                toggleCartPanel();
+            } catch (e) {
+                showToast("❌ Error writing order to network database");
+            }
+        }
+
+        // AI Interface Handlers
+        function handleChatKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                executeChatGeneration();
+            }
+        }
+
+        function executeChatGeneration() {
+            const input = document.getElementById('chatInput');
+            const messageText = input.value.trim();
+            if (!messageText) return;
+
+            // Append User Message Bubble
+            appendChatMessage('user', '👤', messageText);
+            input.value = '';
+
+            // Simulated AI Parser Processing Loop
+            setTimeout(() => {
+                let lowerText = messageText.toLowerCase();
+                let reply = "I've checked the local database structure. Can you verify the item classification context?";
+                
+                if (lowerText.includes('mast')) {
+                    reply = "Filtering data registry for system elements: <strong>Mast</strong>. I found matching inventory numbers like 2015.00.002. Try using the quick filter pill above.";
+                    setQuickSearch('Mast');
+                } else if (lowerText.includes('transmission')) {
+                    reply = "Located system block under: <strong>Transmission</strong>. Part 30071 is in stock.";
+                    setQuickSearch('Transmission');
+                } else if (lowerText.includes('stock')) {
+                    reply = "Live stock balances require an active deployment link via your Apps Script proxy macro.";
+                }
+
+                appendChatMessage('assistant', '🤖', reply);
+            }, 800);
+        }
+
+        function appendChatMessage(sender, avatar, text) {
+            const container = document.getElementById('chatMessages');
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-msg ${sender}`;
+            msgDiv.innerHTML = `
+                <div class="chat-avatar">${avatar}</div>
+                <div class="chat-bubble">${text}</div>
+            `;
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // Overlay Utilities
+        function viewPartDetails(partNumber) {
+            const part = allParts.find(p => p['Part Number'] === partNumber);
+            if (!part) return;
+
+            document.getElementById('lightboxPartNumber').textContent = part['Part Number'];
+            document.getElementById('lightboxDescription').textContent = part['Description'];
+            document.getElementById('lightboxDetails').innerHTML = `
+                <p><strong>Supplier:</strong> ${part['Supplier Code'] || 'N/A'}</p>
+                <p><strong>Category Segment:</strong> ${part['System']}</p>
+                <p><strong>Current Volume:</strong> ${part['Stock Level']}</p>
+            `;
+            document.getElementById('lightboxOverlay').classList.add('active');
+        }
+
+        function closeLightboxDirect() {
+            document.getElementById('lightboxOverlay').classList.remove('active');
+        }
+
+        function openBulkModal() { document.getElementById('bulkModalOverlay').classList.add('active'); }
+        function closeBulkModal() { document.getElementById('bulkModalOverlay').classList.remove('active'); }
+        
+        function executeBulkImport() {
+            const text = document.getElementById('bulkInputArea').value;
+            const lines = text.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            let addedCount = 0;
+
+            lines.forEach(partNum => {
+                const part = allParts.find(p => p['Part Number'] === partNum);
+                if (part) {
+                    addToCart(partNum);
+                    addedCount++;
+                }
+            });
+
+            closeBulkModal();
+            showToast(`Bulk Import: Added ${addedCount} recognized line items`);
+        }
+
+        function showToast(msg) {
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = msg;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        function lockVanStock() {
+            document.getElementById('vanLedgerSection').style.display = 'none';
+            document.getElementById('vanAuthSection').style.display = 'block';
+            document.getElementById('vanSelectedEngineer').textContent = 'SECURE MODE: LOCKED';
+        }
+    </script>
+</body>
+</html>
