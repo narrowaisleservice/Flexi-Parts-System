@@ -191,6 +191,9 @@
         .btn-mark-picked:disabled { opacity:.4; cursor:not-allowed; }
         .btn-print-slip { padding:13px 20px; background:transparent; border:1px solid var(--border); border-radius:8px; color:var(--text-secondary); font-family:inherit; font-size:.9em; font-weight:700; letter-spacing:.5px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
         .btn-print-slip:hover { background:var(--hover-bg); color:white; border-color:var(--text-secondary); }
+        /* ── SCANNER BUTTON ── */
+        .btn-scan-order { padding:13px 24px; background:rgba(220,38,38,.15); border:1px solid var(--primary-red); border-radius:8px; color:white; font-family:inherit; font-size:.95em; font-weight:800; letter-spacing:.5px; text-transform:uppercase; cursor:pointer; transition:all .2s; }
+        .btn-scan-order:hover { background:rgba(220,38,38,.35); }
         .stores-empty { text-align:center; padding:80px 20px; color:#555; }
         .stores-empty-icon { font-size:4em; margin-bottom:16px; opacity:.3; }
         .stores-empty-title { font-size:1.4em; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; color:var(--text-secondary); }
@@ -408,7 +411,6 @@
         .jh-last-seen { font-size:.82em; color:#555; font-weight:600; }
         .jh-empty { text-align:center; padding:80px 20px; color:#555; }
         .jh-empty-icon { font-size:3.5em; margin-bottom:16px; opacity:.3; }
-        /* ═══ AI PANEL ═══ */
         .ai-toggle { position:fixed; bottom:104px; right:30px; width:64px; height:64px; background:var(--ai-color); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.6em; cursor:pointer; z-index:500; transition:all .25s; box-shadow:0 4px 24px var(--ai-glow); animation:aiPulse 3s ease-in-out infinite; }
         @keyframes aiPulse { 0%,100%{box-shadow:0 4px 24px var(--ai-glow),0 0 0 0 rgba(124,58,237,0)} 50%{box-shadow:0 4px 24px var(--ai-glow),0 0 0 10px rgba(124,58,237,0)} }
         .ai-toggle:hover { transform:scale(1.1); background:#6d28d9; animation:none; }
@@ -527,14 +529,8 @@
 </head>
 <body>
 <div id="printTitle">Flexi Parts — Orders Export</div>
-
-<!-- CART TOGGLE -->
 <button class="cart-toggle" id="cartToggle" onclick="toggleCart()">🛒<div class="cart-badge" id="cartBadge">0</div></button>
-
-<!-- AI TOGGLE -->
 <button class="ai-toggle" onclick="toggleAIPanel()" title="AI Assistant">✦</button>
-
-<!-- PIN OVERLAY -->
 <div class="pin-overlay" id="pinOverlay">
     <div class="pin-box" id="pinBox">
         <div class="pin-step active" id="pinStep1">
@@ -564,10 +560,7 @@
         </div>
     </div>
 </div>
-
 <div class="container">
-
-<!-- PARTS PAGE -->
 <div class="page-section active" id="partsPage">
     <div class="header">
         <div class="header-content">
@@ -618,8 +611,6 @@
         </div>
     </div>
 </div>
-
-<!-- VAN STOCK PAGE -->
 <div class="page-section" id="vanstockPage">
     <div class="header">
         <div class="header-content">
@@ -649,8 +640,6 @@
     </div>
     <div id="vanStockContent"><div class="empty-state"><div class="empty-state-icon">🚐</div><p>Loading your van stock...</p></div></div>
 </div>
-
-<!-- STORES PAGE -->
 <div class="page-section" id="storesPage">
     <div class="header">
         <div class="header-content">
@@ -684,8 +673,6 @@
     </div>
     <div id="storesOrdersList"></div>
 </div>
-
-<!-- ORDERS PAGE -->
 <div class="page-section" id="ordersPage">
     <div class="header">
         <div class="header-content">
@@ -751,8 +738,6 @@
         </table>
     </div>
 </div>
-
-<!-- REPORTS PAGE -->
 <div class="page-section" id="reportsPage">
     <div class="header">
         <div class="header-content">
@@ -807,8 +792,6 @@
         </div>
     </div>
 </div>
-
-<!-- JOB HISTORY PAGE -->
 <div class="page-section" id="jobhistoryPage">
     <div class="header">
         <div class="header-content">
@@ -849,10 +832,7 @@
     </div>
     <div id="jhContent"></div>
 </div>
-
-</div><!-- end .container -->
-
-<!-- CART SIDEBAR -->
+</div>
 <div class="cart-section" id="cartSection">
     <button class="cart-close" onclick="toggleCart()">✕</button>
     <div class="cart-header">
@@ -949,8 +929,6 @@
         </div>
     </div>
 </div>
-
-<!-- BULK IMPORT MODAL -->
 <div class="modal-overlay" id="bulkImportModal">
     <div class="modal">
         <div class="modal-header">
@@ -968,8 +946,6 @@
         </div>
     </div>
 </div>
-
-<!-- LIGHTBOX -->
 <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox(event)">
     <div class="lightbox-inner">
         <button class="lightbox-close" onclick="closeLightboxDirect()">✕</button>
@@ -985,8 +961,6 @@
         </div>
     </div>
 </div>
-
-<!-- AI PANEL -->
 <div class="ai-panel" id="aiPanel">
     <div class="ai-panel-header">
         <div class="ai-panel-top">
@@ -1036,13 +1010,10 @@
         </div>
     </div>
 </div>
-
 <script>
 const API_URL = 'https://script.google.com/macros/s/AKfycbzyqm5dVvIW8snsuO9WX8WBy3xrIywGyT9-05QQZGX04e48hv5v2wsm6pPnbP8g9Rng/exec';
-// AI routed via GAS proxy (callGrok) — key lives in Apps Script, not here
 let allParts = [], filteredParts = [], cart = [], orders = [], displayedOrders = [];
 let sortField = 'date', sortDir = 'desc', isUrgent = false, reportPeriodDays = 30;
-
 const ENGINEER_PINS = {
     'Aaron Dyson':'1111','Brett Stockton':'2222','David Williams':'3333','Graham Denman':'4444',
     'Kevin Deakin':'5555','Lance Duncan':'6666','Lewis Lockwood':'7777','Mick Thornley':'8888',
@@ -1050,157 +1021,32 @@ const ENGINEER_PINS = {
 };
 const VAN_SESSION_KEY = 'flexi-van-engineer';
 let pinBuffer = '', pinEngineer = '';
-
 document.addEventListener('DOMContentLoaded',()=>{
     setGreeting(); buildEngineerGrid(); loadParts(); loadOrders();
     populateModels(); setupEventListeners(); loadCartFromStorage(); updateCart();
 });
-
 function setGreeting(){const h=new Date().getHours();document.getElementById('greeting').textContent=h<12?'GOOD MORNING':h<18?'GOOD AFTERNOON':'GOOD EVENING';}
-
-function showPage(page){
-    ['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','jobhistoryPage'].forEach(id=>{
-        document.getElementById(id).classList.toggle('active',id===page+'Page');
-    });
-    if(page==='orders'){applyFilters();updateOrderStats();}
-    if(page==='stores')renderStoresPage();
-    if(page==='reports')renderReports();
-    if(page==='jobhistory')renderJobHistory();
-}
-
-function toggleCart(){
-    const cartOpen=document.getElementById('cartSection').classList.toggle('open');
-    if(cartOpen)document.getElementById('aiPanel').classList.remove('open');
-}
-
-// ═══ AI PANEL ═══
+function showPage(page){['partsPage','ordersPage','storesPage','vanstockPage','reportsPage','jobhistoryPage'].forEach(id=>{document.getElementById(id).classList.toggle('active',id===page+'Page');});if(page==='orders'){applyFilters();updateOrderStats();}if(page==='stores')renderStoresPage();if(page==='reports')renderReports();if(page==='jobhistory')renderJobHistory();}
+function toggleCart(){const cartOpen=document.getElementById('cartSection').classList.toggle('open');if(cartOpen)document.getElementById('aiPanel').classList.remove('open');}
 let chatHistory=[];
-
-function toggleAIPanel(){
-    const aiOpen=document.getElementById('aiPanel').classList.toggle('open');
-    if(aiOpen){document.getElementById('cartSection').classList.remove('open');syncIntelFromCart();}
-}
-function openAIPanel(tab='chat'){
-    document.getElementById('aiPanel').classList.add('open');
-    document.getElementById('cartSection').classList.remove('open');
-    switchAITab(tab);syncIntelFromCart();
-}
-function switchAITab(tab){
-    document.getElementById('aiChatTab').classList.toggle('active',tab==='chat');
-    document.getElementById('aiIntelTab').classList.toggle('active',tab==='intel');
-    document.getElementById('tabChat').classList.toggle('active',tab==='chat');
-    document.getElementById('tabIntel').classList.toggle('active',tab==='intel');
-}
+function toggleAIPanel(){const aiOpen=document.getElementById('aiPanel').classList.toggle('open');if(aiOpen){document.getElementById('cartSection').classList.remove('open');syncIntelFromCart();}}
+function openAIPanel(tab='chat'){document.getElementById('aiPanel').classList.add('open');document.getElementById('cartSection').classList.remove('open');switchAITab(tab);syncIntelFromCart();}
+function switchAITab(tab){document.getElementById('aiChatTab').classList.toggle('active',tab==='chat');document.getElementById('aiIntelTab').classList.toggle('active',tab==='intel');document.getElementById('tabChat').classList.toggle('active',tab==='chat');document.getElementById('tabIntel').classList.toggle('active',tab==='intel');}
 function sendSuggestion(text){document.getElementById('aiWelcome').style.display='none';document.getElementById('aiInput').value=text;sendAIMessage();}
 function aiInputKeydown(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAIMessage();}}
 function autoResizeInput(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
-
-async function sendAIMessage(){
-    const input=document.getElementById('aiInput');
-    const text=input.value.trim();
-    if(!text)return;
-    document.getElementById('aiWelcome').style.display='none';
-    appendUserMessage(text);input.value='';input.style.height='auto';
-    document.getElementById('aiSendBtn').disabled=true;
-    chatHistory.push({role:'user',content:text});
-    const typingId=showTyping();
-    try{
-        const partsCtx=allParts.length?allParts.map(p=>`${p['Part Number']}|${p['Description']}|${p['System']||''}`).join('\n'):'(Parts catalogue loading)';
-        const ordersCtx=orders.slice(0,15).map(o=>`${o.orderNumber}|${o.serviceController}|${o.machineSerial||'—'}|${o.model||'—'}|${(o.parts||[]).map(p=>p['Part Number']||p.partNum).join(',')}|${o.date}`).join('\n');
-        const systemPrompt=`You are the Flexi Parts AI Assistant embedded in the Narrow Aisle Ltd parts ordering system for Flexi VNA forklifts.\n\nPARTS CATALOGUE:\n${partsCtx}\n\nRECENT ORDER HISTORY (last 15):\n${ordersCtx}\n\nRULES:\n- Suggest specific part numbers from the catalogue above when relevant\n- Wrap every part number in [PART:XXXXX] tags so the UI highlights them\n- Be concise and practical — engineers are busy\n- If a fault matches multiple parts, list all of them\n- Reference order history if a machine has recurring faults\n- If you don't know a part number, say so — never invent one\n- Tone: direct, experienced parts specialist`;
-        const fullPrompt=systemPrompt+'\n\nUser: '+text+'\n\nRespond as the Flexi Parts AI Assistant.';
-        const res=await fetch(API_URL,{
-            method:'POST',
-            headers:{'Content-Type':'text/plain'},headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'callGrok',prompt:fullPrompt})
-        });
-        removeTyping(typingId);
-        const data=await res.json();
-        if(!data.success)throw new Error(data.error||'GAS proxy error');
-        const aiText=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result)||'No response received.');
-        chatHistory.push({role:'assistant',content:aiText});
-        appendAIMessage(aiText);
-    }catch(err){
-        removeTyping(typingId);
-        appendAIMessage('⚠ Could not reach the AI. Check your connection and try again.');
-        chatHistory.pop();
-    }
-    document.getElementById('aiSendBtn').disabled=false;
-    scrollMessages();
-}
-
-function appendUserMessage(text){
-    const msgs=document.getElementById('aiMessages');
-    const div=document.createElement('div');div.className='ai-msg user';
-    div.innerHTML=`<div class="ai-msg-avatar user-av">👤</div><div class="ai-msg-bubble">${escHtml(text)}</div>`;
-    msgs.appendChild(div);scrollMessages();
-}
-function appendAIMessage(text){
-    const msgs=document.getElementById('aiMessages');
-    const div=document.createElement('div');div.className='ai-msg ai';
-    let fmt=escHtml(text).replace(/\[PART:([^\]]+)\]/g,'<span class="part-suggest">$1</span>').replace(/\n/g,'<br>');
-    div.innerHTML=`<div class="ai-msg-avatar ai-av">✦</div><div class="ai-msg-bubble">${fmt}</div>`;
-    msgs.appendChild(div);scrollMessages();
-}
-function showTyping(){
-    const msgs=document.getElementById('aiMessages');
-    const id='typing-'+Date.now();
-    const div=document.createElement('div');div.className='ai-msg ai';div.id=id;
-    div.innerHTML=`<div class="ai-msg-avatar ai-av">✦</div><div class="ai-typing"><span></span><span></span><span></span></div>`;
-    msgs.appendChild(div);scrollMessages();return id;
-}
+async function sendAIMessage(){const input=document.getElementById('aiInput');const text=input.value.trim();if(!text)return;document.getElementById('aiWelcome').style.display='none';appendUserMessage(text);input.value='';input.style.height='auto';document.getElementById('aiSendBtn').disabled=true;chatHistory.push({role:'user',content:text});const typingId=showTyping();try{const partsCtx=allParts.length?allParts.map(p=>`${p['Part Number']}|${p['Description']}|${p['System']||''}`).join('\n'):'(Parts catalogue loading)';const ordersCtx=orders.slice(0,15).map(o=>`${o.orderNumber}|${o.serviceController}|${o.machineSerial||'—'}|${o.model||'—'}|${(o.parts||[]).map(p=>p['Part Number']||p.partNum).join(',')}|${o.date}`).join('\n');const systemPrompt=`You are the Flexi Parts AI Assistant embedded in the Narrow Aisle Ltd parts ordering system for Flexi VNA forklifts.\n\nPARTS CATALOGUE:\n${partsCtx}\n\nRECENT ORDER HISTORY (last 15):\n${ordersCtx}\n\nRULES:\n- Suggest specific part numbers from the catalogue above when relevant\n- Wrap every part number in [PART:XXXXX] tags so the UI highlights them\n- Be concise and practical — engineers are busy\n- If a fault matches multiple parts, list all of them\n- Reference order history if a machine has recurring faults\n- If you don't know a part number, say so — never invent one\n- Tone: direct, experienced parts specialist`;const fullPrompt=systemPrompt+'\n\nUser: '+text+'\n\nRespond as the Flexi Parts AI Assistant.';const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'callGrok',prompt:fullPrompt})});removeTyping(typingId);const data=await res.json();if(!data.success)throw new Error(data.error||'GAS proxy error');const aiText=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result)||'No response received.');chatHistory.push({role:'assistant',content:aiText});appendAIMessage(aiText);}catch(err){removeTyping(typingId);appendAIMessage('⚠ Could not reach the AI. Check your connection and try again.');chatHistory.pop();}document.getElementById('aiSendBtn').disabled=false;scrollMessages();}
+function appendUserMessage(text){const msgs=document.getElementById('aiMessages');const div=document.createElement('div');div.className='ai-msg user';div.innerHTML=`<div class="ai-msg-avatar user-av">👤</div><div class="ai-msg-bubble">${escHtml(text)}</div>`;msgs.appendChild(div);scrollMessages();}
+function appendAIMessage(text){const msgs=document.getElementById('aiMessages');const div=document.createElement('div');div.className='ai-msg ai';let fmt=escHtml(text).replace(/\[PART:([^\]]+)\]/g,'<span class="part-suggest">$1</span>').replace(/\n/g,'<br>');div.innerHTML=`<div class="ai-msg-avatar ai-av">✦</div><div class="ai-msg-bubble">${fmt}</div>`;msgs.appendChild(div);scrollMessages();}
+function showTyping(){const msgs=document.getElementById('aiMessages');const id='typing-'+Date.now();const div=document.createElement('div');div.className='ai-msg ai';div.id=id;div.innerHTML=`<div class="ai-msg-avatar ai-av">✦</div><div class="ai-typing"><span></span><span></span><span></span></div>`;msgs.appendChild(div);scrollMessages();return id;}
 function removeTyping(id){document.getElementById(id)?.remove();}
 function scrollMessages(){const m=document.getElementById('aiMessages');m.scrollTop=m.scrollHeight;}
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-
-// ═══ SMART ORDER INTEL ═══
 function syncIntelFromCart(){renderIntelPanel(cart);}
-
-function detectCartAnomalies(c){
-    const anomalies=[];
-    const nums=c.map(i=>i['Part Number']||i.partNum||'');
-    const dupes=nums.filter((n,i)=>nums.indexOf(n)!==i);
-    if(dupes.length)anomalies.push({id:'dupes',severity:'high',title:'Duplicate parts detected',badge:'warning',badgeText:'Duplicate',context:`Parts ordered more than once: ${[...new Set(dupes)].join(', ')}`});
-    c.forEach(item=>{if((item.qty||1)>=10)anomalies.push({id:'hq-'+(item['Part Number']||item.partNum),severity:'medium',title:`High quantity: ${item['Part Number']||item.partNum}`,badge:'warning',badgeText:'High Qty',context:`${item.qty}× of "${item['Description']||item.desc}" — intentional?`});});
-    const totalQty=c.reduce((s,i)=>s+(i.qty||1),0);
-    if(totalQty>15)anomalies.push({id:'large',severity:'medium',title:`Large order: ${totalQty} total items`,badge:'info',badgeText:'Large Order',context:`${totalQty} parts across ${c.length} lines.`});
-    return anomalies;
-}
-
-function renderIntelPanel(c){
-    const container=document.getElementById('intelContent');
-    if(!c.length){container.innerHTML=`<div class="intel-empty"><div class="intel-empty-icon">🧠</div><div class="intel-empty-text">Add parts to your cart to see order intelligence</div></div>`;return;}
-    const anomalies=detectCartAnomalies(c);
-    const totalQty=c.reduce((s,i)=>s+(i.qty||1),0);
-    const statsHtml=`<div class="intel-section"><div class="intel-section-title">Cart Summary</div><div class="intel-stats"><div class="intel-stat"><div class="intel-stat-val">${c.length}</div><div class="intel-stat-label">Line Items</div></div><div class="intel-stat"><div class="intel-stat-val">${totalQty}</div><div class="intel-stat-label">Total Parts</div></div></div></div>`;
-    const anomalyHtml=anomalies.length?`<div class="intel-section"><div class="intel-section-title">⚠ Anomalies (${anomalies.length})</div>${anomalies.map(a=>`<div class="anomaly-card" id="acard-${a.id}"><div class="anomaly-card-header" onclick="toggleAnomalyCard('${a.id}')"><div class="anomaly-severity sev-${a.severity}"></div><div class="anomaly-card-title">${a.title}</div><span class="anomaly-card-badge badge-${a.badge}">${a.badgeText}</span></div><div class="anomaly-card-body" id="abody-${a.id}" style="display:none;"><div class="anomaly-ai-text">${a.context}</div><button class="anomaly-explain-btn" id="abtn-${a.id}" onclick="explainAnomaly('${a.id}','${escHtml(a.title)}','${escHtml(a.context)}')">✦ Explain with AI</button><div class="anomaly-ai-response" id="aresponse-${a.id}"><div class="ai-label">✦ AI Analysis</div><div id="aresponse-text-${a.id}"></div></div></div></div>`).join('')}</div>`:`<div class="intel-section"><div class="intel-section-title">Order Check</div><div class="anomaly-card"><div class="anomaly-card-header"><div class="anomaly-severity sev-low"></div><div class="anomaly-card-title">No issues detected</div><span class="anomaly-card-badge badge-ok">All Clear</span></div></div></div>`;
-    container.innerHTML=statsHtml+anomalyHtml;
-    if(anomalies.length)toggleAnomalyCard(anomalies[0].id);
-}
+function detectCartAnomalies(c){const anomalies=[];const nums=c.map(i=>i['Part Number']||i.partNum||'');const dupes=nums.filter((n,i)=>nums.indexOf(n)!==i);if(dupes.length)anomalies.push({id:'dupes',severity:'high',title:'Duplicate parts detected',badge:'warning',badgeText:'Duplicate',context:`Parts ordered more than once: ${[...new Set(dupes)].join(', ')}`});c.forEach(item=>{if((item.qty||1)>=10)anomalies.push({id:'hq-'+(item['Part Number']||item.partNum),severity:'medium',title:`High quantity: ${item['Part Number']||item.partNum}`,badge:'warning',badgeText:'High Qty',context:`${item.qty}× of "${item['Description']||item.desc}" — intentional?`});});const totalQty=c.reduce((s,i)=>s+(i.qty||1),0);if(totalQty>15)anomalies.push({id:'large',severity:'medium',title:`Large order: ${totalQty} total items`,badge:'info',badgeText:'Large Order',context:`${totalQty} parts across ${c.length} lines.`});return anomalies;}
+function renderIntelPanel(c){const container=document.getElementById('intelContent');if(!c.length){container.innerHTML=`<div class="intel-empty"><div class="intel-empty-icon">🧠</div><div class="intel-empty-text">Add parts to your cart to see order intelligence</div></div>`;return;}const anomalies=detectCartAnomalies(c);const totalQty=c.reduce((s,i)=>s+(i.qty||1),0);const statsHtml=`<div class="intel-section"><div class="intel-section-title">Cart Summary</div><div class="intel-stats"><div class="intel-stat"><div class="intel-stat-val">${c.length}</div><div class="intel-stat-label">Line Items</div></div><div class="intel-stat"><div class="intel-stat-val">${totalQty}</div><div class="intel-stat-label">Total Parts</div></div></div></div>`;const anomalyHtml=anomalies.length?`<div class="intel-section"><div class="intel-section-title">⚠ Anomalies (${anomalies.length})</div>${anomalies.map(a=>`<div class="anomaly-card" id="acard-${a.id}"><div class="anomaly-card-header" onclick="toggleAnomalyCard('${a.id}')"><div class="anomaly-severity sev-${a.severity}"></div><div class="anomaly-card-title">${a.title}</div><span class="anomaly-card-badge badge-${a.badge}">${a.badgeText}</span></div><div class="anomaly-card-body" id="abody-${a.id}" style="display:none;"><div class="anomaly-ai-text">${a.context}</div><button class="anomaly-explain-btn" id="abtn-${a.id}" onclick="explainAnomaly('${a.id}','${escHtml(a.title)}','${escHtml(a.context)}')">✦ Explain with AI</button><div class="anomaly-ai-response" id="aresponse-${a.id}"><div class="ai-label">✦ AI Analysis</div><div id="aresponse-text-${a.id}"></div></div></div></div>`).join('')}</div>`:`<div class="intel-section"><div class="intel-section-title">Order Check</div><div class="anomaly-card"><div class="anomaly-card-header"><div class="anomaly-severity sev-low"></div><div class="anomaly-card-title">No issues detected</div><span class="anomaly-card-badge badge-ok">All Clear</span></div></div></div>`;container.innerHTML=statsHtml+anomalyHtml;if(anomalies.length)toggleAnomalyCard(anomalies[0].id);}
 function toggleAnomalyCard(id){const b=document.getElementById('abody-'+id);if(b)b.style.display=b.style.display==='none'?'block':'none';}
-
-async function explainAnomaly(id,title,context){
-    const btn=document.getElementById('abtn-'+id);
-    const resp=document.getElementById('aresponse-'+id);
-    const txt=document.getElementById('aresponse-text-'+id);
-    btn.disabled=true;btn.textContent='✦ Analysing...';
-    resp.classList.add('show');
-    txt.innerHTML=`<div class="ai-shimmer" style="width:90%"></div><div class="ai-shimmer" style="width:70%"></div><div class="ai-shimmer" style="width:80%"></div>`;
-    const cartSnap=JSON.stringify(cart.map(i=>({num:i['Part Number']||i.partNum,desc:i['Description']||i.desc,qty:i.qty||1})));
-    try{
-        const prompt=`You are a smart parts ordering assistant for Flexi forklift engineers at Narrow Aisle Ltd.\n\nFlagged issue: ${title}\nContext: ${context}\nFull cart: ${cartSnap}\n\nIn 2-3 sentences explain in plain English: why this might be a problem (or might be fine) and what to check before submitting. Be direct, no bullet points. Return plain text only.`;
-        const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'callGrok',prompt})});
-        const data=await res.json();
-        if(!data.success)throw new Error(data.error||'GAS proxy error');
-        const aiReply=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result));
-        txt.innerHTML=aiReply.replace(/\n/g,'<br>');
-        btn.textContent='✦ Analysis Complete';
-    }catch(e){
-        txt.innerHTML='⚠ Could not reach AI. Check your connection.';
-        btn.disabled=false;btn.textContent='✦ Explain with AI';
-    }
-}
-
-// ═══ PIN / VAN STOCK ═══
+async function explainAnomaly(id,title,context){const btn=document.getElementById('abtn-'+id);const resp=document.getElementById('aresponse-'+id);const txt=document.getElementById('aresponse-text-'+id);btn.disabled=true;btn.textContent='✦ Analysing...';resp.classList.add('show');txt.innerHTML=`<div class="ai-shimmer" style="width:90%"></div><div class="ai-shimmer" style="width:70%"></div><div class="ai-shimmer" style="width:80%"></div>`;const cartSnap=JSON.stringify(cart.map(i=>({num:i['Part Number']||i.partNum,desc:i['Description']||i.desc,qty:i.qty||1})));try{const prompt=`You are a smart parts ordering assistant for Flexi forklift engineers at Narrow Aisle Ltd.\n\nFlagged issue: ${title}\nContext: ${context}\nFull cart: ${cartSnap}\n\nIn 2-3 sentences explain in plain English: why this might be a problem (or might be fine) and what to check before submitting. Be direct, no bullet points. Return plain text only.`;const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({action:'callGrok',prompt})});const data=await res.json();if(!data.success)throw new Error(data.error||'GAS proxy error');const aiReply=typeof data.result==='string'?data.result:(data.result?.response||data.result?.text||JSON.stringify(data.result));txt.innerHTML=aiReply.replace(/\n/g,'<br>');btn.textContent='✦ Analysis Complete';}catch(e){txt.innerHTML='⚠ Could not reach AI. Check your connection.';btn.disabled=false;btn.textContent='✦ Explain with AI';}}
 function buildEngineerGrid(){const grid=document.getElementById('engineerGrid');grid.innerHTML=Object.keys(ENGINEER_PINS).map(name=>`<button class="engineer-btn" onclick="pinSelectEngineer('${name}')">${name}</button>`).join('');}
 function requestVanStock(){const saved=sessionStorage.getItem(VAN_SESSION_KEY);if(saved&&ENGINEER_PINS[saved])openVanStockFor(saved);else openPinOverlay();}
 function openPinOverlay(){pinBuffer='';pinEngineer='';document.getElementById('pinError').textContent='';updatePinDots();document.getElementById('pinStep1').classList.add('active');document.getElementById('pinStep2').classList.remove('active');document.getElementById('pinOverlay').classList.add('active');}
@@ -1213,25 +1059,11 @@ function pinSubmit(){if(!pinEngineer)return;if(pinBuffer===ENGINEER_PINS[pinEngi
 function updatePinDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('filled',i<pinBuffer.length);}
 function openVanStockFor(engineer){document.getElementById('vanBannerTitle').textContent=engineer+"'s Van Stock";document.getElementById('vanBannerSub').textContent='Showing your personal van stock only.';document.getElementById('vanStockSubtitle').textContent=engineer.toUpperCase();showPage('vanstock');loadVanStockFor(engineer);}
 function lockVanStock(){sessionStorage.removeItem(VAN_SESSION_KEY);showPage('parts');showToast('🔒 Van Stock locked');}
-
-document.addEventListener('keydown',e=>{
-    if(!document.getElementById('pinOverlay').classList.contains('active'))return;
-    if(document.getElementById('pinStep2').classList.contains('active')){
-        if(e.key>='0'&&e.key<='9')pinKey(e.key);
-        else if(e.key==='Backspace')pinBackspace();
-        else if(e.key==='Enter')pinSubmit();
-        else if(e.key==='Escape')closePinOverlay();
-    }else{if(e.key==='Escape')closePinOverlay();}
-});
-
-// ═══ PARTS LOADING ═══
+document.addEventListener('keydown',e=>{if(!document.getElementById('pinOverlay').classList.contains('active'))return;if(document.getElementById('pinStep2').classList.contains('active')){if(e.key>='0'&&e.key<='9')pinKey(e.key);else if(e.key==='Backspace')pinBackspace();else if(e.key==='Enter')pinSubmit();else if(e.key==='Escape')closePinOverlay();}else{if(e.key==='Escape')closePinOverlay();}});
 async function loadParts(){try{const res=await fetch(`${API_URL}?action=getAllParts`);const data=await res.json();if(data.success&&data.parts?.length){allParts=data.parts.map(normalisePart);cacheParts(allParts);}else loadDemoParts();}catch(e){loadDemoParts();}document.getElementById('totalPartsCount').textContent=allParts.length;showToast(`✅ ${allParts.length} parts loaded`);}
 function normalisePart(p){const get=(keys)=>{for(const k of keys){const v=p[k]||p[k.toLowerCase()]||p[k.toUpperCase()];if(v)return v;}return '';};return{'Part Number':get(['Part Number','partNum','partNumber','part number','PartNumber','PART NUMBER','part_number']),'Description':get(['Description','desc','description','DESCRIPTION','Desc']),'Supplier Code':get(['Supplier Code','supplier','supplierCode','supplier code','SupplierCode','SUPPLIER']),'System':get(['System','system','SYSTEM','category','Category']),'Stock Level':get(['Stock Level','stockLevel','stock level','StockLevel','stock','Stock']),'Cost':get(['Cost','cost','Price','price','COST','PRICE']),'Image URL':get(['Image URL','image url','imageUrl','ImageUrl','IMAGE URL','image','Image','img']),_raw:p};}
 function loadDemoParts(){allParts=[{'Part Number':'2015.00.002','Description':'Fork Pin Kit round head','System':'MAST','Supplier Code':'SUP-001'},{'Part Number':'30071','Description':'Spacer (drive axle)','System':'TRANSMISSION','Supplier Code':'SUP-003'},{'Part Number':'30073A','Description':'Wheel Helical','System':'TRANSMISSION','Supplier Code':'SUP-004'},{'Part Number':'30074','Description':'Intermediate gear','System':'TRANSMISSION','Supplier Code':'SUP-005'}];}
-
-// ═══ ORDERS ═══
 async function loadOrders(silent=false){try{const res=await fetch(`${API_URL}?action=getOrders`);const data=await res.json();if(data.success&&data.orders){orders=data.orders.map(normaliseOrder);learnFromOrders();}}catch(e){if(!silent)orders=[];}updateOrderStats();applyFilters();if(!silent)startAutoRefresh();}
-
 let _autoRefreshTimer=null,_autoRefreshCountdown=null,_refreshSecondsLeft=0;
 const AUTO_REFRESH_INTERVAL=30;
 function startAutoRefresh(){if(_autoRefreshTimer)return;scheduleNextRefresh();}
@@ -1239,48 +1071,26 @@ function scheduleNextRefresh(){clearInterval(_autoRefreshCountdown);clearTimeout
 async function refreshOrdersSilently(){updateRefreshBadge('syncing');try{const res=await fetch(`${API_URL}?action=getOrders`);const data=await res.json();if(data.success&&data.orders){orders=data.orders.map(normaliseOrder);learnFromOrders();updateOrderStats();applyFilters();renderStoresPage();}}catch(e){}scheduleNextRefresh();}
 function updateRefreshBadge(state){const badge=document.getElementById('autoRefreshBadge');if(!badge)return;if(state==='syncing'){badge.textContent='⟳ Syncing...';badge.style.color='#f59e0b';badge.style.borderColor='rgba(245,158,11,.4)';}else{badge.textContent=`⟳ Refresh in ${_refreshSecondsLeft}s`;badge.style.color=_refreshSecondsLeft<=20?'#f59e0b':'#555';badge.style.borderColor=_refreshSecondsLeft<=20?'rgba(245,158,11,.3)':'var(--border)';}}
 function manualRefresh(){clearInterval(_autoRefreshCountdown);clearTimeout(_autoRefreshTimer);_autoRefreshTimer=null;refreshOrdersSilently();}
-
 function normaliseOrder(o){let parts=o.parts||[];if(typeof parts==='string'){try{parts=JSON.parse(parts);}catch(e){parts=[];}}if(!Array.isArray(parts))parts=[];const rawDate=o.date||o.orderDate||'';let displayDate=rawDate,_sortKey='',_rawDate='';if(rawDate){let d=null;const attempt=new Date(rawDate);if(!isNaN(attempt.getTime())){d=attempt;}if(!d){const m=String(rawDate).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[\sT,]+(\d{1,2}):(\d{2})(?::(\d{2}))?)?/);if(m){d=new Date(parseInt(m[3]),parseInt(m[2])-1,parseInt(m[1]),parseInt(m[4]||0),parseInt(m[5]||0),parseInt(m[6]||0));}}if(d&&!isNaN(d.getTime())){const dd=String(d.getDate()).padStart(2,'0'),mm=String(d.getMonth()+1).padStart(2,'0'),yyyy=d.getFullYear(),hh=String(d.getHours()).padStart(2,'0'),min=String(d.getMinutes()).padStart(2,'0');displayDate=`${dd}/${mm}/${yyyy} ${hh}:${min}`;_rawDate=`${yyyy}-${mm}-${dd}`;_sortKey=`${yyyy}${mm}${dd}${hh}${min}`;}else{_rawDate=String(rawDate).slice(0,10);_sortKey='999999999999';}}return{...o,parts,machineSerial:String(o.machineSerial||'').trim(),worksOrder:String(o.worksOrder||'').trim(),date:displayDate,_rawDate,_sortKey,serviceController:o.serviceController||o.engineer||'',orderType:o.orderType||''};}
-
 async function loadVanStockFor(engineer){const content=document.getElementById('vanStockContent');content.innerHTML='<div class="empty-state"><div class="empty-state-icon">⏳</div><p>Loading van stock...</p></div>';try{const res=await fetch(`${API_URL}?action=getVanStock&engineer=${encodeURIComponent(engineer)}`);const data=await res.json();if(data.success&&data.stock?.length)renderVanStockTable(engineer,data.stock);else renderVanStockTable(engineer,[]);}catch(e){renderVanStockTable(engineer,[]);}}
 function renderVanStockTable(engineer,stock){const content=document.getElementById('vanStockContent');let lowCount=0;if(!stock.length){content.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📦</div><p>No van stock set up for ${engineer} yet.</p></div>`;document.getElementById('vanLowStockCount').textContent=0;document.getElementById('vanTotalLines').textContent=0;return;}stock.forEach(s=>{if(parseInt(s.current||0)<=parseInt(s.minimum||0))lowCount++;});document.getElementById('vanLowStockCount').textContent=lowCount;document.getElementById('vanTotalLines').textContent=stock.length;content.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><div style="font-size:1.1em;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:1px;">${engineer} — ${stock.length} lines</div><button class="van-save-btn" onclick="saveVanStock('${engineer}')">💾 Save Changes</button></div><table class="van-stock-table"><thead><tr><th>Part Number</th><th>Description</th><th>Min</th><th>Current</th><th>Status</th></tr></thead><tbody>${stock.map((s,i)=>{const curr=parseInt(s.current||0),min=parseInt(s.minimum||0),low=curr<=min;return`<tr><td style="font-weight:700;color:var(--primary-red);">${s.partNumber||'—'}</td><td style="color:var(--text-secondary);">${s.description||'—'}</td><td style="text-align:center;">${min}</td><td style="text-align:center;"><input class="van-qty-input" type="number" min="0" value="${curr}" id="vanqty_${i}"></td><td style="text-align:center;"><span class="${low?'van-low':'van-ok'}">${low?'⚠ Low':'✓ OK'}</span></td></tr>`;}).join('')}</tbody></table>`;window._vanStockData=stock;}
 async function saveVanStock(engineer){const stock=window._vanStockData||[];const updated=stock.map((s,i)=>({...s,current:parseInt(document.getElementById(`vanqty_${i}`)?.value||s.current)}));try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateVanStock',engineer,stock:updated})});showToast(`✅ Van stock saved for ${engineer}`);}catch(e){showToast('⚠ Saved locally — sync when online');}}
-
-// ═══ PARTS SEARCH ═══
 function filterParts(){const raw=document.getElementById('searchInput').value,term=raw.toLowerCase().trim(),hdr=document.getElementById('resultsHeader'),nlBanner=document.getElementById('nlBanner');if(!term){hdr.style.display='none';nlBanner.style.display='none';document.getElementById('filteredCount').textContent='0';document.getElementById('resultsContainer').innerHTML=`<div class="search-prompt"><div class="search-prompt-icon">🔍</div><div class="search-prompt-title">Start Searching</div><div class="search-prompt-text">Enter a part number or description</div></div>`;return;}hdr.style.display='block';if(isNaturalLanguage(term)){const nlResult=parseNLQuery(term);if(nlResult){nlBanner.style.display='flex';document.getElementById('nlBannerText').textContent=nlResult.interpretation;filteredParts=allParts.filter(p=>{const desc=String(p['Description']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase(),num=String(p['Part Number']||'').toLowerCase();return nlResult.keywords.some(kw=>desc.includes(kw)||sys.includes(kw)||num.includes(kw));});renderParts();return;}}nlBanner.style.display='none';const clean=term.replace(/[\s\-.]/g,'');filteredParts=allParts.filter(p=>{const num=String(p['Part Number']||'').toLowerCase(),desc=String(p['Description']||'').toLowerCase(),sup=String(p['Supplier Code']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase();const rawStr=JSON.stringify(p._raw||p).toLowerCase();return num.replace(/[\s\-.]/g,'').includes(clean)||num.includes(term)||desc.includes(term)||sup.includes(term)||sys.includes(term)||rawStr.includes(term);});renderParts();}
-
 function renderParts(){const container=document.getElementById('resultsContainer'),count=filteredParts.length;document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;document.getElementById('filteredCount').textContent=count;if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}container.innerHTML=filteredParts.slice(0,100).map(p=>{const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const imgUrl=driveImageUrl(p['Image URL']||'');const imgHtml=imgUrl?`<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`:`<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;return`<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div><button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;}).join('');}
-
 function driveImageUrl(raw){if(!raw||typeof raw!=='string')return'';raw=raw.trim();if(!raw)return'';if(raw.includes('drive.google.com/thumbnail')||raw.includes('drive.google.com/uc'))return raw;let id=null;const m1=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);if(m1)id=m1[1];if(!id){const m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)id=m2[1];}if(!id)return raw;return`https://drive.google.com/thumbnail?id=${id}&sz=w400`;}
 function placeholderHtml(){return`<div class="part-image-placeholder"><svg class="placeholder-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="52" height="38" rx="4" stroke="white" stroke-width="2.5" fill="none"/><circle cx="21" cy="27" r="5" stroke="white" stroke-width="2" fill="none"/><path d="M6 40 L19 28 L30 39 L41 27 L58 42" stroke="white" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span class="placeholder-label">No Image</span></div>`;}
-
 let _lightboxPart=null;
 function openLightbox(url,part){_lightboxPart=part;document.getElementById('lightboxImg').src=url;document.getElementById('lightboxPartNum').textContent=part['Part Number']||'N/A';document.getElementById('lightboxPartDesc').textContent=part['Description']||'';document.getElementById('lightboxAddBtn').onclick=()=>{addToCart(_lightboxPart);closeLightboxDirect();};document.getElementById('lightboxOverlay').classList.add('active');document.body.style.overflow='hidden';}
 function closeLightboxDirect(){document.getElementById('lightboxOverlay').classList.remove('active');document.body.style.overflow='';}
 function closeLightbox(e){if(!e||e.target===document.getElementById('lightboxOverlay'))closeLightboxDirect();}
-
-// ═══ CART ═══
 function addToCart(part){const num=part['Part Number']||part.partNum||part.partNumber;const ex=cart.find(i=>(i['Part Number']||i.partNum||i.partNumber)===num);if(ex)ex.qty++;else cart.push({...part,qty:1});updateCart();saveCartToStorage();showToast(`${num} added to cart`);}
-function updateCart(){
-    const badge=document.getElementById('cartBadge'),empty=document.getElementById('emptyCart'),form=document.getElementById('orderForm'),items=document.getElementById('cartItems');
-    badge.textContent=cart.length;
-    document.getElementById('cartItemsCount').textContent=cart.length;
-    document.getElementById('cartItemsCountText').textContent=cart.length;
-    if(!cart.length){items.innerHTML='';empty.style.display='block';form.style.display='none';return;}
-    empty.style.display='none';form.style.display='block';
-    setTimeout(checkOrderAnomalies,50);
-    updateCostEstimate();
-    if(document.getElementById('aiPanel').classList.contains('open'))syncIntelFromCart();
-    items.innerHTML=cart.map((item,i)=>{const num=item['Part Number']||item.partNum||'N/A',desc=item['Description']||item.desc||'No description';return`<div class="cart-item"><div class="cart-item-header"><div class="cart-item-number">${num}</div><button class="remove-item" onclick="removeFromCart(${i})">Remove</button></div><div class="cart-item-desc">${desc}</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(${i},-1)">−</button><input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1"><button class="qty-btn" onclick="updateQty(${i},1)">+</button></div></div>`;}).join('');
-}
+function updateCart(){const badge=document.getElementById('cartBadge'),empty=document.getElementById('emptyCart'),form=document.getElementById('orderForm'),items=document.getElementById('cartItems');badge.textContent=cart.length;document.getElementById('cartItemsCount').textContent=cart.length;document.getElementById('cartItemsCountText').textContent=cart.length;if(!cart.length){items.innerHTML='';empty.style.display='block';form.style.display='none';return;}empty.style.display='none';form.style.display='block';setTimeout(checkOrderAnomalies,50);updateCostEstimate();if(document.getElementById('aiPanel').classList.contains('open'))syncIntelFromCart();items.innerHTML=cart.map((item,i)=>{const num=item['Part Number']||item.partNum||'N/A',desc=item['Description']||item.desc||'No description';return`<div class="cart-item"><div class="cart-item-header"><div class="cart-item-number">${num}</div><button class="remove-item" onclick="removeFromCart(${i})">Remove</button></div><div class="cart-item-desc">${desc}</div><div class="qty-control"><button class="qty-btn" onclick="updateQty(${i},-1)">−</button><input type="number" class="qty-input" value="${item.qty}" onchange="updateQtyDirect(${i},this.value)" min="1"><button class="qty-btn" onclick="updateQty(${i},1)">+</button></div></div>`;}).join('');}
 function removeFromCart(i){cart.splice(i,1);updateCart();saveCartToStorage();}
 function updateQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);updateCart();saveCartToStorage();}
 function updateQtyDirect(i,v){cart[i].qty=Math.max(1,parseInt(v)||1);updateCart();saveCartToStorage();}
 function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle').classList.toggle('active',isUrgent);document.getElementById('urgentIndicator').textContent=isUrgent?'✓':'⚑';}
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
-
-// ═══ ORDER FORM ═══
 let orderPurpose='job';
 const CONTROLLERS=['Karen Bell','Jane Robbins','Phil Grant','Lee Burt','Alex Coley'];
 function onNameChange(){const name=document.getElementById('serviceController').value;const isEngineer=name&&!CONTROLLERS.includes(name);document.getElementById('orderPurposeGroup').style.display=isEngineer?'block':'none';if(!isEngineer)setPurpose('job');const typeSelect=document.getElementById('orderType');if(name&&CONTROLLERS.includes(name))typeSelect.value='Service Controller';else if(name)typeSelect.value='Service Engineer';else typeSelect.value='';updateVanNote();}
@@ -1288,15 +1098,10 @@ function setPurpose(purpose){orderPurpose=purpose;document.getElementById('purpo
 function updateVanNote(){const name=document.getElementById('serviceController').value;const el=document.getElementById('vanStockEngineerName');if(el)el.textContent=name||'your';}
 function clearForm(){document.getElementById('serviceController').value='';document.getElementById('orderType').value='';document.getElementById('machineSerial').value='';document.getElementById('comments').value='';document.getElementById('orderModel').value='';document.getElementById('orderPurposeGroup').style.display='none';document.getElementById('jobFieldsGroup').style.display='block';document.getElementById('modelFieldGroup').style.display='block';document.getElementById('vanStockNoteGroup').style.display='none';orderPurpose='job';document.getElementById('purposeJob').classList.add('active');document.getElementById('purposeVan').classList.remove('active');}
 function populateModels(){const sel=document.getElementById('orderModel');['Flexi G3','Flexi G4','15VN/VNA','17N/1000','17N+/1100','20S/1200','22S+/1250','25W+/1350','MAX 22S+/1250','MAX 25W/1350','MAX 25EW/1400','Other'].forEach(m=>{const o=document.createElement('option');o.value=o.textContent=m;sel.appendChild(o);});}
-
 async function submitOrder(){const sc=document.getElementById('serviceController').value.trim();if(!sc){showToast('⚠ Please select your name');return;}const ot=document.getElementById('orderType').value;if(!ot){showToast('⚠ Please select an order type');return;}if(!cart.length){showToast('Cart is empty');return;}const serial=document.getElementById('machineSerial').value.trim();const orderNumber=serial?`${serial}-${String(Math.floor(Math.random()*1000)).padStart(3,'0')}`:`ORD-${String(Math.floor(Math.random()*10000)).padStart(4,'0')}`;const orderData={action:'submitOrder',orderNumber,serviceController:sc,orderType:ot,orderPurpose,machineSerial:orderPurpose==='job'?serial:'',model:orderPurpose==='job'?document.getElementById('orderModel').value:'Van Stock',comments:document.getElementById('comments').value,parts:cart,urgent:isUrgent};const btn=document.getElementById('submitBtn');btn.disabled=true;btn.textContent='Submitting...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify(orderData)});const result=await res.json();if(result.success){showToast('Order submitted successfully! 🎉');saveSerialOnSubmit(orderData.machineSerial,orderData.model,sc,new Date().toISOString().slice(0,16).replace('T',' '));const newOrder=normaliseOrder({orderNumber,urgent:isUrgent,date:new Date().toISOString(),serviceController:sc,orderType:ot,machineSerial:orderData.machineSerial,model:orderData.model,parts:cart,partsCount:cart.length,status:'Pending',notes:orderData.comments});orders.unshift(newOrder);updateOrderStats();applyFilters();cart=[];isUrgent=false;document.getElementById('urgentToggle').classList.remove('active');document.getElementById('urgentIndicator').textContent='⚑';updateCart();saveCartToStorage();clearForm();toggleCart();}else showToast('Error submitting order');}catch(e){showToast('Error submitting order');}finally{btn.disabled=false;btn.textContent='Submit Order';}}
-
-// ═══ ANOMALY & COST ═══
 function checkOrderAnomalies(){const banner=document.getElementById('anomalyBanner'),msgEl=document.getElementById('anomalyMsg');if(!cart.length){banner.style.display='none';return;}const issues=[],totalQty=cart.reduce((s,i)=>s+(i.qty||1),0);if(totalQty>20)issues.push(`Large order: ${totalQty} total items.`);const nums=cart.map(i=>i['Part Number']||i.partNum||''),dupes=nums.filter((n,i)=>nums.indexOf(n)!==i);if(dupes.length)issues.push(`Possible duplicate parts: ${[...new Set(dupes)].join(', ')}`);cart.forEach(item=>{if((item.qty||1)>=10)issues.push(`High quantity (${item.qty}×) on ${item['Part Number']||item.partNum}`);});if(!issues.length){banner.style.display='none';return;}msgEl.innerHTML=`<ul>${issues.map(i=>`<li>${i}</li>`).join('')}</ul>`;banner.style.display='flex';}
 function dismissAnomaly(){document.getElementById('anomalyBanner').style.display='none';}
 function updateCostEstimate(){const bar=document.getElementById('costBar'),totalEl=document.getElementById('costTotal'),breakdownEl=document.getElementById('costBreakdown');const hasAnyPrice=cart.some(item=>parseFloat(item['Cost']||item.cost||0)>0);if(!hasAnyPrice||!cart.length){bar.classList.remove('show');return;}let total=0,known=0;cart.forEach(item=>{const cost=parseFloat(item['Cost']||item.cost||0);if(cost>0){total+=cost*(item.qty||1);known++;}});bar.classList.add('show');totalEl.textContent='£'+total.toFixed(2);const unknown=cart.length-known;breakdownEl.textContent=unknown>0?`${known} priced, ${unknown} unpriced`:`${cart.length} item${cart.length>1?'s':''}`;}
-
-// ═══ ORDERS PAGE ═══
 function updateOrderStats(){document.getElementById('totalOrders').textContent=orders.length;document.getElementById('pendingOrders').textContent=orders.filter(o=>o.status==='Pending').length;document.getElementById('sentToStoresOrders').textContent=orders.filter(o=>o.status==='Sent to Stores').length;document.getElementById('pickedOrders').textContent=orders.filter(o=>o.status==='Picked & Ready').length;document.getElementById('completedOrders').textContent=orders.filter(o=>o.status==='Completed').length;}
 function applyFilters(){const search=(document.getElementById('filterSearch')?.value||'').toLowerCase(),status=document.getElementById('filterStatus')?.value||'',orderType=document.getElementById('filterOrderType')?.value||'',dateFrom=document.getElementById('filterDateFrom')?.value||'',dateTo=document.getElementById('filterDateTo')?.value||'';displayedOrders=orders.filter(o=>{if(search){const hay=[o.orderNumber,o.serviceController,o.worksOrder,o.machineSerial,o.model,o.orderType].map(v=>String(v??'')).join(' ').toLowerCase();if(!hay.includes(search))return false;}if(status&&(o.status||'Pending')!==status)return false;if(orderType&&(o.orderType||'')!==orderType)return false;if(dateFrom||dateTo){const d=o._rawDate||'';if(dateFrom&&d<dateFrom)return false;if(dateTo&&d>dateTo)return false;}return true;});displayedOrders.sort((a,b)=>{let va,vb;if(sortField==='date'){va=a._sortKey||'';vb=b._sortKey||'';}else{va=fieldVal(a,sortField);vb=fieldVal(b,sortField);}if(va<vb)return sortDir==='asc'?-1:1;if(va>vb)return sortDir==='asc'?1:-1;return 0;});document.getElementById('filteredOrdersCount').textContent=displayedOrders.length;renderOrders();}
 function fieldVal(o,f){const s=v=>String(v??'');return({orderNumber:s(o.orderNumber),serviceController:s(o.serviceController||'').toLowerCase(),worksOrder:s(o.worksOrder||'').toLowerCase(),status:s(o.status||'Pending').toLowerCase()})[f]??'';}
@@ -1304,23 +1109,64 @@ function sortOrders(field){sortDir=sortField===field?(sortDir==='asc'?'desc':'as
 function clearFilters(){['filterSearch','filterStatus','filterOrderType','filterDateFrom','filterDateTo'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});applyFilters();}
 function getStatusClass(status){return({'Pending':'status-pending','Completed':'status-completed','Cancelled':'status-cancelled','Backorder':'status-backorder','Sent to Stores':'status-sent-to-stores','Picked & Ready':'status-picked-ready'})[status]||'status-pending';}
 function renderOrders(){const tbody=document.getElementById('ordersTableBody');if(!displayedOrders.length){tbody.innerHTML=`<tr class="no-results-row"><td colspan="7">${orders.length?'No orders match your filters':'No orders found'}</td></tr>`;return;}tbody.innerHTML=displayedOrders.map((order,i)=>{const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'',typeBadge=order.orderType?`<span class="order-type-badge">${order.orderType}</span>`:'',status=order.status||'Pending';return`<tr onclick="openOrderModal(${orders.indexOf(order)})"><td><span class="order-number">${order.orderNumber||'ORD-'+(i+1)}</span>${urgentBadge}</td><td>${order.date||'N/A'}</td><td>${order.serviceController||'N/A'}</td><td>${typeBadge||'<span style="color:#555;">—</span>'}</td><td>${order.worksOrder||'—'}</td><td>${order.partsCount||(order.parts?.length||0)} parts</td><td><span class="order-status ${getStatusClass(status)}">${status}</span></td></tr>`;}).join('');}
-
 function buildTimeline(order){const status=order.status||'Pending';const steps=[{icon:'📋',title:'Order Placed',desc:`Submitted by ${order.serviceController||'Unknown'}`,timestamp:order.date||'',state:'done'},{icon:'📦',title:'Sent to Stores',desc:'Order sent to stores for picking',timestamp:order.sentToStoresAt||'',state:['Sent to Stores','Picked & Ready','Completed'].includes(status)?'stores':'inactive'},{icon:'✅',title:'Picked & Ready',desc:`${order.pickedBy?`Picked by ${order.pickedBy}`:'Awaiting pick'}`,timestamp:order.pickedAt||'',state:['Picked & Ready','Completed'].includes(status)?'picked':'inactive'},{icon:status==='Cancelled'?'✕':'🎯',title:status==='Cancelled'?'Cancelled':'Completed',desc:status==='Cancelled'?'Order cancelled':'All parts fulfilled',timestamp:order.completedAt||order.cancelledAt||'',state:status==='Cancelled'?'cancelled':status==='Completed'?'done':'inactive'}];return`<div class="timeline">${steps.map(s=>{const dotClass={done:'done',stores:'stores',picked:'picked',cancelled:'cancelled',inactive:''}[s.state]||'';const titleClass={done:'done',stores:'stores-title',picked:'picked-title',active:'active',cancelled:'cancelled-title',inactive:'inactive'}[s.state]||'inactive';return`<div class="timeline-step"><div class="timeline-dot ${dotClass}">${s.icon}</div><div class="timeline-content"><div class="timeline-title ${titleClass}">${s.title}</div><div class="timeline-desc">${s.desc}</div>${s.timestamp?`<div class="timeline-timestamp">${s.timestamp}</div>`:''}</div></div>`;}).join('')}</div>`;}
-
 function openOrderModal(index){const order=orders[index];const urgentBadge=order.urgent?'<span class="urgent-badge" style="margin-left:0">⚑ Urgent</span>':'';const pickedInfo=order.pickedBy?`<div style="margin-top:8px;padding:8px 12px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:6px;font-size:.85em;color:#4ade80;">✅ Picked by <strong>${order.pickedBy}</strong> at ${order.pickedAt||'—'}</div>`:'';const modal=document.createElement('div');modal.className='modal-overlay active';modal.id='orderModal';modal.innerHTML=`<div class="modal"><div class="modal-header"><div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;"><h2>${order.orderNumber||'Order Details'}</h2>${urgentBadge}</div><button class="modal-close" onclick="closeOrderModal()">✕</button></div><div class="modal-body"><div class="modal-grid"><div class="modal-field"><div class="modal-field-label">Date</div><div class="modal-field-value">${order.date||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Name</div><div class="modal-field-value">${order.serviceController||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Order Type</div><div class="modal-field-value">${order.orderType||'—'}</div></div><div class="modal-field"><div class="modal-field-label">Works Order</div><div class="modal-field-value">${order.worksOrder||'—'}</div></div><div class="modal-field"><div class="modal-field-label">Machine Serial</div><div class="modal-field-value">${order.machineSerial||'N/A'}</div></div><div class="modal-field"><div class="modal-field-label">Model</div><div class="modal-field-value">${order.model||'N/A'}</div></div></div>${pickedInfo}<div class="modal-section" style="margin-top:20px;"><div class="modal-section-title">Order Timeline</div>${buildTimeline(order)}</div><div class="modal-section"><div class="modal-section-title">Update Status</div><div class="status-select-wrapper"><select id="modalOrderStatus"><option value="Pending" ${order.status==='Pending'?'selected':''}>Pending</option><option value="Sent to Stores" ${order.status==='Sent to Stores'?'selected':''}>Sent to Stores</option><option value="Picked &amp; Ready" ${order.status==='Picked & Ready'?'selected':''}>Picked &amp; Ready</option><option value="Backorder" ${order.status==='Backorder'?'selected':''}>Backorder</option><option value="Completed" ${order.status==='Completed'?'selected':''}>Completed</option><option value="Cancelled" ${order.status==='Cancelled'?'selected':''}>Cancelled</option></select></div></div><div class="modal-section"><div class="modal-section-title">Parts (${order.parts?.length||0})</div><div>${(order.parts||[]).map(p=>`<div class="modal-part-row"><div><div class="modal-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="modal-part-desc">${p['Description']||p.desc||'No description'}</div></div><div class="modal-part-qty">Qty: ${p.qty||1}</div></div>`).join('')||'<p style="color:#666;">No parts</p>'}</div></div><div class="modal-section"><div class="modal-section-title">Notes</div><textarea id="modalOrderNotes" style="width:100%;min-height:90px;padding:14px;background:var(--dark-bg);border:1px solid var(--border);border-radius:8px;color:white;font-family:inherit;font-size:.95em;resize:vertical;" placeholder="Add notes...">${order.comments||order.notes||''}</textarea></div><div class="modal-actions"><button class="modal-btn modal-btn-secondary" onclick="closeOrderModal()">Close</button><button class="modal-btn modal-btn-primary" onclick="saveOrderChanges(${index})">Save Changes</button></div></div></div>`;document.body.appendChild(modal);}
 async function saveOrderChanges(index){const order=orders[index],newStatus=document.getElementById('modalOrderStatus').value,newNotes=document.getElementById('modalOrderNotes').value,btn=event.target;btn.disabled=true;btn.textContent='Saving...';try{const res=await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber:order.orderNumber,status:newStatus,notes:newNotes})});const result=await res.json();if(result.success){orders[index].status=newStatus;orders[index].notes=orders[index].comments=newNotes;const ukNow=()=>{const d=new Date();return`${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;};if(newStatus==='Sent to Stores')orders[index].sentToStoresAt=ukNow();if(newStatus==='Completed')orders[index].completedAt=ukNow();if(newStatus==='Cancelled')orders[index].cancelledAt=ukNow();updateOrderStats();applyFilters();renderStoresPage();closeOrderModal();showToast('Order updated successfully!');}else{showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}catch(e){showToast('Error updating order');btn.disabled=false;btn.textContent='Save Changes';}}
 function closeOrderModal(){document.getElementById('orderModal')?.remove();}
 function exportCSV(){if(!displayedOrders.length){showToast('No orders to export');return;}const headers=['Order Number','Date','Name','Order Type','Works Order','Machine Serial','Model','Parts Count','Status','Picked By','Picked At','Urgent','Notes'];const rows=displayedOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.orderType||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.partsCount||(o.parts?.length||0),o.status||'Pending',o.pickedBy||'',o.pickedAt||'',o.urgent?'Yes':'No',(o.comments||o.notes||'').replace(/"/g,'""')].map(v=>`"${v}"`).join(','));const csv=[headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-orders-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Exported ${displayedOrders.length} orders`);}
 function exportPDF(){document.getElementById('printTitle').textContent=`Flexi Parts — Orders Export (${displayedOrders.length} orders, ${new Date().toLocaleDateString('en-GB')})`;window.print();}
-
 // ═══ STORES ═══
-function renderStoresPage(){const sentOrders=orders.filter(o=>o.status==='Sent to Stores');const pickedToday=orders.filter(o=>o.status==='Picked & Ready'&&(o.pickedAt||'').slice(0,10)===new Date().toISOString().slice(0,10));document.getElementById('storesPendingCount').textContent=sentOrders.length;document.getElementById('storesPickedCount').textContent=orders.filter(o=>o.status==='Picked & Ready').length;document.getElementById('storesTodayCount').textContent=pickedToday.length;const container=document.getElementById('storesOrdersList');if(!sentOrders.length){container.innerHTML=`<div class="stores-empty"><div class="stores-empty-icon">📭</div><div class="stores-empty-title">No Orders Awaiting Pick</div><p style="color:#555;font-size:.95em;">Orders marked "Sent to Stores" will appear here.</p></div>`;return;}container.innerHTML=sentOrders.map(order=>{const partsHtml=(order.parts||[]).map((p,i)=>`<div class="stores-part-row"><div class="stores-part-check" id="chk-${order.orderNumber}-${i}" onclick="togglePartCheck('${order.orderNumber}',${i})"></div><div class="stores-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="stores-part-desc">${p['Description']||p.desc||'No description'}</div><div class="stores-part-qty">×${p.qty||1}</div></div>`).join('');const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'';return`<div class="stores-order-card" id="storesCard-${order.orderNumber}"><div class="stores-order-header"><div><div class="stores-order-num">${order.orderNumber||'—'} ${urgentBadge}</div></div><div class="stores-order-meta"><span>👤 <strong>${order.serviceController||'—'}</strong></span><span>🔧 <strong>${order.worksOrder||'—'}</strong></span><span>🚜 <strong>${order.model||'—'}</strong></span><span>📅 <strong>${order.date||'—'}</strong></span></div></div><div class="stores-parts-list"><div class="stores-parts-title">${(order.parts||[]).length} Part${(order.parts||[]).length!==1?'s':''} to Pick</div>${partsHtml}</div>${order.comments?`<div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:6px;font-size:.85em;color:#888;margin-bottom:14px;">💬 ${order.comments}</div>`:''}<div class="stores-actions"><button class="btn-mark-picked" id="pickBtn-${order.orderNumber}" onclick="markPickedReady('${order.orderNumber}')">✅ Mark as Picked &amp; Ready</button><button class="btn-print-slip" onclick="printPickSlip('${order.orderNumber}')">🖨 Print Slip</button></div></div>`;}).join('');}
-
+function renderStoresPage(){const sentOrders=orders.filter(o=>o.status==='Sent to Stores');const pickedToday=orders.filter(o=>o.status==='Picked & Ready'&&(o.pickedAt||'').slice(0,10)===new Date().toISOString().slice(0,10));document.getElementById('storesPendingCount').textContent=sentOrders.length;document.getElementById('storesPickedCount').textContent=orders.filter(o=>o.status==='Picked & Ready').length;document.getElementById('storesTodayCount').textContent=pickedToday.length;const container=document.getElementById('storesOrdersList');if(!sentOrders.length){container.innerHTML=`<div class="stores-empty"><div class="stores-empty-icon">📭</div><div class="stores-empty-title">No Orders Awaiting Pick</div><p style="color:#555;font-size:.95em;">Orders marked "Sent to Stores" will appear here.</p></div>`;return;}container.innerHTML=sentOrders.map(order=>{const partsHtml=(order.parts||[]).map((p,i)=>`<div class="stores-part-row"><div class="stores-part-check" id="chk-${order.orderNumber}-${i}" onclick="togglePartCheck('${order.orderNumber}',${i})"></div><div class="stores-part-num">${p['Part Number']||p.partNum||'N/A'}</div><div class="stores-part-desc">${p['Description']||p.desc||'No description'}</div><div class="stores-part-qty">×${p.qty||1}</div></div>`).join('');const urgentBadge=order.urgent?'<span class="urgent-badge">⚑ Urgent</span>':'';return`<div class="stores-order-card" id="storesCard-${order.orderNumber}"><div class="stores-order-header"><div><div class="stores-order-num">${order.orderNumber||'—'} ${urgentBadge}</div></div><div class="stores-order-meta"><span>👤 <strong>${order.serviceController||'—'}</strong></span><span>🔧 <strong>${order.worksOrder||'—'}</strong></span><span>🚜 <strong>${order.model||'—'}</strong></span><span>📅 <strong>${order.date||'—'}</strong></span></div></div><div class="stores-parts-list"><div class="stores-parts-title">${(order.parts||[]).length} Part${(order.parts||[]).length!==1?'s':''} to Pick</div>${partsHtml}</div>${order.comments?`<div style="padding:10px 14px;background:rgba(255,255,255,.04);border-radius:6px;font-size:.85em;color:#888;margin-bottom:14px;">💬 ${order.comments}</div>`:''}<div class="stores-actions"><button class="btn-mark-picked" id="pickBtn-${order.orderNumber}" onclick="markPickedReady('${order.orderNumber}')">✅ Mark as Picked &amp; Ready</button><button class="btn-scan-order" onclick="openScannerModal('${order.orderNumber}')">🔍 Scan &amp; Verify</button><button class="btn-print-slip" onclick="printPickSlip('${order.orderNumber}')">🖨 Print Slip</button></div></div>`;}).join('');}
 const checkedParts={};
 function togglePartCheck(orderNumber,partIndex){const key=`${orderNumber}-${partIndex}`,el=document.getElementById(`chk-${orderNumber}-${partIndex}`);checkedParts[key]=!checkedParts[key];el.classList.toggle('checked',checkedParts[key]);el.innerHTML=checkedParts[key]?'✓':'';}
 async function markPickedReady(orderNumber){const picker=document.getElementById('storesPickerSelect').value;if(!picker){showToast('⚠ Please select your name first');return;}const btn=document.getElementById(`pickBtn-${orderNumber}`);btn.disabled=true;btn.textContent='⏳ Saving...';const pickedAt=new Date().toLocaleString('en-GB',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});const idx=orders.findIndex(o=>o.orderNumber===orderNumber);if(idx>=0){orders[idx].status='Picked & Ready';orders[idx].pickedBy=picker;orders[idx].pickedAt=pickedAt;}try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber,status:'Picked & Ready',pickedBy:picker,pickedAt,notes:`Picked by ${picker} at ${pickedAt}`})});}catch(e){}showToast(`✅ Order ${orderNumber} marked Picked & Ready by ${picker}`);updateOrderStats();applyFilters();renderStoresPage();}
 function printPickSlip(orderNumber){const order=orders.find(o=>o.orderNumber===orderNumber);if(!order)return;const picker=document.getElementById('storesPickerSelect').value||'___________';const win=window.open('','_blank');win.document.write(`<!DOCTYPE html><html><head><title>Pick Slip — ${order.orderNumber}</title><style>body{font-family:Arial,sans-serif;padding:30px;color:#000;max-width:600px}h1{font-size:1.4em;margin-bottom:4px}.sub{color:#666;font-size:.85em;margin-bottom:20px}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#f0f0f0;padding:8px 10px;text-align:left;font-size:.8em;border:1px solid #ddd}td{padding:8px 10px;border:1px solid #ddd;font-size:.9em}.meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}.meta-item{background:#f9f9f9;padding:10px 12px;border:1px solid #e0e0e0;border-radius:4px}.meta-label{font-size:.72em;text-transform:uppercase;color:#888;margin-bottom:3px}.meta-value{font-size:.95em;font-weight:700}.sign-off{margin-top:30px;border-top:2px solid #000;padding-top:20px}.sign-row{display:flex;gap:40px;margin-top:30px}.sign-line{flex:1;border-bottom:1px solid #333;padding-bottom:4px;font-size:.8em;color:#666}</style></head><body><h1>PICK SLIP${order.urgent?' <span style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24;padding:3px 10px;border-radius:4px;font-size:.8em">⚑ URGENT</span>':''}</h1><div class="sub">Flexi Parts System</div><div class="meta"><div class="meta-item"><div class="meta-label">Order Number</div><div class="meta-value">${order.orderNumber}</div></div><div class="meta-item"><div class="meta-label">Engineer / Name</div><div class="meta-value">${order.serviceController||'—'}</div></div><div class="meta-item"><div class="meta-label">Works Order</div><div class="meta-value">${order.worksOrder||'—'}</div></div><div class="meta-item"><div class="meta-label">Machine Serial</div><div class="meta-value">${order.machineSerial||'—'}</div></div><div class="meta-item"><div class="meta-label">Model</div><div class="meta-value">${order.model||'—'}</div></div><div class="meta-item"><div class="meta-label">Order Date</div><div class="meta-value">${order.date||'—'}</div></div></div><table><thead><tr><th>#</th><th>Part Number</th><th>Description</th><th>Qty</th><th>✓</th></tr></thead><tbody>${(order.parts||[]).map((p,i)=>`<tr><td>${i+1}</td><td><strong>${p['Part Number']||p.partNum||'—'}</strong></td><td>${p['Description']||p.desc||'—'}</td><td>${p.qty||1}</td><td style="width:30px;"></td></tr>`).join('')}</tbody></table>${order.comments?`<p style="font-size:.88em;color:#555;padding:10px;background:#f9f9f9;border-radius:4px;margin-bottom:20px;">💬 <strong>Notes:</strong> ${order.comments}</p>`:''}<div class="sign-off"><strong>Picked by:</strong> ${picker}<div class="sign-row"><div class="sign-line">Picker signature</div><div class="sign-line">Date / Time picked</div><div class="sign-line">Locker number</div></div></div></body></html>`);win.document.close();win.print();}
-
+// ═══ SCANNER MODAL ═══
+function openScannerModal(orderNumber){
+    const order=orders.find(o=>o.orderNumber===orderNumber);
+    if(!order)return;
+    const scanned={};
+    const parts=order.parts||[];
+    function beep(ok){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const gain=ctx.createGain();osc.connect(gain);gain.connect(ctx.destination);osc.type='sine';osc.frequency.value=ok?880:220;gain.gain.setValueAtTime(0.3,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+(ok?0.18:0.4));osc.start(ctx.currentTime);osc.stop(ctx.currentTime+(ok?0.18:0.4));}catch(e){}}
+    function getRemaining(){return parts.map((p,i)=>({p,i})).filter(({i})=>!scanned[i]&&!scanned['skip_'+i]);}
+    function getDone(){return Object.keys(scanned).filter(k=>!k.startsWith('skip_')).length;}
+    function rebuild(){document.getElementById('scannerModal')?.remove();delete window._smDoScan;delete window._smSkip;document.body.insertAdjacentHTML('beforeend',buildModal());wireUp();}
+    function wireUp(){const inp=document.getElementById('smInput');if(inp){inp.focus();inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();doScan();}});}window._smDoScan=doScan;window._smSkip=skipCurrent;}
+    function doScan(){const inp=document.getElementById('smInput');const val=(inp?.value||'').trim().toUpperCase().replace(/[\s\-\.]/g,'');if(!val)return;inp.value='';const remaining=getRemaining();if(!remaining.length)return;const current=remaining[0];const currentNum=(current.p['Part Number']||current.p.partNum||'').toUpperCase().replace(/[\s\-\.]/g,'');if(val===currentNum){scanned[current.i]=true;beep(true);const pane=document.getElementById('smScanPane');if(pane){pane.style.background='rgba(74,222,128,.06)';setTimeout(()=>{pane.style.background='';},600);}setTimeout(rebuild,750);}else{const wrongIdx=parts.findIndex((p,i)=>!scanned[i]&&!scanned['skip_'+i]&&(p['Part Number']||p.partNum||'').toUpperCase().replace(/[\s\-\.]/g,'')=== val);beep(false);const pane=document.getElementById('smScanPane');if(pane){pane.style.background='rgba(220,38,38,.06)';setTimeout(()=>{pane.style.background='';},700);}if(wrongIdx>=0){showFeedback(false,'Wrong order',(parts[wrongIdx]['Part Number']||parts[wrongIdx].partNum)+' is on the list — pick '+(current.p['Part Number']||current.p.partNum)+' first');}else{showFeedback(false,'Wrong part — not on this order','Scanned: '+val);}}}
+    function skipCurrent(){const remaining=getRemaining();if(remaining.length<=1){showFeedback(false,'Cannot skip','Last remaining part');return;}scanned['skip_'+remaining[0].i]=true;rebuild();}
+    function showFeedback(ok,msg,detail){const fb=document.getElementById('smFeedback');if(!fb)return;const col=ok?'#4ade80':'#DC2626';fb.innerHTML='<div style="color:'+col+';font-size:1.05em;font-weight:800;text-transform:uppercase;letter-spacing:.5px;">'+(ok?'✓ ':'✗ ')+msg+'</div>'+(detail?'<div style="font-size:.82em;color:#888;margin-top:3px;">'+detail+'</div>':'');setTimeout(()=>{if(fb)fb.innerHTML='';},2200);}
+    function buildModal(){const remaining=getRemaining();const current=remaining[0];const allDone=!remaining.length;const done=getDone();const pct=parts.length?Math.round(done/parts.length*100):0;
+        const partsRows=parts.map((p,i)=>{const isDone=!!scanned[i];const isSkipped=!!scanned['skip_'+i];const isActive=!allDone&&current&&i===current.i;const cls='sm-part-row'+(isDone?' sm-done':isSkipped?' sm-skipped':isActive?' sm-active':'');const dot=isDone?'✓':isSkipped?'↷':isActive?'●':'';const dotCls='sm-dot'+(isDone?' sm-dot-done':isActive?' sm-dot-active':'');return'<div class="'+cls+'" data-idx="'+i+'"><div class="'+dotCls+'">'+dot+'</div><div class="sm-pnum">'+(p['Part Number']||p.partNum||'—')+'</div><div class="sm-pdesc">'+(p['Description']||p.desc||'—')+'</div><div class="sm-pqty">×'+(p.qty||1)+'</div></div>';}).join('');
+        const scanContent=allDone
+            ?'<div style="text-align:center;"><div style="font-size:4.5em;margin-bottom:12px;">✅</div><div style="font-size:2.4em;font-weight:900;color:#4ade80;letter-spacing:-2px;text-transform:uppercase;margin-bottom:8px;">All Parts Scanned!</div><div style="font-size:.95em;color:#888;margin-bottom:24px;">'+parts.length+' parts verified</div><button onclick="scannerConfirmPicked(\''+orderNumber+'\')" style="padding:16px 40px;background:#4ade80;border:none;border-radius:8px;color:#000;font-family:inherit;font-size:1.05em;font-weight:800;text-transform:uppercase;letter-spacing:1px;cursor:pointer;">✅ Mark as Picked &amp; Ready</button></div>'
+            :'<div style="font-size:.7em;font-weight:700;color:#555;text-transform:uppercase;letter-spacing:1px;">Scan next part</div>'
+            +'<div style="font-size:3em;font-weight:900;color:#DC2626;letter-spacing:-2px;line-height:1;text-align:center;">'+(current.p['Part Number']||current.p.partNum||'')+'</div>'
+            +'<div style="font-size:.9em;color:#888;text-align:center;max-width:340px;">'+(current.p['Description']||current.p.desc||'—')+'</div>'
+            +'<div style="background:rgba(245,158,11,.15);border:1px solid rgba(245,158,11,.3);color:#f59e0b;padding:5px 16px;border-radius:6px;font-size:.88em;font-weight:700;">Qty: '+(current.p.qty||1)+'</div>'
+            +'<div style="display:flex;gap:10px;align-items:center;"><input id="smInput" type="text" placeholder="Scan or type part number..." autocomplete="off" spellcheck="false" style="padding:13px 16px;font-size:1.1em;font-weight:700;background:#0a0a0a;border:2px solid #333;border-radius:10px;color:#fff;font-family:inherit;letter-spacing:1px;text-transform:uppercase;width:270px;outline:none;" onfocus="this.style.borderColor=\'#DC2626\'" onblur="this.style.borderColor=\'#333\'"><button onclick="window._smDoScan()" style="padding:13px 16px;background:#DC2626;border:none;border-radius:10px;color:#fff;font-family:inherit;font-size:.95em;font-weight:800;cursor:pointer;text-transform:uppercase;letter-spacing:.5px;">OK</button></div>'
+            +'<button onclick="window._smSkip()" style="padding:6px 14px;background:transparent;border:1px solid #2a2a2a;border-radius:6px;color:#555;font-family:inherit;font-size:.78em;font-weight:700;cursor:pointer;text-transform:uppercase;">Skip this part</button>'
+            +'<div style="font-size:.7em;color:#2a2a2a;text-transform:uppercase;letter-spacing:.5px;font-weight:700;">Scanner fires Enter automatically · or press Enter / tap OK</div>'
+            +'<div id="smFeedback" style="min-height:34px;text-align:center;"></div>';
+        return'<div id="scannerModal" style="position:fixed;inset:0;background:rgba(0,0,0,.97);z-index:5000;display:flex;flex-direction:column;font-family:\'Barlow Condensed\',\'Arial Narrow\',sans-serif;">'
+            +'<style>.sm-part-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #0f0f0f;height:44px;}.sm-active{background:rgba(220,38,38,.1)!important;border-left:3px solid #DC2626;}.sm-done{background:rgba(74,222,128,.04);}.sm-skipped{opacity:.3;}.sm-dot{width:18px;height:18px;border-radius:50%;border:2px solid #222;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.65em;font-weight:900;}.sm-dot-done{background:#4ade80!important;border-color:#4ade80!important;color:#000;}.sm-dot-active{border-color:#DC2626!important;background:rgba(220,38,38,.2)!important;}.sm-pnum{font-weight:800;color:#DC2626;font-size:.86em;min-width:100px;letter-spacing:-.3px;}.sm-done .sm-pnum{color:#4ade80;}.sm-pdesc{color:#444;font-size:.76em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}.sm-pqty{font-weight:700;font-size:.78em;color:#666;flex-shrink:0;}</style>'
+            +'<div style="background:#0a0a0a;border-bottom:1px solid #1a1a1a;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-shrink:0;">'
+            +'<div><div style="font-size:1.5em;font-weight:900;letter-spacing:-1px;text-transform:uppercase;">🔍 '+order.orderNumber+' — Scan &amp; Verify</div><div style="font-size:.75em;color:#444;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">'+(order.serviceController||'—')+' · '+(order.machineSerial||'—')+' · '+(order.model||'—')+'</div></div>'
+            +'<div style="display:flex;align-items:center;gap:16px;">'
+            +'<div style="text-align:right;"><div style="font-size:.68em;color:#444;text-transform:uppercase;letter-spacing:1px;font-weight:700;">Progress</div><div style="font-size:1.5em;font-weight:900;color:#4ade80;letter-spacing:-1px;">'+done+' / '+parts.length+'</div></div>'
+            +'<div style="width:70px;background:#111;border-radius:4px;height:5px;"><div style="height:100%;background:#4ade80;border-radius:4px;width:'+pct+'%;transition:width .4s;"></div></div>'
+            +'<button onclick="document.getElementById(\'scannerModal\').remove();delete window._smDoScan;delete window._smSkip;" style="width:32px;height:32px;background:#050505;border:1px solid #1a1a1a;border-radius:7px;color:#555;font-size:1.1em;cursor:pointer;" onmouseover="this.style.borderColor=\'#DC2626\';this.style.color=\'#fff\'" onmouseout="this.style.borderColor=\'#1a1a1a\';this.style.color=\'#555\'">✕</button>'
+            +'</div></div>'
+            +'<div style="flex:1;display:flex;overflow:hidden;">'
+            +'<div id="smScanPane" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;gap:14px;transition:background .3s;">'+scanContent+'</div>'
+            +'<div style="width:290px;border-left:1px solid #0f0f0f;overflow-y:auto;flex-shrink:0;background:#030303;">'
+            +'<div style="padding:9px 14px;background:#080808;border-bottom:1px solid #111;font-size:.7em;font-weight:700;color:#333;text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:1;"><span>Parts List</span><span style="color:#4ade80;">'+done+'/'+parts.length+'</span></div>'
+            +partsRows
+            +'</div></div></div>';}
+    document.getElementById('scannerModal')?.remove();
+    document.body.insertAdjacentHTML('beforeend',buildModal());
+    wireUp();
+}
+function scannerConfirmPicked(orderNumber){const picker=document.getElementById('storesPickerSelect')?.value||'';if(!picker){showToast('⚠ Please select your name on the Stores page first');return;}document.getElementById('scannerModal')?.remove();delete window._smDoScan;delete window._smSkip;markPickedReady(orderNumber);}
 // ═══ REPORTS ═══
 function setReportPeriod(days,btn){reportPeriodDays=days;document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderReports();}
 function getFilteredOrdersForPeriod(){if(!reportPeriodDays)return orders;const cutoff=new Date();cutoff.setDate(cutoff.getDate()-reportPeriodDays);return orders.filter(o=>{if(!o._rawDate)return true;return new Date(o._rawDate)>=cutoff;});}
@@ -1330,7 +1176,6 @@ function renderStatusDonut(periodOrders){const statusGroups={};periodOrders.forE
 function renderEngineerBreakdown(periodOrders){const engCounts={};periodOrders.forEach(o=>{const e=o.serviceController||'Unknown';engCounts[e]=(engCounts[e]||0)+1;});const sorted=Object.entries(engCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);const max=sorted[0]?.[1]||1;document.getElementById('engineerBreakdown').innerHTML=sorted.map(([name,count])=>`<div class="eng-row"><div class="eng-name">${name}</div><div class="eng-bar-wrap"><div class="eng-bar" style="width:${Math.round(count/max*100)}%"></div></div><div class="eng-count">${count}</div></div>`).join('')||'<p style="color:#555;font-size:.9em;">No data for this period</p>';}
 function renderTopParts(periodOrders){const partCounts={};periodOrders.forEach(o=>{(o.parts||[]).forEach(p=>{const num=p['Part Number']||p.partNum||'Unknown';if(!partCounts[num])partCounts[num]={count:0,totalQty:0,desc:p['Description']||p.desc||''};partCounts[num].count++;partCounts[num].totalQty+=(p.qty||1);});});const sorted=Object.entries(partCounts).sort((a,b)=>b[1].count-a[1].count).slice(0,10);const rankClass=i=>i===0?'rank-badge gold':i===1?'rank-badge silver':i===2?'rank-badge bronze':'rank-badge';document.getElementById('topPartsBody').innerHTML=sorted.map(([num,data],i)=>`<tr><td><span class="${rankClass(i)}">${i+1}</span></td><td style="color:var(--primary-red);font-weight:700;">${num}</td><td style="color:var(--text-secondary);font-size:.88em;">${data.desc||'—'}</td><td style="font-weight:700;">${data.count}</td><td style="color:#4ade80;font-weight:700;">${data.totalQty}</td></tr>`).join('')||`<tr><td colspan="5" style="text-align:center;padding:30px;color:#555;">No data for this period</td></tr>`;}
 function exportReportCSV(){const period=reportPeriodDays?`Last ${reportPeriodDays} Days`:'All Time';const periodOrders=getFilteredOrdersForPeriod();if(!periodOrders.length){showToast('No data to export');return;}const headers=['Order Number','Date','Name','Works Order','Machine','Model','Parts Count','Status','Urgent'];const rows=periodOrders.map(o=>[o.orderNumber||'',o.date||'',o.serviceController||'',o.worksOrder||'',o.machineSerial||'',o.model||'',o.parts?.length||0,o.status||'Pending',o.urgent?'Yes':'No'].map(v=>`"${v}"`).join(','));const csv=[`"Flexi Parts Report — ${period} — ${new Date().toLocaleDateString('en-GB')}"`,headers.join(','),...rows].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));a.download=`flexi-report-${new Date().toISOString().slice(0,10)}.csv`;a.click();showToast(`Report exported (${periodOrders.length} orders)`);}
-
 // ═══ JOB HISTORY ═══
 let jhView='engineer';
 function setJHView(view){jhView=view;document.getElementById('jhViewEngineer').classList.toggle('active',view==='engineer');document.getElementById('jhViewMachine').classList.toggle('active',view==='machine');renderJobHistory();}
@@ -1340,14 +1185,12 @@ function renderJHByEngineer(filtered,container){const groups={};filtered.forEach
 function renderJHByMachine(filtered,container){const groups={};filtered.forEach(o=>{const key=(o.machineSerial||'').trim()||'No Serial';if(!groups[key])groups[key]=[];groups[key].push(o);});const sorted=Object.entries(groups).sort((a,b)=>b[1].length-a[1].length);container.innerHTML=sorted.map(([serial,ords])=>{const totalParts=ords.reduce((s,o)=>s+(o.parts?.length||0),0);const model=ords.find(o=>o.model)?.model||'';const latest=ords.reduce((a,b)=>((a._sortKey||'')>(b._sortKey||'')?a:b));const engineers=[...new Set(ords.map(o=>o.serviceController||'Unknown'))];const id='jh-mac-'+serial.replace(/[^a-zA-Z0-9]/g,'-');const rows=ords.sort((a,b)=>((b._sortKey||'')>(a._sortKey||'')?1:-1)).map(o=>jhOrderRow(o)).join('');return`<div class="jh-group"><div class="jh-group-header" onclick="toggleJHGroup('${id}')"><div><div class="jh-group-title">🚜 ${serial}</div>${model?`<div style="font-size:.85em;color:var(--text-secondary);margin-top:2px;">${model}</div>`:''}</div><div class="jh-group-meta"><span class="jh-group-badge">${ords.length} order${ords.length!==1?'s':''}</span><span class="jh-group-badge parts">🔩 ${totalParts} parts</span><span class="jh-last-seen">${engineers.slice(0,2).join(', ')}${engineers.length>2?' +'+(engineers.length-2):''}</span><span class="jh-last-seen">Last: ${latest.date||'—'}</span></div><span class="jh-group-chevron" id="${id}-chev">▼</span></div><div class="jh-group-body" id="${id}">${rows}</div></div>`;}).join('');}
 function jhOrderRow(o){const status=o.status||'Pending';return`<div class="jh-order-row" onclick="openOrderModal(${orders.indexOf(o)})"><span class="jh-order-num">${o.orderNumber||'—'}</span><span class="jh-order-date">📅 ${o.date||'—'}</span><span class="jh-order-wo">🔧 ${o.worksOrder||'—'}</span><span class="jh-order-serial">🏷 ${o.machineSerial||'—'}</span><span class="jh-order-parts">🔩 ${o.parts?.length||0} parts</span>${o.urgent?'<span class="jh-order-urgent">⚑ Urgent</span>':''}<span class="order-status ${getStatusClass(status)}" style="font-size:.78em;padding:3px 8px;">${status}</span></div>`;}
 function toggleJHGroup(id){const body=document.getElementById(id);const chev=document.getElementById(id+'-chev');if(!body)return;body.classList.toggle('open');if(chev)chev.classList.toggle('open');}
-
 // ═══ NL SEARCH ═══
 const NL_SYNONYMS={mast:['mast','vna','lift'],transmission:['transmission','trans','gearbox','gear','axle','drive','wheel','helical'],hydraulic:['hydraulic','hyd','pump','cylinder','valve','seal','oil'],electrical:['electrical','motor','wiring','cable','sensor','switch','battery'],brake:['brake','friction','pad'],steering:['steering','steer','tiller'],fork:['fork','pin','attachment','carriage'],wheel:['wheel','tyre','bearing','hub'],'drive axle':['axle','drive','spacer','wheel','transmission'],'pin kit':['pin','kit'],pipe:['pipe','tube','hose'],seal:['seal','o-ring','gasket','ring']};
 const STOPWORDS=new Set(['something','for','the','a','an','of','to','in','on','with','and','or','part','parts','i','need','want','get','find','show','me']);
 function parseNLQuery(raw){const lower=raw.toLowerCase().trim();for(const[phrase,keywords]of Object.entries(NL_SYNONYMS)){if(lower.includes(phrase))return{keywords,interpretation:`Searching for parts related to "${phrase}"`};}const tokens=lower.split(/\s+/).filter(t=>t.length>1&&!STOPWORDS.has(t));if(!tokens.length)return null;let expanded=[...tokens],matched=[];tokens.forEach(token=>{for(const[phrase,keywords]of Object.entries(NL_SYNONYMS)){if(phrase.includes(token)||token.includes(phrase.split(' ')[0])){expanded=[...new Set([...expanded,...keywords])];matched.push(phrase);}}});if(!expanded.length)return null;return{keywords:expanded,interpretation:matched.length?`Interpreting as: ${[...new Set(matched)].join(', ')}`:`Searching for: ${tokens.join(', ')}`};}
 function isNaturalLanguage(term){if(/\d/.test(term))return false;if(!/\s/.test(term)&&term.length<=8)return false;if(term.includes(' '))return true;if(/^[a-z]{5,}$/i.test(term.trim()))return true;return false;}
 function nlSearch(term){document.getElementById('searchInput').value=term;filterParts();}
-
 // ═══ SERIAL MEMORY ═══
 function getSerialDB(){try{return JSON.parse(localStorage.getItem('flexi-serial-db')||'{}');}catch(e){return{};}}
 function saveSerialDB(db){localStorage.setItem('flexi-serial-db',JSON.stringify(db));}
@@ -1357,16 +1200,13 @@ function showSerialMemory(serial){const card=document.getElementById('serialMemo
 function applySerialMemory(){const serial=document.getElementById('machineSerial').value.trim(),db=getSerialDB(),mem=db[serial.toLowerCase()];if(!mem)return;if(mem.model){const sel=document.getElementById('orderModel');for(let i=0;i<sel.options.length;i++){if(sel.options[i].value===mem.model){sel.selectedIndex=i;break;}}}if(mem.lastEngineer){const sc=document.getElementById('serviceController');if(!sc.value)sc.value=mem.lastEngineer;}showToast('Machine details auto-filled ✓');}
 function forgetSerial(){const serial=document.getElementById('machineSerial').value.trim();if(!serial)return;const db=getSerialDB();delete db[serial.toLowerCase()];saveSerialDB(db);document.getElementById('serialMemoryCard').classList.remove('show');showToast('Machine forgotten');}
 function saveSerialOnSubmit(serial,model,engineer,date){if(!serial)return;const db=getSerialDB(),key=serial.toLowerCase();if(!db[key])db[key]={serial,model:'',lastEngineer:'',lastDate:'',orderCount:0};db[key].orderCount=(db[key].orderCount||0)+1;if(model)db[key].model=model;if(engineer)db[key].lastEngineer=engineer;if(date)db[key].lastDate=date;saveSerialDB(db);}
-
 // ═══ BULK IMPORT ═══
 function openBulkImport(){document.getElementById('bulkImportModal').classList.add('active');document.getElementById('bulkImportTextarea').value='';document.getElementById('bulkImportResults').classList.remove('show');}
 function closeBulkImport(){document.getElementById('bulkImportModal').classList.remove('active');}
 function processBulkImport(){const lines=document.getElementById('bulkImportTextarea').value.split('\n').map(l=>l.trim()).filter(Boolean);const res=document.getElementById('bulkImportResults');if(!lines.length){res.innerHTML='<p style="color:#f87171;">No part numbers entered</p>';res.classList.add('show');return;}let found=0,notFound=[];lines.forEach(num=>{const clean=num.replace(/[\s\-.]/g,'').toLowerCase();const p=allParts.find(x=>{const n=String(x['Part Number']||'').toLowerCase();return n.replace(/[\s\-.]/g,'')===clean||n===num.toLowerCase();});if(p){addToCart(p);found++;}else notFound.push(num);});let html=`<p style="color:#4ade80;margin-bottom:10px;">✓ Added ${found} parts</p>`;if(notFound.length)html+=`<p style="color:#facc15;">⚠ Not found: ${notFound.join(', ')}</p>`;res.innerHTML=html;res.classList.add('show');if(found)setTimeout(()=>{closeBulkImport();showToast(`Bulk import: ${found} parts added`);},2000);}
-
 // ═══ UTILS ═══
 function cacheParts(parts){try{localStorage.setItem('flexi-parts-offline',JSON.stringify(parts.map(p=>({'Part Number':p['Part Number'],'Description':p['Description'],'Supplier Code':p['Supplier Code'],'System':p['System'],'Stock Level':p['Stock Level'],'Image URL':p['Image URL']||''}))));}catch(e){}}
 function showToast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
-
 function setupEventListeners(){
     document.getElementById('searchInput').addEventListener('input',filterParts);
     document.getElementById('submitBtn').addEventListener('click',submitOrder);
