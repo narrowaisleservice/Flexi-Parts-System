@@ -1181,7 +1181,7 @@
                 <select id="serviceController" onchange="onNameChange()">
                     <option value="">— Select your name —</option>
                     <optgroup label="Controllers">
-                        <option>Karen Bell</option><option>Jane Robbins</option><option>Phil Grant</option><option>Lee Burt</option><option>Alex Coley</option>
+                        <option>Karen Bell</option><option>Jane Robbins</option><option>Phil Grant</option><option>Lee Burt</option><option>James Williams</option>
                     </optgroup>
                     <optgroup label="Engineers">
                         <option>Brett Stockton</option><option>David Williams</option><option>Graham Denman</option><option>Kevin Deakin</option>
@@ -1432,7 +1432,7 @@ function toggleUrgent(){isUrgent=!isUrgent;document.getElementById('urgentToggle
 function saveCartToStorage(){localStorage.setItem('flexiPartsCart',JSON.stringify(cart));}
 function loadCartFromStorage(){try{cart=JSON.parse(localStorage.getItem('flexiPartsCart')||'[]');}catch(e){cart=[];}}
 let orderPurpose='job';
-const CONTROLLERS=['Karen Bell','Jane Robbins','Phil Grant','Lee Burt','Alex Coley'];
+const CONTROLLERS=['Karen Bell','Jane Robbins','Phil Grant','Lee Burt','James Williams'];
 function onNameChange(){const name=document.getElementById('serviceController').value;const isEngineer=name&&!CONTROLLERS.includes(name);document.getElementById('orderPurposeGroup').style.display=isEngineer?'block':'none';if(!isEngineer)setPurpose('job');const typeSelect=document.getElementById('orderType');if(name&&CONTROLLERS.includes(name))typeSelect.value='Service Controller';else if(name)typeSelect.value='Service Engineer';else typeSelect.value='';updateVanNote();}
 function setPurpose(purpose){orderPurpose=purpose;document.getElementById('purposeJob').classList.toggle('active',purpose==='job');document.getElementById('purposeVan').classList.toggle('active',purpose==='van');document.getElementById('jobFieldsGroup').style.display=purpose==='job'?'block':'none';document.getElementById('modelFieldGroup').style.display=purpose==='job'?'block':'none';document.getElementById('vanStockNoteGroup').style.display=purpose==='van'?'block':'none';updateVanNote();}
 function updateVanNote(){const name=document.getElementById('serviceController').value;const el=document.getElementById('vanStockEngineerName');if(el)el.textContent=name||'your';}
