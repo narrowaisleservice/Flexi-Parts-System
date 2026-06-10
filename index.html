@@ -530,11 +530,11 @@
         .sw-progress{height:3px;background:var(--border);flex-shrink:0;}
         .sw-progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--amber));transition:width 0.4s cubic-bezier(0.4,0,0.2,1);}
         .sw-step-indicator{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 24px;background:var(--bg-2);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap;}
-        .sw-step-pip{display:flex;align-items:center;gap:5px;font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-3);transition:color var(--transition);}
+        .sw-step-pip{display:flex;align-items:center;gap:6px;font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-3);transition:all 0.3s ease;}
         .sw-step-pip.active{color:var(--amber);}.sw-step-pip.done{color:var(--green);}
-        .sw-step-dot{width:20px;height:20px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:900;transition:all var(--transition);flex-shrink:0;}
-        .sw-step-pip.active .sw-step-dot{background:var(--amber);border-color:var(--amber);color:#000;}
-        .sw-step-pip.done .sw-step-dot{background:var(--green);border-color:var(--green);color:#000;}
+        .sw-step-dot{width:22px;height:22px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.72em;font-weight:900;transition:all 0.3s cubic-bezier(0.4,0,0.2,1);flex-shrink:0;}
+        .sw-step-pip.active .sw-step-dot{background:var(--amber);border-color:var(--amber);color:#000;box-shadow:0 0 12px rgba(245,158,11,0.4);}
+        .sw-step-pip.done .sw-step-dot{background:var(--green);border-color:var(--green);color:#000;box-shadow:0 0 10px rgba(34,197,94,0.3);}
         .sw-step-connector{width:20px;height:1px;background:var(--border-2);flex-shrink:0;}
         .sw-body{flex:1;overflow-y:auto;display:flex;flex-direction:column;}
         .sw-stage{display:none;flex:1;flex-direction:column;}.sw-stage.active{display:flex;animation:swFadeIn 0.22s ease;}
@@ -613,7 +613,93 @@
         .sw-nav-back:disabled{opacity:0.3;cursor:not-allowed;}
         .sw-nav-info{font-size:0.78em;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;text-align:center;flex:1;}
         @media(max-width:768px){.sw-stage-title{font-size:1.8em;}.sw-picker-btn{font-size:1.3em;padding:16px 18px;}.sw-part-number-big{font-size:2.4em;}}
-    </style>
+    
+        /* ── PART CARD LOCATION ── */
+        .part-location-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:#93c5fd;padding:4px 10px;border-radius:20px;font-size:0.72em;font-weight:600;margin-bottom:10px;font-family:'DM Mono',monospace;letter-spacing:0.3px;}
+
+        /* ── WIZARD PICK LAYOUT ── */
+        .sw-pick-inner{display:flex;width:100%;height:100%;align-items:center;justify-content:center;gap:32px;padding:24px 32px;max-width:900px;align-self:center;}
+        .sw-pick-left{display:none;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+        .sw-part-img-wrap{width:220px;height:220px;background:var(--bg-3);border:1px solid var(--border-2);border-radius:var(--radius-lg);overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow-lg);}
+        .sw-part-img{width:100%;height:100%;object-fit:contain;padding:16px;}
+        .sw-pick-right{display:flex;flex-direction:column;align-items:center;gap:12px;flex:1;min-width:0;}
+        .sw-badges-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;}
+
+        /* ── WIZARD PART NUMBER — bigger, punchier ── */
+        .sw-part-number-big{font-family:'DM Mono',monospace;font-size:clamp(2.2em,6vw,4.5em);font-weight:500;color:var(--red);letter-spacing:-2px;text-align:center;line-height:1;word-break:break-all;text-shadow:0 0 40px rgba(220,38,38,0.2);}
+
+        /* ── WIZARD LOCATION — more prominent ── */
+        .sw-location-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.35);color:#93c5fd;padding:7px 18px;border-radius:20px;font-family:'DM Mono',monospace;font-size:0.95em;font-weight:500;letter-spacing:0.5px;box-shadow:0 2px 12px rgba(59,130,246,0.1);}
+        .sw-no-location{font-size:0.72em;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+
+        /* ── WIZARD SCAN INPUT — bigger on tablet ── */
+        .sw-scan-input{flex:1;padding:16px 18px;font-size:1.15em;font-family:'DM Mono',monospace;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--surface);border:2px solid var(--border-2);border-radius:var(--radius);color:var(--text);transition:all var(--transition);outline:none;}
+        .sw-scan-input:focus{border-color:var(--red);background:var(--surface-2);box-shadow:0 0 0 4px rgba(220,38,38,0.1);}
+        .sw-scan-confirm{padding:16px 22px;background:var(--red);border:none;border-radius:var(--radius);color:white;font-family:'Barlow Condensed',sans-serif;font-size:1em;font-weight:800;cursor:pointer;transition:all var(--transition);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;box-shadow:0 4px 16px rgba(220,38,38,0.3);}
+        .sw-scan-confirm:hover{background:var(--red-bright);transform:translateY(-1px);box-shadow:0 6px 20px rgba(220,38,38,0.4);}
+        .sw-scan-confirm:active{transform:translateY(0);}
+
+        /* ── WIZARD FEEDBACK — bigger, clearer ── */
+        .sw-feedback{min-height:44px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;}
+        .sw-feedback-main{font-family:'Barlow Condensed',sans-serif;font-size:1.2em;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;}
+        .sw-feedback-detail{font-size:0.8em;color:var(--text-3);}
+
+        /* ── WIZARD PICKER BUTTONS ── */
+        .sw-picker-btn{padding:26px 32px;background:var(--surface);border:2px solid var(--border);border-radius:var(--radius-xl);color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:1.8em;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;gap:16px;text-align:left;box-shadow:var(--shadow);}
+        .sw-picker-btn:hover{background:rgba(245,158,11,0.08);border-color:var(--amber);color:var(--amber);transform:translateY(-3px);box-shadow:0 8px 32px rgba(245,158,11,0.15);}
+        .sw-picker-btn:active{transform:translateY(-1px);}
+        .sw-picker-avatar{width:56px;height:56px;border-radius:50%;background:var(--bg-3);border:2px solid var(--border-2);display:flex;align-items:center;justify-content:center;font-size:0.65em;font-weight:700;flex-shrink:0;letter-spacing:0;}
+
+        /* ── WIZARD ORDER CARDS ── */
+        .sw-order-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px;margin-bottom:12px;cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;}
+        .sw-order-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--amber);opacity:0;transition:opacity var(--transition);}
+        .sw-order-card:hover{background:var(--surface-2);border-color:rgba(245,158,11,0.3);transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,0,0,0.3);}
+        .sw-order-card:hover::before,.sw-order-card.sw-urgent-c::before{opacity:1;}
+        .sw-order-card:active{transform:translateY(0);}
+
+        /* ── WIZARD COMPLETE ── */
+        .sw-complete-icon{font-size:5em;line-height:1;animation:swBounce 0.6s cubic-bezier(0.4,0,0.2,1);}
+        @keyframes swBounce{0%{transform:scale(0.3);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+        .sw-complete-title{font-family:'Barlow Condensed',sans-serif;font-size:3em;font-weight:900;text-transform:uppercase;letter-spacing:-2px;color:var(--green);line-height:1;animation:swFadeUp 0.4s ease 0.2s both;}
+        @keyframes swFadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+        /* ── WIZARD PROGRESS ── */
+        .sw-progress{height:4px;background:var(--border);}
+        .sw-progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--amber),var(--green));background-size:200% 100%;transition:width 0.5s cubic-bezier(0.4,0,0.2,1);}
+
+        /* ── WIZARD STRIP ── */
+        .sw-strip-part{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 9px;border-radius:var(--radius-sm);border:1px solid var(--border);background:var(--surface);min-width:72px;transition:all 0.2s ease;cursor:default;}
+        .sw-strip-part.sw-sp-current{background:rgba(220,38,38,0.1);border-color:rgba(220,38,38,0.5);box-shadow:0 0 12px rgba(220,38,38,0.15);}
+        .sw-strip-part.sw-sp-done{background:rgba(34,197,94,0.08);border-color:rgba(34,197,94,0.3);}
+
+        /* ── HEADER POLISH ── */
+        .header h1{font-family:'Barlow Condensed',sans-serif;font-size:3em;font-weight:900;letter-spacing:-2px;text-transform:uppercase;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.75) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:4px;}
+
+        /* ── STAT CARDS ── */
+        .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px 22px;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;cursor:default;}
+        .stat-card:hover{background:var(--surface-2);border-color:var(--border-2);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+
+        /* ── PART CARDS ── */
+        .part-card:hover{background:var(--surface-2);border-color:rgba(220,38,38,0.35);transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(220,38,38,0.1);}
+
+        /* ── TOAST ── */
+        .toast{position:fixed;bottom:90px;right:24px;background:var(--surface-2);border:1px solid var(--border-2);border-left:3px solid var(--green);color:var(--text);padding:12px 18px;border-radius:var(--radius);animation:toastIn .28s cubic-bezier(0.4,0,0.2,1);z-index:9999;font-weight:600;font-size:0.85em;pointer-events:none;box-shadow:var(--shadow-lg);backdrop-filter:blur(12px);max-width:300px;display:flex;align-items:center;gap:8px;}
+        @keyframes toastIn{from{transform:translateX(360px);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(360px);opacity:0}}
+
+        /* ── SCAN AREA FLASH ANIMATIONS ── */
+        @keyframes swFlashGreen{0%,100%{background:transparent}50%{background:rgba(34,197,94,0.08)}}
+        @keyframes swFlashRed{0%,100%{background:transparent}50%{background:rgba(220,38,38,0.08)}}
+        .sw-flash-green{animation:swFlashGreen 0.5s ease;}
+        .sw-flash-red{animation:swFlashRed 0.4s ease;}
+
+        @media(max-width:768px){
+            .sw-pick-inner{flex-direction:column;padding:16px;gap:16px;}
+            .sw-pick-left{width:100%;}
+            .sw-part-img-wrap{width:140px;height:140px;}
+            .sw-pick-right{width:100%;}
+        }
+</style>
 
     <script>
     (function(){
@@ -777,7 +863,7 @@
             <option value="">— Select your name —</option>
             <option>Bob</option><option>Wayne</option>
         </select>
-        <button onclick="openStoresWizard()" style="padding:11px 22px;background:var(--amber);border:none;border-radius:var(--radius);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:1em;font-weight:800;text-transform:uppercase;letter-spacing:0.5px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 16px rgba(245,158,11,0.3);transition:all var(--transition);" onmouseover="this.style.background='#fbbf24';this.style.transform='translateY(-1px)'" onmouseout="this.style.background='var(--amber)';this.style.transform='none'">▶ Start Picking Wizard</button>
+        <button onclick="openStoresWizard()" style="padding:13px 26px;background:linear-gradient(135deg,var(--amber),#fbbf24);border:none;border-radius:var(--radius);color:#000;font-family:'Barlow Condensed',sans-serif;font-size:1.05em;font-weight:900;text-transform:uppercase;letter-spacing:1px;cursor:pointer;white-space:nowrap;box-shadow:0 4px 20px rgba(245,158,11,0.35),0 1px 0 rgba(255,255,255,0.2) inset;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);display:flex;align-items:center;gap:8px;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(245,158,11,0.45),0 1px 0 rgba(255,255,255,0.2) inset'" onmouseout="this.style.transform='none';this.style.boxShadow='0 4px 20px rgba(245,158,11,0.35),0 1px 0 rgba(255,255,255,0.2) inset'"><span style="font-size:1.1em">▶</span> Start Picking Wizard</button>
     </div>
     <div id="storesOrdersList"></div>
 </div>
@@ -1038,18 +1124,29 @@
                 <div class="sw-order-context" id="swOrderContext"></div>
                 <div class="sw-parts-strip" id="swPartsStrip"></div>
                 <div class="sw-scan-area" id="swScanArea">
-                    <div class="sw-part-counter" id="swPartCounter">Part 1 of 1</div>
-                    <div class="sw-part-number-big" id="swPartNumBig">—</div>
-                    <div class="sw-part-desc-big" id="swPartDescBig">—</div>
-                    <div class="sw-qty-badge" id="swQtyBadge">📦 Qty: 1</div>
-                    <div id="swLocationBadge" class="sw-location-badge" style="display:none;">📍 <span id="swLocationText"></span></div>
-                    <div id="swNoLocation" class="sw-no-location" style="display:none;">No bin location set</div>
-                    <div class="sw-scan-row">
-                        <input type="text" id="swScanInput" class="sw-scan-input" placeholder="Scan or type part number…" autocomplete="off" spellcheck="false">
-                        <button class="sw-scan-confirm" onclick="swConfirmScan()">✓ OK</button>
+                    <div class="sw-pick-inner">
+                        <div class="sw-pick-left" id="swPickLeft" style="display:none;">
+                            <div class="sw-part-img-wrap" id="swPartImgWrap">
+                                <img id="swPartImg" src="" alt="" class="sw-part-img" onerror="document.getElementById('swPartImgWrap').style.display='none';document.getElementById('swPickLeft').style.display='none';">
+                            </div>
+                        </div>
+                        <div class="sw-pick-right">
+                            <div class="sw-part-counter" id="swPartCounter">Part 1 of 1</div>
+                            <div class="sw-part-number-big" id="swPartNumBig">—</div>
+                            <div class="sw-part-desc-big" id="swPartDescBig">—</div>
+                            <div class="sw-badges-row">
+                                <div class="sw-qty-badge" id="swQtyBadge">📦 Qty: 1</div>
+                                <div id="swLocationBadge" class="sw-location-badge" style="display:none;">📍 <span id="swLocationText"></span></div>
+                            </div>
+                            <div id="swNoLocation" class="sw-no-location" style="display:none;">No bin location set</div>
+                            <div class="sw-scan-row">
+                                <input type="text" id="swScanInput" class="sw-scan-input" placeholder="Scan or type part number…" autocomplete="off" spellcheck="false">
+                                <button class="sw-scan-confirm" onclick="swConfirmScan()">✓ OK</button>
+                            </div>
+                            <div class="sw-feedback" id="swFeedback"></div>
+                            <button class="sw-skip-btn" onclick="swSkipPart()">Skip this part →</button>
+                        </div>
                     </div>
-                    <div class="sw-feedback" id="swFeedback"></div>
-                    <button class="sw-skip-btn" onclick="swSkipPart()">Skip this part →</button>
                 </div>
             </div>
         </div>
@@ -1134,7 +1231,7 @@ async function loadVanStockFor(engineer){const content=document.getElementById('
 function renderVanStockTable(engineer,stock){const content=document.getElementById('vanStockContent');let lowCount=0;if(!stock.length){content.innerHTML=`<div class="empty-state"><div class="empty-state-icon">📦</div><p>No van stock set up for ${engineer} yet.</p></div>`;document.getElementById('vanLowStockCount').textContent=0;document.getElementById('vanTotalLines').textContent=0;return;}stock.forEach(s=>{if(parseInt(s.current||0)<=parseInt(s.minimum||0))lowCount++;});document.getElementById('vanLowStockCount').textContent=lowCount;document.getElementById('vanTotalLines').textContent=stock.length;content.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;"><div style="font-size:1.1em;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:1px;">${engineer} — ${stock.length} lines</div><button class="van-save-btn" onclick="saveVanStock('${engineer}')">💾 Save Changes</button></div><table class="van-stock-table"><thead><tr><th>Part Number</th><th>Description</th><th>Min</th><th>Current</th><th>Status</th></tr></thead><tbody>${stock.map((s,i)=>{const curr=parseInt(s.current||0),min=parseInt(s.minimum||0),low=curr<=min;return`<tr><td style="font-weight:700;color:var(--red);">${s.partNumber||'—'}</td><td style="color:var(--text-2);">${s.description||'—'}</td><td style="text-align:center;">${min}</td><td style="text-align:center;"><input class="van-qty-input" type="number" min="0" value="${curr}" id="vanqty_${i}"></td><td style="text-align:center;"><span class="${low?'van-low':'van-ok'}">${low?'⚠ Low':'✓ OK'}</span></td></tr>`;}).join('')}</tbody></table>`;window._vanStockData=stock;}
 async function saveVanStock(engineer){const stock=window._vanStockData||[];const updated=stock.map((s,i)=>({...s,current:parseInt(document.getElementById(`vanqty_${i}`)?.value||s.current)}));try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateVanStock',engineer,stock:updated})});showToast(`✅ Van stock saved for ${engineer}`);}catch(e){showToast('⚠ Saved locally — sync when online');}}
 function filterParts(){const raw=document.getElementById('searchInput').value,term=raw.toLowerCase().trim(),hdr=document.getElementById('resultsHeader'),nlBanner=document.getElementById('nlBanner');if(!term){hdr.style.display='none';nlBanner.style.display='none';document.getElementById('filteredCount').textContent='0';document.getElementById('resultsContainer').innerHTML=`<div class="search-prompt"><div class="search-prompt-icon">🔍</div><div class="search-prompt-title">Start Searching</div><div class="search-prompt-text">Enter a part number or description</div></div>`;return;}hdr.style.display='block';if(isNaturalLanguage(term)){const nlResult=parseNLQuery(term);if(nlResult){nlBanner.style.display='flex';document.getElementById('nlBannerText').textContent=nlResult.interpretation;filteredParts=allParts.filter(p=>{const desc=String(p['Description']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase(),num=String(p['Part Number']||'').toLowerCase();return nlResult.keywords.some(kw=>desc.includes(kw)||sys.includes(kw)||num.includes(kw));});renderParts();return;}}nlBanner.style.display='none';const clean=term.replace(/[\s\-.]/g,'');filteredParts=allParts.filter(p=>{const num=String(p['Part Number']||'').toLowerCase(),desc=String(p['Description']||'').toLowerCase(),sup=String(p['Supplier Code']||'').toLowerCase(),sys=String(p['System']||'').toLowerCase();const rawStr=JSON.stringify(p._raw||p).toLowerCase();return num.replace(/[\s\-.]/g,'').includes(clean)||num.includes(term)||desc.includes(term)||sup.includes(term)||sys.includes(term)||rawStr.includes(term);});renderParts();}
-function renderParts(){const container=document.getElementById('resultsContainer'),count=filteredParts.length;document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;document.getElementById('filteredCount').textContent=count;if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}container.innerHTML=filteredParts.slice(0,100).map(p=>{const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const imgUrl=driveImageUrl(p['Image URL']||'');const imgHtml=imgUrl?`<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`:`<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;return`<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div><button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;}).join('');}
+function renderParts(){const container=document.getElementById('resultsContainer'),count=filteredParts.length;document.getElementById('resultsCount').textContent=`${count} part${count!==1?'s':''} found`;document.getElementById('filteredCount').textContent=count;if(!count){container.innerHTML='<div class="empty-state"><div class="empty-state-icon">🔍</div><p>No parts found</p></div>';return;}container.innerHTML=filteredParts.slice(0,100).map(p=>{const num=p['Part Number']||'N/A',desc=p['Description']||'No description',sup=p['Supplier Code']||'',sys=p['System']||'',stk=p['Stock Level']||'',cost=p['Cost']||'';const safeJson=JSON.stringify(p).replace(/\\/g,'\\\\').replace(/"/g,'&quot;').replace(/'/g,'&#39;');const imgUrl=driveImageUrl(p['Image URL']||'');const imgHtml=imgUrl?`<div class="part-image-wrap" onclick='openLightbox("${imgUrl.replace(/"/g,'&quot;')}",${safeJson})'><img class="part-img" src="${imgUrl}" alt="${num}" loading="lazy" onerror="this.parentElement.classList.add('no-image');this.parentElement.innerHTML=placeholderHtml();this.parentElement.onclick=null;"><span class="part-image-zoom">🔍 View</span></div>`:`<div class="part-image-wrap no-image">${placeholderHtml()}</div>`;return`<div class="part-card">${imgHtml}<div class="part-card-body"><div class="part-number">${num}</div><div class="part-desc">${desc}</div>${cost?`<div class="part-cost">£${parseFloat(cost).toFixed(2)}</div>`:''}<div class="part-details">${sup?`<div class="part-detail"><span class="part-detail-label">Supplier</span><span class="part-detail-value">${sup}</span></div>`:''} ${sys?`<div class="part-detail"><span class="part-detail-label">System</span><span class="part-detail-value">${sys}</span></div>`:''} ${stk?`<div class="part-detail"><span class="part-detail-label">Stock</span><span class="part-detail-value">${stk}</span></div>`:''}</div>${p['Location']?`<div class="part-location-badge">📍 ${p['Location']}</div>`:''}<button class="add-to-cart" onclick='addToCart(${safeJson})'>Add to Cart</button></div></div>`;}).join('');}
 function driveImageUrl(raw){if(!raw||typeof raw!=='string')return'';raw=raw.trim();if(!raw)return'';if(raw.includes('drive.google.com/thumbnail')||raw.includes('drive.google.com/uc'))return raw;let id=null;const m1=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);if(m1)id=m1[1];if(!id){const m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)id=m2[1];}if(!id)return raw;return`https://drive.google.com/thumbnail?id=${id}&sz=w400`;}
 function placeholderHtml(){return`<div class="part-image-placeholder"><svg class="placeholder-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="6" y="14" width="52" height="38" rx="4" stroke="white" stroke-width="2.5" fill="none"/><circle cx="21" cy="27" r="5" stroke="white" stroke-width="2" fill="none"/><path d="M6 40 L19 28 L30 39 L41 27 L58 42" stroke="white" stroke-width="2" stroke-linejoin="round" fill="none"/></svg><span class="placeholder-label">No Image</span></div>`;}
 let _lightboxPart=null;
@@ -1224,7 +1321,15 @@ function openBulkImport(){document.getElementById('bulkImportModal').classList.a
 function closeBulkImport(){document.getElementById('bulkImportModal').classList.remove('active');}
 function processBulkImport(){const lines=document.getElementById('bulkImportTextarea').value.split('\n').map(l=>l.trim()).filter(Boolean);const res=document.getElementById('bulkImportResults');if(!lines.length){res.innerHTML='<p style="color:#f87171;">No part numbers entered</p>';res.classList.add('show');return;}let found=0,notFound=[];lines.forEach(num=>{const clean=num.replace(/[\s\-.]/g,'').toLowerCase();const p=allParts.find(x=>{const n=String(x['Part Number']||'').toLowerCase();return n.replace(/[\s\-.]/g,'')===clean||n===num.toLowerCase();});if(p){addToCart(p);found++;}else notFound.push(num);});let html=`<p style="color:#4ade80;margin-bottom:10px;">✓ Added ${found} parts</p>`;if(notFound.length)html+=`<p style="color:#facc15;">⚠ Not found: ${notFound.join(', ')}</p>`;res.innerHTML=html;res.classList.add('show');if(found)setTimeout(()=>{closeBulkImport();showToast(`Bulk import: ${found} parts added`);},2000);}
 function cacheParts(parts){try{localStorage.setItem('flexi-parts-offline',JSON.stringify(parts.map(p=>({'Part Number':p['Part Number'],'Description':p['Description'],'Supplier Code':p['Supplier Code'],'System':p['System'],'Stock Level':p['Stock Level'],'Image URL':p['Image URL']||''}))));}catch(e){}}
-function showToast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),3000);}
+function showToast(msg,type){
+    const t=document.createElement('div');t.className='toast';
+    const icon=type==='error'?'✗':type==='warn'?'⚠':type==='info'?'ℹ':'✓';
+    const col=type==='error'?'var(--red)':type==='warn'?'var(--amber)':type==='info'?'var(--blue)':'var(--green)';
+    t.style.borderLeftColor=col;
+    t.innerHTML='<span style="color:'+col+';font-size:1em;flex-shrink:0">'+icon+'</span><span>'+msg+'</span>';
+    document.body.appendChild(t);
+    setTimeout(()=>{t.style.animation='toastOut .25s ease forwards';setTimeout(()=>t.remove(),250);},3000);
+}
 function setupEventListeners(){document.getElementById('searchInput').addEventListener('input',filterParts);document.getElementById('submitBtn').addEventListener('click',submitOrder);document.addEventListener('keydown',e=>{if(document.getElementById('pinOverlay').classList.contains('active'))return;if(e.key==='Escape'){closeLightboxDirect();closeOrderModal();document.getElementById('aiPanel').classList.remove('open');}});document.addEventListener('click',e=>{if(e.target===document.getElementById('bulkImportModal'))closeBulkImport();if(e.target?.id==='orderModal')closeOrderModal();});}
 
 /* ═══ STORES WIZARD ═══ */
@@ -1247,16 +1352,49 @@ const enrichedParts=(order.parts||[]).map(op=>{
 Object.assign(SW,{currentOrder:order,parts:enrichedParts,partIndex:0,scanned:{},skipped:{}});swGoStage(3);swRenderPickStage();setTimeout(()=>document.getElementById('swScanInput')?.focus(),200);const inp=document.getElementById('swScanInput');if(inp)inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();swConfirmScan();}};}
 function swRenderPickStage(){const o=SW.currentOrder,parts=SW.parts;document.getElementById('swOrderContext').innerHTML='<div class="sw-ctx-item"><span class="sw-ctx-order">'+o.orderNumber+'</span></div><div class="sw-ctx-item">👤 <strong>'+(o.serviceController||'—')+'</strong></div><div class="sw-ctx-item">🔧 <strong>'+(o.worksOrder||'—')+'</strong></div><div class="sw-ctx-item">🚜 <strong>'+(o.model||'—')+'</strong></div><div class="sw-ctx-item">📦 <strong>'+parts.length+' part'+(parts.length!==1?'s':'')+'</strong></div>';swRenderStrip();swRenderCurrentPart();}
 function swRenderStrip(){const parts=SW.parts;document.getElementById('swPartsStrip').innerHTML=parts.map((p,i)=>{const done=!!SW.scanned[i],skip=!!SW.skipped[i],cur=i===SW.partIndex&&!done&&!skip;const cls='sw-strip-part'+(cur?' sw-sp-current':done?' sw-sp-done':skip?' sw-sp-skipped':'');const icon=done?'✓':skip?'↷':cur?'●':'○';return'<div class="'+cls+'" id="swStrip'+i+'"><div class="sw-strip-icon">'+icon+'</div><div class="sw-strip-num">'+((p['Part Number']||p.partNum||'').slice(0,10))+'</div></div>';}).join('');const el=document.getElementById('swStrip'+SW.partIndex);if(el)el.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
-function swRenderCurrentPart(){const parts=SW.parts;let idx=SW.partIndex;while(idx<parts.length&&(SW.scanned[idx]||SW.skipped[idx]))idx++;if(idx>=parts.length){const sk=Object.keys(SW.skipped).length;if(sk>0){const first=Object.keys(SW.skipped).map(Number).sort((a,b)=>a-b)[0];delete SW.skipped[first];SW.partIndex=first;swShowFeedback(false,'↷ Returning to skipped part','');swRenderStrip();swRenderCurrentPart();}else{swCompleteOrder();}return;}SW.partIndex=idx;const p=parts[idx];const done=Object.keys(SW.scanned).length,total=parts.length;document.getElementById('swPartCounter').textContent='Part '+(done+1)+' of '+total;document.getElementById('swPartNumBig').textContent=p['Part Number']||p.partNum||'—';document.getElementById('swPartDescBig').textContent=p['Description']||p.desc||'No description';document.getElementById('swQtyBadge').textContent='📦 Qty: '+(p.qty||1);document.getElementById('swScanInput').value='';document.getElementById('swScanInput').focus();document.getElementById('swFeedback').innerHTML='';
+function swRenderCurrentPart(){const parts=SW.parts;let idx=SW.partIndex;while(idx<parts.length&&(SW.scanned[idx]||SW.skipped[idx]))idx++;if(idx>=parts.length){const sk=Object.keys(SW.skipped).length;if(sk>0){const first=Object.keys(SW.skipped).map(Number).sort((a,b)=>a-b)[0];delete SW.skipped[first];SW.partIndex=first;swShowFeedback(false,'↷ Returning to skipped part','');swRenderStrip();swRenderCurrentPart();}else{swCompleteOrder();}return;}SW.partIndex=idx;const p=parts[idx];const done=Object.keys(SW.scanned).length,total=parts.length;
+    document.getElementById('swPartCounter').textContent='Part '+(done+1)+' of '+total;
+    document.getElementById('swPartNumBig').textContent=p['Part Number']||p.partNum||'—';
+    document.getElementById('swPartDescBig').textContent=p['Description']||p.desc||'No description';
+    document.getElementById('swQtyBadge').innerHTML='<span style="opacity:.7">📦</span> Qty: <strong>'+(p.qty||1)+'</strong>';
+    document.getElementById('swScanInput').value='';
+    document.getElementById('swScanInput').focus();
+    document.getElementById('swFeedback').innerHTML='';
+    // Location
     var _loc=p['Location']||p.location||'';
     var _lb=document.getElementById('swLocationBadge');
     var _nl=document.getElementById('swNoLocation');
     if(_loc){document.getElementById('swLocationText').textContent=_loc;if(_lb)_lb.style.display='inline-flex';if(_nl)_nl.style.display='none';}
     else{if(_lb)_lb.style.display='none';if(_nl)_nl.style.display='block';}
+    // Part image
+    var _imgRaw=p['Image URL']||p.imageUrl||p.image||'';
+    var _imgUrl=_imgRaw?swDriveImg(_imgRaw):'';
+    var _imgWrap=document.getElementById('swPartImgWrap');
+    var _imgEl=document.getElementById('swPartImg');
+    var _pickLeft=document.getElementById('swPickLeft');
+    if(_imgUrl&&_imgWrap&&_imgEl){
+        _imgEl.src=_imgUrl;
+        _imgWrap.style.display='flex';
+        if(_pickLeft)_pickLeft.style.display='flex';
+    } else {
+        if(_imgWrap)_imgWrap.style.display='none';
+        if(_pickLeft)_pickLeft.style.display='none';
+    }
     swRenderStrip();}
+function swDriveImg(raw){if(!raw||typeof raw!=='string')return'';raw=raw.trim();if(!raw)return'';if(raw.includes('drive.google.com'))return raw;var m=raw.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);if(m)return'https://drive.google.com/thumbnail?id='+m[1]+'&sz=w400';var m2=raw.match(/[?&]id=([a-zA-Z0-9_-]+)/);if(m2)return'https://drive.google.com/thumbnail?id='+m2[1]+'&sz=w400';return raw;}
 function swBeep(ok){try{const ctx=new(window.AudioContext||window.webkitAudioContext)();const osc=ctx.createOscillator();const g=ctx.createGain();osc.connect(g);g.connect(ctx.destination);osc.type='sine';osc.frequency.value=ok?880:220;g.gain.setValueAtTime(0.3,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+(ok?.18:.4));osc.start(ctx.currentTime);osc.stop(ctx.currentTime+(ok?.18:.4));}catch(e){}}
 function swConfirmScan(){const inp=document.getElementById('swScanInput');const val=(inp?.value||'').trim().toUpperCase().replace(/[\s\-.]/g,'');if(!val)return;inp.value='';const parts=SW.parts,idx=SW.partIndex,cur=parts[idx];const curNum=(cur['Part Number']||cur.partNum||'').toUpperCase().replace(/[\s\-.]/g,'');const area=document.getElementById('swScanArea');if(val===curNum){SW.scanned[idx]=true;swBeep(true);swShowFeedback(true,'✓ Correct!',cur['Description']||cur.desc||'');swRenderStrip();area.style.background='rgba(34,197,94,0.06)';setTimeout(()=>{area.style.background='';},500);setTimeout(()=>swRenderCurrentPart(),700);}else{swBeep(false);const listIdx=parts.findIndex((p,i)=>!SW.scanned[i]&&!SW.skipped[i]&&(p['Part Number']||p.partNum||'').toUpperCase().replace(/[\s\-.]/g,'')=== val);if(listIdx>=0&&listIdx!==idx){swShowFeedback(false,'✗ Wrong order','Pick '+(cur['Part Number']||cur.partNum)+' first');}else if(listIdx<0){swShowFeedback(false,'✗ Not on this order','Scanned: '+val);}else{swShowFeedback(false,'✗ Try again','');}area.style.background='rgba(220,38,38,0.06)';area.style.transform='translateX(-6px)';setTimeout(()=>area.style.transform='translateX(6px)',80);setTimeout(()=>area.style.transform='translateX(-4px)',160);setTimeout(()=>{area.style.transform='';area.style.background='';},240);}}
-function swShowFeedback(ok,main,detail){const el=document.getElementById('swFeedback');if(!el)return;const col=ok?'#4ade80':'#ef4444';el.innerHTML='<div class="sw-feedback-main" style="color:'+col+'">'+main+'</div>'+(detail?'<div class="sw-feedback-detail">'+detail+'</div>':'');if(!ok)setTimeout(()=>{if(el)el.innerHTML='';},2500);}
+function swShowFeedback(ok,main,detail){
+    const el=document.getElementById('swFeedback');if(!el)return;
+    const col=ok?'#4ade80':'#ef4444';
+    el.innerHTML='<div class="sw-feedback-main" style="color:'+col+'">'+main+'</div>'+(detail?'<div class="sw-feedback-detail">'+detail+'</div>':'');
+    const area=document.getElementById('swScanArea');
+    if(area){area.classList.remove('sw-flash-green','sw-flash-red');void area.offsetWidth;area.classList.add(ok?'sw-flash-green':'sw-flash-red');}
+    if(ok){setTimeout(()=>{if(el)el.innerHTML='';},1000);}
+    else{setTimeout(()=>{if(el)el.innerHTML='';},2500);}
+    // Haptic feedback on mobile
+    if(navigator.vibrate){navigator.vibrate(ok?[30]:[60,30,60]);}
+}
 function swSkipPart(){const parts=SW.parts;const rem=parts.filter((_,i)=>!SW.scanned[i]&&!SW.skipped[i]);if(rem.length<=1){swShowFeedback(false,'Cannot skip last part','');return;}SW.skipped[SW.partIndex]=true;swShowFeedback(false,'↷ Skipped — will return','');swRenderStrip();setTimeout(()=>swRenderCurrentPart(),400);}
 async function swCompleteOrder(){const order=SW.currentOrder;const scannedCount=Object.keys(SW.scanned).length,total=SW.parts.length,pickedAt=ukNow();const idx=orders.findIndex(o=>o.orderNumber===order.orderNumber);if(idx>=0){orders[idx].status='Picked & Ready';orders[idx].pickedBy=SW.picker;orders[idx].pickedAt=pickedAt;}try{await fetch(API_URL,{method:'POST',body:JSON.stringify({action:'updateOrder',orderNumber:order.orderNumber,status:'Picked & Ready',pickedBy:SW.picker,pickedAt,notes:'Picked by '+SW.picker+' via wizard at '+pickedAt+'. '+scannedCount+'/'+total+' parts scanned.'})});}catch(e){}document.getElementById('swCompleteSub').textContent=scannedCount+' of '+total+' parts verified. Order marked as Picked & Ready.';document.getElementById('swCompleteSummary').innerHTML='<div><div class="sw-cs-label">Order</div><div class="sw-cs-value" style="font-family:\'DM Mono\',monospace;color:var(--red)">'+order.orderNumber+'</div></div><div><div class="sw-cs-label">Picked by</div><div class="sw-cs-value">'+SW.picker+'</div></div><div><div class="sw-cs-label">Parts verified</div><div class="sw-cs-value" style="color:var(--green)">'+scannedCount+' / '+total+'</div></div><div><div class="sw-cs-label">Time</div><div class="sw-cs-value" style="font-size:.82em;font-family:\'DM Mono\',monospace">'+pickedAt+'</div></div>';swGoStage(4);updateOrderStats();}
 function swNextOrder(){Object.assign(SW,{currentOrder:null,parts:[],partIndex:0,scanned:{},skipped:{}});swBuildOrderList();swGoStage(2);}
